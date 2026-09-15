@@ -1481,6 +1481,20 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated module: project invitations
+
+The eight invitation routes are implemented and cut over: the project's invitation list, create, retrieve and delete, the two public join routes, and the caller's own invitations and the call that joins projects with them.
+
+**The create has never sent an invitation.** It reads `.role` off a **queryset** rather than off a row, which is an attribute error, so every call that names an email ends in a `500`. The line after it is broken the same way — the list of invitations it has just built shadows the task it means to call — but nothing reaches that far. A call naming no emails is refused before either, and that refusal is the only answer this route gives that is not a `500`. The port answers exactly that.
+
+The two join routes carry **no session**: the token in the payload stands in for one. The token is checked first and the session second, so a caller with the right token and no session is told to sign in rather than that the token is wrong; the signed-in person then has to be the one the invitation names. The public view reports only what an invitee needs to decide — the project, the workspace, the role, whether it has been answered — and never the token or the email.
+
+Accepting puts the invitee into the workspace and then into the project, and two details there are upstream's. A workspace membership made this way is capped at **member** however high the project role is, so an invitation to administer a project does not hand out the workspace. And the project membership is looked up by workspace and member rather than by project, so somebody already in *another* project of the same workspace is reactivated there rather than added to this one.
+
+`users/me/workspaces/<slug>/projects/invitations/` is not scoped to the workspace in its own url, so it reports every project invitation the caller has anywhere. Joining narrows the ids to the workspace **before** the secret-project check runs, so an id from another workspace is dropped rather than refused.
+
+One deliberate divergence: the list, the retrieve and the delete ask for an active membership of the project. Django asks only that the caller be signed in — the viewset carries no permission class and its queryset is scoped to the project alone, so any account could read any project's invitations, emails included. The workspace's own invitation list already asks for admin, and every other project-scoped read here asks for membership.
+
 ## Migrated module: project states
 
 `GET` and `POST` on `states/`, `GET`, `PATCH` and `DELETE` on `states/<uuid>/`, `POST` on `mark-default/`, and `GET` on `intake-state/` are implemented and cut over.

@@ -144,6 +144,9 @@
 	@go_estimates path_regexp go_estimates ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(project-estimates/|estimates/([0-9A-Fa-f-]+/(estimate-points/([0-9A-Fa-f-]+/)?)?)?)$
 	reverse_proxy @go_estimates api-go:8000
 
+	@go_project_invites path_regexp go_project_invites ^(/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(invitations/([0-9A-Fa-f-]+/)?|join/[0-9A-Fa-f-]+/)|/api/users/me/workspaces/[^/]+/projects/invitations/)$
+	reverse_proxy @go_project_invites api-go:8000
+
 	@go_states path_regexp go_states ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(states/([0-9A-Fa-f-]+/(mark-default/)?)?|intake-state/)$
 	reverse_proxy @go_states api-go:8000
 
