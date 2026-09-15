@@ -689,6 +689,32 @@ func TestCommunityProxyCutsOverTheProjectInvitations(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheDeployBoards(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_deploy_boards")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	board := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		project + "project-deploy-boards/",
+		project + "project-deploy-boards/" + board,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Deploy board route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The space app reads a published project through its anchor, and that is still Django's.
+		"/api/public/anchor/abc123/settings/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the deploy board matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_deploy_boards api-go:8000") {
+		t.Error("community proxy is missing the deploy board reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")
