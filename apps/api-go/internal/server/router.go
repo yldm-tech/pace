@@ -131,8 +131,16 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		}
 		projectHandler.Register(router)
 		externalHandler := externalapi.NewHandler(dependencies.Database, externalapi.Settings{
-			RateLimit: dependencies.AuthSettings.APIKeyRateLimit,
+			RateLimit:     dependencies.AuthSettings.APIKeyRateLimit,
+			FileSizeLimit: dependencies.AuthSettings.FileSizeLimit,
 		})
+		// The two APIs share one bucket, so they share one store.
+		if err == nil {
+			externalHandler.SetAssets(attachmentStore)
+		}
+		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
+			externalHandler.SetTasks(publisher)
+		}
 		externalHandler.Register(router)
 	}
 	return router

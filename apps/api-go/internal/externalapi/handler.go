@@ -8,15 +8,20 @@ import (
 	"sync"
 	"time"
 
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
+
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 )
 
 // Settings is what the external API needs from the environment.
 type Settings struct {
 	// RateLimit is API_KEY_RATE_LIMIT, written the way DRF writes a throttle rate: a count, a slash, and a period.
 	RateLimit string
+	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every reserved upload is clamped to.
+	FileSizeLimit int64
 }
 
 // Handler serves plane.api.
@@ -25,10 +30,27 @@ type Handler struct {
 	settings Settings
 	now      func() time.Time
 	throttle *throttle
+	assets   *storage.Store
+	tasks    TaskPublisher
+}
+
+// TaskPublisher is the slice of the Celery publisher this app needs. The metadata task still runs on the Python worker.
+type TaskPublisher interface {
+	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 }
 
 func NewHandler(database *gorm.DB, settings Settings) *Handler {
 	return &Handler{db: database, settings: settings, throttle: newThrottle()}
+}
+
+// SetAssets gives the handler somewhere to put uploaded bytes. A misconfigured bucket leaves it nil, and the asset routes answer 500 rather than reserving a row nothing can upload against.
+func (handler *Handler) SetAssets(store *storage.Store) {
+	handler.assets = store
+}
+
+// SetTasks gives the handler the queue the metadata task is published to.
+func (handler *Handler) SetTasks(publisher TaskPublisher) {
+	handler.tasks = publisher
 }
 
 func (handler *Handler) clock() time.Time {
@@ -48,6 +70,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerStickyRoutes(router)
 	handler.registerInviteRoutes(router)
 	handler.registerIntakeRoutes(router)
+	handler.registerAssetRoutes(router)
 }
 
 // serverError is the catch-all the base view maps an unrecognised failure to. Every message the external API answers with is its own: the session API's wording appears nowhere here.

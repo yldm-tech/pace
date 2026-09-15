@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/uploads"
 	"gorm.io/gorm"
 )
 
@@ -48,12 +49,12 @@ func (handler *Handler) issueAttachmentCreate(c *gin.Context, user *auth.User) {
 		handler.invalidDetail(c)
 		return
 	}
-	name := sanitizeFilename(request.Name)
+	name := uploads.SanitizeFilename(request.Name)
 	if name == "" {
 		// Django falls back to a placeholder rather than refusing a name it stripped to nothing.
 		name = "unnamed"
 	}
-	if request.Type == "" || !attachmentMimeTypes[request.Type] {
+	if request.Type == "" || !uploads.AttachmentMimeTypes[request.Type] {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type.", "status": false})
 		return
 	}
@@ -348,29 +349,6 @@ func (handler *Handler) fileSizeLimit() int64 {
 		return handler.settings.FileSizeLimit
 	}
 	return 5242880
-}
-
-// sanitizeFilename is plane.utils.path_validator.sanitize_filename: it strips the directory components, traversal sequences, control characters and leading dots from a caller-supplied name before that name becomes part of an object key.
-func sanitizeFilename(filename string) string {
-	if filename == "" {
-		return ""
-	}
-	var stripped strings.Builder
-	for _, character := range filename {
-		if character < 32 || character == 127 {
-			continue
-		}
-		stripped.WriteRune(character)
-	}
-	// Backslashes are normalised first so a Windows-style path loses its directories too.
-	result := strings.ReplaceAll(stripped.String(), "\\", "/")
-	// Everything after the last separator, which is what Python's basename returns. Go's path.Base is not that function: it trims the trailing separators first, so it turns "trailing/" into "trailing" where Python gives nothing at all.
-	result = result[strings.LastIndexByte(result, '/')+1:]
-	result = strings.ReplaceAll(result, "..", "")
-	// The whitespace goes before the dots so a name like " .env" loses both.
-	result = strings.TrimSpace(result)
-	result = strings.TrimLeft(result, ".")
-	return strings.TrimSpace(result)
 }
 
 // requireAttachmentAdminOrCreator is allow_permission([ADMIN], creator=True, model=FileAsset): whoever uploaded an attachment may remove it, and otherwise a project or workspace admin may.

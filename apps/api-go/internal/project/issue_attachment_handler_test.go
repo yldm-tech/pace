@@ -7,20 +7,21 @@ import (
 	"time"
 
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/uploads"
 )
 
 // The mime allowlist is generated from settings.ATTACHMENT_MIME_TYPES, where two entries are listed twice.
 func TestAttachmentMimeAllowlist(t *testing.T) {
-	if len(attachmentMimeTypes) != 71 {
-		t.Fatalf("allowlist has %d entries, want 71", len(attachmentMimeTypes))
+	if len(uploads.AttachmentMimeTypes) != 71 {
+		t.Fatalf("allowlist has %d entries, want 71", len(uploads.AttachmentMimeTypes))
 	}
 	for _, allowed := range []string{"application/pdf", "image/png", "text/markdown", "video/mp4", "application/zip"} {
-		if !attachmentMimeTypes[allowed] {
+		if !uploads.AttachmentMimeTypes[allowed] {
 			t.Errorf("%q should be allowed", allowed)
 		}
 	}
 	for _, refused := range []string{"application/x-msdownload", "text/html", "application/x-sh", "", "image/png; charset=utf-8"} {
-		if attachmentMimeTypes[refused] {
+		if uploads.AttachmentMimeTypes[refused] {
 			t.Errorf("%q should be refused", refused)
 		}
 	}
@@ -103,7 +104,7 @@ func TestEmptyStorageMetadataReadsAsMissing(t *testing.T) {
 // The object key is the workspace prefix, an unguessable suffix and the sanitized name, so a caller cannot steer it anywhere else.
 func TestObjectKeysStayUnderTheWorkspacePrefix(t *testing.T) {
 	for _, name := range []string{"../../etc/passwd", `..\..\windows`, "/abs.txt", "ok.pdf"} {
-		key := "workspace-id/" + "abcdef" + "-" + sanitizeFilename(name)
+		key := "workspace-id/" + "abcdef" + "-" + uploads.SanitizeFilename(name)
 		if strings.Count(key, "/") != 1 {
 			t.Errorf("key %q for name %q leaves the workspace prefix", key, name)
 		}

@@ -30,6 +30,28 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: generic assets
+
+The three routes under `/api/v1/workspaces/<slug>/assets/`: reserve, download, and mark uploaded.
+
+### A script-capable type is served as an attachment
+
+Seven types — SVG, HTML, XHTML, XML and the two JavaScript spellings — are served with an `attachment` disposition rather than inline. That is what stops an uploaded SVG or HTML file running as script on the workspace's own origin.
+
+The stored type is **cut at the first semicolon and lowercased** before the list is consulted, so `Text/HTML; charset=utf-8` is caught. Worth a test, because a normalization that was skipped would be a hole rather than a bug.
+
+### The size defaults to the cap
+
+An integration that omits it reserves the **largest allowed upload**, not nothing. And the guard tests the size for **truthiness**, so a size of zero is refused along with a missing name. It is read with `int()`, so a string of digits works and anything else raises.
+
+The row exists before the upload does, and an integration that never finishes leaves a row behind that no route cleans up. The conflict body says `message` where every other error in this app says `error`.
+
+The metadata task is queued **before** the flag is written and regardless of whether the request actually turned it on — so a repeated call with no body queues it again for an asset that already has metadata. Only the flag is written: the save names one field.
+
+### Shared: what a file may be called and what it may be
+
+`internal/uploads` now holds `SanitizeFilename` and `AttachmentMimeTypes`, which both APIs need and which were living in the session one. Both are settings rather than code, and the filename rule is checked against Python over a corpus — so one copy, one fixture. The session API's attachment routes use it unchanged.
+
 ## Migrated external module: intake
 
 The five routes under `/api/v1/.../intake-issues/`.
