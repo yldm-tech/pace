@@ -49,6 +49,21 @@ services:
       - plane-db
       - plane-redis
 
+  api-go:
+    container_name: pace-api-go
+    build:
+      context: ./apps/api-go
+      dockerfile: Dockerfile
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: always
+    env_file:
+      - ./apps/api/.env
+    depends_on:
+      - plane-db
+      - plane-redis
+      - plane-mq
+
   worker:
     container_name: bgworker
     build:
@@ -167,6 +182,7 @@ services:
     depends_on:
       - web
       - api
+      - api-go
       - space
       - admin
 
