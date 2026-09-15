@@ -30,6 +30,20 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: the module list, create, detail, delete and work items
+
+`GET` and `POST` on `modules/`, `GET`, `PATCH` and `DELETE` on `modules/<uuid>/`, and the four routes under `module-issues/`, are implemented and cut over.
+
+Two fixes to the module shape, which the archived list merged earlier also renders. `members` is on **every** module body: the declared field is write only, but the serializer's own `to_representation` puts the ids back, which the port had dropped. And the membership list carries no soft-delete filter, because Django reads it as a many-to-many rather than through the link's own manager — a removed membership still names its member. The two planning dates are `DateField`s and render as the day alone; the archive stamp is a `DateTimeField` here, unlike the work item's, so it keeps its time.
+
+The list and the detail read an annotated queryset and answer with twenty-nine fields. The create and the update read the module back through a plain one, so the six counts are absent from those bodies — twenty-three fields.
+
+A name that is taken is refused twice over, in two shapes: the create answers four flat keys (`id`, `code`, `error`, `message`) and the update answers one, both flat rather than the lists a field error carries, because the serializer raises them from `create()` and `update()` where nothing wraps them. The member list is **narrowed** rather than refused — an id that is not a member of the project is dropped and nobody is told — and the narrowing asks only for a membership row, not an active one, so somebody removed from the project can still be put on a module.
+
+The work item routes under a module differ from the cycle's in three ways. The **detail** answers with a page holding one work item rather than with the link. The create only ever **adds**: the loop meant to move a work item out of another module compares a string against a queryset of UUIDs, which is never equal, so the branch that would move one is dead — a work item already in another module ends up in both, and the unique index is what keeps one already in *this* module from being added twice. And the ids it acts on come from the plain manager, so an archived, draft or triage work item can be put into a module even though the module's own list will not show it afterwards.
+
+The activity that create queues carries `requested_data` as the **repr of a queryset** rather than as a list — `<QuerySet [UUID('…')]>`, truncated after twenty entries the way Python truncates one — because Django builds it with `str()` over a queryset. Nothing parses it, and reproducing it is cheaper than explaining a difference in a log.
+
 ## Migrated external module: the module picker, archive and archived list
 
 Six routes, the same shape as the cycle ones and with the same doubled archive pair — one class at two paths, dispatching on the method name, so both handlers answer on both.

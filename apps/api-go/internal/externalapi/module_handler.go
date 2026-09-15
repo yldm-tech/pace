@@ -11,6 +11,8 @@ import (
 )
 
 func (handler *Handler) registerModuleRoutes(router gin.IRouter) {
+	handler.registerModuleCrudRoutes(router)
+	handler.registerModuleIssueRoutes(router)
 	base := "/api/v1/workspaces/:slug/projects/:project/"
 	router.GET(base+"modules-lite/", handler.authenticated(handler.moduleLiteList))
 	router.GET(base+"archived-modules/", handler.authenticated(handler.archivedModuleList))
@@ -114,6 +116,7 @@ func (handler *Handler) archivedModuleList(c *gin.Context, user *auth.User, _ AP
 // externalModuleAnnotations is the six counts and the member list the archived module list carries.
 //
 // Every count is over **distinct** issues and requires a live link, so an issue linked twice counts once and a removed one not at all.
+// The membership list carries no soft-delete filter, because Django reads it as a many-to-many rather than through the link's own manager — a removed membership still names its member.
 func externalModuleAnnotations() string {
 	const liveIssues = `mi.deleted_at IS NULL AND mis.archived_at IS NULL AND mis.is_draft = FALSE AND mis.deleted_at IS NULL`
 	stateCount := func(group string) string {
@@ -132,7 +135,7 @@ func externalModuleAnnotations() string {
 		` + stateCount("unstarted") + ` AS unstarted_issues,
 		` + stateCount("backlog") + ` AS backlog_issues,
 		COALESCE((SELECT ARRAY_AGG(DISTINCT mm.member_id) FROM module_members mm
-			WHERE mm.module_id = m.id AND mm.deleted_at IS NULL), '{}') AS member_ids`
+			WHERE mm.module_id = m.id), '{}') AS member_ids`
 }
 
 // moduleArchive puts a finished module away.
@@ -213,18 +216,20 @@ func (handler *Handler) externalModuleByID(c *gin.Context) (Module, bool, error)
 
 // moduleJSON is the external API's ModuleSerializer, or the lite one when the counts are left off.
 //
-// The members field is **write only** on the serializer, so neither shape reports who is on the module — the archived list annotates the ids and then does not render them.
+// The members are rendered by the serializer's own to_representation rather than by a declared field — the declared one is write only — so they are on every module body whether or not the counts are. The two planning dates are DateFields and render as the day alone rather than as a midnight instant.
 func moduleJSON(row moduleRow, counted bool) gin.H {
 	data := gin.H{
 		"id": row.ID, "created_at": row.CreatedAt, "updated_at": row.UpdatedAt,
 		"created_by": row.CreatedByID, "updated_by": row.UpdatedByID, "deleted_at": row.DeletedAt,
 		"name": row.Name, "description": row.Description,
 		"description_text": decodeJSON(row.DescriptionText), "description_html": decodeJSON(row.DescriptionHTML),
-		"start_date": row.StartDate, "target_date": row.TargetDate, "status": row.Status,
+		"start_date": issueDate(row.StartDate), "target_date": issueDate(row.TargetDate), "status": row.Status,
 		"view_props": decodeJSON(row.ViewProps), "sort_order": row.SortOrder,
 		"external_source": row.ExternalSource, "external_id": row.ExternalID,
 		"archived_at": row.ArchivedAt, "logo_props": decodeJSON(row.LogoProps),
 		"project": row.ProjectID, "workspace": row.WorkspaceID, "lead": row.LeadID,
+		// The members are rendered by the serializer itself rather than by a declared field, so they are on every module body whether or not the counts are.
+		"members": stringsOrEmptyList(row.MemberIDs),
 	}
 	if counted {
 		data["total_issues"] = row.TotalIssues
