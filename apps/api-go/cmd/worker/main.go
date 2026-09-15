@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -50,8 +51,15 @@ func main() {
 		From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
 	}, repository, nil, logger)
 
+	maintenance := worker.NewMaintenanceTasks(db, worker.RetentionSettings{
+		APIActivityLogDays: retentionDays("API_ACTIVITY_LOG_RETENTION_DAYS", 14),
+		EmailLogDays:       retentionDays("EMAIL_LOG_RETENTION_DAYS", 7),
+		WebhookLogDays:     retentionDays("WEBHOOK_LOG_RETENTION_DAYS", 14),
+	}, logger)
+
 	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
 	tasks.Register(consumer)
+	maintenance.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
@@ -67,6 +75,21 @@ func main() {
 		case <-time.After(5 * time.Second):
 		}
 	}
+}
+
+// retentionDays mirrors settings._retention_days: the default is used when the
+// variable is unset, unparseable, or negative. Zero is a valid window and is
+// kept, because it means "everything older than now".
+func retentionDays(name string, fallback int) int {
+	raw, present := os.LookupEnv(name)
+	if !present {
+		return fallback
+	}
+	value, err := strconv.Atoi(raw)
+	if err != nil || value < 0 {
+		return fallback
+	}
+	return value
 }
 
 func envOrDefault(name, fallback string) string {
