@@ -99,6 +99,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueListRoutes(router)
 	handler.registerIssueBulkListRoutes(router)
 	handler.registerArchivedIssueListRoutes(router)
+	handler.registerIssueIdentifierRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

@@ -39,6 +39,8 @@ type issueRow struct {
 	IsSubscribed    bool           `gorm:"column:is_subscribed"`
 	// StateGroup is annotated only by the sub-issue read, the same way is_subscribed is annotated only by retrieve. GORM leaves it nil on the querysets that do not select it.
 	StateGroup *string `gorm:"column:state_group"`
+	// IsIntake is annotated only by the identifier lookup, which is why every other route drops the key rather than returning it as false.
+	IsIntake bool `gorm:"column:is_intake"`
 }
 
 func (handler *Handler) issueRetrieve(c *gin.Context, user *auth.User) {
