@@ -596,6 +596,91 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatal("archived_at is still set in the database after unarchiving")
 	}
 
+	// Attachments: the row reserved by the create route, the flag the upload callback moves, and the list that hides what was never uploaded.
+	assetID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	entityType := attachmentEntityType
+	attributes, err := marshalUnescaped(map[string]any{"name": "report.pdf", "type": "application/pdf", "size": 1024})
+	if err != nil {
+		t.Fatal(err)
+	}
+	asset := FileAsset{
+		ID: assetID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		Attributes: auth.JSONValue(attributes), Asset: workspaceID + "/deadbeef-report.pdf", Size: 1024,
+		WorkspaceID: &workspaceID, ProjectID: &project.ID, IssueID: &issueID,
+		EntityType: &entityType, StorageMetadata: auth.JSONValue([]byte("{}")),
+	}
+	if err := transaction.Create(&asset).Error; err != nil {
+		t.Fatalf("create attachment through Django schema: %v", err)
+	}
+	// A reserved row is not uploaded yet, so it must not be listed and its metadata must read as missing.
+	if asset.IsUploaded {
+		t.Fatal("a freshly reserved attachment must not be marked uploaded")
+	}
+	var reserved FileAsset
+	if err := transaction.Where("id = ?", assetID).Take(&reserved).Error; err != nil {
+		t.Fatal(err)
+	}
+	if reserved.HasStorageMetadata() {
+		t.Fatalf("storage_metadata = %s, want the empty default to read as missing", reserved.StorageMetadata)
+	}
+	if attachmentName(reserved) != "report.pdf" {
+		t.Fatalf("attachment name = %q", attachmentName(reserved))
+	}
+	var uploadedCount int64
+	err = transaction.Session(&gorm.Session{}).Model(&FileAsset{}).
+		Where("issue_id = ? AND entity_type = ? AND is_uploaded = TRUE AND deleted_at IS NULL", issueID, attachmentEntityType).
+		Count(&uploadedCount).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if uploadedCount != 0 {
+		t.Fatalf("%d attachments are listed, want none before the upload completes", uploadedCount)
+	}
+	// Once the flag moves the attachment is listed, and the annotated count on the issue picks it up.
+	err = transaction.Model(&FileAsset{}).Where("id = ?", assetID).
+		Updates(map[string]any{"is_uploaded": true, "updated_at": now}).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Session(&gorm.Session{}).Model(&FileAsset{}).
+		Where("issue_id = ? AND entity_type = ? AND is_uploaded = TRUE AND deleted_at IS NULL", issueID, attachmentEntityType).
+		Count(&uploadedCount).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if uploadedCount != 1 {
+		t.Fatalf("%d attachments are listed after the upload, want 1", uploadedCount)
+	}
+	annotated, _, err := handler.issueDetailRow(ctx, slug, project.ID, issueID, user.ID)
+	if err != nil {
+		t.Fatalf("re-read the annotated issue: %v", err)
+	}
+	if countOrZero(annotated.AttachmentCount) != 1 {
+		t.Fatalf("attachment_count = %v, want 1", annotated.AttachmentCount)
+	}
+	// The serializer is fields = "__all__" plus asset_url, and the url points back at the download route.
+	serializedAsset := attachmentJSON(reserved, slug)
+	wantURL := "/api/assets/v2/workspaces/" + slug + "/projects/" + project.ID + "/issues/" + issueID + "/attachments/" + assetID + "/"
+	if serializedAsset["asset_url"] != wantURL {
+		t.Fatalf("asset_url = %v, want %q", serializedAsset["asset_url"], wantURL)
+	}
+	// Deleting flags the row rather than removing it, and the annotated count drops again.
+	err = transaction.Model(&FileAsset{}).Where("id = ?", assetID).
+		Updates(map[string]any{"is_deleted": true, "deleted_at": now, "updated_at": now}).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	annotated, _, err = handler.issueDetailRow(ctx, slug, project.ID, issueID, user.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if countOrZero(annotated.AttachmentCount) != 0 {
+		t.Fatalf("attachment_count = %v, want 0 once the attachment is flagged deleted", annotated.AttachmentCount)
+	}
+
 	// The unique constraints Django relies on must reject a duplicate name.
 	duplicateID, err := newUUID()
 	if err != nil {

@@ -62,6 +62,7 @@ func main() {
 		AWSAccessKeyID: cfg.Auth.AWSAccessKeyID, AWSSecretAccessKey: cfg.Auth.AWSSecretAccessKey,
 		AWSRegion: cfg.Auth.AWSRegion, AWSBucketName: cfg.Auth.AWSBucketName, AWSEndpointURL: cfg.Auth.AWSEndpointURL,
 		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, FileSizeLimit: cfg.Auth.FileSizeLimit,
+		SignedURLExpiration: cfg.Auth.SignedURLExpiration,
 	}
 	// Tasks the Go worker implements go to its own queue; everything else keeps
 	// going to the queue the Python worker consumes. Leaving PACE_WORKER_QUEUE

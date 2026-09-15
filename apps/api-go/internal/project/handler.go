@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
 )
 
@@ -36,6 +37,8 @@ var forbiddenIdentifierChars = regexp.MustCompile(`^.*[&+,:;$^}{*=?@#|'<>.()%!-]
 type Settings struct {
 	AppBaseURL string
 	WebURL     string
+	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every attachment size is clamped to.
+	FileSizeLimit int64
 }
 
 type TaskPublisher interface {
@@ -46,6 +49,7 @@ type TaskPublisher interface {
 	PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error
 	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
 	PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error
+	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 	PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error
 }
 
@@ -56,6 +60,7 @@ type Handler struct {
 	tasks    TaskPublisher
 	cache    auth.CacheInvalidator
 	clock    func() time.Time
+	storage  *storage.Store
 }
 
 func NewHandler(db *gorm.DB, sessions *auth.SessionManager, settings Settings) *Handler {
@@ -67,6 +72,9 @@ func (handler *Handler) SetTasks(publisher TaskPublisher) { handler.tasks = publ
 // SetCache wires the Redis invalidator the label routes need, since Django
 // drops the cached workspace label list when a project label changes.
 func (handler *Handler) SetCache(invalidator auth.CacheInvalidator) { handler.cache = invalidator }
+
+// SetStorage wires the object store the attachment routes sign against. A nil store means object storage is not configured, which those routes refuse rather than half-complete.
+func (handler *Handler) SetStorage(store *storage.Store) { handler.storage = store }
 
 func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/", handler.authenticated(handler.list))
@@ -84,6 +92,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerSubIssueRoutes(router)
 	handler.registerIssueRelationRoutes(router)
 	handler.registerIssueArchiveRoutes(router)
+	handler.registerIssueAttachmentRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
