@@ -2,6 +2,7 @@ package worker
 
 import (
 	"context"
+	"crypto/rand"
 	"encoding/base64"
 	"fmt"
 	"log/slog"
@@ -277,5 +278,18 @@ func MigratedTaskNames() []string {
 		MagicLinkTask, ForgotPasswordTask, UserActivationTask, UserDeactivationTask,
 		EmailUpdateCodeTask, EmailUpdateConfirmationTask, WorkspaceInvitationTask,
 		ProjectAddUserEmailTask,
+		DeleteAPILogsTask, DeleteEmailNotificationLogsTask, DeletePageVersionsTask,
+		DeleteIssueDescriptionVersionsTask, DeleteWebhookLogsTask, RecentVisitedTask,
 	}
+}
+
+// newTaskUUID mints a v4 identifier for rows the worker inserts.
+func newTaskUUID() (string, error) {
+	value := make([]byte, 16)
+	if _, err := rand.Read(value); err != nil {
+		return "", err
+	}
+	value[6] = (value[6] & 0x0f) | 0x40
+	value[8] = (value[8] & 0x3f) | 0x80
+	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", value[0:4], value[4:6], value[6:8], value[8:10], value[10:16]), nil
 }

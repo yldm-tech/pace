@@ -196,6 +196,18 @@ A task name that reaches the Go queue without a handler is rejected without
 requeueing and logged, so a routing mistake surfaces instead of silently
 dropping work.
 
+The periodic database cleanups run on Go too: the five `cleanup_task` entries
+the beat schedule drives, plus `recent_visited_task`. They touch only
+PostgreSQL, keep Django's 500-row batching and its per-batch error isolation,
+and read the same retention windows, where the default is used only when the
+variable is unset, unparseable, or negative — zero stays a valid window.
+
 ```bash
 PACE_WORKER_QUEUE=pace-go go run ./cmd/worker
+```
+
+The worker's schema test uses the same rollback-only approach:
+
+```bash
+WORKER_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/worker -run TestMaintenanceTasksAgainstDjangoSchema
 ```

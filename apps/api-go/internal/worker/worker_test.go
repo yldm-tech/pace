@@ -29,23 +29,6 @@ func TestPlainTextMatchesDjango(t *testing.T) {
 	}
 }
 
-func TestEveryMigratedTaskIsRegistered(t *testing.T) {
-	consumer := NewConsumer("", "", nil)
-	NewEmailTasks(nil, EmailSettings{}, nil, &recordingMailer{}, nil).Register(consumer)
-	registered := make(map[string]bool, len(consumer.TaskNames()))
-	for _, name := range consumer.TaskNames() {
-		registered[name] = true
-	}
-	for _, name := range MigratedTaskNames() {
-		if !registered[name] {
-			t.Errorf("task %q is routed to the Go queue but has no handler", name)
-		}
-	}
-	if len(registered) != len(MigratedTaskNames()) {
-		t.Fatalf("registered %d handlers but route %d task names", len(registered), len(MigratedTaskNames()))
-	}
-}
-
 func TestTaskNamesMatchDjangoModulePaths(t *testing.T) {
 	for _, name := range MigratedTaskNames() {
 		if !strings.HasPrefix(name, "plane.bgtasks.") {
@@ -215,4 +198,61 @@ func (config fakeConfiguration) ConfigurationValue(_ context.Context, key, fallb
 		return value, nil
 	}
 	return fallback, nil
+}
+
+func TestCleanupTaskNamesMatchTheBeatSchedule(t *testing.T) {
+	// plane/celery.py schedules these five by name; a typo here would mean the
+	// Go worker silently never runs them.
+	for _, name := range []string{
+		"plane.bgtasks.cleanup_task.delete_api_logs",
+		"plane.bgtasks.cleanup_task.delete_email_notification_logs",
+		"plane.bgtasks.cleanup_task.delete_page_versions",
+		"plane.bgtasks.cleanup_task.delete_issue_description_versions",
+		"plane.bgtasks.cleanup_task.delete_webhook_logs",
+	} {
+		found := false
+		for _, migrated := range MigratedTaskNames() {
+			if migrated == name {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("beat task %q is not routed to the Go worker", name)
+		}
+	}
+}
+
+func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
+	consumer := NewConsumer("", "", nil)
+	NewEmailTasks(nil, EmailSettings{}, nil, &recordingMailer{}, nil).Register(consumer)
+	NewMaintenanceTasks(nil, DefaultRetentionSettings(), nil).Register(consumer)
+	registered := map[string]bool{}
+	for _, name := range consumer.TaskNames() {
+		registered[name] = true
+	}
+	for _, name := range MigratedTaskNames() {
+		if !registered[name] {
+			t.Errorf("task %q is routed to the Go queue but has no handler", name)
+		}
+	}
+	if len(registered) != len(MigratedTaskNames()) {
+		t.Fatalf("registered %d handlers but route %d task names", len(registered), len(MigratedTaskNames()))
+	}
+}
+
+func TestRetentionDefaultsMatchDjango(t *testing.T) {
+	settings := DefaultRetentionSettings()
+	if settings.APIActivityLogDays != 14 || settings.EmailLogDays != 7 || settings.WebhookLogDays != 14 {
+		t.Fatalf("retention defaults = %#v", settings)
+	}
+}
+
+func TestNullableIDKeepsEmptyOutOfUUIDColumns(t *testing.T) {
+	if nullableID("") != nil {
+		t.Fatal("an empty identifier must become NULL")
+	}
+	if nullableID("abc") != "abc" {
+		t.Fatal("a present identifier must be kept")
+	}
 }
