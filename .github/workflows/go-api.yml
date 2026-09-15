@@ -91,6 +91,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the cycle progress fixture matches Python
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_cycle_progress_fixture.py > /tmp/cycle_progress.tsv
+          if ! diff -u ../api-go/internal/project/testdata/cycle_progress.tsv /tmp/cycle_progress.tsv; then
+            echo "::error::apps/api-go/internal/project/testdata/cycle_progress.tsv is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_cycle_progress_fixture.py > ../api-go/internal/project/testdata/cycle_progress.tsv"
+            exit 1
+          fi
+
       - name: Verify the DRF float fixture matches Python
         working-directory: apps/api
         run: |
