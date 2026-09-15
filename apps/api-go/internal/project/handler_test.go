@@ -293,6 +293,8 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/advance-analytics/":        true,
 		"GET /api/workspaces/:slug/projects/:id/advance-analytics-stats/":  true,
 		"GET /api/workspaces/:slug/projects/:id/advance-analytics-charts/": true,
+
+		"GET /api/workspaces/:slug/issues/": true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path
