@@ -133,6 +133,18 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: cycle date checks, favourites and saved views
+
+The first slice of the cycle module: `cycles/date-check/`, `user-favorite-cycles/` and `cycles/<uuid>/user-properties/`.
+
+`date-check/` answers whether a proposed interval overlaps a cycle that already exists. The interval is built by `convert_to_utc`, which is worth spelling out: a start date becomes the **first second** of that day in the **project's** timezone and an end date becomes **23:59** of it, which is what keeps two adjacent cycles from reading as overlapping. And a start date that falls on **today** in that timezone becomes the current instant rather than the start of the day, so a cycle created this afternoon does not claim to have begun this morning.
+
+A clash is answered with `200` and a `status` of false rather than a `4xx`, since it is an answer rather than an error.
+
+Favouriting writes unconditionally, so doing it twice hits the partial unique index and is a `400`. Unfavouriting removes the row outright rather than soft deleting it, which is what `delete(soft=False)` does.
+
+The saved view is a `get_or_create` on read but **not** on update, so a `PATCH` against a cycle the caller has never opened is a `404`. The update answers `201` rather than `200`, even though it creates nothing.
+
 ## Migrated module: the issue sync list
 
 `GET` on `v2/issues/`, which a client walks to keep a local copy of a project. It is the only issue list that pages with the **cursor** paginator rather than the offset one, and the only one ordered **ascending** — by `updated_at`, which is what lets a client resume from where it stopped.
