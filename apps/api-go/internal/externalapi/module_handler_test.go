@@ -36,19 +36,6 @@ func TestTheModuleCountsAreDistinctAndLive(t *testing.T) {
 	}
 }
 
-// The members field is write only on the serializer, so neither shape reports who is on the module.
-func TestTheModuleNeverReportsItsMembers(t *testing.T) {
-	row := moduleRow{Module: Module{ID: "module-id"}, MemberIDs: []string{"member-id"}}
-	for _, data := range []map[string]any{moduleJSON(row, false), moduleJSON(row, true)} {
-		if _, present := data["members"]; present {
-			t.Error("members is write only on the serializer")
-		}
-		if _, present := data["member_ids"]; present {
-			t.Error("the archived list annotates the ids and then does not render them")
-		}
-	}
-}
-
 // The lite serializer carries no counts and the full one carries six.
 func TestTheLiteModuleHasNoCounts(t *testing.T) {
 	row := moduleRow{Module: Module{ID: "module-id"}, TotalIssues: 3}

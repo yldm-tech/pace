@@ -812,15 +812,17 @@ func TestCommunityProxyCutsOverOnlyTheExternalModuleRoutes(t *testing.T) {
 		project + "archived-modules/",
 		project + "archived-modules/" + module + "unarchive/",
 		project + "modules/" + module + "archive/",
+		project + "modules/",
+		project + "modules/" + module,
+		project + "modules/" + module + "module-issues/",
+		project + "modules/" + module + "module-issues/66666666-7777-8888-9999-000000000000/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("External module route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		project + "modules/",
-		project + "modules/" + module,
-		project + "modules/" + module + "module-issues/",
+		// The archived module detail is the one route here that is not migrated.
 		project + "archived-modules/" + module,
 	} {
 		if matcher.MatchString(route) {
