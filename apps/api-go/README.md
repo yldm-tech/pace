@@ -4,6 +4,14 @@ This directory contains the incremental Gin, GORM, and PostgreSQL replacement fo
 
 
 
+## The space app is a third application
+
+`internal/space` serves the published half of a project: what a person sees who has a link and no account. It is a third application beside the session API and the external API, with its own package, its own base view and its own idea of who is asking.
+
+Nothing here carries a session. Every route is reached through an **anchor** — thirty-two hexadecimal characters in the url — and the anchor is the whole of the credential, so the first thing each route does is turn one into a deploy board and refuse the request when it cannot. There are two lookups: the settings and the metadata ask that the anchor be a **project's**, and everything else takes whatever board the anchor names, so an anchor published for a page or a view resolves the same way and its project columns are read off it regardless.
+
+The two refusals are worded differently for no reason anyone recorded: the strict lookup answers the base view's `The requested resource does not exist.` and the loose one answers `Invalid anchor`, while the metadata answers `Project is not published`.
+
 ## The external API is a second application
 
 `internal/externalapi` serves `plane.api`, the key-authenticated surface integrations call. It is not the session API with a different prefix — it differs in five ways, and mixing them up is how an integration breaks:
@@ -1480,6 +1488,14 @@ Four behaviours are reproduced rather than tidied:
 - A point's delete answers with the points whose **key moved** to close the gap, not with the one that was deleted. The work items that used it are moved to whichever point `new_estimate_id` names, or left pointing at nothing when it names none, and either way each of them gets an activity of its own — one per work item, with no notification and no origin.
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
+
+## Migrated space module: the project surface
+
+`settings/`, `meta/`, `members/`, `states/`, `labels/`, `cycles/` and `modules/` under an anchor, and the `anchor/` lookup from the other end, are implemented and cut over.
+
+The shapes are narrow on purpose — a published board shows what a reader needs and nothing else. `cycles/` and `modules/` report an id and a name and nothing more, **archived ones included**, because the published board has no notion of an archive. `labels/` names a parent rather than nesting it. `states/` hides the triage state **by name** rather than by its flag, so a state somebody renamed is reported and one they called Triage is not, whatever it actually is.
+
+`members/` reports the avatar **column** rather than the url every other API reports, so a member whose picture is an uploaded asset comes back with an empty avatar here. That is upstream's and is left as it is.
 
 ## Migrated module: project deploy boards
 
