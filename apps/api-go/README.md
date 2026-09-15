@@ -172,6 +172,24 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: work item links
+
+Ten routes — five under `issues/` and the same five under `work-items/`, which is how **every** work item route in this API is mounted: under the current name and the one it had before an issue was called a work item.
+
+### The create validates and the update does not
+
+The create goes through `IssueLinkCreateSerializer`, which checks the url's **shape** and then its **scheme** — Django's validator accepts `ftp://`, and the scheme check is what narrows it to the two — and then refuses a url the work item already carries.
+
+The update goes through the **full** serializer instead. It has neither check: any string at all may be written over a url, and a duplicate is accepted. An `IssueLinkUpdateSerializer` with both checks exists in the same file and **is not used by the update route**.
+
+The duplicate check that does run is scoped to the **issue** rather than to the project, so the same url may hang off two different work items.
+
+### The creator may be named in the body
+
+The row is written and then its author is rewritten from `created_by` — which is how an integration attributes a link to the person it acted for rather than to the key. Nothing checks that the named person exists or is in the workspace, and the activity that follows is attributed to them rather than to the caller.
+
+The crawler is asked for the page's title on create, and on update **only when the url actually changed**.
+
 ## Migrated external module: the project detail
 
 `GET`, `PATCH` and `DELETE` on `/api/v1/workspaces/<slug>/projects/<uuid>/`.
