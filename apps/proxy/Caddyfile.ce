@@ -24,6 +24,9 @@
 	reverse_proxy /api/users/me/tour-completed/ api-go:8000
 	reverse_proxy /api/v1/users/me/ api-go:8000
 
+	@go_external_labels path_regexp go_external_labels ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/labels/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_external_labels api-go:8000
+
 	@go_external_members path_regexp go_external_members ^/api/v1/workspaces/[^/]+/(members/|members-lite/|projects/[0-9A-Fa-f-]+/(members|project-members)/([0-9A-Fa-f-]+/)?|projects/[0-9A-Fa-f-]+/project-members-lite/)$
 	reverse_proxy @go_external_members api-go:8000
 
