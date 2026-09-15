@@ -209,6 +209,7 @@ func TestCleanupTaskNamesMatchTheBeatSchedule(t *testing.T) {
 		"plane.bgtasks.cleanup_task.delete_page_versions",
 		"plane.bgtasks.cleanup_task.delete_issue_description_versions",
 		"plane.bgtasks.cleanup_task.delete_webhook_logs",
+		"plane.bgtasks.file_asset_task.delete_unuploaded_file_asset",
 	} {
 		found := false
 		for _, migrated := range MigratedTaskNames() {
@@ -233,6 +234,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	}
 	deletions.Register(consumer)
 	NewVersionTasks(nil, nil).Register(consumer)
+	NewAssetTasks(nil, nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true
