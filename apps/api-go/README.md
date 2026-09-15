@@ -1438,6 +1438,19 @@ called with keywords.
 `projects/details/`, `project-identifiers/`, invitations, archiving, favorites,
 and deploy boards remain on Django.
 
+## Migrated module: project estimates
+
+The nine estimate routes are implemented and cut over: the project's scale (`project-estimates/`), the scale list, create, retrieve, update and delete, and the three that act on a single point.
+
+Four behaviours are reproduced rather than tidied:
+
+- A create whose payload has no `estimate` object at all is a **500**, because Django reads the name off it without checking that it is there. A payload that has one but no name gets a **random ten-letter name** — the one place in this API that names something for the caller.
+- The update refuses a payload with no `estimate_points` even when it only means to rename the scale.
+- A point's create asks that both the key and the value be **truthy**, so a key of zero is refused even though zero is where a scale starts.
+- A point's delete answers with the points whose **key moved** to close the gap, not with the one that was deleted. The work items that used it are moved to whichever point `new_estimate_id` names, or left pointing at nothing when it names none, and either way each of them gets an activity of its own — one per work item, with no notification and no origin.
+
+The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
+
 ## Migrated module: project states
 
 `GET` and `POST` on `states/`, `GET`, `PATCH` and `DELETE` on `states/<uuid>/`, `POST` on `mark-default/`, and `GET` on `intake-state/` are implemented and cut over.

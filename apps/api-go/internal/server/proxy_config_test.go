@@ -576,6 +576,38 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheSessionEstimates(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_estimates")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	estimate := "11111111-2222-3333-4444-555555555555/"
+	point := "66666666-7777-8888-9999-000000000000/"
+	for _, route := range []string{
+		project + "project-estimates/",
+		project + "estimates/",
+		project + "estimates/" + estimate,
+		project + "estimates/" + estimate + "estimate-points/",
+		project + "estimates/" + estimate + "estimate-points/" + point,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Session estimate route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The workspace's own estimate list is a different route and is still Django's.
+		"/api/workspaces/acme/estimates/",
+		// And the external API's estimates are a different application — and dead there besides.
+		"/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/estimates/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the estimate matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_estimates api-go:8000") {
+		t.Error("community proxy is missing the estimate reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")
