@@ -296,6 +296,14 @@ func TestProjectRouteInventory(t *testing.T) {
 
 		"GET /api/workspaces/:slug/issues/":            true,
 		"GET /api/workspaces/:slug/user-issues/:user/": true,
+
+		"GET /api/users/me/notification-preferences/":                true,
+		"PATCH /api/users/me/notification-preferences/":              true,
+		"GET /api/users/me/activities/":                              true,
+		"GET /api/users/last-visited-workspace/":                     true,
+		"GET /api/users/me/workspaces/:slug/activity-graph/":         true,
+		"GET /api/users/me/workspaces/:slug/issues-completed-graph/": true,
+		"GET /api/users/me/workspaces/:slug/dashboard/":              true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path

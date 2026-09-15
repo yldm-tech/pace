@@ -1413,6 +1413,20 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the rest of a person's own routes
+
+Seven routes are implemented and cut over: the notification preferences and their edit, the caller's own activity feed, the workspace they were in last, and the three graphs the home screen draws. They live in `internal/project` rather than `internal/user` because five of them read work items or work item activity.
+
+**The preference row is read with a `.get()`.** Somebody who has a workspace-level preference row as well as their own gets a 500 rather than either of them, and somebody with none at all gets a 404 rather than a set of defaults.
+
+**The caller's own activity feed narrows to nothing.** Not to a workspace, not to projects they still belong to, and not away from the four fields the per-workspace feed hides — so somebody who has left a project still sees what they did there, comments and reactions included.
+
+**The workspace they were in last** answers with an empty pair rather than a 404 when they have never been in one. Its memberships are not narrowed to the active ones, so a project they were removed from is still listed. The workspace object carries fifteen fields rather than the seventeen the serializer declares: `total_members` and `role` are annotations, nothing annotated them here, and DRF leaves an absent attribute out rather than failing.
+
+**Every dashboard number reaches the caller's work through an inner join on the assignee link, and that join does not check whether the assignment was taken back** — so a deleted assignment still counts. The numbers also narrow to the workspace alone rather than to the projects the caller belongs to, which is the opposite of what the profile page does with the same question.
+
+The completed-work graph buckets by the calendar week of the year **taken modulo four**, so two weeks nine apart share a bucket; the dashboard's own weekly split is a real week-of-month. Both read the month off the query string and default to January rather than to this month.
+
 ## Migrated module: one person's work item list
 
 `GET /api/workspaces/<slug>/user-issues/<id>/` is implemented and cut over. It is one person's work across the workspace — everything assigned to them, raised by them, or that they are following — and it takes both filter languages and the grouped and sub-grouped paginators.
