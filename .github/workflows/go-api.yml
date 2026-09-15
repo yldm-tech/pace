@@ -68,6 +68,17 @@ jobs:
           mkdir -p plane/static-assets/collected-static
           python manage.py migrate --noinput
 
+      - name: Verify the relation graph matches the Django models
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_relation_graph.py > /tmp/relation_graph.json
+          if ! diff -u ../api-go/internal/worker/relation_graph.json /tmp/relation_graph.json; then
+            echo "::error::apps/api-go/internal/worker/relation_graph.json is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_relation_graph.py > ../api-go/internal/worker/relation_graph.json"
+            exit 1
+          fi
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
