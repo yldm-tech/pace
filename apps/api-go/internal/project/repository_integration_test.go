@@ -245,6 +245,62 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatalf("serialized label = %#v", serialized)
 	}
 
+	// The issue detail queryset has to survive contact with the real schema:
+	// every table and column its annotations name must exist.
+	issueID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Exec(
+		`INSERT INTO issues (id, created_at, updated_at, created_by_id, project_id, workspace_id,
+			name, description_json, description_html, priority, sequence_id, sort_order, is_draft)
+		 VALUES (?, ?, ?, ?, ?, ?, ?, '{}', '<p></p>', 'none', 1, 65535, FALSE)`,
+		issueID, now, now, user.ID, project.ID, workspaceID, "Integration issue "+suffix,
+	).Error
+	if err != nil {
+		t.Fatalf("create issue through Django schema: %v", err)
+	}
+	issueRowResult, found, err := handler.issueDetailRow(ctx, slug, project.ID, issueID, user.ID)
+	if err != nil || !found {
+		t.Fatalf("read the annotated issue: %v, found=%v", err, found)
+	}
+	if issueRowResult.Name != "Integration issue "+suffix || issueRowResult.SequenceID != 1 {
+		t.Fatalf("annotated issue = %#v", issueRowResult.Issue)
+	}
+	// Every annotation should come back empty rather than failing.
+	if countOrZero(issueRowResult.LinkCount) != 0 || countOrZero(issueRowResult.AttachmentCount) != 0 || countOrZero(issueRowResult.SubIssuesCount) != 0 {
+		t.Fatalf("counts = %v %v %v", issueRowResult.LinkCount, issueRowResult.AttachmentCount, issueRowResult.SubIssuesCount)
+	}
+	if len(issueRowResult.LabelIDs) != 0 || len(issueRowResult.AssigneeIDs) != 0 || len(issueRowResult.ModuleIDs) != 0 {
+		t.Fatalf("id arrays = %v %v %v", issueRowResult.LabelIDs, issueRowResult.AssigneeIDs, issueRowResult.ModuleIDs)
+	}
+	if issueRowResult.IsSubscribed {
+		t.Fatal("a fresh issue should not be annotated as subscribed")
+	}
+	serializedIssue := issueDetailJSON(issueRowResult, true)
+	if serializedIssue["sequence_id"] != 1 {
+		t.Fatalf("serialized issue = %#v", serializedIssue)
+	}
+	// Attaching the label created above must show up in the aggregation.
+	issueLabelID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Create(&IssueLabel{
+		ID: issueLabelID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID, IssueID: issueID, LabelID: label.ID,
+	}).Error
+	if err != nil {
+		t.Fatalf("attach a label through Django schema: %v", err)
+	}
+	issueRowResult, _, err = handler.issueDetailRow(ctx, slug, project.ID, issueID, user.ID)
+	if err != nil {
+		t.Fatalf("re-read the annotated issue: %v", err)
+	}
+	if len(issueRowResult.LabelIDs) != 1 || issueRowResult.LabelIDs[0] != label.ID {
+		t.Fatalf("label_ids = %v, want the attached label", issueRowResult.LabelIDs)
+	}
+
 	// The unique constraints Django relies on must reject a duplicate name.
 	duplicateID, err := newUUID()
 	if err != nil {

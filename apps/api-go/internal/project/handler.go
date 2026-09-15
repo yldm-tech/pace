@@ -45,6 +45,7 @@ type TaskPublisher interface {
 	PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error
 	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
 	PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error
+	PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error
 }
 
 type Handler struct {
@@ -78,6 +79,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueLinkRoutes(router)
 	handler.registerIssueCommentRoutes(router)
 	handler.registerCommentReactionRoutes(router)
+	handler.registerIssueDetailRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

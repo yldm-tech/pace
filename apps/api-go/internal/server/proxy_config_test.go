@@ -314,7 +314,6 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		issue,
 		issue + "issue-attachments/",
 		issue + "reactions/thumbsup/extra/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/comments/11111111-2222-3333-4444-555555555555/reactions/",
@@ -344,6 +343,29 @@ func TestCommunityProxyCutsOverOnlyCommentReactionRoutes(t *testing.T) {
 	}
 	if !strings.Contains(config, "reverse_proxy @go_comment_reactions api-go:8000") {
 		t.Error("community proxy is missing the Comment reactions reverse proxy")
+	}
+}
+
+func TestCommunityProxyCutsOverOnlyTheIssueDetailRoute(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_issue_detail")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	if !matcher.MatchString(project + "issues/11111111-2222-3333-4444-555555555555/") {
+		t.Error("the issue detail route is not cut over to Go")
+	}
+	for _, route := range []string{
+		// The list route needs the grouped paginator and stays on Django.
+		project + "issues/",
+		project + "issues/11111111-2222-3333-4444-555555555555/comments/",
+		project + "issues/11111111-2222-3333-4444-555555555555/sub-issues/",
+		project + "issues/11111111-2222-3333-4444-555555555555/archive/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_issue_detail api-go:8000") {
+		t.Error("community proxy is missing the Issue detail reverse proxy")
 	}
 }
 
