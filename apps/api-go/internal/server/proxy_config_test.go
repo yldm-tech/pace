@@ -417,13 +417,14 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_list")
 	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
-	if !matcher.MatchString(project + "issues/") {
-		t.Error("the issue list route is not cut over to Go")
+	for _, route := range []string{project + "issues/", project + "issues/list/"} {
+		if !matcher.MatchString(route) {
+			t.Errorf("the issue list route %q is not cut over to Go", route)
+		}
 	}
 	for _, route := range []string{
-		// The other three list routes are separate endpoints and stay on Django.
+		// The other two list routes are separate endpoints and stay on Django.
 		project + "archived-issues/",
-		project + "issues/list/",
 		project + "v2/issues/",
 		project + "issues-detail/",
 		// The detail route is its own matcher.
