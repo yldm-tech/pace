@@ -576,6 +576,32 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheWorkspaceViewRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_views")
+	for _, route := range []string{
+		"/api/workspaces/acme/views/",
+		"/api/workspaces/acme/views/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace view route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The workspace issue list behind these views is not migrated, and neither are the project-level views.
+		"/api/workspaces/acme/issues/",
+		"/api/workspaces/acme/workspace-views/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/views/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_views api-go:8000") {
+		t.Error("community proxy is missing the Workspace views reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheProjectViewRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_project_views")

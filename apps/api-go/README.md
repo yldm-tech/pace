@@ -188,6 +188,20 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: workspace views
+
+The six routes under `workspaces/<slug>/views/`: the views that belong to no project.
+
+The project list's twin, differing in three ways. There is **no favourite flag**, because nothing annotates one here. The guest narrowing has **no escape hatch** — a workspace guest sees only their own views, whatever the projects are configured to allow, where a project guest can be let through by `guest_view_all_features`. And the order is the caller's to choose.
+
+`sanitize_order_by` is ported with it: at most one leading dash is stripped, the bare name is checked against an allowlist of three fields, and anything else falls back to `-created_at`. A doubled dash is rejected rather than reaching the ORM, which is what the function exists for.
+
+The retrieve carries **no permission decorator at all**, so the viewset's own default applies and any signed-in user reaches it. The queryset still hides a private view they do not own, and the serializer is then handed the nothing that comes back, which renders as an empty body rather than a `404`. The visit is recorded either way, with no project to record it against.
+
+Deleting clears the view's favourites but, unlike the project route, **leaves the recent visits alone** — a deleted workspace view keeps showing up in the recent list until something else clears it.
+
+The workspace issue list behind these views, `workspaces/<slug>/issues/`, stays on Django for now: it needs the grouped paginator over every project the caller can see.
+
 ## Migrated module: project views
 
 The nine routes under `views/` and `user-favorite-views/`: list, create, retrieve, update, full update, delete, and the three favourite ones.
