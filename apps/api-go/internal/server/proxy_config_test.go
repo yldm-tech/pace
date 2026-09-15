@@ -576,6 +576,32 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalAssetRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_assets")
+	for _, route := range []string{
+		"/api/v1/workspaces/acme/assets/",
+		"/api/v1/workspaces/acme/assets/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External asset route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The user asset routes are a separate endpoint and are not migrated.
+		"/api/v1/assets/user-assets/",
+		"/api/v1/assets/user-assets/11111111-2222-3333-4444-555555555555/",
+		"/api/v1/assets/user-assets/11111111-2222-3333-4444-555555555555/server/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_assets api-go:8000") {
+		t.Error("community proxy is missing the external assets reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalIntakeRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_intake")

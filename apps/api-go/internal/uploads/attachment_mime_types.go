@@ -1,7 +1,7 @@
-package project
+package uploads
 
-// attachmentMimeTypes is settings.ATTACHMENT_MIME_TYPES. The setting lists 73 entries, but text/markdown and application/x-compressed-tar-zip each appear twice, so 71 survive here.
-var attachmentMimeTypes = map[string]bool{
+// AttachmentMimeTypes is settings.ATTACHMENT_MIME_TYPES. The setting lists 73 entries, but text/markdown and application/x-compressed-tar-zip each appear twice, so 71 survive here.
+var AttachmentMimeTypes = map[string]bool{
 	"application/gzip":                                true,
 	"application/json":                                true,
 	"application/msword":                              true,

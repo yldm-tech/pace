@@ -1,4 +1,4 @@
-package project
+package uploads
 
 import (
 	"os"
@@ -33,8 +33,8 @@ func TestSanitizeFilenameMatchesPython(t *testing.T) {
 			}
 		}
 		rows++
-		if got := sanitizeFilename(input); got != want {
-			t.Errorf("sanitizeFilename(%q) = %q, want %q", input, got, want)
+		if got := SanitizeFilename(input); got != want {
+			t.Errorf("SanitizeFilename(%q) = %q, want %q", input, got, want)
 		}
 	}
 	if rows < 300 {
@@ -54,8 +54,8 @@ func unquotePython(value string) (string, error) {
 // A name that sanitizes to nothing becomes the placeholder rather than being refused.
 func TestAnEmptyResultBecomesThePlaceholder(t *testing.T) {
 	for _, input := range []string{"", "   ", "...", "..", "/", "\\", "\x00"} {
-		if sanitizeFilename(input) != "" {
-			t.Errorf("sanitizeFilename(%q) should strip to nothing", input)
+		if SanitizeFilename(input) != "" {
+			t.Errorf("SanitizeFilename(%q) should strip to nothing", input)
 		}
 	}
 }
@@ -66,9 +66,9 @@ func TestNothingEscapesTheObjectKey(t *testing.T) {
 		"../../etc/passwd", `..\..\windows\system32`, "/absolute/path.txt",
 		"dir/sub/file.txt", `dir\sub\file.txt`, "....//....//etc/passwd",
 	} {
-		got := sanitizeFilename(input)
+		got := SanitizeFilename(input)
 		if strings.ContainsAny(got, `/\`) || strings.Contains(got, "..") {
-			t.Errorf("sanitizeFilename(%q) = %q, which still carries a path", input, got)
+			t.Errorf("SanitizeFilename(%q) = %q, which still carries a path", input, got)
 		}
 	}
 }
