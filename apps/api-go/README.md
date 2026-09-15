@@ -187,6 +187,22 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: the module issue list and the two ways to link
+
+`GET` and `POST` on `modules/<uuid>/issues/`, and `POST` on `issues/<uuid>/modules/`.
+
+The list is the project list narrowed to one module, sharing its filtering, ordering, grouping and paging. Both halves of the link condition sit inside one EXISTS, the way the cycle list's do, because Django puts them in a single filter call and so applies them to the same joined row.
+
+Adding a link **moves nothing**. An issue belongs to at most one cycle but to any number of modules, so where the cycle path deletes the old link first, this one only inserts, and a link that is already there is ignored rather than refused.
+
+The two directions are not symmetric, and the asymmetry is upstream's. Adding issues to a module narrows the ids it is given to this project's live issues, which is what stops a foreign issue from being pulled in. Adding modules to an issue takes the module ids as given.
+
+Removing through `issues/<uuid>/modules/` reads the module's name **before** the link goes, and sends `null` when the link was not there to begin with.
+
+### The detail path stays on Django whole
+
+`modules/<uuid>/issues/<uuid>/` is not cut over, and the proxy matcher stops at the collection. Django binds four methods there: `DELETE` is written by hand and works, but `GET`, `PUT` and `PATCH` fall through to the generic actions, and those serialize an **Issue** — which is what the viewset's queryset returns — with a serializer built for **ModuleIssue**. Its required `issue` field has no matching attribute on an Issue, so the read raises, and the writes set a stray attribute on the wrong model before failing on the way out. Cutting a path over means owning every method on it, so the Go handler for the delete exists but stays unregistered until those three are decided. This is the same call as `cycle-issues/<uuid>/`.
+
 ## Migrated module: module read, update, delete and archive
 
 The four routes under `modules/<uuid>/`, and the archive toggle.
