@@ -234,3 +234,10 @@ func keywordsRepr(keywords map[string]any) string {
 	builder.WriteString("}")
 	return builder.String()
 }
+
+// PublishRaw sends an arbitrary task, which the beat scheduler needs because it
+// forwards whatever the schedule rows name. Routing is unchanged: a task the Go
+// worker implements goes to the Go queue, everything else to the Python one.
+func (publisher *CeleryPublisher) PublishRaw(ctx context.Context, taskName string, arguments []any, keywords map[string]any) error {
+	return publisher.send(ctx, taskName, arguments, keywords)
+}

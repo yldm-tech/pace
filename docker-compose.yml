@@ -82,6 +82,26 @@ services:
       - plane-redis
       - plane-mq
 
+  # The Go beat replaces beat-worker rather than running beside it: both read the
+  # same django_celery_beat tables, so running both would queue every periodic
+  # task twice. Switching over means commenting out beat-worker below in the
+  # same change.
+  #
+  # beat-go:
+  #   container_name: pace-beat-go
+  #   build:
+  #     context: ./apps/api-go
+  #     dockerfile: Dockerfile
+  #   entrypoint: ["pace-beat"]
+  #   restart: always
+  #   env_file:
+  #     - ./apps/api/.env
+  #   environment:
+  #     PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
+  #   depends_on:
+  #     - plane-db
+  #     - plane-mq
+
   worker:
     container_name: bgworker
     build:
