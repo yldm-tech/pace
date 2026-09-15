@@ -36,6 +36,8 @@ type issueRow struct {
 	AssigneeIDs     pq.StringArray `gorm:"column:assignee_ids;type:uuid[]"`
 	ModuleIDs       pq.StringArray `gorm:"column:module_ids;type:uuid[]"`
 	IsSubscribed    bool           `gorm:"column:is_subscribed"`
+	// StateGroup is annotated only by the sub-issue read, the same way is_subscribed is annotated only by retrieve. GORM leaves it nil on the querysets that do not select it.
+	StateGroup *string `gorm:"column:state_group"`
 }
 
 func (handler *Handler) issueRetrieve(c *gin.Context, user *auth.User) {

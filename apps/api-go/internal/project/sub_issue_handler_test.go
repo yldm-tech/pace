@@ -12,7 +12,7 @@ import (
 // The read route returns the values() projection, which is IssueSerializer's twenty-five fields plus state_group. description_html is not among them, so the sub-issue list does not carry issue bodies.
 func TestSubIssueReadShapeIsValuesPlusStateGroup(t *testing.T) {
 	group := "started"
-	data := subIssueValuesJSON(subIssueRow{issueRow: sampleIssueRow(), StateGroup: &group}, time.UTC)
+	data := subIssueValuesJSON(withStateGroup(sampleIssueRow(), &group), time.UTC)
 	for _, field := range []string{
 		"id", "name", "state_id", "sort_order", "completed_at", "estimate_point",
 		"priority", "start_date", "target_date", "sequence_id", "project_id",
@@ -67,7 +67,7 @@ func TestReadRouteRendersTimestampsInTheCallersTimezone(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	data := subIssueValuesJSON(subIssueRow{issueRow: sampleIssueRow()}, shanghai)
+	data := subIssueValuesJSON(sampleIssueRow(), shanghai)
 	created, ok := data["created_at"].(time.Time)
 	if !ok {
 		t.Fatalf("created_at = %T, want a time", data["created_at"])
@@ -180,4 +180,9 @@ func TestAnnotationJoinsKeepDjangosMissingSoftDeleteFilters(t *testing.T) {
 	if !strings.Contains(annotations, issueObjectsPredicate("sub")) {
 		t.Error("sub_issues_count must apply the whole issue_objects predicate")
 	}
+}
+
+func withStateGroup(row issueRow, group *string) issueRow {
+	row.StateGroup = group
+	return row
 }

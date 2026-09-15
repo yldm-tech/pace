@@ -16,12 +16,6 @@ func (handler *Handler) registerSubIssueRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/issues/:issue/sub-issues/", handler.authenticatedIssueUUID(handler.subIssueAssign))
 }
 
-// subIssueRow is the projection the endpoint annotates, which adds state_group to the usual issue fields.
-type subIssueRow struct {
-	issueRow
-	StateGroup *string `gorm:"column:state_group"`
-}
-
 func (handler *Handler) subIssueList(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectMembership(c, user) {
 		return
@@ -157,19 +151,19 @@ func (handler *Handler) subIssueAssign(c *gin.Context, user *auth.User) {
 	for _, row := range rows {
 		group := groupKey(row.StateGroup)
 		distribution[group] = append(asStrings(distribution[group]), row.ID)
-		serialized = append(serialized, issueSerializerJSON(row.issueRow))
+		serialized = append(serialized, issueSerializerJSON(row))
 	}
 	c.JSON(http.StatusOK, gin.H{"sub_issues": serialized, "state_distribution": distribution})
 }
 
-func (handler *Handler) subIssueRows(ctx context.Context, slug, projectID, parentID, orderBy string) ([]subIssueRow, error) {
+func (handler *Handler) subIssueRows(ctx context.Context, slug, projectID, parentID, orderBy string) ([]issueRow, error) {
 	return handler.scanSubIssues(ctx, slug, projectID, func(query *gorm.DB) *gorm.DB {
 		return query.Where("i.parent_id = ?", parentID).Order(issueOrderClause(orderBy))
 	})
 }
 
 // subIssuesByID re-reads the rows the assign route just re-parented. It annotates only state_group, since that response goes through IssueSerializer, and falls back to the model's own -created_at ordering.
-func (handler *Handler) subIssuesByID(ctx context.Context, slug, projectID string, identifiers []string) ([]subIssueRow, error) {
+func (handler *Handler) subIssuesByID(ctx context.Context, slug, projectID string, identifiers []string) ([]issueRow, error) {
 	if len(identifiers) == 0 {
 		return nil, nil
 	}
@@ -196,13 +190,13 @@ func subIssueAnnotations() string {
 }
 
 // scanSubIssues applies the shared projection to whichever narrowing the caller needs.
-func (handler *Handler) scanSubIssues(ctx context.Context, slug, projectID string, narrow func(*gorm.DB) *gorm.DB) ([]subIssueRow, error) {
+func (handler *Handler) scanSubIssues(ctx context.Context, slug, projectID string, narrow func(*gorm.DB) *gorm.DB) ([]issueRow, error) {
 	query := handler.db.WithContext(ctx).Table("issues i").
 		Select(subIssueAnnotations()).
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Where("w.slug = ? AND i.project_id = ?", slug, projectID).
 		Where(issueObjectsPredicate("i"))
-	var rows []subIssueRow
+	var rows []issueRow
 	if err := narrow(query).Scan(&rows).Error; err != nil {
 		return nil, err
 	}
@@ -210,8 +204,8 @@ func (handler *Handler) scanSubIssues(ctx context.Context, slug, projectID strin
 }
 
 // subIssueValuesJSON is the values() projection the read route returns: IssueSerializer's fields plus state_group, with the two datetime fields moved into the caller's timezone.
-func subIssueValuesJSON(row subIssueRow, location *time.Location) gin.H {
-	data := issueListJSON(row.issueRow)
+func subIssueValuesJSON(row issueRow, location *time.Location) gin.H {
+	data := issueListJSON(row)
 	data["state_group"] = row.StateGroup
 	data["created_at"] = row.CreatedAt.In(location)
 	data["updated_at"] = row.UpdatedAt.In(location)
