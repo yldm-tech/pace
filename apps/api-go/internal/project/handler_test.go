@@ -88,6 +88,7 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/issues/list/":                                     true,
 		"GET /api/workspaces/:slug/projects/:id/archived-issues/":                                 true,
 		"GET /api/workspaces/:slug/work-items/:identifier/":                                       true,
+		"POST /api/workspaces/:slug/projects/:id/issue-dates/":                                    true,
 		"GET /api/workspaces/:slug/projects/:id/issues/:issue/versions/:version/":                 true,
 		"GET /api/workspaces/:slug/projects/:id/work-items/:issue/description-versions/":          true,
 		"GET /api/workspaces/:slug/projects/:id/work-items/:issue/description-versions/:version/": true,
