@@ -11,6 +11,7 @@ import (
 
 func (handler *Handler) registerCycleRoutes(router gin.IRouter) {
 	handler.registerCycleCrudRoutes(router)
+	handler.registerCycleIssueRoutes(router)
 	base := "/api/v1/workspaces/:slug/projects/:project/"
 	router.GET(base+"cycles-lite/", handler.authenticated(handler.cycleLiteList))
 	router.GET(base+"archived-cycles/", handler.authenticated(handler.archivedCycleList))

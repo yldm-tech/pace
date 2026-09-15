@@ -46,6 +46,20 @@ The archived module list does **not** check membership at all: its queryset filt
 
 The lite list accepts an order parameter and ignores it, for the same reason its cycle twin does.
 
+## Migrated external module: the work items in a cycle
+
+`GET` and `POST` on `cycles/<uuid>/cycle-issues/`, and `GET` and `DELETE` on `<issue>/` under it, are implemented and cut over. The transfer is the one route under a cycle still on Django.
+
+The two halves of this module answer with different serializers. The **list** returns the work items themselves, through the same twenty-nine field serializer the work item list uses, while the **detail** returns the link — eleven fields with the work item's child count beside them. The create answers with every link in the cycle rather than the ones it just wrote, and with a `200` rather than a `201`.
+
+The list orders with a bare `order_by` rather than through the `Case` machinery the project's own list uses, and `testdata/plain_issue_order_by.tsv` pins what that means. `priority` sorts the **words** — high, low, medium, none, urgent — rather than the severities, because nothing maps them onto an order. The three fields that reach through a multi-valued relation add joins that **repeat** a work item once per related row, since the queryset carries no `distinct()`: a work item with three labels is three rows of a list ordered by label name. The fixture records the join count for exactly that reason, and the fallback here is ascending by creation rather than the descending one the project list falls back to.
+
+A work item already in another cycle is **moved** rather than copied, and the move writes only the cycle column, so no timestamp on the link changes. A work item the manager cannot see — archived, draft or triage — is dropped from the request rather than refusing it. `bulk_create` goes around `save()`, so a new link records nobody as its author.
+
+One deliberate divergence: the links being moved are scoped to the caller's workspace and project. Django's query is not, which would let a caller pull another workspace's links into their own cycle by naming its work item ids. That is the same hole that was closed on the session API (GHSA-4w5x-wc9w-f47x), so it is closed here rather than carried over.
+
+The activity the create queues carries `created_cycle_issues` as a JSON **string** inside the snapshot rather than as a nested object, because Django builds it with `serializers.serialize` and then dumps the whole snapshot around it; the task calls `json.loads` on it, so the nesting has to survive.
+
 ## Migrated external module: the cycle list, create, detail and delete
 
 `GET` and `POST` on `cycles/`, and `GET`, `PATCH` and `DELETE` on `cycles/<uuid>/`, are implemented and cut over.

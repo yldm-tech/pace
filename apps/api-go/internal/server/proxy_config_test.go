@@ -844,14 +844,15 @@ func TestCommunityProxyCutsOverOnlyTheExternalCycleRoutes(t *testing.T) {
 		project + "archived-cycles/",
 		project + "archived-cycles/" + cycle + "unarchive/",
 		project + "cycles/" + cycle + "archive/",
+		project + "cycles/" + cycle + "cycle-issues/",
+		project + "cycles/" + cycle + "cycle-issues/66666666-7777-8888-9999-000000000000/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("External cycle route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The two work item routes under a cycle are not migrated.
-		project + "cycles/" + cycle + "cycle-issues/",
+		// The transfer is the one route under a cycle that is not migrated.
 		project + "cycles/" + cycle + "transfer-issues/",
 		project + "archived-cycles/" + cycle,
 	} {
