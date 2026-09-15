@@ -6,7 +6,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /pace-api ./cmd/api
 
 FROM alpine:3.22
-RUN adduser -D -H pace
+RUN apk add --no-cache ca-certificates && adduser -D -H pace
 COPY --from=build /pace-api /usr/local/bin/pace-api
 USER pace
 EXPOSE 8000
