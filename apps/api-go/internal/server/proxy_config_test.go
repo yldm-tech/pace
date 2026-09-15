@@ -583,15 +583,15 @@ func TestCommunityProxyCutsOverOnlyTheAnalyticViewRoutes(t *testing.T) {
 		"/api/workspaces/acme/analytic-view/",
 		"/api/workspaces/acme/analytic-view/11111111-2222-3333-4444-555555555555/",
 		"/api/workspaces/acme/export-analytics/",
+		"/api/workspaces/acme/analytics/",
+		"/api/workspaces/acme/saved-analytic-view/11111111-2222-3333-4444-555555555555/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Analytic view route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The chart endpoints all need the graph plot and are not migrated.
-		"/api/workspaces/acme/analytics/",
-		"/api/workspaces/acme/saved-analytic-view/11111111-2222-3333-4444-555555555555/",
+		// The summary endpoints are not migrated.
 		"/api/workspaces/acme/default-analytics/",
 		"/api/workspaces/acme/project-stats/",
 		"/api/workspaces/acme/advance-analytics/",
