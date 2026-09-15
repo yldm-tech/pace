@@ -30,6 +30,22 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: the module picker, archive and archived list
+
+Six routes, the same shape as the cycle ones and with the same doubled archive pair — one class at two paths, dispatching on the method name, so both handlers answer on both.
+
+A module is finished by its **status** where a cycle is finished by its **end date**. The same asymmetry the session API has, one app over, and reproduced in both.
+
+Every count in the archived list is over **distinct** issues and requires a live link, so an issue linked twice counts once and a removed one not at all.
+
+### The members are annotated and never rendered
+
+The `members` field is **write only** on the serializer, so neither the lite nor the full shape reports who is on a module — the archived list computes the ids and then drops them. Kept, because computing them is what the queryset does.
+
+The archived module list does **not** check membership at all: its queryset filters the workspace and the project and nothing else, leaving the permission class to do the whole job. The archived **cycle** list beside it does join the membership. Two neighbours, two rules.
+
+The lite list accepts an order parameter and ignores it, for the same reason its cycle twin does.
+
 ## Migrated external module: the cycle picker, archive and archived list
 
 Six routes: `cycles-lite/`, `archived-cycles/`, and the archive pair — which is four routes rather than two.

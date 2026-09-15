@@ -576,6 +576,36 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalModuleRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_modules")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	module := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		project + "modules-lite/",
+		project + "archived-modules/",
+		project + "archived-modules/" + module + "unarchive/",
+		project + "modules/" + module + "archive/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External module route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		project + "modules/",
+		project + "modules/" + module,
+		project + "modules/" + module + "module-issues/",
+		project + "archived-modules/" + module,
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_modules api-go:8000") {
+		t.Error("community proxy is missing the external modules reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalCycleRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_cycles")
