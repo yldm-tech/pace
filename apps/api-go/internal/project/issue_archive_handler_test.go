@@ -1,6 +1,7 @@
 package project
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -72,5 +73,23 @@ func TestBulkArchiveUsesDjangosErrorCode(t *testing.T) {
 	// ERROR_CODES["INVALID_ARCHIVE_STATE_GROUP"] in plane/utils/error_codes.py.
 	if errorCodeInvalidArchiveStateGroup != 4091 {
 		t.Fatalf("error code = %d, want 4091", errorCodeInvalidArchiveStateGroup)
+	}
+}
+
+// The archive reads through the plain soft-delete manager rather than issue_objects, which is the only way to reach a row issue_objects hides by definition.
+func TestTheArchivedListReadsThroughItsOwnManager(t *testing.T) {
+	if strings.Contains(archivedIssuePredicate, "is_draft") {
+		t.Error("the archive manager does not exclude drafts, unlike issue_objects")
+	}
+	for _, fragment := range []string{
+		"i.deleted_at IS NULL", "i.archived_at IS NOT NULL", "t.is_epic",
+	} {
+		if !strings.Contains(archivedIssuePredicate, fragment) {
+			t.Errorf("the archive predicate is missing %q", fragment)
+		}
+	}
+	// issue_objects would never return an archived row, so the two predicates have to disagree.
+	if strings.Contains(issueObjectsPredicate("i"), "i.archived_at IS NOT NULL") {
+		t.Error("issue_objects hides archived rows; the archive predicate requires them")
 	}
 }

@@ -46,7 +46,7 @@
 	reverse_proxy @go_project_members api-go:8000
 	@go_project_labels path_regexp go_project_labels ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issue-labels/([0-9A-Fa-f-]+/)?|bulk-create-labels/)$
 	reverse_proxy @go_project_labels api-go:8000
-	@go_project_issue_operations path_regexp go_project_issue_operations ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(bulk-archive-issues/|bulk-delete-issues/|deleted-issues/|user-properties/)$
+	@go_project_issue_operations path_regexp go_project_issue_operations ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(bulk-archive-issues/|bulk-delete-issues/|deleted-issues/|user-properties/|archived-issues/)$
 	reverse_proxy @go_project_issue_operations api-go:8000
 	@go_work_item_description_versions path_regexp go_work_item_description_versions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/work-items/[0-9A-Fa-f-]+/description-versions/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_work_item_description_versions api-go:8000

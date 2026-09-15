@@ -325,15 +325,15 @@ func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
 		project + "bulk-delete-issues/",
 		project + "deleted-issues/",
 		project + "user-properties/",
+		project + "archived-issues/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Project issue operation %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The three list routes need the paginator and stay on Django.
+		// The live list routes have their own matcher.
 		project + "issues/",
-		project + "archived-issues/",
 		project + "issues/list/",
 		project + "bulk-create-labels/",
 	} {
@@ -423,8 +423,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The other two list routes are separate endpoints and stay on Django.
-		project + "archived-issues/",
+		// The other two list routes are separate endpoints with their own matchers.
 		project + "v2/issues/",
 		project + "issues-detail/",
 		// The detail route is its own matcher.
