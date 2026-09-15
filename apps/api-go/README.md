@@ -60,6 +60,14 @@ The archived module list does **not** check membership at all: its queryset filt
 
 The lite list accepts an order parameter and ignores it, for the same reason its cycle twin does.
 
+## Migrated external module: the cycle transfer
+
+`POST` on `cycles/<uuid>/transfer-issues/` is implemented and cut over, which completes the external cycle module.
+
+The work itself is the utility the session API's own transfer runs, and it stays in `internal/project` rather than moving to a package of its own: the snapshot it freezes **is** that API's analytics — the two distributions and the two burndowns those endpoints compute — so moving the transfer would mean moving them. The external route calls in and publishes its own activity afterwards, since the two APIs queue it with different keywords.
+
+What this route adds is a guard of its own: the **old** cycle has to be finished, which the session API never asks. A cycle with no end date at all passes, since there is no date to be past.
+
 ## Migrated external module: the work items in a cycle
 
 `GET` and `POST` on `cycles/<uuid>/cycle-issues/`, and `GET` and `DELETE` on `<issue>/` under it, are implemented and cut over. The transfer is the one route under a cycle still on Django.
