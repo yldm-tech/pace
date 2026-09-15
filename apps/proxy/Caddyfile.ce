@@ -162,6 +162,9 @@
 	@go_workspace_aggregates path_regexp go_workspace_aggregates ^/api/workspaces/[^/]+/(labels|states|cycles|modules)/$
 	reverse_proxy @go_workspace_aggregates api-go:8000
 
+	@go_api_tokens path_regexp go_api_tokens ^/api/users/api-tokens/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_api_tokens api-go:8000
+
 	@go_stickies path_regexp go_stickies ^/api/workspaces/[^/]+/stickies/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_stickies api-go:8000
 

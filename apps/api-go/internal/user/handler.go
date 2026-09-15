@@ -44,6 +44,7 @@ func (handler *Handler) SetTasks(publisher *auth.CeleryPublisher) { handler.task
 
 func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerAssetRoutes(router)
+	handler.registerTokenRoutes(router)
 	router.GET("/api/users/me/", handler.authenticated(handler.me))
 	router.PATCH("/api/users/me/", handler.authenticated(handler.updateMe))
 	router.DELETE("/api/users/me/", handler.authenticated(handler.deactivate))

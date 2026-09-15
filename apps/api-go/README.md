@@ -1413,6 +1413,14 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: API keys
+
+The five key routes are implemented and cut over. A key is a fixed prefix and thirty-two hexadecimal characters, which is what makes one recognisable in a log.
+
+The **create and the update** report the key itself; the two reads do not. A key not written down when it was made cannot be recovered, and that asymmetry is the whole of the difference between the two serializers. An unnamed key is given a label of thirty-two hexadecimal characters — the same shape as the key's own suffix — and a bot's key is marked as one, which is what tells the external API it is not a person.
+
+A **service** key is hidden from every route here: those belong to the installation rather than to a person, and nobody reaches one through this API.
+
 ## Migrated module: profile images
 
 `POST` on `assets/v2/user-assets/` and `PATCH` and `DELETE` on `<uuid>/` are implemented and cut over, which completes the v2 asset API.
