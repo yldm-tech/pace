@@ -141,4 +141,7 @@ func TestWorkspaceModelsAgainstDjangoSchema(t *testing.T) {
 	if got := userPropertiesJSON(properties)["filters"]; got == nil {
 		t.Fatal("workspace user properties filters were not serialized")
 	}
+	if err := handler.ensureSidebarPreferencesFor(ctx, workspace.Slug, user); err != nil {
+		t.Fatalf("create sidebar preferences through Django schema: %v", err)
+	}
 }
