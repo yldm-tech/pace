@@ -58,7 +58,7 @@
 	reverse_proxy @go_cycle_basics api-go:8000
 	@go_issue_sync path_regexp go_issue_sync ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/v2/issues/$
 	reverse_proxy @go_issue_sync api-go:8000
-	@go_issue_list path_regexp go_issue_list ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/list/$
+	@go_issue_list path_regexp go_issue_list ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/(list/)?$
 	reverse_proxy @go_issue_list api-go:8000
 	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$
 	reverse_proxy @go_issue_detail api-go:8000
