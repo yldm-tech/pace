@@ -33,14 +33,14 @@ For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
 
 The migration is intentionally incremental. Django remains the behavioral reference and continues to serve every module that has not passed contract and integration verification in Go.
 
-| Stage                                             | Scope                                                   | Status      |
-| ------------------------------------------------- | ------------------------------------------------------- | ----------- |
-| [PR #1](https://github.com/yldm-tech/pace/pull/1) | Pace brand update                                       | Complete    |
-| [PR #2](https://github.com/yldm-tech/pace/pull/2) | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete    |
-| [PR #8](https://github.com/yldm-tech/pace/pull/8) | Authentication (`/auth/`)                               | Complete    |
-| [PR #9](https://github.com/yldm-tech/pace/pull/9) | User, profile, and account APIs                         | Complete    |
-| Core Workspace APIs                               | Third serial business-module migration                  | In progress |
-| Workspace Themes                                  | Fourth serial business-module migration                 | Planned     |
+| Stage                                               | Scope                                                   | Status    |
+| --------------------------------------------------- | ------------------------------------------------------- | --------- |
+| [PR #1](https://github.com/yldm-tech/pace/pull/1)   | Pace brand update                                       | Complete  |
+| [PR #2](https://github.com/yldm-tech/pace/pull/2)   | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete  |
+| [PR #8](https://github.com/yldm-tech/pace/pull/8)   | Authentication (`/auth/`)                               | Complete  |
+| [PR #9](https://github.com/yldm-tech/pace/pull/9)   | User, profile, and account APIs                         | Complete  |
+| [PR #10](https://github.com/yldm-tech/pace/pull/10) | Core Workspace APIs                                     | In review |
+| Workspace Themes                                    | Fourth serial business-module migration                 | Planned   |
 
 Migration rules:
 
