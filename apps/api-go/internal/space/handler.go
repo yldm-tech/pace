@@ -40,6 +40,8 @@ func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.H
 			c.JSON(http.StatusUnauthorized, gin.H{"detail": "Authentication credentials were not provided."})
 			return
 		}
+		// The comment serializer reports whether the caller is in the project, so who is asking has to reach the body builder.
+		c.Set("space.caller", user.ID)
 		next(c, user)
 	}
 }
@@ -64,6 +66,7 @@ func (handler *Handler) clock() time.Time {
 func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerProjectRoutes(router)
 	handler.registerReactionRoutes(router)
+	handler.registerCommentRoutes(router)
 }
 
 func (handler *Handler) serverError(c *gin.Context, err error) {

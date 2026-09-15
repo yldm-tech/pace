@@ -1489,6 +1489,16 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: comments
+
+The five comment routes are implemented and cut over. This is the one module in the app where the line between reading and writing runs through a single viewset: the list and the retrieve carry **no session** and the create, the update and the delete carry one.
+
+A published board only ever shows **external** comments, and every route here holds to that: the reads filter to them, the create writes one whatever the payload's access says, and the update and the delete find a comment only if the caller wrote it themselves.
+
+A board with comments switched off answers the list with an **empty list** rather than a refusal, while the three writes answer a `400` naming the switch. The serializer's `is_member` is annotated for the **caller** rather than for the comment's author, so it is false on every comment the two unauthenticated reads report — whoever wrote them.
+
+The comment's stripped copy follows its html on every save, and a comment with no html has an **empty** stripped copy rather than a null, which is where it differs from a work item's description.
+
 ## Migrated space module: votes and reactions
 
 The nine routes a reader writes with are implemented and cut over: the votes on a work item, the reactions on one, and the reactions on a comment.
