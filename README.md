@@ -33,14 +33,14 @@ For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
 
 The migration is intentionally incremental. Django remains the behavioral reference and continues to serve every module that has not passed contract and integration verification in Go.
 
-| Stage                                             | Scope                                                   | Status    |
-| ------------------------------------------------- | ------------------------------------------------------- | --------- |
-| [PR #1](https://github.com/yldm-tech/pace/pull/1) | Pace brand update                                       | Complete  |
-| [PR #2](https://github.com/yldm-tech/pace/pull/2) | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete  |
-| [PR #8](https://github.com/yldm-tech/pace/pull/8) | Authentication (`/auth/`)                               | In review |
-| User, profile, and account APIs                   | Second serial business-module migration                 | Planned   |
-| Core Workspace APIs                               | Third serial business-module migration                  | Planned   |
-| Workspace Themes                                  | Fourth serial business-module migration                 | Planned   |
+| Stage                                               | Scope                                                   | Status    |
+| --------------------------------------------------- | ------------------------------------------------------- | --------- |
+| [PR #1](https://github.com/yldm-tech/pace/pull/1)   | Pace brand update                                       | Complete  |
+| [PR #2](https://github.com/yldm-tech/pace/pull/2)   | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete  |
+| [PR #8](https://github.com/yldm-tech/pace/pull/8)   | Authentication (`/auth/`)                               | Complete  |
+| [PR #9](https://github.com/yldm-tech/pace/pull/9)   | User, profile, and account APIs                         | Complete  |
+| [PR #10](https://github.com/yldm-tech/pace/pull/10) | Core Workspace APIs                                     | In review |
+| Workspace Themes                                    | Fourth serial business-module migration                 | Planned   |
 
 Migration rules:
 
@@ -57,6 +57,22 @@ cd apps/api-go
 go test -count=1 ./...
 go test -race -count=1 ./...
 go vet ./...
+```
+
+To verify GORM writes against a disposable PostgreSQL database that already has the Django schema, opt in with a connection string:
+
+```bash
+AUTH_TEST_DATABASE_URL=postgres://... \
+  go test -count=1 ./internal/auth \
+  -run TestGORMRepositoryAgainstDjangoSchema
+
+USER_TEST_DATABASE_URL=postgres://... \
+  go test -count=1 ./internal/user \
+  -run TestUserModelsAgainstDjangoSchema
+
+WORKSPACE_TEST_DATABASE_URL=postgres://... \
+  go test -count=1 ./internal/workspace \
+  -run TestWorkspaceModelsAgainstDjangoSchema
 ```
 
 ## Community and contributing

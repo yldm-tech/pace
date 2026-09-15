@@ -8,6 +8,7 @@ import (
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
+	workspaceapi "github.com/yldm-tech/pace/apps/api-go/internal/workspace"
 	"gorm.io/gorm"
 )
 
@@ -84,6 +85,18 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			userHandler.SetTasks(publisher)
 		}
 		userHandler.Register(router)
+		workspaceHandler := workspaceapi.NewHandler(dependencies.Database, sessions, repository, workspaceapi.Settings{
+			SecretKey:             dependencies.AuthSettings.SecretKey,
+			AppBaseURL:            dependencies.AuthSettings.AppBaseURL,
+			SkipEnvironmentConfig: dependencies.AuthSkipEnvironmentConfig,
+		})
+		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
+			workspaceHandler.SetTasks(publisher)
+		}
+		if dependencies.AuthRedis != nil {
+			workspaceHandler.SetCache(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
+		}
+		workspaceHandler.Register(router)
 	}
 	return router
 }

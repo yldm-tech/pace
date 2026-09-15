@@ -18,6 +18,7 @@ Authentication publishes the existing Django Celery email tasks through RabbitMQ
 
 ```bash
 go test -count=1 ./...
+go test -race -count=1 ./...
 go vet ./...
 ```
 
@@ -33,6 +34,12 @@ verification:
 
 ```bash
 USER_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/user -run TestUserModelsAgainstDjangoSchema
+```
+
+The core Workspace schema test uses the same rollback-only approach:
+
+```bash
+WORKSPACE_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/workspace -run TestWorkspaceModelsAgainstDjangoSchema
 ```
 
 Health endpoints are `/api/health`, `/api/health/db`, and `/ready`.
@@ -54,3 +61,14 @@ Core `/api/users/me/` profile, session, settings, profile, OAuth accounts, email
 verification, instance-admin, onboarding, deactivation, and `/api/v1/users/me/`
 routes are implemented in `internal/user`; the proxy cuts over only these paths
 while workspace activity and other API modules remain on Django.
+
+## Migrated module: core workspace
+
+Core workspace CRUD, membership, member preferences, and invitation routes are
+implemented in `internal/workspace`. They preserve Django session authentication,
+role checks, soft-delete behavior, cache invalidation, Celery workspace seed and
+invitation tasks, and the existing PostgreSQL tables. Shared-schema integration
+tests run against the authoritative Django migrations, and the proxy sends only
+the migrated core routes to Go. Workspace themes, metadata, preferences,
+favorites, drafts, activity, and dashboard routes remain on Django for later
+module-specific pull requests.
