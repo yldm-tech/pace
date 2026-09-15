@@ -245,3 +245,38 @@ The cascade reproduces one destructive Django behavior worth knowing about:
 current user, and a worker never has one, so every row the cascade touches loses
 those columns. Models that stop at `AuditModel`, such as `ProjectIdentifier`,
 keep theirs, and the generated graph records which is which.
+
+## Migrated service: Celery beat
+
+`cmd/beat` replaces the Python beat worker. Django sets `beat_scheduler` to
+django_celery_beat's `DatabaseScheduler`, so the schedule lives in the
+`django_celery_beat_*` tables and can be added to or retimed at runtime. Reading
+only the twelve static entries from `celery.py` would silently drop everything
+an operator configured through the admin, so the Go beat reads the tables and
+syncs the static entries into them on startup exactly as `setup_schedule` does.
+
+Crontab evaluation follows celery's own parser, including the details that
+differ from ordinary cron: a step slices the expanded range rather than testing
+divisibility, so `5-20/7` is 5, 12 and 19; a range whose end is below its start
+wraps around; the day of month and the day of week must both match; and a
+literal `7` for day of week is rejected, because celery's parser bounds that
+field at 0 to 6 even though django_celery_beat's help text offers "Sunday is 0
+or 7". Each crontab row is evaluated in its own stored timezone.
+
+Solar and clocked schedules are not implemented. A row using one is reported as
+an error on every reload rather than skipped quietly, since a periodic task
+nobody runs is worse than a noisy log.
+
+```bash
+PACE_WORKER_QUEUE=pace-go go run ./cmd/beat
+```
+
+**The Go beat replaces `beat-worker`; it must not run beside it.** Both evaluate
+the same tables, so running both queues every periodic task twice. The compose
+service ships commented out for that reason.
+
+The beat's schema test uses the same rollback-only approach:
+
+```bash
+BEAT_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/beat -run TestBeatStoreAgainstDjangoSchema
+```
