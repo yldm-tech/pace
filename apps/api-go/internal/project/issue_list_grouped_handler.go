@@ -34,8 +34,7 @@ func (handler *Handler) issueListGrouped(c *gin.Context, user *auth.User, reques
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Group by and sub group by cannot have same parameters"})
 			return
 		}
-		// The sub-grouped paginator fans the rows a second time and is not migrated, so those requests stay on Django.
-		handler.internalError(c, errSubGroupingNotMigrated)
+		handler.issueListSubGrouped(c, request, groupBy, subGroupBy)
 		return
 	}
 
@@ -199,11 +198,142 @@ func (handler *Handler) issueGroupValueList(ctx context.Context, request issueLi
 	return values, nil
 }
 
-// errSubGroupingNotMigrated marks the one path of this route that still belongs to Django.
-var errSubGroupingNotMigrated = errSubGrouping{}
+// issueListSubGrouped is the doubly-nested path. The window partitions by both axes at once, so one query still returns a page of every group and sub-group.
+func (handler *Handler) issueListSubGrouped(c *gin.Context, request issueListRequest, groupBy, subGroupBy string) {
+	window := pagination.PlanGroupWindow(request.cursor.Offset, request.cursor.Value, request.perPage)
+	rows, err := handler.subGroupedIssueRows(c, request, groupBy, subGroupBy, window)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
+	more, err := handler.subGroupedIssueHasMore(c, request, groupBy, subGroupBy, window)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
+	groupTotals, largest, err := handler.issueGroupTotals(c, request, groupBy)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
+	subTotals, err := handler.issueSubGroupTotals(c, request, groupBy, subGroupBy)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
+	knownGroups, err := handler.issueGroupValueList(c.Request.Context(), request, groupBy)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
 
-type errSubGrouping struct{}
+	page := make([]pagination.SubGroupedRow, 0, len(rows))
+	for _, row := range rows {
+		page = append(page, pagination.SubGroupedRow{
+			ID: row.ID, Group: row.GroupValue, SubGroup: row.SubGroupValue,
+			Fields: issueListRowJSON(row.issueListRow),
+		})
+	}
+	buckets, err := pagination.SubGroupRows(groupBy, subGroupBy, page, knownGroups, groupTotals, subTotals)
+	if err != nil {
+		// The plain path indexes the pre-seeded dictionary without checking, so a pair the totals did not seed is a 500 rather than a dropped row.
+		handler.internalError(c, err)
+		return
+	}
 
-func (errSubGrouping) Error() string {
-	return "issue list: sub-grouping is not migrated"
+	offset := request.cursor.Offset
+	drf.Respond(c, http.StatusOK, map[string]any{
+		"grouped_by":        groupBy,
+		"sub_grouped_by":    subGroupBy,
+		"total_count":       request.total,
+		"next_cursor":       pagination.GroupCursor(request.cursor.Value, offset+1, false),
+		"prev_cursor":       pagination.GroupCursor(request.cursor.Value, offset-1, true),
+		"next_page_results": more,
+		"prev_page_results": offset > 0,
+		"count":             len(rows),
+		"total_pages":       pagination.MaxHits(largest, request.perPage, len(rows) > 0),
+		"total_results":     request.total,
+		"extra_stats":       nil,
+		"results":           buckets,
+	})
+}
+
+// subGroupedIssueRow carries both axes the window partitions by.
+type subGroupedIssueRow struct {
+	issueListRow
+	GroupValue    *string `gorm:"column:group_value"`
+	SubGroupValue *string `gorm:"column:sub_group_value"`
+}
+
+func (handler *Handler) subGroupedIssueRows(c *gin.Context, request issueListRequest, groupBy, subGroupBy string, window pagination.GroupWindow) ([]subGroupedIssueRow, error) {
+	var rows []subGroupedIssueRow
+	err := handler.db.WithContext(c.Request.Context()).
+		Table("(?) AS windowed", handler.subGroupedIssueWindow(c, request, groupBy, subGroupBy)).
+		Where("windowed.row_number > ? AND windowed.row_number < ?", window.Offset, window.Stop).
+		Scan(&rows).Error
+	return rows, err
+}
+
+func (handler *Handler) subGroupedIssueHasMore(c *gin.Context, request issueListRequest, groupBy, subGroupBy string, window pagination.GroupWindow) (bool, error) {
+	var count int64
+	err := handler.db.WithContext(c.Request.Context()).
+		Table("(?) AS windowed", handler.subGroupedIssueWindow(c, request, groupBy, subGroupBy)).
+		Where("windowed.row_number >= ?", window.Stop).
+		Limit(1).Count(&count).Error
+	return count > 0, err
+}
+
+// subGroupedIssueWindow partitions by both axes at once. Either axis may need its own join, and an issue can be fanned by both.
+func (handler *Handler) subGroupedIssueWindow(c *gin.Context, request issueListRequest, groupBy, subGroupBy string) *gorm.DB {
+	group, subGroup := issueGroupPartition[groupBy], issueGroupPartition[subGroupBy]
+	selection := issueListAnnotations() +
+		",\n\t\t" + group + " AS group_value" +
+		",\n\t\t" + subGroup + " AS sub_group_value" +
+		",\n\t\tROW_NUMBER() OVER (PARTITION BY " + group + ", " + subGroup +
+		" ORDER BY " + issueWindowOrderClause(c.Query("order_by")) + ") AS row_number"
+
+	query := handler.issueListScope(c.Request.Context(), request).Select(selection)
+	for _, axis := range []string{groupBy, subGroupBy} {
+		if join := issueGroupJoin[axis]; join != "" {
+			query = query.Joins(join)
+		}
+	}
+	return query
+}
+
+// issueSubGroupTotals counts each group and sub-group pair under the same aggregate filter the group totals use.
+func (handler *Handler) issueSubGroupTotals(c *gin.Context, request issueListRequest, groupBy, subGroupBy string) (map[string]map[string]int, error) {
+	group, subGroup := issueGroupPartition[groupBy], issueGroupPartition[subGroupBy]
+	query := handler.issueListScope(c.Request.Context(), request).
+		Select(group + " AS group_value, " + subGroup + " AS sub_group_value, COUNT(DISTINCT i.id) FILTER (WHERE " + issueGroupCountFilter + ") AS total").
+		Group(group + ", " + subGroup)
+	for _, axis := range []string{groupBy, subGroupBy} {
+		if join := issueGroupJoin[axis]; join != "" {
+			query = query.Joins(join)
+		}
+	}
+	var rows []struct {
+		GroupValue    *string `gorm:"column:group_value"`
+		SubGroupValue *string `gorm:"column:sub_group_value"`
+		Total         int     `gorm:"column:total"`
+	}
+	if err := query.Scan(&rows).Error; err != nil {
+		return nil, err
+	}
+	totals := map[string]map[string]int{}
+	for _, row := range rows {
+		groupKey, subGroupKey := pagination.NoGroup, pagination.NoGroup
+		if row.GroupValue != nil {
+			groupKey = *row.GroupValue
+		}
+		if row.SubGroupValue != nil {
+			subGroupKey = *row.SubGroupValue
+		}
+		if totals[groupKey] == nil {
+			totals[groupKey] = map[string]int{}
+		}
+		// Unlike the group totals, a zero here stays zero: only the outer dictionary applies the zero-counts-as-one rule.
+		totals[groupKey][subGroupKey] = row.Total
+	}
+	return totals, nil
 }
