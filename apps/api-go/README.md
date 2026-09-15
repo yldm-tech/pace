@@ -1437,6 +1437,20 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the first link in the webhook chain
+
+`model_activity` now runs on the Go worker. It is the task the Go API already queues after every tracked save, and its whole job is to work out what actually changed and fan one `webhook_activity` out per changed field. The two links after it — picking the webhooks that want the event, and delivering to them — still run on the Python worker.
+
+Two things about the comparison decide what a webhook ever hears:
+
+**A create is not a comparison at all.** No previous state means one activity with the verb `created`, no field named and no values; the next link fills in the whole object from the database.
+
+**An update only looks at keys the previous state also had.** A field the request introduced that the snapshot never carried is not a change as far as this is concerned — the snapshot is what the model looked like, and a key it lacks is a key the model does not have. So **adding a field to a serializer makes its first write invisible to webhooks**, and stays invisible until something else writes it a second time. Reproduced rather than corrected.
+
+Values are compared as the json they decode to, so a number and its string are a change and two objects with the same pairs in a different order are not.
+
+One difference with no behavioural weight: the changed fields go out in a fixed order rather than the request's own. A Go map has no order to walk, and a stable one is what makes the stream readable.
+
 ## Migrated task: the two nightly sweeps
 
 `delete_old_s3_link` and `archive_and_close_old_issues` now run on the Go worker. Both are daily jobs the Go beat already schedules.

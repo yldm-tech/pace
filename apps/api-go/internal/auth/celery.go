@@ -130,6 +130,11 @@ func (publisher *CeleryPublisher) PublishModelActivity(ctx context.Context, mode
 	})
 }
 
+// PublishWebhookActivityChange mirrors webhook_activity.delay over a change model_activity worked out, which unlike the plain one names a field and carries both of its values.
+func (publisher *CeleryPublisher) PublishWebhookActivityChange(ctx context.Context, keywords map[string]any) error {
+	return publisher.publishKeywords(ctx, webhookActivityTaskName, keywords)
+}
+
 // PublishWebhookActivity mirrors webhook_activity.delay.
 func (publisher *CeleryPublisher) PublishWebhookActivity(ctx context.Context, event, verb string, actorID, slug, currentSite, eventID string) error {
 	return publisher.publishKeywords(ctx, webhookActivityTaskName, map[string]any{
