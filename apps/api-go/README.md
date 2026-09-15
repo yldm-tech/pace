@@ -30,6 +30,28 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: members
+
+Thirteen routes. The project member endpoints are mounted under **both** `members/` and `project-members/`, with every method bound on each — serving one of the pair would leave half the integrations on Django.
+
+### Two siblings disagree about a missing workspace
+
+`members/` calls it a **400** and `members-lite/` calls it a **404**, with the same message in both. Reproduced rather than reconciled. The lite project list also checks that the **project** exists, which its full sibling does not.
+
+### The list reads the users, not the memberships
+
+So it carries **no role and no active flag**, and it does not filter the inactive out either — somebody removed from a project is still listed by it. The lite list flattens both together and does carry them.
+
+The retrieve answers with the **person** too, so the role it was looked up by does not appear in the body.
+
+### Adding and removing
+
+Adding grants rather than invites: the person has to be in the **workspace** already. The role is checked against the three the model names, so a number outside them is refused rather than stored.
+
+Removing switches the membership **off** rather than deleting it — `is_active`, not `deleted_at` — which is the difference from every other destroy in this codebase, and what keeps a departed member's history attributable.
+
+The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
+
 ## Migrated external module: the project picker, archive and summary
 
 `GET` on `projects-lite/`, `POST` and `DELETE` on `projects/<uuid>/archive/`, and `GET` on `projects/<uuid>/summary/`.
