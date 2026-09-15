@@ -1,4 +1,6 @@
-package workspace
+// Package validate holds the Django and DRF validators the API reproduces, for
+// the fields where several modules share the same rule.
+package validate
 
 import (
 	"net"
@@ -7,7 +9,7 @@ import (
 	"unicode/utf8"
 )
 
-// Django's URLValidator, ported from django/core/validators.py. Its regex uses
+// URL is Django's URLValidator, ported from django/core/validators.py. Its regex uses
 // lookaround to keep domain labels from starting or ending with a dash; RE2 has
 // no lookaround, so each label is spelled out as "first and last character
 // cannot be a dash" instead, which accepts the same strings.
@@ -50,8 +52,9 @@ func buildURLValidatorPattern() string {
 	return `(?i)^[a-z0-9.+-]*://` + userInfo + `(?:` + ipv4 + `|` + ipv6 + `|` + host + `)` + port + path + `$`
 }
 
-// validURL mirrors URLValidator.__call__ for the default scheme list.
-func validURL(value string) bool {
+// URL mirrors URLValidator.__call__ for the default scheme list. Both the
+// workspace quick link and the issue link serializers use it.
+func URL(value string) bool {
 	if utf8.RuneCountInString(value) > urlValidatorMaxLength {
 		return false
 	}
@@ -109,4 +112,15 @@ func urlHostname(netloc string) string {
 // IPv4 addresses that Go's parser would otherwise accept.
 func validIPv6Address(value string) bool {
 	return strings.Contains(value, ":") && net.ParseIP(value) != nil
+}
+
+// PrefixScheme mirrors the to_internal_value both link serializers run before
+// validation: a URL that does not already start with the lowercase http:// or
+// https:// gains an http:// prefix. The comparison is case sensitive in Django,
+// so an uppercase scheme is prefixed a second time and then fails validation.
+func PrefixScheme(value string) string {
+	if value == "" || strings.HasPrefix(value, "http://") || strings.HasPrefix(value, "https://") {
+		return value
+	}
+	return "http://" + value
 }

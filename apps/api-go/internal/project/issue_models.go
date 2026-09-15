@@ -1,6 +1,10 @@
 package project
 
-import "time"
+import (
+	"time"
+
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+)
 
 // The issue-adjacent tables these routes touch. The Issue row itself is not
 // modelled yet; these routes only need its identifier.
@@ -34,3 +38,20 @@ type IssueSubscriber struct {
 }
 
 func (IssueSubscriber) TableName() string { return "issue_subscribers" }
+
+type IssueLink struct {
+	ID          string         `gorm:"column:id;type:uuid;primaryKey"`
+	CreatedAt   time.Time      `gorm:"column:created_at"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at"`
+	CreatedByID *string        `gorm:"column:created_by_id;type:uuid"`
+	UpdatedByID *string        `gorm:"column:updated_by_id;type:uuid"`
+	DeletedAt   *time.Time     `gorm:"column:deleted_at"`
+	ProjectID   string         `gorm:"column:project_id;type:uuid"`
+	WorkspaceID string         `gorm:"column:workspace_id;type:uuid"`
+	IssueID     string         `gorm:"column:issue_id;type:uuid"`
+	Title       *string        `gorm:"column:title"`
+	URL         string         `gorm:"column:url"`
+	Metadata    auth.JSONValue `gorm:"column:metadata;type:jsonb"`
+}
+
+func (IssueLink) TableName() string { return "issue_links" }

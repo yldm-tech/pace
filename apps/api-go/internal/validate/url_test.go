@@ -1,4 +1,4 @@
-package workspace
+package validate
 
 import (
 	"strings"
@@ -64,17 +64,17 @@ func TestURLValidatorMatchesDjango(t *testing.T) {
 		{value: "example.com", want: false},
 		{value: "http://example.com\twith-tab", want: false},
 	} {
-		if got := validURL(test.value); got != test.want {
+		if got := URL(test.value); got != test.want {
 			label := test.value
 			if len(label) > 48 {
 				label = label[:48] + "..."
 			}
-			t.Errorf("validURL(%q) = %v, want %v", label, got, test.want)
+			t.Errorf("URL(%q) = %v, want %v", label, got, test.want)
 		}
 	}
 }
 
-func TestQuickLinkURLSchemeIsPrefixedLikeDjango(t *testing.T) {
+func TestPrefixSchemeMatchesDjango(t *testing.T) {
 	for _, test := range []struct {
 		value string
 		want  string
@@ -87,11 +87,11 @@ func TestQuickLinkURLSchemeIsPrefixedLikeDjango(t *testing.T) {
 		{value: "HTTP://example.com", want: "http://HTTP://example.com"},
 		{value: "", want: ""},
 	} {
-		if got := prefixQuickLinkURL(test.value); got != test.want {
-			t.Errorf("prefixQuickLinkURL(%q) = %q, want %q", test.value, got, test.want)
+		if got := PrefixScheme(test.value); got != test.want {
+			t.Errorf("PrefixScheme(%q) = %q, want %q", test.value, got, test.want)
 		}
 	}
-	if validURL(prefixQuickLinkURL("HTTP://example.com")) {
-		t.Error("double-prefixed URL should not validate")
+	if URL(PrefixScheme("HTTP://example.com")) {
+		t.Error("a double-prefixed URL should not validate")
 	}
 }

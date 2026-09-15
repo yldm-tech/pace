@@ -127,11 +127,12 @@ nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
 The workspace quick link list, create, retrieve, partial-update, and delete
 routes are scoped to the requesting user's own links. They keep Django's
-scheme-prefixing of bare URLs, its `URLValidator` rules, the project-derived
+scheme-prefixing of bare URLs, its `URLValidator` rules (now shared through
+`internal/validate`), the project-derived
 workspace resolution in `WorkspaceBaseModel.save`, the soft delete and its
 related-object task, and the two different not-found bodies the retrieve and
-partial-update routes return. `validURL` is a port of Django 5.2's
-`URLValidator` and is verified against its output.
+partial-update routes return. `internal/validate` holds the port of Django 5.2's `URLValidator`, verified
+against its output, and the scheme-prefixing both link serializers apply.
 
 ## Migrated module: core project
 
@@ -323,3 +324,12 @@ annotation feeding it is never added on that route. And `subscribe/` uses
 `ProjectLitePermission`, so any active project member may subscribe themselves
 whatever their role, while the `issue-subscribers/` routes use
 `ProjectEntityPermission` and require admin or member for writes.
+
+## Migrated module: issue links
+
+The issue link list, create, retrieve, partial-update and delete routes are
+implemented. They share the URL handling with workspace quick links through
+`internal/validate`, queue `crawl_work_item_link_title` so the Python worker
+still fetches the page title, and record the same `link.activity.*` entries with
+the request body and the pre-change snapshot Django sends. Only a URL that
+actually changed is crawled again.
