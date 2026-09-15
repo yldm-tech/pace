@@ -188,6 +188,34 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated cycle: the analytics endpoint and the burndown chart
+
+`GET` on `cycles/<uuid>/analytics/`, which is the cycle board's chart: the work spread across people and labels, and a day-by-day burndown.
+
+`type=points` against a project whose estimate is not in points is **not** an error. It returns two empty lists and an empty chart, because the branch that fills them is simply not entered. A cycle with no start or end date answers `400`, and a cycle that does not exist answers `500` — Django reads the start date off the result of `.first()` with no guard.
+
+A cycle carrying a progress snapshot returns the distribution stored in it and runs none of the live queries, key by key: a missing `labels` defaults to `[]` and a missing `completion_chart` to `{}`.
+
+### Counting a null column counts nothing
+
+Each issue count is `Count("assignee_id", ...)` — over the **grouping column**, not over the row. So the bucket holding the issues with no assignee reports `0` total issues, not the number of them. Same for the unlabelled bucket. That is upstream's behaviour and the frontend draws it.
+
+The point sums have the matching quirk in the other direction: a sum with nothing to add is `null`, and nothing rewrites it, so a bucket whose issues are all still open reports `null` completed points rather than zero.
+
+The assignee and label joins do not filter `deleted_at`, because a many-to-many traversal joins the through table plainly. A soft-deleted assignment still appears in the distribution. This is the same gap the `assignee_ids` annotation has.
+
+### The burndown counts down from a total the distributions do not agree with
+
+`total_issues` for the chart is a filtered `Count` written on the **cycle** queryset, so it excludes deleted, archived and draft issues and dead links — and it does **not** exclude a triage issue or one in an archived project. The distributions drawn beside it go through the `issue_objects` manager, which does. The two can disagree about the same cycle, and both are reproduced.
+
+The points plot subtracts one row **per estimated issue** rather than one per day: the Python never groups them, and it sums the whole list again for every day of the window. A row whose issue was never completed has a null day and is skipped.
+
+`TruncDate` is written as `AT TIME ZONE 'UTC'` rather than left to Postgres' `DATE()`, which reads the connection's own `TimeZone`. Django always names the zone it is configured with, and the two do not have to agree.
+
+### Python's integer zero reaches the chart
+
+`sum([])` is the integer `0`, not `0.0`. So a points chart for a cycle holding no estimated issue at all is full of `0`, while one holding a single estimated issue is full of `0.0` — an integer minus an integer stays an integer all the way into the body. The fixture covers both, and the chart is compared as rendered text rather than as parsed numbers, which is the only way the difference is visible.
+
 ## Migrated cycle: the progress endpoint
 
 `GET` on `cycles/<uuid>/progress/`.
