@@ -282,6 +282,9 @@ func TestProjectRouteInventory(t *testing.T) {
 		"POST /api/workspaces/:slug/user-activity/:user/export/": true,
 		"GET /api/workspaces/:slug/recent-visits/":               true,
 		"GET /api/workspaces/:slug/project-members/":             true,
+
+		"GET /api/workspaces/:slug/projects/:id/intake-work-items/:issue/description-versions/":          true,
+		"GET /api/workspaces/:slug/projects/:id/intake-work-items/:issue/description-versions/:version/": true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path

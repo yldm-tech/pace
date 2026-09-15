@@ -1627,10 +1627,21 @@ func TestCommunityProxyCutsOverOnlyTheIntakeRoutes(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The issues inside an intake are a separate viewset and are not migrated.
+		// The issues inside an intake are a separate viewset, mounted under both names as well.
 		project + "intake-issues/",
 		project + "inbox-issues/",
 		project + "intake-issues/11111111-2222-3333-4444-555555555555/",
+		project + "inbox-issues/11111111-2222-3333-4444-555555555555/",
+		// The intake's own copy of the description versions, which is a different list from the work item's.
+		project + "intake-work-items/11111111-2222-3333-4444-555555555555/description-versions/",
+		project + "intake-work-items/11111111-2222-3333-4444-555555555555/description-versions/66666666-7777-8888-9999-000000000000/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Intake route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The published board reads its intake through the space app, which is a different matcher.
 		"/api/public/anchor/abc/intakes/11111111-2222-3333-4444-555555555555/intake-issues/",
 	} {
 		if matcher.MatchString(route) {
