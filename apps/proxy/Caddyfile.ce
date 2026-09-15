@@ -51,7 +51,7 @@
 	@go_external_modules path_regexp go_external_modules ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(modules-lite/|archived-modules/([0-9A-Fa-f-]+/unarchive/)?|modules/[0-9A-Fa-f-]+/archive/)$
 	reverse_proxy @go_external_modules api-go:8000
 
-	@go_external_cycles path_regexp go_external_cycles ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles-lite/|archived-cycles/([0-9A-Fa-f-]+/unarchive/)?|cycles/([0-9A-Fa-f-]+/(archive/)?)?)$
+	@go_external_cycles path_regexp go_external_cycles ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles-lite/|archived-cycles/([0-9A-Fa-f-]+/unarchive/)?|cycles/([0-9A-Fa-f-]+/(archive/|cycle-issues/([0-9A-Fa-f-]+/)?)?)?)$
 	reverse_proxy @go_external_cycles api-go:8000
 
 	@go_external_assets path_regexp go_external_assets ^/api/v1/workspaces/[^/]+/assets/([0-9A-Fa-f-]+/)?$
