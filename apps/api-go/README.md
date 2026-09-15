@@ -133,6 +133,18 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: the cycle list
+
+`GET` on `cycles/`, which returns every cycle of a project that is not archived.
+
+Its dates are rendered in the **project's** timezone rather than the caller's. That is the one place in the codebase the distinction is made, and it is why `timeIn` exists alongside the caller-timezone conversion the issue routes use.
+
+The three counts each carry the same four exclusions — the cycle link and the issue must both be live, and the issue must be neither archived nor a draft — so a cycle's totals agree with what its board shows. The assignee aggregate deliberately carries **none** of them: a soft-deleted cycle link still contributes its assignees, which is what the queryset does. The filter on the assignee link itself sits on the same join as the value being aggregated, checked against the rendered SQL rather than assumed.
+
+`status` is derived rather than stored, from where today sits relative to the two dates. A cycle with a start date but no end date falls through every branch to `DRAFT`.
+
+`cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
+
 ## Migrated module: cycle date checks, favourites and saved views
 
 The first slice of the cycle module: `cycles/date-check/`, `user-favorite-cycles/` and `cycles/<uuid>/user-properties/`.
