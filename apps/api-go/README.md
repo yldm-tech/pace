@@ -242,6 +242,30 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: the entity search
+
+`GET` on `entity-search/`, which is what the editor's mention menu and the link pickers call. With this the whole search app is on Go.
+
+It is the global search's smaller sibling and answers a different shape: each requested type is capped at a **count the caller chooses**, and the rows carry what a menu needs rather than what a search page does. A type nobody knows writes **no key at all**, so the caller gets a body without it rather than an empty list.
+
+The count is parsed with `int()`, so a value that is not a number raises rather than falling back to the default.
+
+### The two branches are not the same search
+
+Everything is written twice, once for a request naming a project and once for one that does not, and the two copies differ in three places:
+
+- The **mention** search changes its source table: the project's members inside a project, the workspace's outside one.
+- The **page** search adds `is_global` outside a project and nowhere else.
+- The project branch's mention search is made `distinct` and the workspace one is not.
+
+Pages are offered only when **public** in both branches, and their project id comes from the join rather than from the page — so a page in several projects appears once per project.
+
+### The project search does not narrow by scope at all
+
+It is the same query in both branches, and it offers a **public** project whether or not the caller is in it. The membership it does check is not required to be **active**, unlike every other search here.
+
+The issue search here also drops the archived-project filter the global search carries.
+
 ## Migrated module: the global search
 
 `GET` on `search/`, which runs up to eight searches side by side and returns them under one key each.
