@@ -466,12 +466,12 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_list")
 	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
-	if !matcher.MatchString(project + "issues/list/") {
-		t.Error("the bulk issue read is not cut over to Go")
+	for _, route := range []string{project + "issues/", project + "issues/list/"} {
+		if !matcher.MatchString(route) {
+			t.Errorf("the issue list route %q is not cut over to Go", route)
+		}
 	}
 	for _, route := range []string{
-		// The paginated list is not cut over while its create is still on Django: the matcher works on paths, so moving it would take the POST with it.
-		project + "issues/",
 		// The sync route is a separate endpoint with its own matcher.
 		project + "v2/issues/",
 		// The detail route is its own matcher.

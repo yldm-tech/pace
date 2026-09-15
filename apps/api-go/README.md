@@ -255,6 +255,18 @@ Its projection is not the paginated list's. It carries `deleted_at`, which that 
 
 The `fields` parameter has no effect on either endpoint. `DynamicBaseSerializer` pops it and then overwrites it with `expand`, so only `expand` changes the shape — and since `expand` only ever *adds* nested serializers, a request with `fields` alone gets the plain twenty-five field serializer. The expansion serializers are not ported, so a request that does name `expand` is an error rather than a body of the wrong shape; the only caller in the web client sends neither.
 
+## Migrated module: creating an issue
+
+`POST` on `issues/`. With this the paginated list is cut over again — it went back to Django in the cutover-guard change, because a matcher that serves only `GET` on a path Django also serves `POST` on is worse than no matcher at all.
+
+Most of the work is in `Issue.save`'s adding path. The project is **locked** first, with an advisory key derived from the project id, because both the sequence number and the sort order are read from rows another request could be writing at the same moment. That key is `convert_uuid_to_integer` — the first eight bytes of the id's SHA-256 read as a **signed** big-endian integer — and the two implementations have to compute it identically: during the transition a create can arrive at either side, and a lock they disagree on is no lock at all. Its fixture is half negative on purpose, so reading the key unsigned fails the test.
+
+The sequence number continues from the highest already handed out and starts at one. The sort order puts a new issue after everything already in its chosen state, and leaves it at the default when that state is empty. `workspace_id` comes off the **project** rather than the request, which is what `ProjectBaseModel.save` does.
+
+An issue with no state of its own takes the project's default, and failing that whatever non-triage state comes first. If the chosen state is a completed one, `completed_at` is stamped at creation.
+
+With no assignees of its own the issue goes to the project's **default assignee** — but only while they are still an active member at member level or above, which is the same floor the assignee field itself enforces. Both related sets ignore a conflict rather than failing the create.
+
 ## Migrated module: the issue list, ungrouped
 
 `GET` on `issues/` without `group_by`, which is the flat path through the offset paginator. The grouped and sub-grouped paths still answer from Django, so **the proxy does not cut this route over yet**: the matcher works on paths, not query parameters, and moving `issues/` across would take the grouped requests with it. The handler is registered and tested; the Caddyfile line lands with the grouped paths.
