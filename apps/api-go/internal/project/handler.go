@@ -81,6 +81,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/", handler.authenticated(handler.create))
 	router.GET("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.retrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.partialUpdate))
+	router.PUT("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.fullUpdate("project", handler.partialUpdate)))
 	router.DELETE("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.destroy))
 	handler.registerMemberRoutes(router)
 	handler.registerLabelRoutes(router)

@@ -16,6 +16,7 @@ func (handler *Handler) registerCycleCRUDRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/", handler.authenticated(handler.cycleCreate))
 	router.GET("/api/workspaces/:slug/projects/:id/cycles/:cycle/", handler.authenticated(handler.cycleRetrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/cycles/:cycle/", handler.authenticated(handler.cycleUpdate))
+	router.PUT("/api/workspaces/:slug/projects/:id/cycles/:cycle/", handler.authenticated(handler.fullUpdate("cycle", handler.cycleUpdate)))
 	router.DELETE("/api/workspaces/:slug/projects/:id/cycles/:cycle/", handler.authenticated(handler.cycleDestroy))
 }
 

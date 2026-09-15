@@ -14,6 +14,18 @@ The server listens on `:8000` by default. Override it with `PACE_API_ADDRESS`.
 
 Authentication publishes the existing Django Celery email tasks through RabbitMQ. Configure `AMQP_URL`, or the same `RABBITMQ_HOST`, `RABBITMQ_PORT`, `RABBITMQ_USER`, `RABBITMQ_PASSWORD`, and `RABBITMQ_VHOST` values used by Django. OAuth, SMTP, signup, and sync flags continue to come from `instance_configurations` when `SKIP_ENV_VAR=1`; encrypted values use the existing Django Fernet format and `SECRET_KEY`.
 
+## The cutover guard
+
+The proxy cuts traffic over by **path**, not by method. A matcher covering a path Django serves with four methods sends all four to Go, and any method the Go router does not register becomes a 404 the moment that matcher merges.
+
+That happened. `cycle-issues/` was cut over with only its write half implemented, so the cycle board's issue list 404'd for as long as it took to notice; and the same mistake had put `POST issues/` — creating an issue — behind a matcher that only served `GET`.
+
+`TestEveryCutOverPathIsFullyServed` compares three sources directly: every route Django serves, the paths the Caddyfile cuts over, and the routes the Go router registers. A path that is cut over must have **every** one of Django's methods. It found seven gaps the first time it ran.
+
+The Django side comes from `tools/generate_django_routes.py`, which walks the real URLconf. A viewset records its method mapping, so that one is exact; a plain `APIView` has none, so every handler it defines is reachable on every path bound to it — except one whose signature does not match the path's captured parameters, which raises before it does anything. Those are compared and left out, which is what took the first run from thirteen reported gaps down to seven real ones.
+
+CI regenerates the inventory and diffs it, so a route added to Django shows up here rather than in production.
+
 ## Verify
 
 ```bash

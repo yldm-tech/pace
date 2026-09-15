@@ -15,7 +15,6 @@ import (
 
 func (handler *Handler) registerCycleIssueRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/", handler.authenticated(handler.cycleIssueCreate))
-	router.DELETE("/api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/:issue/", handler.authenticated(handler.cycleIssueDestroy))
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/:cycle/archive/", handler.authenticated(handler.cycleArchive))
 	router.DELETE("/api/workspaces/:slug/projects/:id/cycles/:cycle/archive/", handler.authenticated(handler.cycleUnarchive))
 }

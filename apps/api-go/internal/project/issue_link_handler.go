@@ -20,6 +20,7 @@ func (handler *Handler) registerIssueLinkRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/issues/:issue/issue-links/", handler.authenticatedIssueUUID(handler.issueLinkCreate))
 	router.GET("/api/workspaces/:slug/projects/:id/issues/:issue/issue-links/:link/", handler.authenticatedIssueLinkUUID(handler.issueLinkRetrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/issues/:issue/issue-links/:link/", handler.authenticatedIssueLinkUUID(handler.issueLinkPatch))
+	router.PUT("/api/workspaces/:slug/projects/:id/issues/:issue/issue-links/:link/", handler.authenticatedIssueLinkUUID(handler.fullUpdate("link", handler.issueLinkPatch)))
 	router.DELETE("/api/workspaces/:slug/projects/:id/issues/:issue/issue-links/:link/", handler.authenticatedIssueLinkUUID(handler.issueLinkDelete))
 }
 

@@ -466,12 +466,12 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_list")
 	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
-	for _, route := range []string{project + "issues/", project + "issues/list/"} {
-		if !matcher.MatchString(route) {
-			t.Errorf("the issue list route %q is not cut over to Go", route)
-		}
+	if !matcher.MatchString(project + "issues/list/") {
+		t.Error("the bulk issue read is not cut over to Go")
 	}
 	for _, route := range []string{
+		// The paginated list is not cut over while its create is still on Django: the matcher works on paths, so moving it would take the POST with it.
+		project + "issues/",
 		// The sync route is a separate endpoint with its own matcher.
 		project + "v2/issues/",
 		// The detail route is its own matcher.
@@ -552,14 +552,14 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		cycle,
 		cycle + "archive/",
 		cycle + "cycle-issues/",
-		cycle + "cycle-issues/66666666-7777-8888-9999-000000000000/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Cycle route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The rest of the cycle module is not migrated.
+		// The rest of the cycle module is not migrated. The cycle issue detail path serves four methods on Django and only one here, so it stays until the other three exist.
+		cycle + "cycle-issues/66666666-7777-8888-9999-000000000000/",
 		cycle + "analytics/",
 		cycle + "progress/",
 		cycle + "transfer-issues/",
