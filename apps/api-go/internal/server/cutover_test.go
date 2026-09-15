@@ -60,7 +60,7 @@ func readDjangoRoutes(t *testing.T) []djangoRoute {
 		if !found {
 			t.Fatalf("malformed fixture row %q", line)
 		}
-		routes = append(routes, djangoRoute{method: method, path: path})
+		routes = append(routes, djangoRoute{method: method, path: collapseWildcardSegments(path)})
 	}
 	if len(routes) < 500 {
 		t.Fatalf("the fixture has only %d routes, which cannot be the whole app", len(routes))
@@ -120,7 +120,7 @@ func goRouteShapes(t *testing.T) map[string]bool {
 	parameter := regexp.MustCompile(`:[^/]+`)
 	shapes := map[string]bool{}
 	for _, route := range newTestRouter(t).Routes() {
-		shapes[route.Method+" "+parameter.ReplaceAllString(route.Path, "*")] = true
+		shapes[route.Method+" "+collapseWildcardSegments(parameter.ReplaceAllString(route.Path, "*"))] = true
 	}
 	if len(shapes) == 0 {
 		t.Fatal("the router registered no routes")
@@ -147,4 +147,17 @@ func newTestRouter(t *testing.T) *gin.Engine {
 			SecretKey: "cutover-guard",
 		},
 	})
+}
+
+// collapseWildcardSegments rewrites any path segment holding a parameter down to a lone star.
+//
+// Django can capture twice in one segment — "<str:project_identifier>-<str:issue_identifier>" is one segment naming a work item the way a person would — and a Gin route cannot: it captures the whole segment and splits the text itself. Both shapes describe the same URL, so both are normalised to one star before they are compared, or the guard would report a route as unserved when it is served.
+func collapseWildcardSegments(path string) string {
+	segments := strings.Split(path, "/")
+	for index, segment := range segments {
+		if segment != "*" && strings.Contains(segment, "*") {
+			segments[index] = "*"
+		}
+	}
+	return strings.Join(segments, "/")
 }
