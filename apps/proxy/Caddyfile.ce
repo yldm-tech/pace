@@ -150,7 +150,7 @@
 	@go_deploy_boards path_regexp go_deploy_boards ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/project-deploy-boards/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_deploy_boards api-go:8000
 
-	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/(settings|meta|members|states|labels|cycles|modules)/|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
+	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/((settings|meta|members|states|labels|cycles|modules)/|issues/[0-9A-Fa-f-]+/(votes|reactions)/|issues/[0-9A-Fa-f-]+/reactions/[^/]+/|comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?)|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
 	reverse_proxy @go_space_read api-go:8000
 
 	@go_states path_regexp go_states ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(states/([0-9A-Fa-f-]+/(mark-default/)?)?|intake-state/)$

@@ -9,17 +9,48 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"gorm.io/gorm"
 )
 
 // Handler serves plane.space.
 type Handler struct {
-	db  *gorm.DB
-	now func() time.Time
+	db       *gorm.DB
+	sessions *auth.SessionManager
+	now      func() time.Time
 }
 
 func NewHandler(database *gorm.DB) *Handler {
 	return &Handler{db: database}
+}
+
+// SetSessions gives the handler the session manager the write routes need. Reading a published board needs no account; writing on one does.
+func (handler *Handler) SetSessions(sessions *auth.SessionManager) { handler.sessions = sessions }
+
+// authenticated is the session wrapper the write routes carry. The read routes carry none at all.
+func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if handler.sessions == nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"detail": "Authentication credentials were not provided."})
+			return
+		}
+		user, _, err := handler.sessions.Authenticate(c.Request.Context(), c.Request, c.Writer)
+		if err != nil || user == nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"detail": "Authentication credentials were not provided."})
+			return
+		}
+		next(c, user)
+	}
+}
+
+// newUUID is the identifier a new row takes.
+func newUUID() (string, error) {
+	identifier, err := uuid.NewRandom()
+	if err != nil {
+		return "", err
+	}
+	return identifier.String(), nil
 }
 
 func (handler *Handler) clock() time.Time {
@@ -32,6 +63,7 @@ func (handler *Handler) clock() time.Time {
 // Register mounts the space routes.
 func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerProjectRoutes(router)
+	handler.registerReactionRoutes(router)
 }
 
 func (handler *Handler) serverError(c *gin.Context, err error) {

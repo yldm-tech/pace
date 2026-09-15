@@ -1489,6 +1489,16 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: votes and reactions
+
+The nine routes a reader writes with are implemented and cut over: the votes on a work item, the reactions on one, and the reactions on a comment.
+
+Reading a published board needs no account; **writing on one does**. Each of these carries a session, and each binds what it writes to the board first — a work item is checked through the same manager the board reads, so nothing the board hides can be voted on, and a comment has to be an **external** one, so nothing internal can be reacted to.
+
+Two of the three lists are **always empty**, and both are reproduced rather than corrected. The vote list looks its board up by **workspace slug** and is handed the anchor, so the lookup never matches. The work item reaction list reads two url parameters its route does not carry, so its lookup fails the same way. A list that starts returning rows is a change no client asked for, and the board reads both off the work item itself.
+
+Writing remembers the reader. Somebody who is not in the project is recorded as having been on its board, which is how a published project counts the people reading it. The vote defaults to **up** when the payload names none, and withdrawing a vote asks nothing about whether votes are still enabled — so one cast before the board was closed can still be taken back.
+
 ## Migrated space module: the project surface
 
 `settings/`, `meta/`, `members/`, `states/`, `labels/`, `cycles/` and `modules/` under an anchor, and the `anchor/` lookup from the other end, are implemented and cut over.
