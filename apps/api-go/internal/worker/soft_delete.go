@@ -72,6 +72,8 @@ type DeletionTasks struct {
 	// Django relies on the deleted_at guard for that; the same guard applies
 	// here, and this is a second line of defence.
 	maxDepth int
+	// hardDeleteAfterDays is settings.HARD_DELETE_AFTER_DAYS.
+	hardDeleteAfterDays int
 }
 
 func NewDeletionTasks(db *gorm.DB, logger *slog.Logger) (*DeletionTasks, error) {
@@ -82,11 +84,32 @@ func NewDeletionTasks(db *gorm.DB, logger *slog.Logger) (*DeletionTasks, error) 
 	if logger == nil {
 		logger = slog.Default()
 	}
-	return &DeletionTasks{db: db, graph: graph, logger: logger, clock: time.Now, maxDepth: 12}, nil
+	return &DeletionTasks{
+		db: db, graph: graph, logger: logger, clock: time.Now,
+		maxDepth: 12, hardDeleteAfterDays: HardDeleteAfterDays,
+	}, nil
+}
+
+// SetHardDeleteAfterDays overrides settings.HARD_DELETE_AFTER_DAYS. Zero is a
+// valid window and means everything already soft-deleted.
+//
+// A negative window is refused, which is a deliberate deviation. Django reads
+// this one with a bare int() and no guard, so a negative value would put the
+// cutoff in the future and hard-delete every soft-deleted row in the instance.
+// The other retention windows guard against exactly that; this one does not,
+// and reproducing a misconfiguration that destroys data has no upside.
+func (tasks *DeletionTasks) SetHardDeleteAfterDays(days int) {
+	if days < 0 {
+		tasks.logger.Error("HARD_DELETE_AFTER_DAYS is negative, keeping the default",
+			"configured", days, "using", tasks.hardDeleteAfterDays)
+		return
+	}
+	tasks.hardDeleteAfterDays = days
 }
 
 func (tasks *DeletionTasks) Register(consumer *Consumer) {
 	consumer.Register(SoftDeleteRelatedObjectsTask, tasks.softDeleteRelatedObjects)
+	consumer.Register(HardDeleteTask, tasks.hardDelete)
 }
 
 func (tasks *DeletionTasks) softDeleteRelatedObjects(ctx context.Context, arguments []any, keywords map[string]any) error {

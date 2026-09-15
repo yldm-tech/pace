@@ -62,6 +62,8 @@ func main() {
 		logger.Error("load relation graph", "error", err)
 		os.Exit(1)
 	}
+	// settings reads this one with a bare int() and a default of 60.
+	deletions.SetHardDeleteAfterDays(retentionDays("HARD_DELETE_AFTER_DAYS", worker.HardDeleteAfterDays))
 
 	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
 	tasks.Register(consumer)

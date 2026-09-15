@@ -229,6 +229,17 @@ Regenerate it from `apps/api` after changing a model:
 python ../api-go/tools/generate_relation_graph.py > ../api-go/internal/worker/relation_graph.json
 ```
 
+`hard_delete`, the nightly sweep, runs on Go too and reuses the same graph. It
+reproduces Django's deletion collector: cascade into the related rows, null the
+`SET_NULL` references, then delete. Django's foreign keys carry no `ON DELETE`
+action, so a cascade that misses a child row fails on the constraint, which the
+schema test relies on to prove the traversal is complete.
+
+`HARD_DELETE_AFTER_DAYS` accepts zero, meaning everything already soft-deleted.
+A negative value is refused and logged, which is a deliberate deviation: Django
+reads this one with a bare `int()` and no guard, so a negative window would put
+the cutoff in the future and hard-delete every soft-deleted row in the instance.
+
 The cascade reproduces one destructive Django behavior worth knowing about:
 `BaseModel.save` blanks `created_by` and `updated_by` whenever there is no
 current user, and a worker never has one, so every row the cascade touches loses

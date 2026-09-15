@@ -119,3 +119,55 @@ func TestDeletionTaskIsRoutedToTheGoQueue(t *testing.T) {
 		t.Fatal("soft_delete_related_objects is implemented but not routed to Go")
 	}
 }
+
+func TestHardDeleteWindowRejectsANegativeConfiguration(t *testing.T) {
+	tasks, err := NewDeletionTasks(nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tasks.hardDeleteAfterDays != HardDeleteAfterDays {
+		t.Fatalf("default window = %d", tasks.hardDeleteAfterDays)
+	}
+	// Zero is meaningful: everything already soft-deleted.
+	tasks.SetHardDeleteAfterDays(0)
+	if tasks.hardDeleteAfterDays != 0 {
+		t.Fatalf("zero window = %d, want it honoured", tasks.hardDeleteAfterDays)
+	}
+	tasks.SetHardDeleteAfterDays(30)
+	tasks.SetHardDeleteAfterDays(-1)
+	if tasks.hardDeleteAfterDays != 30 {
+		t.Fatalf("negative window = %d, want the previous value kept", tasks.hardDeleteAfterDays)
+	}
+}
+
+func TestHardDeleteLeadModelsAllExistInTheGraph(t *testing.T) {
+	graph, err := loadRelationGraph()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, key := range hardDeleteLeadModels {
+		model, known := graph.Models[key]
+		if !known {
+			t.Errorf("hard delete names %s, which is not in the relation graph", key)
+			continue
+		}
+		if !model.SoftDeletes {
+			t.Errorf("hard delete names %s, which has no deleted_at", key)
+		}
+	}
+	if len(hardDeleteLeadModels) != 18 {
+		t.Fatalf("hard delete lead models = %d, want the 18 Django lists", len(hardDeleteLeadModels))
+	}
+}
+
+func TestHardDeleteIsRoutedToTheGoQueue(t *testing.T) {
+	found := false
+	for _, name := range MigratedTaskNames() {
+		if name == HardDeleteTask {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("hard_delete is implemented but not routed to Go")
+	}
+}
