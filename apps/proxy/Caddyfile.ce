@@ -30,6 +30,8 @@
 
 	@go_workspace_core path_regexp go_workspace_core ^/api/workspaces/[^/]+/(members/(leave/|[0-9A-Fa-f-]+/)?|workspace-members/me/|workspace-views/|invitations/([0-9A-Fa-f-]+/(join/)?)?)?$
 	reverse_proxy @go_workspace_core api-go:8000
+	@go_workspace_themes path_regexp go_workspace_themes ^/api/workspaces/[^/]+/workspace-themes/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_workspace_themes api-go:8000
 
 	reverse_proxy /api/* api:8000
 

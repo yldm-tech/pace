@@ -105,4 +105,30 @@ func TestWorkspaceModelsAgainstDjangoSchema(t *testing.T) {
 	if serialized["token"] != invite.Token || serialized["invite_link"] == "" {
 		t.Fatalf("serialized invitation = %#v", serialized)
 	}
+
+	themeID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	theme := WorkspaceTheme{
+		ID: themeID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		WorkspaceID: workspace.ID, Name: "Go Theme " + suffix, ActorID: user.ID,
+		Colors: auth.JSONValue([]byte(`{"primary":"#3f76ff"}`)),
+	}
+	if err := transaction.Create(&theme).Error; err != nil {
+		t.Fatalf("create workspace theme through Django schema: %v", err)
+	}
+	if themeJSON(theme)["name"] != theme.Name {
+		t.Fatalf("serialized workspace theme = %#v", themeJSON(theme))
+	}
+	if err := transaction.Model(&WorkspaceTheme{}).Where("id = ?", theme.ID).Updates(map[string]any{
+		"name": "Updated Go Theme " + suffix, "updated_at": now, "updated_by_id": user.ID,
+	}).Error; err != nil {
+		t.Fatalf("update workspace theme through Django schema: %v", err)
+	}
+	if err := transaction.Model(&WorkspaceTheme{}).Where("id = ?", theme.ID).Updates(map[string]any{
+		"deleted_at": now, "updated_at": now, "updated_by_id": user.ID,
+	}).Error; err != nil {
+		t.Fatalf("soft-delete workspace theme through Django schema: %v", err)
+	}
 }

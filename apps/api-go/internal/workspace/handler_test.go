@@ -32,23 +32,28 @@ func TestWorkspaceRouteInventory(t *testing.T) {
 		"GET /api/workspaces/":           true, "POST /api/workspaces/": true,
 		"GET /api/workspaces/:slug/": true, "PUT /api/workspaces/:slug/": true,
 		"PATCH /api/workspaces/:slug/": true, "DELETE /api/workspaces/:slug/": true,
-		"GET /api/users/me/workspaces/":                    true,
-		"GET /api/workspaces/:slug/members/":               true,
-		"GET /api/workspaces/:slug/members/:id/":           true,
-		"PATCH /api/workspaces/:slug/members/:id/":         true,
-		"DELETE /api/workspaces/:slug/members/:id/":        true,
-		"POST /api/workspaces/:slug/members/leave/":        true,
-		"GET /api/workspaces/:slug/workspace-members/me/":  true,
-		"POST /api/workspaces/:slug/workspace-views/":      true,
-		"GET /api/workspaces/:slug/invitations/":           true,
-		"POST /api/workspaces/:slug/invitations/":          true,
-		"GET /api/workspaces/:slug/invitations/:id/":       true,
-		"PATCH /api/workspaces/:slug/invitations/:id/":     true,
-		"DELETE /api/workspaces/:slug/invitations/:id/":    true,
-		"GET /api/users/me/workspaces/invitations/":        true,
-		"POST /api/users/me/workspaces/invitations/":       true,
-		"GET /api/workspaces/:slug/invitations/:id/join/":  true,
-		"POST /api/workspaces/:slug/invitations/:id/join/": true,
+		"GET /api/users/me/workspaces/":                      true,
+		"GET /api/workspaces/:slug/members/":                 true,
+		"GET /api/workspaces/:slug/members/:id/":             true,
+		"PATCH /api/workspaces/:slug/members/:id/":           true,
+		"DELETE /api/workspaces/:slug/members/:id/":          true,
+		"POST /api/workspaces/:slug/members/leave/":          true,
+		"GET /api/workspaces/:slug/workspace-members/me/":    true,
+		"POST /api/workspaces/:slug/workspace-views/":        true,
+		"GET /api/workspaces/:slug/invitations/":             true,
+		"POST /api/workspaces/:slug/invitations/":            true,
+		"GET /api/workspaces/:slug/invitations/:id/":         true,
+		"PATCH /api/workspaces/:slug/invitations/:id/":       true,
+		"DELETE /api/workspaces/:slug/invitations/:id/":      true,
+		"GET /api/users/me/workspaces/invitations/":          true,
+		"POST /api/users/me/workspaces/invitations/":         true,
+		"GET /api/workspaces/:slug/invitations/:id/join/":    true,
+		"POST /api/workspaces/:slug/invitations/:id/join/":   true,
+		"GET /api/workspaces/:slug/workspace-themes/":        true,
+		"POST /api/workspaces/:slug/workspace-themes/":       true,
+		"GET /api/workspaces/:slug/workspace-themes/:id/":    true,
+		"PATCH /api/workspaces/:slug/workspace-themes/:id/":  true,
+		"DELETE /api/workspaces/:slug/workspace-themes/:id/": true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path
@@ -74,6 +79,7 @@ func TestWorkspaceRoutesRequireDjangoSession(t *testing.T) {
 		{method: http.MethodGet, path: "/api/workspace-slug-check/?slug=pace"},
 		{method: http.MethodGet, path: "/api/workspaces/pace/members/"},
 		{method: http.MethodGet, path: "/api/users/me/workspaces/invitations/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/workspace-themes/"},
 	} {
 		request := httptest.NewRequest(test.method, test.path, nil)
 		response := httptest.NewRecorder()
@@ -95,6 +101,7 @@ func TestUUIDRoutesRejectMalformedIdentifiersBeforeDatabaseAccess(t *testing.T) 
 		"/api/workspaces/pace/members/not-a-uuid/",
 		"/api/workspaces/pace/invitations/not-a-uuid/",
 		"/api/workspaces/pace/invitations/not-a-uuid/join/",
+		"/api/workspaces/pace/workspace-themes/not-a-uuid/",
 	} {
 		request := httptest.NewRequest(http.MethodGet, path, nil)
 		response := httptest.NewRecorder()

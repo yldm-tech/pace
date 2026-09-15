@@ -39,8 +39,8 @@ The migration is intentionally incremental. Django remains the behavioral refere
 | [PR #2](https://github.com/yldm-tech/pace/pull/2)   | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete  |
 | [PR #8](https://github.com/yldm-tech/pace/pull/8)   | Authentication (`/auth/`)                               | Complete  |
 | [PR #9](https://github.com/yldm-tech/pace/pull/9)   | User, profile, and account APIs                         | Complete  |
-| [PR #10](https://github.com/yldm-tech/pace/pull/10) | Core Workspace APIs                                     | In review |
-| Workspace Themes                                    | Fourth serial business-module migration                 | Planned   |
+| [PR #10](https://github.com/yldm-tech/pace/pull/10) | Core Workspace APIs                                     | Complete  |
+| [PR #11](https://github.com/yldm-tech/pace/pull/11) | Workspace Themes                                        | In review |
 
 Migration rules:
 
