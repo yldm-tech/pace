@@ -1481,6 +1481,16 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated module: project deploy boards
+
+The five deploy board routes are implemented and cut over. A deploy board is what makes a project readable without an account: the anchor in its url — thirty-two hexadecimal characters — is the whole of the credential.
+
+Two shapes are worth naming. The list route reports **one board** rather than a list, and a project that was never published is answered with the serializer over **nothing**: twelve keys of defaults, no id and no anchor, rather than an empty list or a `404`. A serializer with no instance reports the fields that could be written and the defaults they would take, so every read-only field is absent rather than null.
+
+Publishing answers `200` whether it made the board or edited one, and writes every switch the payload does not name as **off** — so a second call that means to turn comments on turns votes and reactions off with it.
+
+One deliberate divergence: the retrieve, the update and the delete are scoped to the project in the url. Django looks the board up by id alone, because the viewset's queryset is every board there is, so a board of another project could be read or edited through a project the caller happens to be in.
+
 ## Migrated module: project invitations
 
 The eight invitation routes are implemented and cut over: the project's invitation list, create, retrieve and delete, the two public join routes, and the caller's own invitations and the call that joins projects with them.
