@@ -18,6 +18,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/config"
 	"github.com/yldm-tech/pace/apps/api-go/internal/database"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"github.com/yldm-tech/pace/apps/api-go/internal/worker"
 )
 
@@ -67,11 +68,30 @@ func main() {
 
 	versions := worker.NewVersionTasks(db, logger)
 
+	// A misconfigured bucket leaves the store nil, and the one task that needs it logs and returns rather than failing the delivery.
+	assetStore, err := storage.New(storage.Settings{
+		AccessKey:        settings.Auth.AWSAccessKeyID,
+		SecretKey:        settings.Auth.AWSSecretAccessKey,
+		Region:           settings.Auth.AWSRegion,
+		Bucket:           settings.Auth.AWSBucketName,
+		Endpoint:         settings.Auth.AWSEndpointURL,
+		UseMinio:         settings.Auth.UseMinio,
+		MinioEndpointSSL: settings.Auth.MinioEndpointSSL,
+		SignedURLExpiry:  settings.Auth.SignedURLExpiration,
+	})
+	if err != nil {
+		logger.Warn("object storage is not configured, asset metadata will be skipped", "error", err)
+		assetStore = nil
+	}
+	assets := worker.NewAssetTasks(db, assetStore, logger)
+	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
+
 	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
 	tasks.Register(consumer)
 	maintenance.Register(consumer)
 	deletions.Register(consumer)
 	versions.Register(consumer)
+	assets.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

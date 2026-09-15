@@ -155,6 +155,44 @@ func quote(value string) string {
 	return builder.String()
 }
 
+// ObjectMetadata is what get_object_metadata reports back, with the keys boto's head_object uses rather than the ones the Go client does.
+type ObjectMetadata struct {
+	ContentType   string            `json:"ContentType"`
+	ContentLength int64             `json:"ContentLength"`
+	LastModified  *string           `json:"LastModified"`
+	ETag          string            `json:"ETag"`
+	Metadata      map[string]string `json:"Metadata"`
+}
+
+// StatObject is get_object_metadata: the object's headers, read without fetching it.
+//
+// The shape is boto's rather than this client's, because the rows already in the table were written by boto and the web app reads them by those names. The etag is quoted for the same reason: boto reports the header as it arrived, quotes included, and this client strips them.
+func (store *Store) StatObject(ctx context.Context, objectName string) (*ObjectMetadata, error) {
+	info, err := store.client.StatObject(ctx, store.bucket, objectName, minio.StatObjectOptions{})
+	if err != nil {
+		return nil, err
+	}
+	metadata := map[string]string{}
+	for key, value := range info.UserMetadata {
+		// boto lowercases what it strips the x-amz-meta- prefix from.
+		metadata[strings.ToLower(key)] = value
+	}
+	var lastModified *string
+	if !info.LastModified.IsZero() {
+		// Python renders an aware datetime with a colon in the offset.
+		rendered := info.LastModified.UTC().Format("2006-01-02T15:04:05-07:00")
+		lastModified = &rendered
+	}
+	etag := info.ETag
+	if etag != "" && !strings.HasPrefix(etag, `"`) {
+		etag = `"` + etag + `"`
+	}
+	return &ObjectMetadata{
+		ContentType: info.ContentType, ContentLength: info.Size,
+		LastModified: lastModified, ETag: etag, Metadata: metadata,
+	}, nil
+}
+
 // CopyObject is copy_object: the bucket copies the bytes from one key to another without them passing through here.
 func (store *Store) CopyObject(ctx context.Context, sourceKey, destinationKey string) error {
 	_, err := store.client.CopyObject(ctx,

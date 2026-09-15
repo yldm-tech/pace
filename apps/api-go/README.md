@@ -1437,6 +1437,16 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the two that look after an uploaded file
+
+`get_asset_object_metadata` and `delete_unuploaded_file_asset` now run on the Go worker. The first is queued by the Go API when an upload is confirmed; the second is a nightly one the Go beat already schedules.
+
+**The metadata keeps boto's field names**, not this client's. The rows already in the table were written by boto and the web app reads them by those names, so the etag is quoted the way the header arrives — the Go client strips those quotes and they are put back — and the user metadata keys are lowercased the way boto lowercases them.
+
+**A bucket that refuses the read is not an error.** Django logs it and writes null over whatever was there, so an object that has since gone takes its metadata with it. That is reproduced.
+
+**The sweep is a soft delete.** It is a queryset delete, so the rows stay and are marked, and nothing goes to the bucket — there is nothing there to remove, which is the whole point of the sweep. Its window is refused when negative, for the same reason the hard delete's is: Django reads it with a bare `int()` and a negative value would put the cutoff in the future and sweep away every asset currently waiting to be uploaded. Zero is a real window and is taken.
+
 ## Migrated task: the three that keep a description's history
 
 `page_transaction`, `track_page_version` and `issue_description_version_task` now run on the Go worker. All three were already queued by the Go API and answered by the Python one.
