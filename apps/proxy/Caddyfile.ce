@@ -159,6 +159,9 @@
 	@go_project_details path_regexp go_project_details ^/api/workspaces/[^/]+/(projects/details/|project-identifiers/|projects/[0-9A-Fa-f-]+/archive/)$
 	reverse_proxy @go_project_details api-go:8000
 
+	@go_stickies path_regexp go_stickies ^/api/workspaces/[^/]+/stickies/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_stickies api-go:8000
+
 	@go_favorites path_regexp go_favorites ^/api/workspaces/[^/]+/(user-favorites/([0-9A-Fa-f-]+/(group/)?)?|user-favorite-projects/([0-9A-Fa-f-]+/)?)$
 	reverse_proxy @go_favorites api-go:8000
 

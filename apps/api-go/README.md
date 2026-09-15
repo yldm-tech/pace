@@ -1443,6 +1443,14 @@ The bulk claim is what attaches an asset uploaded before its entity existed — 
 
 `duplicate-assets/` copies the bytes inside the bucket rather than through the API, keeps the **unsanitized** name in the copy's attributes even though the key it is written under is sanitized, and marks the copy uploaded in a second statement after the row is written.
 
+## Migrated module: stickies
+
+The five sticky routes are implemented and cut over. A sticky is a note somebody keeps in a workspace and nobody else can see, so every route here is scoped to its owner rather than to a role — the update and the delete carry **no role at all**, only the rule that the note is the caller's.
+
+The list pages **twenty** at a time rather than the paginator's usual thousand, and `query` searches the **stripped** text rather than the html, so a word that only appears inside a tag is not found.
+
+A new note is placed after every note the **workspace** already holds — not after the caller's own — so two people's notes share one sequence and a new note lands behind a colleague's. The stripped copy follows the html on every save, and empty html leaves **no copy at all** rather than an empty one.
+
 ## Migrated module: favourites
 
 The eight favourite routes are implemented and cut over: the workspace list, create, update, delete and folder contents, and the three older project-favourite routes that write into the same table.
