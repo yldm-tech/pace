@@ -242,6 +242,20 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: the issue search
+
+`GET` on `search-issues/`, the picker behind every "link this to something" box: choosing a parent, a related issue, a sub-issue, or an issue to put in a cycle or a module.
+
+Each of those asks for a different set of exclusions, and the switches that turn them on are read as **strings** rather than booleans — so the value has to be exactly `true`. `TRUE`, `1` and `yes` all read as off.
+
+`target_date` is the odd one out. Its default is the Python boolean `True` rather than a string, and the filter tests for the word `"none"`, so the default can never match it and the filter is off unless a caller names it.
+
+The search itself looks in three places at once — the name, the project's identifier, and the sequence number. The sequence branch is skipped entirely for a query over **twenty characters**, so pasting a long string cannot turn into a numeric scan. It takes **whole** numbers only: `PROJ-42` finds 42, `abc42` finds nothing, and `v1.2` finds only the 2, because `v` is a word character and there is no boundary before the 1.
+
+The guest narrowing here has no escape hatch — `guest_view_all_features` does not reach this endpoint, unlike the view and page lists — and the membership it checks is not scoped to the workspace either.
+
+The workspace-wide searches under `search/` and `entity-search/` are a different endpoint and stay on Django.
+
 ## Migrated module: the intake itself
 
 The ten routes under `intakes/` and `inboxes/`: the queue a project's untriaged work lands in.
