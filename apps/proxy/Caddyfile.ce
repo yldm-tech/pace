@@ -56,7 +56,7 @@
 	reverse_proxy @go_work_item_identifier api-go:8000
 	@go_module_basics path_regexp go_module_basics ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(modules/([0-9A-Fa-f-]+/)?|user-favorite-modules/([0-9A-Fa-f-]+/)?|modules/[0-9A-Fa-f-]+/(user-properties/|archive/|module-links/([0-9A-Fa-f-]+/)?|issues/)|archived-modules/)$
 	reverse_proxy @go_module_basics api-go:8000
-	@go_cycle_basics path_regexp go_cycle_basics ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles/([0-9A-Fa-f-]+/)?|cycles/date-check/|user-favorite-cycles/([0-9A-Fa-f-]+/)?|cycles/[0-9A-Fa-f-]+/(user-properties/|archive/|cycle-issues/))$
+	@go_cycle_basics path_regexp go_cycle_basics ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles/([0-9A-Fa-f-]+/)?|cycles/date-check/|user-favorite-cycles/([0-9A-Fa-f-]+/)?|cycles/[0-9A-Fa-f-]+/(user-properties/|archive/|cycle-issues/)|archived-cycles/)$
 	reverse_proxy @go_cycle_basics api-go:8000
 	@go_issue_sync path_regexp go_issue_sync ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/v2/issues/$
 	reverse_proxy @go_issue_sync api-go:8000

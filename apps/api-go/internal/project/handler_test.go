@@ -115,6 +115,7 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/modules/:module/":                                 true,
 		"GET /api/workspaces/:slug/projects/:id/modules/:module/issues/":                          true,
 		"GET /api/workspaces/:slug/projects/:id/archived-modules/":                                true,
+		"GET /api/workspaces/:slug/projects/:id/archived-cycles/":                                 true,
 		"POST /api/workspaces/:slug/projects/:id/modules/:module/issues/":                         true,
 		"POST /api/workspaces/:slug/projects/:id/issues/:issue/modules/":                          true,
 		"PATCH /api/workspaces/:slug/projects/:id/modules/:module/":                               true,

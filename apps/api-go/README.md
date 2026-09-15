@@ -187,6 +187,28 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated cycle: the archived cycle list
+
+`GET` on `archived-cycles/`.
+
+Written straight after its module counterpart, and the two differ in both of the ways the two apps tend to differ.
+
+**A guest may read archived modules and may not read archived cycles.** This endpoint is decorated for admins and members; the module one leans on the permission class, which lets any active member through a safe method.
+
+**This queryset keeps the membership and project-archived filters that the live cycle list has.** The module endpoint drops them, so an archived project's archived modules still appear while its archived cycles do not.
+
+The projection is twenty-three fields where the live list has twenty-two, and it is not a superset: no `logo_props`, `version` or `created_by`, plus the three state counts and `archived_at`. Two lists of nearly equal length that are not the same list is the worst kind of difference to carry, so the test asserts it from both sides.
+
+Nothing here moves timezone. The live list renders its two dates in the **project's** zone; this endpoint has no converter call at all, so every timestamp comes back in UTC.
+
+The three added state counts carry the same four exclusions as the counts they sit next to — both halves of the link live, the issue neither archived nor a draft — and a test counts the exclusions rather than trusting the eye.
+
+The detail route `archived-cycles/<uuid>/` stays on Django, alongside its module twin: both carry the distributions and the burndown chart.
+
+### The counts live on `cycleRow`, not on a row of their own
+
+They are annotated by this list only, and the obvious shape — a struct embedding `cycleRow` embedding `Cycle` — is the one that does not work. GORM parses a struct embedded two levels deep as a **single** field and scans every column under it as zero **without erroring**. That cost a CI run earlier in this migration and there is a guard test naming it; this is the second time the same shape came up, so the comment sits on the fields.
+
 ## Migrated module: the archived module list
 
 `GET` on `archived-modules/`.
