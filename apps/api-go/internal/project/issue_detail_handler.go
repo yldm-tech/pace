@@ -129,10 +129,11 @@ func (handler *Handler) issuePartialUpdate(c *gin.Context, user *auth.User) {
 	now := handler.clock().UTC()
 	updates := fields.updates(now, user.ID)
 	err = handler.db.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
-		if len(updates) > 0 {
-			if err := tx.Model(&Issue{}).Where("id = ?", row.ID).Updates(updates).Error; err != nil {
-				return err
-			}
+		if err := applyIssueSavePath(tx, row.Issue, updates, now); err != nil {
+			return err
+		}
+		if err := tx.Model(&Issue{}).Where("id = ?", row.ID).Updates(updates).Error; err != nil {
+			return err
 		}
 		if fields.hasAssignees {
 			if err := handler.syncIssueAssignees(tx, row.Issue, fields.assigneeIDs, now); err != nil {
@@ -446,15 +447,12 @@ type issueInput struct {
 	hasLabels    bool
 }
 
+// updates is what the serializer writes. It carries the two audit columns whatever else changed, because the serializer sets updated_at by hand and then saves the instance — so a request that moves only the assignees still touches the work item's own row.
 func (input issueInput) updates(now time.Time, actorID string) map[string]any {
-	if len(input.values) == 0 {
-		return map[string]any{}
-	}
 	updates := make(map[string]any, len(input.values)+2)
 	for key, value := range input.values {
 		updates[key] = value
 	}
-	// The serializer bumps updated_at even when only the related sets changed.
 	updates["updated_at"] = now
 	updates["updated_by_id"] = actorID
 	return updates
