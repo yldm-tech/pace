@@ -141,6 +141,10 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		projectHandler.Register(router)
 		spaceHandler := spaceapi.NewHandler(dependencies.Database)
 		spaceHandler.SetSessions(sessions)
+		spaceHandler.SetFileSizeLimit(dependencies.AuthSettings.FileSizeLimit)
+		if err == nil {
+			spaceHandler.SetStorage(attachmentStore)
+		}
 		spaceHandler.Register(router)
 		externalHandler := externalapi.NewHandler(dependencies.Database, externalapi.Settings{
 			RateLimit:     dependencies.AuthSettings.APIKeyRateLimit,
