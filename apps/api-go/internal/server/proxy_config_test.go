@@ -327,6 +327,7 @@ func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
 		project + "user-properties/",
 		project + "archived-issues/",
 		project + "issue-dates/",
+		project + "issues-detail/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Project issue operation %q is not cut over to Go", route)
@@ -452,7 +453,6 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	for _, route := range []string{
 		// The other two list routes are separate endpoints with their own matchers.
 		project + "v2/issues/",
-		project + "issues-detail/",
 		// The detail route is its own matcher.
 		project + "issues/11111111-2222-3333-4444-555555555555/",
 	} {
