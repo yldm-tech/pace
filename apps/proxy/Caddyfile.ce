@@ -165,6 +165,9 @@
 	@go_api_tokens path_regexp go_api_tokens ^/api/users/api-tokens/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_api_tokens api-go:8000
 
+	@go_workspace_user path_regexp go_workspace_user ^/api/workspaces/[^/]+/(user-profile/[0-9A-Fa-f-]+/|user-stats/[0-9A-Fa-f-]+/|user-activity/[0-9A-Fa-f-]+/(export/)?|recent-visits/|project-members/)$
+	reverse_proxy @go_workspace_user api-go:8000
+
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_draft_issues api-go:8000
 
