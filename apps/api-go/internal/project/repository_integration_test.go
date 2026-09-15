@@ -586,17 +586,14 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	if err := handler.writeArchivedAt(ctx, archived, nil, now.Add(2*time.Minute)); err != nil {
 		t.Fatalf("unarchive the issue: %v", err)
 	}
-	var remaining []*time.Time
+	var stillArchived int64
 	err = transaction.Session(&gorm.Session{}).Model(&Issue{}).
-		Where("id = ?", archivableID).Pluck("archived_at", &remaining).Error
+		Where("id = ? AND archived_at IS NOT NULL", archivableID).Count(&stillArchived).Error
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(remaining) != 1 {
-		t.Fatalf("read %d rows for the unarchived issue, want 1", len(remaining))
-	}
-	if remaining[0] != nil {
-		t.Fatalf("archived_at is %v in the database, want null after unarchiving", remaining[0])
+	if stillArchived != 0 {
+		t.Fatal("archived_at is still set in the database after unarchiving")
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.
