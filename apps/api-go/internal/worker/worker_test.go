@@ -227,6 +227,11 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	consumer := NewConsumer("", "", nil)
 	NewEmailTasks(nil, EmailSettings{}, nil, &recordingMailer{}, nil).Register(consumer)
 	NewMaintenanceTasks(nil, DefaultRetentionSettings(), nil).Register(consumer)
+	deletions, err := NewDeletionTasks(nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	deletions.Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true

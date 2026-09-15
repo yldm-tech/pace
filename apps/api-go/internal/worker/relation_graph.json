@@ -1,0 +1,5205 @@
+{
+  "django_version": "5.2.15",
+  "models": {
+    "auth.group": {
+      "table": "auth_group",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "auth.permission": {
+      "table": "auth_permission",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "contenttypes.contenttype": {
+      "table": "django_content_type",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "permission_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "auth.permission",
+          "related_table": "auth_permission",
+          "related_column": "content_type_id",
+          "related_soft_deletes": false
+        }
+      ]
+    },
+    "db.account": {
+      "table": "accounts",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "db.analyticview": {
+      "table": "analytic_views",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.apiactivitylog": {
+      "table": "api_activity_logs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.apitoken": {
+      "table": "api_tokens",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "importer",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "token_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "integrations",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "api_token_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.commentreaction": {
+      "table": "comment_reactions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.cycle": {
+      "table": "cycles",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "cycle_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "cycle_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_issue_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "cycle_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "cycle_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.cycleissue": {
+      "table": "cycle_issues",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.cycleuserproperties": {
+      "table": "cycle_user_properties",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.deployboard": {
+      "table": "deploy_boards",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.description": {
+      "table": "descriptions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "issue_comment_description",
+          "on_delete": "CASCADE",
+          "one_to_one": true,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "description_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.descriptionversion",
+          "related_table": "description_versions",
+          "related_column": "description_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.descriptionversion": {
+      "table": "description_versions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.device": {
+      "table": "devices",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "sessions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.devicesession",
+          "related_table": "device_sessions",
+          "related_column": "device_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.devicesession": {
+      "table": "device_sessions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.draftissue": {
+      "table": "draft_issues",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "draft_issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_issue_assignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "draft_issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_issue_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "draft_issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_issue_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "draft_issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_label_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "draft_issue_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.draftissueassignee": {
+      "table": "draft_issue_assignees",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.draftissuecycle": {
+      "table": "draft_issue_cycles",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.draftissuelabel": {
+      "table": "draft_issue_labels",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.draftissuemodule": {
+      "table": "draft_issue_modules",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.emailnotificationlog": {
+      "table": "email_notification_logs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.estimate": {
+      "table": "estimates",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "points",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.estimatepoint",
+          "related_table": "estimate_points",
+          "related_column": "estimate_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projects",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "estimate_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.estimatepoint": {
+      "table": "estimate_points",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "draft_issue_estimates",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "estimate_point_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_estimates",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "estimate_point_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.exporterhistory": {
+      "table": "exporters",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.fileasset": {
+      "table": "file_assets",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "project_cover_image",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "cover_image_asset_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "user_avatar",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.user",
+          "related_table": "users",
+          "related_column": "avatar_asset_id",
+          "related_soft_deletes": false
+        },
+        {
+          "accessor": "user_cover_image",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.user",
+          "related_table": "users",
+          "related_column": "cover_image_asset_id",
+          "related_soft_deletes": false
+        },
+        {
+          "accessor": "workspace_logo",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspace",
+          "related_table": "workspaces",
+          "related_column": "logo_asset_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.githubcommentsync": {
+      "table": "github_comment_syncs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.githubissuesync": {
+      "table": "github_issue_syncs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "comment_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "issue_sync_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.githubrepository": {
+      "table": "github_repositories",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": true,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "repository_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.githubrepositorysync": {
+      "table": "github_repository_syncs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "issue_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "repository_sync_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.importer": {
+      "table": "importers",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.intake": {
+      "table": "intakes",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "board_intake",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectdeployboard",
+          "related_table": "project_deploy_boards",
+          "related_column": "intake_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_intake",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "intake_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "publish_intake",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.deployboard",
+          "related_table": "deploy_boards",
+          "related_column": "intake_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.intakeissue": {
+      "table": "intake_issues",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.integration": {
+      "table": "integrations",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": false,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "integrated_workspaces",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "integration_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.issue": {
+      "table": "issues",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "blocked_issues",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "blocked_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "blocker_issues",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "block_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "description_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_parent_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "github_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "intake_duplicate",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "duplicate_to_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_activity",
+          "on_delete": "DO_NOTHING",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_assignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_attachment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueattachment",
+          "related_table": "issue_attachments",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_comments",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_intake",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_link",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelink",
+          "related_table": "issue_links",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_mention",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_reactions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_related",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "related_issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_relation",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_sequence",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuesequence",
+          "related_table": "issue_sequences",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_subscribers",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "label_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "parent_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "votes",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "issue_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.issueactivity": {
+      "table": "issue_activities",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "versions",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "activity_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.issueassignee": {
+      "table": "issue_assignees",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issueattachment": {
+      "table": "issue_attachments",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issueblocker": {
+      "table": "issue_blockers",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuecomment": {
+      "table": "issue_comments",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "comment_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "comment_reactions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "comment_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "comment_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "comment_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_comment",
+          "on_delete": "DO_NOTHING",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "issue_comment_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "parent_issue_comment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.issuedescriptionversion": {
+      "table": "issue_description_versions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuelabel": {
+      "table": "issue_labels",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuelink": {
+      "table": "issue_links",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuemention": {
+      "table": "issue_mentions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuereaction": {
+      "table": "issue_reactions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuerelation": {
+      "table": "issue_relations",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuesequence": {
+      "table": "issue_sequences",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuesubscriber": {
+      "table": "issue_subscribers",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuetype": {
+      "table": "issue_types",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "draft_issue_type",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "type_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_type",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "type_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issue_types",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectissuetype",
+          "related_table": "project_issue_types",
+          "related_column": "issue_type_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.issueversion": {
+      "table": "issue_versions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issueview": {
+      "table": "issue_views",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.issuevote": {
+      "table": "issue_votes",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.label": {
+      "table": "labels",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "draft_label_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "label_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "label_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "label_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_labels",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pagelabel",
+          "related_table": "page_labels",
+          "related_column": "label_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "parent_label",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.label",
+          "related_table": "labels",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "repo_syncs",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "label_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.module": {
+      "table": "modules",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "draft_issue_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "module_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "module_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "link_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulelink",
+          "related_table": "module_links",
+          "related_column": "module_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "module_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "module_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulemember_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "module_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.moduleissue": {
+      "table": "module_issues",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.modulelink": {
+      "table": "module_links",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.modulemember": {
+      "table": "module_members",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.moduleuserproperties": {
+      "table": "module_user_properties",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.notification": {
+      "table": "notifications",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.page": {
+      "table": "pages",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "page_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "child_page",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.page",
+          "related_table": "pages",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_labels",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pagelabel",
+          "related_table": "page_labels",
+          "related_column": "page_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_log",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pagelog",
+          "related_table": "page_logs",
+          "related_column": "page_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pageversion",
+          "related_table": "page_versions",
+          "related_column": "page_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_pages",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpage",
+          "related_table": "project_pages",
+          "related_column": "page_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.pagelabel": {
+      "table": "page_labels",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.pagelog": {
+      "table": "page_logs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.pageversion": {
+      "table": "page_versions",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.profile": {
+      "table": "profiles",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "db.project": {
+      "table": "projects",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "notifications",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_commentreaction",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycle",
+          "related_table": "cycles",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_cycleissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_cycleuserproperties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_deployboard",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.deployboard",
+          "related_table": "deploy_boards",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_description",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.description",
+          "related_table": "descriptions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_descriptionversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.descriptionversion",
+          "related_table": "description_versions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_draftissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_draftissueassignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_draftissuecycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_draftissuelabel",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_draftissuemodule",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_estimate",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.estimate",
+          "related_table": "estimates",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_estimatepoint",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.estimatepoint",
+          "related_table": "estimate_points",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_githubcommentsync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_githubissuesync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_githubrepository",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepository",
+          "related_table": "github_repositories",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_githubrepositorysync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_identifier",
+          "on_delete": "CASCADE",
+          "one_to_one": true,
+          "related_model": "db.projectidentifier",
+          "related_table": "project_identifiers",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_importer",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_intake",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intake",
+          "related_table": "intakes",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_intakeissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueactivity",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueassignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueattachment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueattachment",
+          "related_table": "issue_attachments",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueblocker",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuecomment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuedescriptionversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuelabel",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuelink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelink",
+          "related_table": "issue_links",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuemention",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuereaction",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuerelation",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuesequence",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesequence",
+          "related_table": "issue_sequences",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuesubscriber",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issueview",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueview",
+          "related_table": "issue_views",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_issuevote",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_label",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.label",
+          "related_table": "labels",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.module",
+          "related_table": "modules",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_moduleissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_modulelink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulelink",
+          "related_table": "module_links",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_modulemember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_moduleuserproperties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_notification_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.usernotificationpreference",
+          "related_table": "user_notification_preferences",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_pages",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpage",
+          "related_table": "project_pages",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectdeployboard",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectdeployboard",
+          "related_table": "project_deploy_boards",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectissuetype",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectissuetype",
+          "related_table": "project_issue_types",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectmember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectmember",
+          "related_table": "project_members",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectmemberinvite",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectmemberinvite",
+          "related_table": "project_member_invites",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectpublicmember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpublicmember",
+          "related_table": "project_public_members",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectuserproperty",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectuserproperty",
+          "related_table": "project_user_properties",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_projectwebhook",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectwebhook",
+          "related_table": "project_webhooks",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_slackprojectsync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.slackprojectsync",
+          "related_table": "slack_project_syncs",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_state",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.state",
+          "related_table": "states",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_userfavorite",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_userrecentvisit",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userrecentvisit",
+          "related_table": "user_recent_visits",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_workspaceuserlink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserlink",
+          "related_table": "workspace_user_links",
+          "related_column": "project_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.projectdeployboard": {
+      "table": "project_deploy_boards",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectidentifier": {
+      "table": "project_identifiers",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": false,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectissuetype": {
+      "table": "project_issue_types",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectmember": {
+      "table": "project_members",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectmemberinvite": {
+      "table": "project_member_invites",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectpage": {
+      "table": "project_pages",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectpublicmember": {
+      "table": "project_public_members",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectuserproperty": {
+      "table": "project_user_properties",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.projectwebhook": {
+      "table": "project_webhooks",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.session": {
+      "table": "sessions",
+      "primary_key": "session_key",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "device_sessions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.devicesession",
+          "related_table": "device_sessions",
+          "related_column": "session_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.slackprojectsync": {
+      "table": "slack_project_syncs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.socialloginconnection": {
+      "table": "social_login_connections",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.state": {
+      "table": "states",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "default_state",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "default_state_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "state_draft_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "state_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "state_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "state_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.sticky": {
+      "table": "stickies",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.team": {
+      "table": "teams",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.user": {
+      "table": "users",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "accounts",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.account",
+          "related_table": "accounts",
+          "related_column": "user_id",
+          "related_soft_deletes": false
+        },
+        {
+          "accessor": "analyticview_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.analyticview",
+          "related_table": "analytic_views",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "analyticview_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.analyticview",
+          "related_table": "analytic_views",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "apiactivitylog_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.apiactivitylog",
+          "related_table": "api_activity_logs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "apiactivitylog_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.apiactivitylog",
+          "related_table": "api_activity_logs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "apitoken_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.apitoken",
+          "related_table": "api_tokens",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "apitoken_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.apitoken",
+          "related_table": "api_tokens",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "bot_tokens",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.apitoken",
+          "related_table": "api_tokens",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "changelog_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.changelog",
+          "related_table": "changelogs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "changelog_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.changelog",
+          "related_table": "changelogs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "comment_reactions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "commentreaction_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "commentreaction_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "comments",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycle_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycle",
+          "related_table": "cycles",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycle_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycle",
+          "related_table": "cycles",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycle_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycleissue_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycleissue_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycleuserproperties_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "cycleuserproperties_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "default_assignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "default_assignee_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "deployboard_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.deployboard",
+          "related_table": "deploy_boards",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "deployboard_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.deployboard",
+          "related_table": "deploy_boards",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "description_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.description",
+          "related_table": "descriptions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "description_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.description",
+          "related_table": "descriptions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "descriptionversion_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.descriptionversion",
+          "related_table": "description_versions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "descriptionversion_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.descriptionversion",
+          "related_table": "description_versions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "device_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.device",
+          "related_table": "devices",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "device_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.device",
+          "related_table": "devices",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "devices",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.device",
+          "related_table": "devices",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "devicesession_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.devicesession",
+          "related_table": "device_sessions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "devicesession_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.devicesession",
+          "related_table": "device_sessions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draft_issue_assignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "assignee_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissue_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissue_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissueassignee_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissueassignee_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuecycle_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuecycle_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuelabel_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuelabel_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuemodule_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "draftissuemodule_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "email_notifications",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.emailnotificationlog",
+          "related_table": "email_notification_logs",
+          "related_column": "receiver_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "emailnotificationlog_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.emailnotificationlog",
+          "related_table": "email_notification_logs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "emailnotificationlog_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.emailnotificationlog",
+          "related_table": "email_notification_logs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "estimate_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.estimate",
+          "related_table": "estimates",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "estimate_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.estimate",
+          "related_table": "estimates",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "estimatepoint_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.estimatepoint",
+          "related_table": "estimate_points",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "estimatepoint_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.estimatepoint",
+          "related_table": "estimate_points",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "exporterhistory_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.exporterhistory",
+          "related_table": "exporters",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "exporterhistory_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.exporterhistory",
+          "related_table": "exporters",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "favorites",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "fileasset_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "fileasset_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubcommentsync_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubcommentsync_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubissuesync_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubissuesync_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubrepository_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubrepository",
+          "related_table": "github_repositories",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubrepository_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubrepository",
+          "related_table": "github_repositories",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubrepositorysync_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "githubrepositorysync_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "importer_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "importer_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "imports",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "initiated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instance_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instance",
+          "related_table": "instances",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instance_owner",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instanceadmin",
+          "related_table": "instance_admins",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instance_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instance",
+          "related_table": "instances",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instanceadmin_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instanceadmin",
+          "related_table": "instance_admins",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instanceadmin_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instanceadmin",
+          "related_table": "instance_admins",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instanceconfiguration_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instanceconfiguration",
+          "related_table": "instance_configurations",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "instanceconfiguration_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "license.instanceconfiguration",
+          "related_table": "instance_configurations",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "intake_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.intake",
+          "related_table": "intakes",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "intake_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.intake",
+          "related_table": "intakes",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "intakeissue_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "intakeissue_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "integration_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.integration",
+          "related_table": "integrations",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "integration_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.integration",
+          "related_table": "integrations",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "integrations",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_activities",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_assignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "assignee_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_description_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_mention",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "mention_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_reactions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_subscribers",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "subscriber_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueactivity_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueactivity_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueassignee_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueassignee_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueattachment_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueattachment",
+          "related_table": "issue_attachments",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueattachment_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueattachment",
+          "related_table": "issue_attachments",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueblocker_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueblocker_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuecomment_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuecomment_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuedescriptionversion_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuedescriptionversion_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuelabel_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuelabel_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuelink_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuelink",
+          "related_table": "issue_links",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuelink_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuelink",
+          "related_table": "issue_links",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuemention_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuemention_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuereaction_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuereaction_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuerelation_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuerelation_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuesequence_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuesequence",
+          "related_table": "issue_sequences",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuesequence_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuesequence",
+          "related_table": "issue_sequences",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuesubscriber_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuesubscriber_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuetype_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuetype",
+          "related_table": "issue_types",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuetype_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuetype",
+          "related_table": "issue_types",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueversion_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueversion_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueview_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueview",
+          "related_table": "issue_views",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issueview_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issueview",
+          "related_table": "issue_views",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuevote_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issuevote_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "label_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.label",
+          "related_table": "labels",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "label_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.label",
+          "related_table": "labels",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "member_project",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectmember",
+          "related_table": "project_members",
+          "related_column": "member_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "member_workspace",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacemember",
+          "related_table": "workspace_members",
+          "related_column": "member_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "module_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.module",
+          "related_table": "modules",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "module_leads",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.module",
+          "related_table": "modules",
+          "related_column": "lead_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "module_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.module",
+          "related_table": "modules",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "module_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "moduleissue_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "moduleissue_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulelink_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.modulelink",
+          "related_table": "module_links",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulelink_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.modulelink",
+          "related_table": "module_links",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulemember_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulemember_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "member_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "modulemember_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "moduleuserproperties_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "moduleuserproperties_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "notification_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "notification_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.usernotificationpreference",
+          "related_table": "user_notification_preferences",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "notification_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "owned_by_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycle",
+          "related_table": "cycles",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "owner_workspace",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspace",
+          "related_table": "workspaces",
+          "related_column": "owner_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "owner_workspace_user_link",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserlink",
+          "related_table": "workspace_user_links",
+          "related_column": "owner_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.page",
+          "related_table": "pages",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.page",
+          "related_table": "pages",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pageversion",
+          "related_table": "page_versions",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pagelabel_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pagelabel",
+          "related_table": "page_labels",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pagelabel_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pagelabel",
+          "related_table": "page_labels",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pagelog_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pagelog",
+          "related_table": "page_logs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pagelog_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pagelog",
+          "related_table": "page_logs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pages",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.page",
+          "related_table": "pages",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pageversion_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pageversion",
+          "related_table": "page_versions",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pageversion_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.pageversion",
+          "related_table": "page_versions",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "profile",
+          "on_delete": "CASCADE",
+          "one_to_one": true,
+          "related_model": "db.profile",
+          "related_table": "profiles",
+          "related_column": "user_id",
+          "related_soft_deletes": false
+        },
+        {
+          "accessor": "project_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_lead",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "project_lead_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_property_user",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectuserproperty",
+          "related_table": "project_user_properties",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectdeployboard_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectdeployboard",
+          "related_table": "project_deploy_boards",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectdeployboard_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectdeployboard",
+          "related_table": "project_deploy_boards",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectidentifier_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectidentifier",
+          "related_table": "project_identifiers",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectidentifier_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectidentifier",
+          "related_table": "project_identifiers",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectissuetype_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectissuetype",
+          "related_table": "project_issue_types",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectissuetype_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectissuetype",
+          "related_table": "project_issue_types",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectmember_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectmember",
+          "related_table": "project_members",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectmember_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectmember",
+          "related_table": "project_members",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectmemberinvite_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectmemberinvite",
+          "related_table": "project_member_invites",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectmemberinvite_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectmemberinvite",
+          "related_table": "project_member_invites",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectpage_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectpage",
+          "related_table": "project_pages",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectpage_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectpage",
+          "related_table": "project_pages",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectpublicmember_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectpublicmember",
+          "related_table": "project_public_members",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectpublicmember_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectpublicmember",
+          "related_table": "project_public_members",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectuserproperty_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectuserproperty",
+          "related_table": "project_user_properties",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectuserproperty_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectuserproperty",
+          "related_table": "project_user_properties",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectwebhook_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectwebhook",
+          "related_table": "project_webhooks",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "projectwebhook_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.projectwebhook",
+          "related_table": "project_webhooks",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "public_project_members",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpublicmember",
+          "related_table": "project_public_members",
+          "related_column": "member_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "received_notifications",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "receiver_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "slackprojectsync_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.slackprojectsync",
+          "related_table": "slack_project_syncs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "slackprojectsync_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.slackprojectsync",
+          "related_table": "slack_project_syncs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "socialloginconnection_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.socialloginconnection",
+          "related_table": "social_login_connections",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "socialloginconnection_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.socialloginconnection",
+          "related_table": "social_login_connections",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "state_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.state",
+          "related_table": "states",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "state_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.state",
+          "related_table": "states",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "stickies",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.sticky",
+          "related_table": "stickies",
+          "related_column": "owner_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "sticky_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.sticky",
+          "related_table": "stickies",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "sticky_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.sticky",
+          "related_table": "stickies",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "team_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.team",
+          "related_table": "teams",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "team_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.team",
+          "related_table": "teams",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "themes",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacetheme",
+          "related_table": "workspace_themes",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "triggered_emails",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.emailnotificationlog",
+          "related_table": "email_notification_logs",
+          "related_column": "triggered_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "triggered_notifications",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "triggered_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "user_login_connections",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.socialloginconnection",
+          "related_table": "social_login_connections",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "user_recent_visit",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userrecentvisit",
+          "related_table": "user_recent_visits",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "user_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "userfavorite_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "userfavorite_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "usernotificationpreference_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.usernotificationpreference",
+          "related_table": "user_notification_preferences",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "usernotificationpreference_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.usernotificationpreference",
+          "related_table": "user_notification_preferences",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "userrecentvisit_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.userrecentvisit",
+          "related_table": "user_recent_visits",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "userrecentvisit_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.userrecentvisit",
+          "related_table": "user_recent_visits",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "views",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueview",
+          "related_table": "issue_views",
+          "related_column": "owned_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "votes",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "actor_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "webhook_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.webhook",
+          "related_table": "webhooks",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "webhook_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.webhook",
+          "related_table": "webhooks",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "webhooklog_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.webhooklog",
+          "related_table": "webhook_logs",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "webhooklog_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.webhooklog",
+          "related_table": "webhook_logs",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspace",
+          "related_table": "workspaces",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_exporters",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.exporterhistory",
+          "related_table": "exporters",
+          "related_column": "initiated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspace",
+          "related_table": "workspaces",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_home_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacehomepreference",
+          "related_table": "workspace_home_preferences",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserpreference",
+          "related_table": "workspace_user_preferences",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserproperties",
+          "related_table": "workspace_user_properties",
+          "related_column": "user_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacehomepreference_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacehomepreference",
+          "related_table": "workspace_home_preferences",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacehomepreference_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacehomepreference",
+          "related_table": "workspace_home_preferences",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceintegration_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceintegration_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacemember_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacemember",
+          "related_table": "workspace_members",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacemember_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacemember",
+          "related_table": "workspace_members",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacememberinvite_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacememberinvite",
+          "related_table": "workspace_member_invites",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacememberinvite_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacememberinvite",
+          "related_table": "workspace_member_invites",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacetheme_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacetheme",
+          "related_table": "workspace_themes",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspacetheme_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspacetheme",
+          "related_table": "workspace_themes",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserlink_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserlink",
+          "related_table": "workspace_user_links",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserlink_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserlink",
+          "related_table": "workspace_user_links",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserpreference_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserpreference",
+          "related_table": "workspace_user_preferences",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserpreference_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserpreference",
+          "related_table": "workspace_user_preferences",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserproperties_created_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserproperties",
+          "related_table": "workspace_user_properties",
+          "related_column": "created_by_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspaceuserproperties_updated_by",
+          "on_delete": "SET_NULL",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserproperties",
+          "related_table": "workspace_user_properties",
+          "related_column": "updated_by_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.userfavorite": {
+      "table": "user_favorites",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "parent_folder",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "parent_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.usernotificationpreference": {
+      "table": "user_notification_preferences",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.userrecentvisit": {
+      "table": "user_recent_visits",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.webhook": {
+      "table": "webhooks",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "project_webhooks",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectwebhook",
+          "related_table": "project_webhooks",
+          "related_column": "webhook_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.webhooklog": {
+      "table": "webhook_logs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspace": {
+      "table": "workspaces",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "analytics",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.analyticview",
+          "related_table": "analytic_views",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "api_tokens",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.apitoken",
+          "related_table": "api_tokens",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "assets",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.fileasset",
+          "related_table": "file_assets",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "issue_types",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuetype",
+          "related_table": "issue_types",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "notifications",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.notification",
+          "related_table": "notifications",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "page_versions",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pageversion",
+          "related_table": "page_versions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "pages",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.page",
+          "related_table": "pages",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_identifiers",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectidentifier",
+          "related_table": "project_identifiers",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "project_pages",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpage",
+          "related_table": "project_pages",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "stickies",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.sticky",
+          "related_table": "stickies",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "themes",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacetheme",
+          "related_table": "workspace_themes",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "webhook_logs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.webhooklog",
+          "related_table": "webhook_logs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_commentreaction",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.commentreaction",
+          "related_table": "comment_reactions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_cycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycle",
+          "related_table": "cycles",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_cycleissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleissue",
+          "related_table": "cycle_issues",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_cycleuserproperties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.cycleuserproperties",
+          "related_table": "cycle_user_properties",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_deployboard",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.deployboard",
+          "related_table": "deploy_boards",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_description",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.description",
+          "related_table": "descriptions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_descriptionversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.descriptionversion",
+          "related_table": "description_versions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_draftissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissue",
+          "related_table": "draft_issues",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_draftissueassignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissueassignee",
+          "related_table": "draft_issue_assignees",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_draftissuecycle",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuecycle",
+          "related_table": "draft_issue_cycles",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_draftissuelabel",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuelabel",
+          "related_table": "draft_issue_labels",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_draftissuemodule",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.draftissuemodule",
+          "related_table": "draft_issue_modules",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_estimate",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.estimate",
+          "related_table": "estimates",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_estimatepoint",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.estimatepoint",
+          "related_table": "estimate_points",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_exporters",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.exporterhistory",
+          "related_table": "exporters",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_githubcommentsync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubcommentsync",
+          "related_table": "github_comment_syncs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_githubissuesync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubissuesync",
+          "related_table": "github_issue_syncs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_githubrepository",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepository",
+          "related_table": "github_repositories",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_githubrepositorysync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_importer",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.importer",
+          "related_table": "importers",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_intake",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intake",
+          "related_table": "intakes",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_intakeissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.intakeissue",
+          "related_table": "intake_issues",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_integrations",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceintegration",
+          "related_table": "workspace_integrations",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issue",
+          "related_table": "issues",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueactivity",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueactivity",
+          "related_table": "issue_activities",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueassignee",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueassignee",
+          "related_table": "issue_assignees",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueattachment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueattachment",
+          "related_table": "issue_attachments",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueblocker",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueblocker",
+          "related_table": "issue_blockers",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuecomment",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuecomment",
+          "related_table": "issue_comments",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuedescriptionversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuedescriptionversion",
+          "related_table": "issue_description_versions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuelabel",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelabel",
+          "related_table": "issue_labels",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuelink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuelink",
+          "related_table": "issue_links",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuemention",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuemention",
+          "related_table": "issue_mentions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuereaction",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuereaction",
+          "related_table": "issue_reactions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuerelation",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuerelation",
+          "related_table": "issue_relations",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuesequence",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesequence",
+          "related_table": "issue_sequences",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuesubscriber",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuesubscriber",
+          "related_table": "issue_subscribers",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueversion",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueversion",
+          "related_table": "issue_versions",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issueview",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issueview",
+          "related_table": "issue_views",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_issuevote",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.issuevote",
+          "related_table": "issue_votes",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_label",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.label",
+          "related_table": "labels",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_member",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacemember",
+          "related_table": "workspace_members",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_member_invite",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacememberinvite",
+          "related_table": "workspace_member_invites",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_module",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.module",
+          "related_table": "modules",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_moduleissue",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleissue",
+          "related_table": "module_issues",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_modulelink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulelink",
+          "related_table": "module_links",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_modulemember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.modulemember",
+          "related_table": "module_members",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_moduleuserproperties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.moduleuserproperties",
+          "related_table": "module_user_properties",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_notification_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.usernotificationpreference",
+          "related_table": "user_notification_preferences",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_page_label",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pagelabel",
+          "related_table": "page_labels",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_page_log",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.pagelog",
+          "related_table": "page_logs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_project",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.project",
+          "related_table": "projects",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectdeployboard",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectdeployboard",
+          "related_table": "project_deploy_boards",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectissuetype",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectissuetype",
+          "related_table": "project_issue_types",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectmember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectmember",
+          "related_table": "project_members",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectmemberinvite",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectmemberinvite",
+          "related_table": "project_member_invites",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectpublicmember",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectpublicmember",
+          "related_table": "project_public_members",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectuserproperty",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectuserproperty",
+          "related_table": "project_user_properties",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_projectwebhook",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.projectwebhook",
+          "related_table": "project_webhooks",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_slackprojectsync",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.slackprojectsync",
+          "related_table": "slack_project_syncs",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_state",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.state",
+          "related_table": "states",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_team",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.team",
+          "related_table": "teams",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_home_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspacehomepreference",
+          "related_table": "workspace_home_preferences",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_preferences",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserpreference",
+          "related_table": "workspace_user_preferences",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_user_properties",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserproperties",
+          "related_table": "workspace_user_properties",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_userfavorite",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userfavorite",
+          "related_table": "user_favorites",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_userrecentvisit",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.userrecentvisit",
+          "related_table": "user_recent_visits",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_webhooks",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.webhook",
+          "related_table": "webhooks",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "workspace_workspaceuserlink",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.workspaceuserlink",
+          "related_table": "workspace_user_links",
+          "related_column": "workspace_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.workspacehomepreference": {
+      "table": "workspace_home_preferences",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspaceintegration": {
+      "table": "workspace_integrations",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "github_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.githubrepositorysync",
+          "related_table": "github_repository_syncs",
+          "related_column": "workspace_integration_id",
+          "related_soft_deletes": true
+        },
+        {
+          "accessor": "slack_syncs",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "db.slackprojectsync",
+          "related_table": "slack_project_syncs",
+          "related_column": "workspace_integration_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "db.workspacemember": {
+      "table": "workspace_members",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspacememberinvite": {
+      "table": "workspace_member_invites",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspacetheme": {
+      "table": "workspace_themes",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspaceuserlink": {
+      "table": "workspace_user_links",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspaceuserpreference": {
+      "table": "workspace_user_preferences",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "db.workspaceuserproperties": {
+      "table": "workspace_user_properties",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "django_celery_beat.clockedschedule": {
+      "table": "django_celery_beat_clockedschedule",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "periodictask_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "django_celery_beat.periodictask",
+          "related_table": "django_celery_beat_periodictask",
+          "related_column": "clocked_id",
+          "related_soft_deletes": false
+        }
+      ]
+    },
+    "django_celery_beat.crontabschedule": {
+      "table": "django_celery_beat_crontabschedule",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "periodictask_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "django_celery_beat.periodictask",
+          "related_table": "django_celery_beat_periodictask",
+          "related_column": "crontab_id",
+          "related_soft_deletes": false
+        }
+      ]
+    },
+    "django_celery_beat.intervalschedule": {
+      "table": "django_celery_beat_intervalschedule",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "periodictask_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "django_celery_beat.periodictask",
+          "related_table": "django_celery_beat_periodictask",
+          "related_column": "interval_id",
+          "related_soft_deletes": false
+        }
+      ]
+    },
+    "django_celery_beat.periodictask": {
+      "table": "django_celery_beat_periodictask",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "django_celery_beat.periodictasks": {
+      "table": "django_celery_beat_periodictasks",
+      "primary_key": "ident",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    },
+    "django_celery_beat.solarschedule": {
+      "table": "django_celery_beat_solarschedule",
+      "primary_key": "id",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": [
+        {
+          "accessor": "periodictask_set",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "django_celery_beat.periodictask",
+          "related_table": "django_celery_beat_periodictask",
+          "related_column": "solar_id",
+          "related_soft_deletes": false
+        }
+      ]
+    },
+    "license.changelog": {
+      "table": "changelogs",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "license.instance": {
+      "table": "instances",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": [
+        {
+          "accessor": "admins",
+          "on_delete": "CASCADE",
+          "one_to_one": false,
+          "related_model": "license.instanceadmin",
+          "related_table": "instance_admins",
+          "related_column": "instance_id",
+          "related_soft_deletes": true
+        }
+      ]
+    },
+    "license.instanceadmin": {
+      "table": "instance_admins",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "license.instanceconfiguration": {
+      "table": "instance_configurations",
+      "primary_key": "id",
+      "soft_deletes": true,
+      "clears_audit_user": true,
+      "created_by_column": "created_by_id",
+      "updated_by_column": "updated_by_id",
+      "relations": []
+    },
+    "sessions.session": {
+      "table": "django_session",
+      "primary_key": "session_key",
+      "soft_deletes": false,
+      "clears_audit_user": false,
+      "created_by_column": null,
+      "updated_by_column": null,
+      "relations": []
+    }
+  }
+}

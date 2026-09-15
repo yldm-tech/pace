@@ -211,3 +211,26 @@ The worker's schema test uses the same rollback-only approach:
 ```bash
 WORKER_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/worker -run TestMaintenanceTasksAgainstDjangoSchema
 ```
+
+### Relation graph
+
+`soft_delete_related_objects` runs on Go as well. The Django task walks the
+model metadata at runtime to find reverse relations and their `on_delete`
+behavior, and PostgreSQL cannot stand in for that: Django creates its foreign
+keys without `ON DELETE` actions, so the catalog knows the graph but not whether
+a relation cascades or nulls. `tools/generate_relation_graph.py` exports that
+metadata to `internal/worker/relation_graph.json`, which the worker embeds, and
+the workflow regenerates it and fails on any difference so the file cannot drift
+away from the models.
+
+Regenerate it from `apps/api` after changing a model:
+
+```bash
+python ../api-go/tools/generate_relation_graph.py > ../api-go/internal/worker/relation_graph.json
+```
+
+The cascade reproduces one destructive Django behavior worth knowing about:
+`BaseModel.save` blanks `created_by` and `updated_by` whenever there is no
+current user, and a worker never has one, so every row the cascade touches loses
+those columns. Models that stop at `AuditModel`, such as `ProjectIdentifier`,
+keep theirs, and the generated graph records which is which.

@@ -57,9 +57,16 @@ func main() {
 		WebhookLogDays:     retentionDays("WEBHOOK_LOG_RETENTION_DAYS", 14),
 	}, logger)
 
+	deletions, err := worker.NewDeletionTasks(db, logger)
+	if err != nil {
+		logger.Error("load relation graph", "error", err)
+		os.Exit(1)
+	}
+
 	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
 	tasks.Register(consumer)
 	maintenance.Register(consumer)
+	deletions.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
