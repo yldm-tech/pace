@@ -866,7 +866,7 @@ func TestCommunityProxyCutsOverTheWorkspaceIssueList(t *testing.T) {
 		t.Error("the workspace work item list is not cut over to Go")
 	}
 	for _, route := range []string{
-		// The per-person list takes the same filters but is a different view and is not migrated.
+		// The per-person list takes the same filters but is a different view, served by the profile matcher.
 		"/api/workspaces/acme/user-issues/11111111-2222-3333-4444-555555555555/",
 		// A project's own list is served by its own matcher.
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/",
@@ -925,6 +925,7 @@ func TestCommunityProxyCutsOverOnePersonsCornerOfAWorkspace(t *testing.T) {
 		"/api/workspaces/acme/user-stats/" + person + "/",
 		"/api/workspaces/acme/user-activity/" + person + "/",
 		"/api/workspaces/acme/user-activity/" + person + "/export/",
+		"/api/workspaces/acme/user-issues/" + person + "/",
 		"/api/workspaces/acme/recent-visits/",
 		"/api/workspaces/acme/project-members/",
 	} {

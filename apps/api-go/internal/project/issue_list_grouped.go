@@ -82,6 +82,9 @@ type issueGroupValuesQuery struct {
 	Extra string
 	// FromFiltered says the values come from the filtered issues themselves rather than from a reference table.
 	FromFiltered bool
+	// UnscopedTable and UnscopedColumn are where the values come from when the list spans the workspace and there is no project to narrow to. Only the assignees need them, because the membership they read is a different table at each level.
+	UnscopedTable  string
+	UnscopedColumn string
 }
 
 // issueGroupValues describes where each group-by's known values come from.
@@ -97,7 +100,9 @@ var issueGroupValues = map[string]issueGroupValuesQuery{
 	// The project list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 	"project_id": {Table: "projects", Column: "id"},
 	// Assignees come from the membership rather than from a reference table, and carry no None.
-	"assignees__id": {Table: "project_members", Column: "member_id", ProjectScoped: true, Extra: "is_active = TRUE"},
+	// Across the whole workspace it is the workspace's membership rather than a project's, which is a different table rather than the same one unnarrowed.
+	"assignees__id": {Table: "project_members", Column: "member_id", ProjectScoped: true, Extra: "is_active = TRUE",
+		UnscopedTable: "workspace_members", UnscopedColumn: "member_id"},
 
 	// These three read the distinct values out of the filtered issues themselves.
 	"target_date": {FromFiltered: true, Column: "target_date"},

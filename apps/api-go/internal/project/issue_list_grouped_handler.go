@@ -181,16 +181,20 @@ func (handler *Handler) issueGroupValueList(ctx context.Context, request issueLi
 		return values, nil
 	}
 
-	query := handler.db.WithContext(ctx).Table(source.Table+" g").
+	table, column := source.Table, source.Column
+	if request.projectID == "" && source.UnscopedTable != "" {
+		table, column = source.UnscopedTable, source.UnscopedColumn
+	}
+	query := handler.db.WithContext(ctx).Table(table+" g").
 		Joins("JOIN workspaces gw ON gw.id = g.workspace_id").
 		Where("gw.slug = ?", request.slug)
-	if source.ProjectScoped {
+	if source.ProjectScoped && request.projectID != "" {
 		query = query.Where("g.project_id = ?", request.projectID)
 	}
 	if source.Extra != "" {
 		query = query.Where("g." + source.Extra)
 	}
-	if err := query.Pluck("g."+source.Column, &values).Error; err != nil {
+	if err := query.Pluck("g."+column, &values).Error; err != nil {
 		return nil, err
 	}
 	if source.WithNone {
