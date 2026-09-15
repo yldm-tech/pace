@@ -103,6 +103,29 @@ func TestCommunityProxyCutsOverOnlyWorkspaceThemeRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyWorkspaceUserPropertiesRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_user_properties")
+	for _, route := range []string{
+		"/api/workspaces/acme/user-properties/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace User Properties route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		"/api/workspaces/acme/user-properties/extra/",
+		"/api/workspaces/acme/workspace-themes/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_user_properties api-go:8000") {
+		t.Error("community proxy is missing the Workspace User Properties reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")

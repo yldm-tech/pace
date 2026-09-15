@@ -131,4 +131,14 @@ func TestWorkspaceModelsAgainstDjangoSchema(t *testing.T) {
 	}).Error; err != nil {
 		t.Fatalf("soft-delete workspace theme through Django schema: %v", err)
 	}
+	properties, err := handler.getOrCreateUserProperties(ctx, workspace.Slug, user.ID)
+	if err != nil {
+		t.Fatalf("create workspace user properties through Django schema: %v", err)
+	}
+	if properties.NavigationProjectLimit != 10 || properties.NavigationControlPreference != navigationAccordion {
+		t.Fatalf("workspace user properties defaults = %#v", properties)
+	}
+	if got := userPropertiesJSON(properties)["filters"]; got == nil {
+		t.Fatal("workspace user properties filters were not serialized")
+	}
 }
