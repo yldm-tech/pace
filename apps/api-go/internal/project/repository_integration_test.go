@@ -301,6 +301,96 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatalf("label_ids = %v, want the attached label", issueRowResult.LabelIDs)
 	}
 
+	// Sub-issues: the annotated read has to agree with the issue_objects manager, which hides more than soft-deleted rows.
+	insertIssue := func(name string, stateID *string, isDraft bool, archived bool, createdAt time.Time) string {
+		childID, err := newUUID()
+		if err != nil {
+			t.Fatal(err)
+		}
+		var archivedAt *time.Time
+		if archived {
+			archivedAt = &createdAt
+		}
+		err = transaction.Exec(
+			`INSERT INTO issues (id, created_at, updated_at, created_by_id, project_id, workspace_id,
+				name, description_json, description_html, priority, sequence_id, sort_order, is_draft,
+				parent_id, state_id, archived_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, '{}', '<p></p>', 'none', 1, 65535, ?, ?, ?, ?)`,
+			childID, createdAt, createdAt, user.ID, project.ID, workspaceID, name,
+			isDraft, issueID, stateID, archivedAt,
+		).Error
+		if err != nil {
+			t.Fatalf("create sub-issue through Django schema: %v", err)
+		}
+		return childID
+	}
+	startedState := states[2].ID
+	older := now.Add(-time.Hour)
+	visibleChild := insertIssue("Visible child "+suffix, &startedState, false, false, older)
+	newestChild := insertIssue("Newest child "+suffix, nil, false, false, now)
+	insertIssue("Draft child "+suffix, &startedState, true, false, now)
+	insertIssue("Archived child "+suffix, &startedState, false, true, now)
+
+	triageStateID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Create(&State{
+		ID: triageStateID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID, Name: "Triage",
+		Color: "#ff7700", Sequence: 65535, Group: "triage", IsTriage: true,
+	}).Error
+	if err != nil {
+		t.Fatalf("create triage state through Django schema: %v", err)
+	}
+	insertIssue("Triage child "+suffix, &triageStateID, false, false, now)
+
+	subIssues, err := handler.subIssueRows(ctx, slug, project.ID, issueID, "-created_at")
+	if err != nil {
+		t.Fatalf("read sub-issues: %v", err)
+	}
+	if len(subIssues) != 2 {
+		names := make([]string, 0, len(subIssues))
+		for _, sub := range subIssues {
+			names = append(names, sub.Name)
+		}
+		t.Fatalf("sub-issues = %v, want only the two issue_objects rows", names)
+	}
+	// -created_at is the default ordering, so the newest child comes first.
+	if subIssues[0].ID != newestChild || subIssues[1].ID != visibleChild {
+		t.Fatalf("sub-issue order = %s, %s; want newest first", subIssues[0].Name, subIssues[1].Name)
+	}
+	// state_group is annotated off the joined state, and is null when the issue has none.
+	if subIssues[0].StateGroup != nil {
+		t.Fatalf("state_group = %v, want null for a stateless issue", *subIssues[0].StateGroup)
+	}
+	if subIssues[1].StateGroup == nil || *subIssues[1].StateGroup != states[2].Group {
+		t.Fatalf("state_group = %v, want %q", subIssues[1].StateGroup, states[2].Group)
+	}
+	// Unlike the detail queryset, every count here coalesces to zero rather than null.
+	for _, sub := range subIssues {
+		if sub.LinkCount == nil || sub.AttachmentCount == nil || sub.SubIssuesCount == nil {
+			t.Fatalf("sub-issue %s has a null count, but the endpoint coalesces every one", sub.Name)
+		}
+		if countOrZero(sub.SubIssuesCount) != 0 || len(sub.LabelIDs) != 0 || len(sub.AssigneeIDs) != 0 {
+			t.Fatalf("sub-issue %s = %#v", sub.Name, sub)
+		}
+	}
+	// Ordering by a related minimum has to survive contact with the real schema.
+	if _, err := handler.subIssueRows(ctx, slug, project.ID, issueID, "-labels__name"); err != nil {
+		t.Fatalf("order sub-issues by label name: %v", err)
+	}
+	for _, orderBy := range []string{"priority", "-state__group", "state__name", "-assignees__first_name", "issue_module__module__name", "-sequence_id"} {
+		if _, err := handler.subIssueRows(ctx, slug, project.ID, issueID, orderBy); err != nil {
+			t.Fatalf("order sub-issues by %s: %v", orderBy, err)
+		}
+	}
+	// The assign route re-reads by id, which must apply the same manager.
+	byID, err := handler.subIssuesByID(ctx, slug, project.ID, []string{visibleChild, newestChild})
+	if err != nil || len(byID) != 2 {
+		t.Fatalf("re-read sub-issues by id: %v, got %d", err, len(byID))
+	}
+
 	// The unique constraints Django relies on must reject a duplicate name.
 	duplicateID, err := newUUID()
 	if err != nil {
