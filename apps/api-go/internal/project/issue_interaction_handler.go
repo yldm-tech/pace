@@ -431,6 +431,8 @@ type issueActivity struct {
 	Epoch           time.Time
 	// SubscriberSet marks the one call that turns the subscriber flag off.
 	SubscriberSet bool
+	// IntakeID names the intake link an activity belongs to, which the intake routes send and nothing else does.
+	IntakeID string
 }
 
 // publishIssueActivity queues issue_activity, which still runs on the Python
@@ -454,6 +456,9 @@ func (handler *Handler) publishIssueActivity(c *gin.Context, activity issueActiv
 	}
 	if activity.SubscriberSet {
 		keywords["subscriber"] = false
+	}
+	if activity.IntakeID != "" {
+		keywords["intake"] = activity.IntakeID
 	}
 	return handler.tasks.PublishIssueActivity(c.Request.Context(), keywords)
 }
