@@ -145,6 +145,33 @@ func TestCommunityProxyCutsOverOnlyWorkspaceSidebarPreferencesRoutes(t *testing.
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyWorkspaceHomePreferencesRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_home_preferences")
+	for _, route := range []string{
+		"/api/workspaces/acme/home-preferences/",
+		"/api/workspaces/acme/home-preferences/quick_links/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace Home Preferences route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		"/api/workspaces/acme/home-preferences/quick_links/extra/",
+		"/api/workspaces/acme/sidebar-preferences/",
+		"/api/workspaces/acme/quick-links/",
+		"/api/workspaces/acme/recent-visits/",
+		"/api/workspaces/acme/stickies/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_home_preferences api-go:8000") {
+		t.Error("community proxy is missing the Workspace Home Preferences reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")

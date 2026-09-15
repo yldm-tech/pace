@@ -144,4 +144,37 @@ func TestWorkspaceModelsAgainstDjangoSchema(t *testing.T) {
 	if err := handler.ensureSidebarPreferencesFor(ctx, workspace.Slug, user); err != nil {
 		t.Fatalf("create sidebar preferences through Django schema: %v", err)
 	}
+
+	if err := handler.ensureHomePreferencesFor(ctx, workspace.Slug, user); err != nil {
+		t.Fatalf("create home preferences through Django schema: %v", err)
+	}
+	var homePreferences []WorkspaceHomePreference
+	if err := transaction.Where("workspace_id = ? AND user_id = ? AND deleted_at IS NULL", workspace.ID, user.ID).
+		Order("sort_order DESC").Find(&homePreferences).Error; err != nil {
+		t.Fatalf("read home preferences through Django schema: %v", err)
+	}
+	if len(homePreferences) != len(workspaceHomePreferenceKeys) {
+		t.Fatalf("home preferences = %#v", homePreferences)
+	}
+	for index, preference := range homePreferences {
+		if preference.Key != workspaceHomePreferenceKeys[index] {
+			t.Fatalf("home preference %d = %#v", index, preference)
+		}
+		if preference.SortOrder != float64(999-index) || !preference.IsEnabled || preference.CreatedByID != nil {
+			t.Fatalf("home preference %d = %#v", index, preference)
+		}
+	}
+	// Re-running the seed must not duplicate or renumber the existing rows.
+	if err := handler.ensureHomePreferencesFor(ctx, workspace.Slug, user); err != nil {
+		t.Fatalf("re-run home preference seed: %v", err)
+	}
+	var seeded int64
+	if err := transaction.Model(&WorkspaceHomePreference{}).
+		Where("workspace_id = ? AND user_id = ? AND deleted_at IS NULL", workspace.ID, user.ID).
+		Count(&seeded).Error; err != nil {
+		t.Fatalf("count home preferences: %v", err)
+	}
+	if seeded != int64(len(workspaceHomePreferenceKeys)) {
+		t.Fatalf("home preference count = %d", seeded)
+	}
 }

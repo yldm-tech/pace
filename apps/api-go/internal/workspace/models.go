@@ -118,6 +118,23 @@ type WorkspaceUserPreference struct {
 
 func (WorkspaceUserPreference) TableName() string { return "workspace_user_preferences" }
 
+type WorkspaceHomePreference struct {
+	ID          string         `gorm:"column:id;type:uuid;primaryKey"`
+	CreatedAt   time.Time      `gorm:"column:created_at"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at"`
+	CreatedByID *string        `gorm:"column:created_by_id;type:uuid"`
+	UpdatedByID *string        `gorm:"column:updated_by_id;type:uuid"`
+	DeletedAt   *time.Time     `gorm:"column:deleted_at"`
+	WorkspaceID string         `gorm:"column:workspace_id;type:uuid"`
+	UserID      string         `gorm:"column:user_id;type:uuid"`
+	Key         string         `gorm:"column:key"`
+	IsEnabled   bool           `gorm:"column:is_enabled"`
+	Config      auth.JSONValue `gorm:"column:config;type:jsonb"`
+	SortOrder   float64        `gorm:"column:sort_order"`
+}
+
+func (WorkspaceHomePreference) TableName() string { return "workspace_home_preferences" }
+
 type workspaceRow struct {
 	Workspace
 	TotalMembers int `gorm:"column:total_members"`

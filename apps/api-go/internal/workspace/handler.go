@@ -132,6 +132,8 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.PATCH("/api/workspaces/:slug/user-properties/", handler.authenticated(handler.userPropertiesPatch))
 	router.GET("/api/workspaces/:slug/sidebar-preferences/", handler.authenticated(handler.sidebarPreferencesGet))
 	router.PATCH("/api/workspaces/:slug/sidebar-preferences/", handler.authenticated(handler.sidebarPreferencesPatch))
+	router.GET("/api/workspaces/:slug/home-preferences/", handler.authenticated(handler.homePreferencesGet))
+	router.PATCH("/api/workspaces/:slug/home-preferences/:key/", handler.authenticated(handler.homePreferencePatch))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
