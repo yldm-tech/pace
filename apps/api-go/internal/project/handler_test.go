@@ -1,0 +1,231 @@
+package project
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+)
+
+func TestProjectRouteInventory(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	NewHandler(nil, nil, Settings{}).Register(router)
+	expected := map[string]bool{
+		"GET /api/workspaces/:slug/projects/":        true,
+		"POST /api/workspaces/:slug/projects/":       true,
+		"GET /api/workspaces/:slug/projects/:id/":    true,
+		"PATCH /api/workspaces/:slug/projects/:id/":  true,
+		"DELETE /api/workspaces/:slug/projects/:id/": true,
+	}
+	for _, route := range router.Routes() {
+		key := route.Method + " " + route.Path
+		if !expected[key] {
+			t.Fatalf("unexpected project route %s", key)
+		}
+		delete(expected, key)
+	}
+	if len(expected) != 0 {
+		t.Fatalf("missing project routes: %#v", expected)
+	}
+}
+
+func TestProjectRoutesRequireDjangoSession(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	NewHandler(nil, nil, Settings{}).Register(router)
+	for _, test := range []struct {
+		method string
+		path   string
+	}{
+		{method: http.MethodGet, path: "/api/workspaces/pace/projects/"},
+		{method: http.MethodPost, path: "/api/workspaces/pace/projects/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
+		{method: http.MethodPatch, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
+		{method: http.MethodDelete, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
+	} {
+		request := httptest.NewRequest(test.method, test.path, nil)
+		response := httptest.NewRecorder()
+		router.ServeHTTP(response, request)
+		if response.Code != http.StatusUnauthorized {
+			t.Fatalf("%s %s status = %d", test.method, test.path, response.Code)
+		}
+		if response.Body.String() != `{"detail":"Authentication credentials were not provided."}` {
+			t.Fatalf("%s %s body = %s", test.method, test.path, response.Body.String())
+		}
+	}
+}
+
+func TestProjectUUIDRoutesRejectMalformedIdentifiers(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	NewHandler(nil, nil, Settings{}).Register(router)
+	request := httptest.NewRequest(http.MethodGet, "/api/workspaces/pace/projects/not-a-uuid/", nil)
+	response := httptest.NewRecorder()
+	router.ServeHTTP(response, request)
+	if response.Code != http.StatusNotFound {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
+	}
+}
+
+func TestProjectNameAndIdentifierValidationMatchesDjango(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	for _, test := range []struct {
+		name string
+		body string
+		want string
+	}{
+		{name: "missing name", body: `{"identifier":"PACE"}`, want: `{"name":["This field is required."]}`},
+		{name: "blank name", body: `{"name":"   ","identifier":"PACE"}`, want: `{"name":["This field may not be blank."]}`},
+		{name: "null name", body: `{"name":null,"identifier":"PACE"}`, want: `{"name":["This field may not be null."]}`},
+		{name: "special characters in name", body: `{"name":"Pace!","identifier":"PACE"}`, want: `{"name":["PROJECT_NAME_CANNOT_CONTAIN_SPECIAL_CHARACTERS"]}`},
+		{name: "long identifier", body: `{"name":"Pace","identifier":"ABCDEFGHIJKLM"}`, want: `{"identifier":["Ensure this field has no more than 12 characters."]}`},
+		{name: "special characters in identifier", body: `{"name":"Pace","identifier":"PA-CE"}`, want: `{"identifier":["PROJECT_IDENTIFIER_CANNOT_CONTAIN_SPECIAL_CHARACTERS"]}`},
+		{name: "invalid network", body: `{"name":"Pace","identifier":"PACE","network":1}`, want: `{"network":["\"1\" is not a valid choice."]}`},
+		{name: "archive_in above bound", body: `{"name":"Pace","identifier":"PACE","archive_in":13}`, want: `{"archive_in":["Ensure this value is less than or equal to 12."]}`},
+		{name: "close_in below bound", body: `{"name":"Pace","identifier":"PACE","close_in":-1}`, want: `{"close_in":["Ensure this value is greater than or equal to 0."]}`},
+		{name: "invalid timezone", body: `{"name":"Pace","identifier":"PACE","timezone":"Mars/Olympus"}`, want: `{"timezone":["\"Mars/Olympus\" is not a valid choice."]}`},
+		{name: "invalid boolean", body: `{"name":"Pace","identifier":"PACE","cycle_view":"maybe"}`, want: `{"cycle_view":["Must be a valid boolean."]}`},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			response := runProjectFields(t, test.body, false)
+			if response.Code != http.StatusBadRequest || response.Body.String() != test.want {
+				t.Fatalf("response = %d %s", response.Code, response.Body.String())
+			}
+		})
+	}
+}
+
+func TestProjectPartialUpdateSkipsRequiredFields(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	response := runProjectFields(t, `{"cycle_view":true}`, true)
+	if response.Code != http.StatusOK {
+		t.Fatalf("response = %d %s", response.Code, response.Body.String())
+	}
+}
+
+// runProjectFields exercises validation that needs no database. The name and
+// identifier uniqueness checks are covered by the shared-schema test.
+func runProjectFields(t *testing.T, body string, partial bool) *httptest.ResponseRecorder {
+	t.Helper()
+	router := gin.New()
+	handler := NewHandler(nil, nil, Settings{})
+	router.POST("/projects", func(c *gin.Context) {
+		var parsed map[string]json.RawMessage
+		if err := c.ShouldBindJSON(&parsed); err != nil {
+			handler.invalidDetail(c)
+			return
+		}
+		_, _ = handler.projectFields(c, parsed, partial)
+	})
+	request := httptest.NewRequest(http.MethodPost, "/projects", strings.NewReader(body))
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+	router.ServeHTTP(response, request)
+	return response
+}
+
+func TestProjectSerializationCoversDjangoFields(t *testing.T) {
+	now := time.Date(2026, time.September, 15, 4, 0, 0, 0, time.UTC)
+	lead := "lead-id"
+	data := projectFieldsJSON(Project{
+		ID: "project-id", CreatedAt: now, UpdatedAt: now, WorkspaceID: "workspace-id",
+		Name: "Pace", Identifier: "PACE", Network: 2, PageView: true, Timezone: "UTC",
+		ProjectLeadID: &lead, LogoProps: emptyJSON(),
+	})
+	for _, field := range []string{
+		"id", "created_at", "updated_at", "created_by", "updated_by", "deleted_at",
+		"name", "description", "description_text", "description_html", "network",
+		"workspace", "identifier", "default_assignee", "project_lead", "emoji",
+		"icon_prop", "module_view", "cycle_view", "issue_views_view", "page_view",
+		"intake_view", "is_time_tracking_enabled", "is_issue_type_enabled",
+		"guest_view_all_features", "cover_image", "cover_image_asset", "estimate",
+		"archive_in", "close_in", "logo_props", "default_state", "archived_at",
+		"timezone", "external_source", "external_id",
+	} {
+		if _, ok := data[field]; !ok {
+			t.Errorf("serialized project is missing %q", field)
+		}
+	}
+	if len(data) != 36 {
+		t.Fatalf("serialized project has %d fields, want the 36 Django model fields", len(data))
+	}
+}
+
+func TestProjectCoverImagePrefersTheAsset(t *testing.T) {
+	asset := "asset-id"
+	image := "https://cdn.pace.test/cover.png"
+	if got := coverImageURL(Project{CoverImageAssetID: &asset, CoverImage: &image}); got != "/api/assets/v2/static/asset-id/" {
+		t.Fatalf("cover image url = %v", got)
+	}
+	if got := coverImageURL(Project{CoverImage: &image}); got != image {
+		t.Fatalf("cover image url = %v", got)
+	}
+	if got := coverImageURL(Project{}); got != nil {
+		t.Fatalf("cover image url = %v", got)
+	}
+}
+
+func TestProjectDefaultStatesMatchDjango(t *testing.T) {
+	if len(defaultStates) != 6 {
+		t.Fatalf("default states = %d", len(defaultStates))
+	}
+	wantGroups := []string{"backlog", "unstarted", "started", "completed", "cancelled", "triage"}
+	wantSequences := []float64{15000, 25000, 35000, 45000, 55000, 65000}
+	for index, state := range defaultStates {
+		if state.Group != wantGroups[index] || state.Sequence != wantSequences[index] {
+			t.Fatalf("default state %d = %#v", index, state)
+		}
+		// Only Backlog carries default=True in DEFAULT_STATES.
+		if (index == 0) != state.Default {
+			t.Fatalf("default state %d default flag = %v", index, state.Default)
+		}
+	}
+}
+
+func TestProjectDescriptionHTMLIsSanitized(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	var stored auth.JSONValue
+	router.POST("/projects", func(c *gin.Context) {
+		value, ok := sanitizeDescriptionHTML(c, auth.JSONValue([]byte(`"<p>keep<script>alert(1)</script></p>"`)))
+		if !ok {
+			return
+		}
+		stored = value
+		c.Status(http.StatusOK)
+	})
+	request := httptest.NewRequest(http.MethodPost, "/projects", strings.NewReader(`{}`))
+	response := httptest.NewRecorder()
+	router.ServeHTTP(response, request)
+	if response.Code != http.StatusOK || string(stored) != `"<p>keep</p>"` {
+		t.Fatalf("stored description = %s, response = %d", stored, response.Code)
+	}
+}
+
+func TestProjectNextWorkItemSequenceTreatsZeroAsEmpty(t *testing.T) {
+	// Django computes (max + 1) if max else 1, so a stored zero yields one.
+	for _, test := range []struct {
+		maximum *int64
+		want    int64
+	}{
+		{maximum: nil, want: 1},
+		{maximum: pointer(int64(0)), want: 1},
+		{maximum: pointer(int64(7)), want: 8},
+	} {
+		got := int64(1)
+		if test.maximum != nil && *test.maximum != 0 {
+			got = *test.maximum + 1
+		}
+		if got != test.want {
+			t.Fatalf("next sequence for %v = %d, want %d", test.maximum, got, test.want)
+		}
+	}
+}
+
+func pointer[T any](value T) *T { return &value }

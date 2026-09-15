@@ -6,7 +6,7 @@ import (
 )
 
 func TestCeleryMagicTaskUsesProtocolV2Shape(t *testing.T) {
-	message, err := celeryMessage(magicLinkTaskName, []any{"user@pace.test", "magic_user@pace.test", "123456"})
+	message, err := celeryMessage(magicLinkTaskName, []any{"user@pace.test", "magic_user@pace.test", "123456"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -36,7 +36,7 @@ func TestWorkspaceCeleryTaskNamesMatchDjangoWorkers(t *testing.T) {
 		{name: softDeleteRelatedObjectsTaskName, arguments: []any{"db", "workspace", "workspace-id", nil}},
 	}
 	for _, test := range tests {
-		message, err := celeryMessage(test.name, test.arguments)
+		message, err := celeryMessage(test.name, test.arguments, nil)
 		if err != nil {
 			t.Fatal(err)
 		}

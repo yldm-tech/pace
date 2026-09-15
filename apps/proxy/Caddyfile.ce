@@ -40,6 +40,8 @@
 	reverse_proxy @go_workspace_home_preferences api-go:8000
 	@go_workspace_quick_links path_regexp go_workspace_quick_links ^/api/workspaces/[^/]+/quick-links/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_workspace_quick_links api-go:8000
+	@go_project_core path_regexp go_project_core ^/api/workspaces/[^/]+/projects/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_project_core api-go:8000
 
 	reverse_proxy /api/* api:8000
 

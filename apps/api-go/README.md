@@ -42,6 +42,12 @@ The core Workspace schema test uses the same rollback-only approach:
 WORKSPACE_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/workspace -run TestWorkspaceModelsAgainstDjangoSchema
 ```
 
+The core Project schema test follows the same pattern:
+
+```bash
+PROJECT_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/project -run TestProjectModelsAgainstDjangoSchema
+```
+
 Health endpoints are `/api/health`, `/api/health/db`, and `/ready`.
 
 ## Migrated module: authentication
@@ -126,3 +132,25 @@ workspace resolution in `WorkspaceBaseModel.save`, the soft delete and its
 related-object task, and the two different not-found bodies the retrieve and
 partial-update routes return. `validURL` is a port of Django 5.2's
 `URLValidator` and is verified against its output.
+
+## Migrated module: core project
+
+Core Project list, retrieve, create, partial-update, and delete routes are
+implemented in `internal/project`. They keep Django's two different list
+shapes, the annotated queryset behind `ProjectListSerializer`, the guest and
+member visibility narrowing, and the create side effects: the project
+identifier row, the acting user and the project lead as project admins, each
+admin's `ProjectUserProperty` ordered ahead of their existing projects, and the
+six default states inserted the way `bulk_create` does, leaving the slug empty.
+`description_html` goes through `internal/htmlsanitizer` the way
+`ProjectSerializer.validate` runs it through nh3.
+
+Updating re-derives `intake_view` from the `inbox_view` alias, refuses archived
+projects, and creates the default Intake when the view is switched on. Deleting
+soft-deletes the project with its deploy boards and favorites and queues the
+same Celery tasks. The Celery publisher gained keyword-argument support here,
+because `model_activity`, `webhook_activity`, and `recent_visited_task` are all
+called with keywords.
+
+`projects/details/`, `project-identifiers/`, project members, invitations,
+archiving, favorites, and deploy boards remain on Django.
