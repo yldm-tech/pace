@@ -133,6 +133,16 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: the issue detail list
+
+`GET` on `issues-detail/`, a flat paginated list that never groups. It differs from `issues/` in three ways.
+
+It narrows a guest's view through a **permission subquery** rather than a separate check: a member above guest sees everything, a guest sees everything when the project opens all features to guests, and otherwise only what they raised. Django writes those three as one `Exists`, and so does this.
+
+Its rows go through `IssueListDetailSerializer`, which is a plain twenty-three field dictionary rather than a `values()` projection. It carries no `state__group`, no `deleted_at` and no `description_html`, and its three counts are the **raw** annotations rather than coalesced ones — so a null stays null here where the paginated list turns it into zero.
+
+`expand` may ask for `issue_relation` or `issue_related`, which are read in one query each rather than per issue. A relation whose far side is gone is skipped rather than rendered as null, and an expansion that was asked for is present as an empty list rather than absent, so a client can map over it either way.
+
 ## Migrated module: the bulk date update
 
 `POST` on `issue-dates/`, which is what dragging a bar in the timeline view sends.
