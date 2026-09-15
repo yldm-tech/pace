@@ -1271,6 +1271,18 @@ A value Python would write as `NaN` or `Infinity` is not JSON, and nothing in th
 
 `drf.DecodeJSON` reads blob columns with `UseNumber`, so a number inside `view_props` or `progress_snapshot` keeps the literal text it was stored with. psycopg hands Django the blob's own parse, so an integer stored there comes back an integer; Go's plain decoder turns every blob number into a `float64`, and after this change `Respond` would have rewritten all of them as floats. The three package-local `decodeJSON` helpers now call it.
 
+## Shared: the lxml round-trip
+
+The external API's work item serializer parses `description_html` with `lxml.html.fromstring` and writes it back with `tostring` before the sanitizer ever sees it, so what gets stored is libxml2's reading of the markup rather than the markup the caller sent. `internal/htmlsanitizer.RoundTrip` is that pass, and `testdata/lxml_fragment.tsv` is what lxml really writes for sixty-five fragments, generated rather than written by hand.
+
+`fromstring` does not return a fragment. It parses a whole document and then decides what to hand back: the single element the body holds, or the body itself retagged as a `div` or a `span` depending on whether a **block-level** tag is anywhere inside it, or — when nothing reached the body at all, as for a lone `<script>` or `<title>` — the document. So `<p>a</p><p>b</p>` comes back wrapped in a `div` and `<span>a</span><span>b</span>` in a `span`, and plain text comes back as `<span>plain text</span>`.
+
+Markup that parses to nothing is a `ParserError` rather than an empty string, which is how `description_html: ""` comes to be **refused** with `Invalid HTML passed` rather than stored. A comment on its own is refused the same way.
+
+Two details of the writing are libxml2's rather than the HTML specification's. A void element is written without a closing tag or a slash, so `<hr/>` comes back as `<hr>`. And an attribute value holding a double quote and no single quote is written in single quotes rather than escaped, so `title='he said "hi"'` survives as it was written.
+
+The one place the Go port does not follow lxml is the `tbody` an HTML5 parser implies around a table's rows, which libxml2 never inserts. Whether the element was implied cannot be read off the parsed tree, so it is read off the markup: a fragment that never says `tbody` cannot have one in its output. A fragment that says it for one table and leaves it out of a second keeps both — markup no editor produces.
+
 ## Shared: editor HTML sanitization
 
 `internal/htmlsanitizer` ports `plane.utils.content_validator.validate_html_content`,
