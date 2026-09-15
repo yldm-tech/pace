@@ -1,0 +1,83 @@
+name: Go API
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/go-api.yml"
+      - "apps/api-go/**"
+      - "apps/api/plane/db/migrations/**"
+      - "apps/proxy/Caddyfile.ce"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test against Django PostgreSQL schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15.7-alpine
+        env:
+          POSTGRES_USER: pace
+          POSTGRES_PASSWORD: pace
+          POSTGRES_DB: pace
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pace -d pace"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    env:
+      DATABASE_URL: postgresql://pace:pace@localhost:5432/pace
+      AUTH_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace
+      DJANGO_SETTINGS_MODULE: plane.settings.test
+      SECRET_KEY: pace-ci-schema-compatibility-key
+      REDIS_URL: redis://localhost:6379/0
+      WEB_URL: http://localhost:8000
+      APP_BASE_URL: http://localhost:3000
+      SKIP_ENV_VAR: "0"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: apps/api/requirements/base.txt
+
+      - name: Install Django dependencies
+        run: python -m pip install --disable-pip-version-check -r apps/api/requirements/base.txt
+
+      - name: Apply authoritative Django schema
+        working-directory: apps/api
+        run: |
+          mkdir -p plane/static-assets/collected-static
+          python manage.py migrate --noinput
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: apps/api-go/go.mod
+          cache-dependency-path: apps/api-go/go.sum
+
+      - name: Test Go API
+        working-directory: apps/api-go
+        run: go test -count=1 ./...
+
+      - name: Test Go API with race detector
+        working-directory: apps/api-go
+        run: go test -race -count=1 ./...
+
+      - name: Vet Go API
+        working-directory: apps/api-go
+        run: go vet ./...
