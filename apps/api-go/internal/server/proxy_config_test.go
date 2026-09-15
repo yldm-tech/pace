@@ -813,6 +813,30 @@ func TestCommunityProxyCutsOverTheProjectDetailRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheStickies(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_stickies")
+	for _, route := range []string{
+		"/api/workspaces/acme/stickies/",
+		"/api/workspaces/acme/stickies/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Sticky route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The external API's stickies are a different application and were cut over separately.
+		"/api/v1/workspaces/acme/stickies/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the sticky matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_stickies api-go:8000") {
+		t.Error("community proxy is missing the sticky reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheFavorites(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_favorites")
