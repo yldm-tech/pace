@@ -85,7 +85,16 @@ name uniqueness, and related-object soft-delete task behavior.
 The workspace user properties GET and PATCH routes are implemented for the
 current user's filters, display settings, rich filters, and navigation settings.
 
-## Module in progress: workspace user preferences
+## Migrated module: workspace user preferences
 
-The workspace sidebar preference GET and PATCH routes are being migrated with
-the seven Django preference keys, default ordering, and pinned-item behavior.
+The workspace sidebar preference GET and PATCH routes are implemented with the
+seven Django preference keys, default ordering, and pinned-item behavior. Like
+Django, seeding goes through a bulk insert that leaves `created_by` null, and
+the PATCH route writes only `is_pinned` and `sort_order`.
+
+## Migrated module: workspace home preferences
+
+The workspace home preference GET and PATCH routes seed the `quick_links`,
+`recents`, and `my_stickies` widgets with Django's descending sort order,
+return the stored `config` on the list route only, and reject writes from
+non-members with the `allow_permission` error body.

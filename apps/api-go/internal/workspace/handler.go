@@ -132,6 +132,8 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.PATCH("/api/workspaces/:slug/user-properties/", handler.authenticated(handler.userPropertiesPatch))
 	router.GET("/api/workspaces/:slug/sidebar-preferences/", handler.authenticated(handler.sidebarPreferencesGet))
 	router.PATCH("/api/workspaces/:slug/sidebar-preferences/", handler.authenticated(handler.sidebarPreferencesPatch))
+	router.GET("/api/workspaces/:slug/home-preferences/", handler.authenticated(handler.homePreferencesGet))
+	router.PATCH("/api/workspaces/:slug/home-preferences/:key/", handler.authenticated(handler.homePreferencePatch))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
@@ -991,6 +993,17 @@ func (handler *Handler) assetExists(ctx context.Context, assetID string) (bool, 
 	var count int64
 	err := handler.db.WithContext(ctx).Table("file_assets").Where("id = ? AND deleted_at IS NULL", assetID).Count(&count).Error
 	return count > 0, err
+}
+
+// requireWorkspaceMember matches Django's allow_permission decorator, which
+// accepts every workspace role but denies with a different body than the DRF
+// permission classes used by the other workspace routes.
+func (handler *Handler) requireWorkspaceMember(c *gin.Context, user *auth.User) bool {
+	if _, err := handler.workspaceRole(c.Request.Context(), c.Param("slug"), user.ID); err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"error": "You don't have the required permissions."})
+		return false
+	}
+	return true
 }
 
 func (handler *Handler) notFound(c *gin.Context) {
