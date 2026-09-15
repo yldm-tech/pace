@@ -242,6 +242,26 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: the global search
+
+`GET` on `search/`, which runs up to eight searches side by side and returns them under one key each.
+
+**An empty search is not a search for nothing.** The query is passed as `query or None`, so an empty one reaches each filter as nothing at all, every `if query` is skipped, and the endpoint answers with everything the caller can see. An entity nobody knows is dropped from the `entities` list rather than refused.
+
+### The workspace search is not scoped to the workspace
+
+It answers with every workspace the caller belongs to, whatever slug they asked under, and it does not check that the membership is **active** either. The other seven are all scoped to the slug and to active project membership.
+
+### The intake search is the issue search's twin, and differs in two ways
+
+It goes through the **plain** manager rather than `issue_objects`, so an archived, draft or triage issue is eligible — which is the point, since everything in an intake is in triage. And it keeps only what is still **waiting** in or **snoozed** inside an intake.
+
+Both are capped at a hundred rows. The other six are not capped at all.
+
+Pages project **lists** rather than single values, because a page reaches its projects through a link table and can sit in more than one.
+
+The entity search under `entity-search/` is a separate endpoint and stays on Django.
+
 ## Migrated module: the issue search
 
 `GET` on `search-issues/`, the picker behind every "link this to something" box: choosing a parent, a related issue, a sub-issue, or an issue to put in a cycle or a module.
