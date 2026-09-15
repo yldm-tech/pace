@@ -1413,6 +1413,16 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: one person's work item list
+
+`GET /api/workspaces/<slug>/user-issues/<id>/` is implemented and cut over. It is one person's work across the workspace — everything assigned to them, raised by them, or that they are following — and it takes both filter languages and the grouped and sub-grouped paginators.
+
+**The three ways in are ORed.** A work item counts as somebody's if they have it, raised it, or follow it. Django reads that as an id list rather than as a join, which is why a work item assigned to them twice is still one row.
+
+**The narrowing is by the caller, not by the person being asked about.** The list is cut to projects the caller belongs to, so two people looking at the same person's list see different work items.
+
+Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
+
 ## Migrated module: the workspace work item list
 
 `GET /api/workspaces/<slug>/issues/` is implemented and cut over — every work item in the workspace the caller can see, across all their projects. It is the first route to use `internal/complexfilters`, and this piece adds the SQL half of that package.

@@ -171,7 +171,7 @@
 	@go_advance_analytics path_regexp go_advance_analytics ^/api/workspaces/[^/]+/(projects/[0-9A-Fa-f-]+/)?advance-analytics(-stats|-charts)?/$
 	reverse_proxy @go_advance_analytics api-go:8000
 
-	@go_workspace_user path_regexp go_workspace_user ^/api/workspaces/[^/]+/(user-profile/[0-9A-Fa-f-]+/|user-stats/[0-9A-Fa-f-]+/|user-activity/[0-9A-Fa-f-]+/(export/)?|recent-visits/|project-members/)$
+	@go_workspace_user path_regexp go_workspace_user ^/api/workspaces/[^/]+/(user-profile/[0-9A-Fa-f-]+/|user-stats/[0-9A-Fa-f-]+/|user-issues/[0-9A-Fa-f-]+/|user-activity/[0-9A-Fa-f-]+/(export/)?|recent-visits/|project-members/)$
 	reverse_proxy @go_workspace_user api-go:8000
 
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$

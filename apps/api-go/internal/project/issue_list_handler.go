@@ -55,8 +55,12 @@ func (handler *Handler) issueListScope(ctx context.Context, request issueListReq
 	}
 	query := handler.db.WithContext(ctx).Table("issues i").
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
-		Where("w.slug = ? AND i.project_id = ?", request.slug, request.projectID).
+		Where("w.slug = ?", request.slug).
 		Where(predicate, request.baseArguments...)
+	// A list that spans the workspace names no project, and then the only narrowing is the workspace and whatever the caller's own predicates add.
+	if request.projectID != "" {
+		query = query.Where("i.project_id = ?", request.projectID)
+	}
 	for _, join := range request.joins {
 		query = query.Joins(join)
 	}
