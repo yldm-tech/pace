@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"fmt"
+	"github.com/yldm-tech/pace/apps/api-go/internal/projects"
 	"os"
 	"strings"
 	"testing"
@@ -127,11 +128,11 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	if err != nil {
 		t.Fatalf("read default states: %v", err)
 	}
-	if len(states) != len(defaultStates) {
-		t.Fatalf("default states = %d, want %d", len(states), len(defaultStates))
+	if len(states) != len(projects.DefaultStates) {
+		t.Fatalf("default states = %d, want %d", len(states), len(projects.DefaultStates))
 	}
 	for index, state := range states {
-		if state.Name != defaultStates[index].Name || state.Group != defaultStates[index].Group {
+		if state.Name != projects.DefaultStates[index].Name || state.Group != projects.DefaultStates[index].Group {
 			t.Fatalf("default state %d = %#v", index, state)
 		}
 		// bulk_create bypasses State.save, so the slug stays empty.

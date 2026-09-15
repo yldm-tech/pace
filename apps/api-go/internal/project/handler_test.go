@@ -2,6 +2,7 @@ package project
 
 import (
 	"encoding/json"
+	"github.com/yldm-tech/pace/apps/api-go/internal/projects"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -383,12 +384,12 @@ func TestProjectCoverImagePrefersTheAsset(t *testing.T) {
 }
 
 func TestProjectDefaultStatesMatchDjango(t *testing.T) {
-	if len(defaultStates) != 6 {
-		t.Fatalf("default states = %d", len(defaultStates))
+	if len(projects.DefaultStates) != 6 {
+		t.Fatalf("default states = %d", len(projects.DefaultStates))
 	}
 	wantGroups := []string{"backlog", "unstarted", "started", "completed", "cancelled", "triage"}
 	wantSequences := []float64{15000, 25000, 35000, 45000, 55000, 65000}
-	for index, state := range defaultStates {
+	for index, state := range projects.DefaultStates {
 		if state.Group != wantGroups[index] || state.Sequence != wantSequences[index] {
 			t.Fatalf("default state %d = %#v", index, state)
 		}

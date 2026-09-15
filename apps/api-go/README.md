@@ -355,6 +355,23 @@ The row is written and then its author is rewritten from `created_by` — which 
 
 The crawler is asked for the page's title on create, and on update **only when the url actually changed**.
 
+## Migrated external module: the project list and create
+
+`GET` and `POST` on `projects/` are implemented, and the collection is cut over beside the detail.
+
+**A fix to the project shape**, which the detail merged earlier also renders: the serializer reports **forty-four** fields and the port rendered twenty-one. Everything a project carries beyond its name — the five feature switches, the two automation windows, the description, the logo, the timezone, the external pair, the four relations and the two audit users — was missing from the retrieve and the update as well as from the list.
+
+Creating a project is more than a row: the six workflow states come from `DEFAULT_STATES`, the caller is made an administrator, and a named lead who is not the caller is made one too. Every membership seeds a per-person ordering so the new project sits at the top of that person's list. All of it happens in the model rather than in the view, so it now lives in `internal/projects` where both APIs reach it.
+
+Four details are reproduced rather than tidied:
+
+- The identifier is upper-cased and trimmed before anything is written, which is the model's doing rather than the serializer's.
+- A project with no timezone of its own takes the **workspace's**, read on the way in.
+- With no `logo_props` the serializer picks an icon and a colour **at random** from two fixed lists, so two projects made from the same payload do not look alike.
+- The identifier table is read and never written by this endpoint — only the session API writes it — so the identifier check only ever sees what the other API put there. What actually stops a clash is the database, and both of its unique constraints answer with the same message: `The project name is already taken`, even when it was the identifier that clashed, because Django reads the database's own wording and cannot tell them apart.
+
+The lead has to be an **active** member of the workspace and its refusal is reported under its own key; the default assignee only has to be a member at all and its refusal is a non-field one. Two checks that read alike and are not alike.
+
 ## Migrated external module: the project detail
 
 `GET`, `PATCH` and `DELETE` on `/api/v1/workspaces/<slug>/projects/<uuid>/`.
