@@ -44,9 +44,11 @@
 	reverse_proxy @go_project_core api-go:8000
 	@go_project_members path_regexp go_project_members ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(members/([0-9A-Fa-f-]+/|leave/)?|project-members/me/|project-views/|preferences/member/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_project_members api-go:8000
-	@go_project_labels path_regexp go_project_labels ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issue-labels/([0-9A-Fa-f-]+/)?|bulk-create-labels/|bulk-archive-issues/)$
+	@go_project_labels path_regexp go_project_labels ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issue-labels/([0-9A-Fa-f-]+/)?|bulk-create-labels/)$
 	reverse_proxy @go_project_labels api-go:8000
-	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/|issue-relation/|remove-relation/|archive/|history/)$
+	@go_project_issue_operations path_regexp go_project_issue_operations ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(bulk-archive-issues/|bulk-delete-issues/|deleted-issues/|user-properties/)$
+	reverse_proxy @go_project_issue_operations api-go:8000
+	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/|issue-relation/|remove-relation/|archive/|history/|meta/)$
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$
 	reverse_proxy @go_issue_detail api-go:8000

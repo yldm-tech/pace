@@ -94,6 +94,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueArchiveRoutes(router)
 	handler.registerIssueAttachmentRoutes(router)
 	handler.registerIssueActivityRoutes(router)
+	handler.registerIssueMetaRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

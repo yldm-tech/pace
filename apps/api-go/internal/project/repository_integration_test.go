@@ -332,7 +332,7 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	visibleChild := insertIssue("Visible child "+suffix, &startedState, false, false, older)
 	newestChild := insertIssue("Newest child "+suffix, nil, false, false, now)
 	insertIssue("Draft child "+suffix, &startedState, true, false, now)
-	insertIssue("Archived child "+suffix, &startedState, false, true, now)
+	archivedChild := insertIssue("Archived child "+suffix, &startedState, false, true, now)
 
 	// The default states already include the triage one, which issue_objects excludes.
 	triageState := states[len(states)-1]
@@ -780,6 +780,66 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	}
 	if len(empty) != 0 {
 		t.Fatalf("a non-member read %d activities", len(empty))
+	}
+
+	// The issue meta route reads the sequence id and the project identifier through the same join.
+	var metaRow struct {
+		SequenceID int    `gorm:"column:sequence_id"`
+		Identifier string `gorm:"column:identifier"`
+	}
+	err = transaction.Session(&gorm.Session{}).Table("issues i").
+		Select("i.sequence_id, p.identifier").
+		Joins("JOIN projects p ON p.id = i.project_id").
+		Where("i.id = ?", issueID).Take(&metaRow).Error
+	if err != nil {
+		t.Fatalf("read the issue meta: %v", err)
+	}
+	if metaRow.SequenceID != 1 || metaRow.Identifier != project.Identifier {
+		t.Fatalf("meta = %#v, want the issue's sequence and the project's identifier", metaRow)
+	}
+
+	// The user property row was seeded when the project was created, so the read path finds it rather than creating a second one.
+	var propertyRows []ProjectUserProperty
+	err = transaction.Session(&gorm.Session{}).
+		Where("user_id = ? AND project_id = ? AND deleted_at IS NULL", user.ID, project.ID).
+		Find(&propertyRows).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(propertyRows) != 1 {
+		t.Fatalf("found %d user property rows, want exactly the seeded one", len(propertyRows))
+	}
+	serializedProperty := projectUserPropertyJSON(propertyRows[0])
+	if len(serializedProperty) != 15 {
+		t.Fatalf("serialized property has %d fields, want 15", len(serializedProperty))
+	}
+	if serializedProperty["user"] != user.ID || serializedProperty["project"] != project.ID {
+		t.Fatalf("serialized property = %#v", serializedProperty)
+	}
+
+	// deleted-issues reads through the unfiltered manager, which is the only way to see a soft-deleted or archived row.
+	var visible []string
+	err = transaction.Session(&gorm.Session{}).Table("issues i").
+		Where("i.project_id = ? AND (i.archived_at IS NOT NULL OR i.deleted_at IS NOT NULL)", project.ID).
+		Order("i.created_at DESC").Pluck("i.id", &visible).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The child that was written archived and never unarchived is exactly what this route exists to report; the one the archive block unarchived must not be.
+	reported, unarchivedReported := false, false
+	for _, identifier := range visible {
+		if identifier == archivedChild {
+			reported = true
+		}
+		if identifier == archivableID {
+			unarchivedReported = true
+		}
+	}
+	if !reported {
+		t.Fatalf("the archived issue is not among the %d deleted ids", len(visible))
+	}
+	if unarchivedReported {
+		t.Fatal("an unarchived issue must not be reported as deleted")
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.

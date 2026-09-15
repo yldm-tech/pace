@@ -273,7 +273,6 @@ func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
 		project + "issue-labels/",
 		project + "issue-labels/11111111-2222-3333-4444-555555555555/",
 		project + "bulk-create-labels/",
-		project + "bulk-archive-issues/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Project Label route %q is not cut over to Go", route)
@@ -291,6 +290,36 @@ func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
 	}
 	if !strings.Contains(config, "reverse_proxy @go_project_labels api-go:8000") {
 		t.Error("community proxy is missing the Project Labels reverse proxy")
+	}
+}
+
+func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_project_issue_operations")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	for _, route := range []string{
+		project + "bulk-archive-issues/",
+		project + "bulk-delete-issues/",
+		project + "deleted-issues/",
+		project + "user-properties/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Project issue operation %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The three list routes need the paginator and stay on Django.
+		project + "issues/",
+		project + "archived-issues/",
+		project + "issues/list/",
+		project + "bulk-create-labels/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_project_issue_operations api-go:8000") {
+		t.Error("community proxy is missing the Project issue operations reverse proxy")
 	}
 }
 
@@ -314,6 +343,7 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "remove-relation/",
 		issue + "archive/",
 		issue + "history/",
+		issue + "meta/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
