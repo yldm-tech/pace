@@ -859,6 +859,31 @@ func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnePersonsCornerOfAWorkspace(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_user")
+	const person = "11111111-2222-3333-4444-555555555555"
+	for _, route := range []string{
+		"/api/workspaces/acme/user-profile/" + person + "/",
+		"/api/workspaces/acme/user-stats/" + person + "/",
+		"/api/workspaces/acme/user-activity/" + person + "/",
+		"/api/workspaces/acme/user-activity/" + person + "/export/",
+		"/api/workspaces/acme/recent-visits/",
+		"/api/workspaces/acme/project-members/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("route %q is not cut over to Go", route)
+		}
+	}
+	// The workspace's own member list is a different route and stays where it is.
+	if matcher.MatchString("/api/workspaces/acme/members/") {
+		t.Error("the member list would be cut over by the profile matcher")
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_user api-go:8000") {
+		t.Error("community proxy is missing the workspace user reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheDraftWorkItems(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_draft_issues")

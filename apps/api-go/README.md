@@ -1413,6 +1413,22 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: one person's corner of a workspace
+
+Six routes are implemented and cut over: the profile, the numbers, the activity feed and its csv export, the recent visits, and the per-project member map.
+
+**The profile guards nothing but the session.** What stands in for a permission is the pair of lookups it opens with — the caller has to be an active member of the workspace and so does the person being asked about — and either one missing is a 404 rather than a 403. A guest gets the person but an empty project list, because the numbers are only built from member level up.
+
+**Its four counts are counted over one joined row set rather than four.** The assignee join is added for three of them, and all four then count rows of that join rather than work items, so `created_issues` is larger than the number of work items somebody raised whenever any of them has more than one assignee. The joins are the plain ones Django writes for a related lookup, which do not apply the soft-delete manager either — a deleted work item still counts. The SQL was taken from the real ORM rather than written from the model, which is the only way this was visible at all.
+
+**Any filter at all makes the stats route a 500.** The subscribed count applies the work item filters to `IssueSubscriber`, which has none of those fields, and Django raises `FieldError` before the response is built. So `?priority=high` on `user-stats/` is a 500 today, and it is one here. The two cycle lists in that same response are not made distinct, so a person with three work items in one cycle sees that cycle three times.
+
+**Everything narrows to projects the caller belongs to**, not the person being asked about, so two people looking at the same profile can see different totals.
+
+The **export** does not apply the archived-project rule that the json feed does, so it reads activity out of archived projects too. Every cell is quoted and a value opening with `=`, `+`, `-` or `@` is prefixed with a quote, which is what keeps a work item named like a formula from being run as one when the file is opened.
+
+The **member map** picks its projects from the caller's membership anywhere rather than in this workspace, and only then narrows to the workspace the url names. Two workspaces cannot share a project so the extra breadth changes nothing, but it is why the query reads the way it does.
+
 ## Migrated module: draft work items
 
 The five draft routes and the one that raises a draft are implemented and cut over. A draft is a work item somebody started and has not committed to yet, which is why it needs no project: the whole point is that the decision can wait.
