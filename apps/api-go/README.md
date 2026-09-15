@@ -1443,6 +1443,18 @@ The bulk claim is what attaches an asset uploaded before its entity existed — 
 
 `duplicate-assets/` copies the bytes inside the bucket rather than through the API, keeps the **unsanitized** name in the copy's attributes even though the key it is written under is sanitized, and marks the copy uploaded in a second statement after the row is written.
 
+## Migrated module: favourites
+
+The eight favourite routes are implemented and cut over: the workspace list, create, update, delete and folder contents, and the three older project-favourite routes that write into the same table.
+
+A favourite that belongs to a project is reported only while the caller is still **in** that project. The top-level list additionally hides a **page** with no project — the one entity type it refuses — while the folder contents hide nothing, so a page inside a folder is reported where the same page outside one is not.
+
+The serializer reads the thing itself out of whichever table its type names, and three types report a null beside them: a folder has no model, a type nobody recognises has none either, and a **work item** is in the table of types with no serializer next to it — so starring one shows nothing about it. A favourite whose thing has been deleted reports a null rather than failing the list.
+
+Starring something twice answers the star that is already there rather than refusing it, and unstarring removes the row **for good** rather than soft deleting it, which is what lets the same thing be starred again.
+
+The project favourite list is broken upstream and reproduced as such: the viewset inherits DRF's list and declares no `serializer_class`, so it asserts and answers `500`. Its create answers `204` with no body and writes the project into both identifier columns, reading the workspace off the project the way the model does.
+
 ## Migrated module: workspace quick links
 
 The workspace quick link list, create, retrieve, partial-update, and delete
