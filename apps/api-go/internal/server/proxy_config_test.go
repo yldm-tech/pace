@@ -576,6 +576,37 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheIntakeRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_intakes")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	for _, route := range []string{
+		project + "intakes/",
+		project + "intakes/11111111-2222-3333-4444-555555555555/",
+		// The viewset is mounted twice, under its current name and the one it had before intake was called inbox.
+		project + "inboxes/",
+		project + "inboxes/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Intake route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The issues inside an intake are a separate viewset and are not migrated.
+		project + "intake-issues/",
+		project + "inbox-issues/",
+		project + "intake-issues/11111111-2222-3333-4444-555555555555/",
+		"/api/public/anchor/abc/intakes/11111111-2222-3333-4444-555555555555/intake-issues/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_intakes api-go:8000") {
+		t.Error("community proxy is missing the Intakes reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheMigratedPageRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_pages")
