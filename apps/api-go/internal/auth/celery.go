@@ -23,6 +23,7 @@ const softDeleteRelatedObjectsTaskName = "plane.bgtasks.deletion_task.soft_delet
 const modelActivityTaskName = "plane.bgtasks.webhook_task.model_activity"
 const webhookActivityTaskName = "plane.bgtasks.webhook_task.webhook_activity"
 const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_task"
+const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 
 type CeleryPublisher struct{ brokerURL string }
 
@@ -95,6 +96,12 @@ func (publisher *CeleryPublisher) PublishRecentVisit(ctx context.Context, entity
 		"entity_name": entityName, "entity_identifier": entityIdentifier,
 		"user_id": userID, "project_id": projectID, "slug": slug,
 	})
+}
+
+// PublishProjectAddUserEmail mirrors project_add_user_email.delay, which Django
+// calls positionally.
+func (publisher *CeleryPublisher) PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error {
+	return publisher.publish(ctx, projectAddUserEmailTaskName, []any{currentSite, projectMemberID, invitorID})
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {

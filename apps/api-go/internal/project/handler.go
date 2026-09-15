@@ -42,6 +42,7 @@ type TaskPublisher interface {
 	PublishWebhookActivity(ctx context.Context, event, verb string, actorID, slug, currentSite, eventID string) error
 	PublishRecentVisit(ctx context.Context, entityName, entityIdentifier, userID, projectID, slug string) error
 	PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error
+	PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error
 }
 
 type Handler struct {
@@ -64,6 +65,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.retrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.partialUpdate))
 	router.DELETE("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.destroy))
+	handler.registerMemberRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
