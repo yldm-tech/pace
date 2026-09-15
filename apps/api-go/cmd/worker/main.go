@@ -104,6 +104,7 @@ func main() {
 		defer redisClient.Close()
 	}
 	issueActivity := worker.NewIssueActivityTasks(db, redisClient, activityPublisher, logger)
+	notifications := worker.NewNotificationTasks(db, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -118,6 +119,7 @@ func main() {
 	nightly.Register(consumer)
 	modelActivity.Register(consumer)
 	issueActivity.Register(consumer)
+	notifications.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

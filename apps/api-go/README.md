@@ -1437,6 +1437,24 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the notifications
+
+`notifications` now runs on the Go worker. It reads the history the previous task wrote and decides, for each person who cares about the work item, whether they hear about it in the app and whether they are sent an email.
+
+**Thirteen activity types pass through silently.** Being added to a cycle or a module, a reaction, a vote and anything to do with a draft produce history but never a notification.
+
+**It corrects a gap this migration opened.** The activity task publishes the rows it wrote, and until now it published them without `issue_detail`. The notification task reads `issue_detail.id` to tell a line about *this* work item from a line about the other side of a relation, so reading it off nothing raised and the Python task quietly wrote no notifications at all. The activity task now carries that object; only its id is read, which is why the serializer's other nested details are not built.
+
+Three upstream bugs are reproduced rather than corrected, and all three are worth knowing because they otherwise read as faults in this port:
+
+**A mention email goes to the wrong reader.** The loop that emails the people named in a description reads `subscriber` — the variable the *subscriber* loop left behind — rather than the person it is writing about. So the email about somebody being mentioned is addressed to the last subscriber who was notified.
+
+**And when there were no subscribers, nothing is written at all.** In that case the leftover variable still holds the task's own `subscriber` flag, which is a boolean, and writing a boolean into a uuid column fails the whole insert. Since both inserts happen at the end, the notifications are lost with the emails.
+
+**The collapsed-description branch reads another leftover.** When the last line of history was a description change by the same person, the mention notification takes its two identifiers from the subscriber loop's last activity. If that loop never ran there is no such variable, and Django raises a `NameError` that loses everything.
+
+One more: the people named in a description become subscribers, but the check that decides whether they need to be does four separate lookups per person and none of them is narrowed by the mention being valid — so an id in the html that is not a person is simply skipped by the last of the four.
+
 ## Migrated task: the work item history
 
 `issue_activity` now runs on the Go worker. It is what writes every line of a work item's history, and nothing else in the worker is queued as often. All twenty-seven activity types move at once, because the routing is by task name — taking half of it would have left the other half writing nothing.
