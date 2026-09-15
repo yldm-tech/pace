@@ -1538,6 +1538,8 @@ rather than refusing, and skips every activity when `skip_activity` accompanies
 a description update. The list route stays on Django: it needs the grouped
 paginator and the filter machinery.
 
+`internal/project/issue_save_path.go` is `Issue.save`'s non-adding path, which runs whenever a serializer saves a work item and writes three columns the request never mentions. The state is filled in when it is missing, so `state_id: null` does not clear a work item's state — it moves it onto the project's default. `completed_at` follows the state whenever the state really changes: into a completed group it becomes the moment of the change, out of one it becomes null, and a save that names the state a work item already had leaves it alone rather than rewriting the moment the work item was finished. And `description_stripped` is recomputed from whatever html the work item ends up with, so the plain-text copy cannot fall behind the rich text. The two audit columns are written whatever else changed, because the serializer sets `updated_at` by hand before saving — an update that moves only the assignees still touches the work item's own row. The intake update runs through the same serializer and so the same path.
+
 ## Migrated module: sub-issues
 
 `GET` and `POST` on `issues/<uuid>/sub-issues/` are implemented. Both shapes come from the SQL Django actually renders rather than from reading the view, because several of its filters are not where they look like they are.

@@ -727,10 +727,11 @@ func (handler *Handler) applyIntakeIssueEdit(c *gin.Context, user *auth.User, is
 	}
 	err = handler.db.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
 		updates := fields.updates(now, user.ID)
-		if len(updates) > 0 {
-			if err := tx.Model(&Issue{}).Where("id = ?", issue.ID).Updates(updates).Error; err != nil {
-				return err
-			}
+		if err := applyIssueSavePath(tx, issue, updates, now); err != nil {
+			return err
+		}
+		if err := tx.Model(&Issue{}).Where("id = ?", issue.ID).Updates(updates).Error; err != nil {
+			return err
 		}
 		if fields.hasAssignees {
 			if err := handler.syncIssueAssignees(tx, issue, fields.assigneeIDs, now); err != nil {
