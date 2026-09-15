@@ -7,6 +7,7 @@ on:
       - ".github/workflows/go-api.yml"
       - "apps/api-go/**"
       - "apps/api/plane/db/migrations/**"
+      - "apps/proxy/Caddyfile.ce"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

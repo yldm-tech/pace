@@ -55,12 +55,13 @@ verification, instance-admin, onboarding, deactivation, and `/api/v1/users/me/`
 routes are implemented in `internal/user`; the proxy cuts over only these paths
 while workspace activity and other API modules remain on Django.
 
-## Module in progress: core workspace
+## Migrated module: core workspace
 
 Core workspace CRUD, membership, member preferences, and invitation routes are
 implemented in `internal/workspace`. They preserve Django session authentication,
 role checks, soft-delete behavior, cache invalidation, Celery workspace seed and
-invitation tasks, and the existing PostgreSQL tables. These routes remain on
-Django until the opt-in shared-schema test has passed in a disposable PostgreSQL
-environment; the remaining workspace themes, metadata, preferences, favorites,
-drafts, activity, and dashboard routes are not part of this cutover yet.
+invitation tasks, and the existing PostgreSQL tables. Shared-schema integration
+tests run against the authoritative Django migrations, and the proxy sends only
+the migrated core routes to Go. Workspace themes, metadata, preferences,
+favorites, drafts, activity, and dashboard routes remain on Django for later
+module-specific pull requests.
