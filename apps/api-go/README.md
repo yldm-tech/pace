@@ -173,3 +173,29 @@ their existing projects, and queues the same invitation email.
 `fields` argument, but `DynamicBaseSerializer` overwrites it with `expand`, so
 nothing is filtered. Retrieve returns the admin shape only when the caller's
 project role is above guest.
+
+## Migrated service: Celery worker, email tasks
+
+`cmd/worker` runs the Go half of the Celery workload. It is a protocol v2
+consumer that reads only the queue named by `PACE_WORKER_QUEUE`, so the Python
+worker keeps consuming the shared `celery` queue and the two never compete for a
+task only one of them can run. The API routes exactly the task names
+`worker.MigratedTaskNames()` reports to that queue; leaving `PACE_WORKER_QUEUE`
+unset routes everything back to Python, which is the rollback switch.
+
+The eight email tasks are implemented: magic sign-in, forgot password, user
+activation and deactivation, the email update code and its confirmation, the
+workspace invitation, and the project addition notice. Each renders the same
+template Django renders, derives the plain text part with Django's `strip_tags`
+rules, which leave entities escaped, and sends a multipart message using the
+SMTP settings from `instance_configurations` with the environment as fallback.
+The workspace invitation still writes the plain text back onto the invite row
+before sending, as Django does.
+
+A task name that reaches the Go queue without a handler is rejected without
+requeueing and logged, so a routing mistake surfaces instead of silently
+dropping work.
+
+```bash
+PACE_WORKER_QUEUE=pace-go go run ./cmd/worker
+```
