@@ -553,6 +553,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		cycle,
 		cycle + "archive/",
 		cycle + "cycle-issues/",
+		project + "archived-cycles/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Cycle route %q is not cut over to Go", route)
@@ -564,7 +565,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		cycle + "analytics/",
 		cycle + "progress/",
 		cycle + "transfer-issues/",
-		project + "archived-cycles/",
+		project + "archived-cycles/11111111-2222-3333-4444-555555555555/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

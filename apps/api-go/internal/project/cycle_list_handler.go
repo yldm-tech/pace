@@ -27,6 +27,10 @@ type cycleRow struct {
 	Status          string         `gorm:"column:status"`
 	// SubIssues is annotated only by the retrieve, which is the one route that reports how many of a cycle's issues are sub-issues.
 	SubIssues *int64 `gorm:"column:sub_issues"`
+	// The three state counts are annotated only by the archived list, which is the one projection that asks for them. They sit here rather than on a row of their own because a struct embedded two levels deep parses to a single field and scans every column as zero without erroring.
+	StartedIssues   int64 `gorm:"column:started_issues"`
+	UnstartedIssues int64 `gorm:"column:unstarted_issues"`
+	BacklogIssues   int64 `gorm:"column:backlog_issues"`
 }
 
 // cycleList returns every cycle of a project that is not archived. Its timestamps are rendered in the **project's** timezone rather than the caller's, which is the one place in the codebase that distinction is made.
@@ -146,7 +150,7 @@ func cycleAnnotations() string {
 		END AS status`
 }
 
-// cycleListJSON is the values() projection: twenty-three fields, with the two dates rendered in the project's timezone.
+// cycleListJSON is the values() projection: twenty-two fields, with the two dates rendered in the project's timezone.
 func cycleListJSON(row cycleRow, location *time.Location) gin.H {
 	return gin.H{
 		"id": row.ID, "workspace_id": row.WorkspaceID, "project_id": row.ProjectID,
