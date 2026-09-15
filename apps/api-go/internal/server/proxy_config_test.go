@@ -859,6 +859,27 @@ func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheDraftWorkItems(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_draft_issues")
+	for _, route := range []string{
+		"/api/workspaces/acme/draft-issues/",
+		"/api/workspaces/acme/draft-issues/11111111-2222-3333-4444-555555555555/",
+		"/api/workspaces/acme/draft-to-issue/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("draft route %q is not cut over to Go", route)
+		}
+	}
+	// The move needs a draft to move, so the bare path is not a route at all.
+	if matcher.MatchString("/api/workspaces/acme/draft-to-issue/") {
+		t.Error("the bare draft-to-issue path would be cut over")
+	}
+	if !strings.Contains(config, "reverse_proxy @go_draft_issues api-go:8000") {
+		t.Error("community proxy is missing the draft reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheStickies(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_stickies")
