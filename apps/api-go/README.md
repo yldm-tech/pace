@@ -333,3 +333,21 @@ implemented. They share the URL handling with workspace quick links through
 still fetches the page title, and record the same `link.activity.*` entries with
 the request body and the pre-change snapshot Django sends. Only a URL that
 actually changed is crawled again.
+
+## Migrated module: issue comments and comment reactions
+
+The issue comment routes and the comment reaction routes are implemented. This
+is the first caller of `internal/htmlsanitizer`: `IssueCommentSerializer.validate`
+runs `comment_html` through nh3 and stores what comes back, and the Go side does
+the same through the ported cleaner.
+
+`IssueComment.save` does more than write the row. It derives `comment_stripped`
+with Django's `strip_tags`, creates a `Description` row on first save, and on
+later saves updates only the description columns whose comment counterpart
+actually changed. All three are reproduced, as is the rule that `edited_at` is
+stamped only when the submitted html differs from what is stored.
+
+The create route refuses a guest unless the project opens all features to guests
+or the guest raised the issue, and update and delete follow
+`allow_permission(creator=True)`, so the comment's author may always act on it
+and otherwise a project or workspace admin may.
