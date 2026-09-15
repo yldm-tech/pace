@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 )
 
 // projectJSON is ProjectListSerializer: every Project model field plus the
@@ -147,4 +148,85 @@ func decodeJSON(value []byte) any {
 		return nil
 	}
 	return decoded
+}
+
+// projectMemberRoleJSON is ProjectMemberRoleSerializer. DynamicBaseSerializer
+// discards the fields argument the views pass, so every declared field is
+// returned, and original_role simply mirrors role.
+func projectMemberRoleJSON(member ProjectMember) gin.H {
+	return gin.H{
+		"id": member.ID, "role": member.Role, "member": member.MemberID,
+		"project": member.ProjectID, "original_role": member.Role,
+		"created_at": member.CreatedAt,
+	}
+}
+
+// projectMemberJSON is ProjectMemberSerializer, or ProjectMemberAdminSerializer
+// when admin is set, which is the same shape with the member's email and last
+// login medium added.
+func (handler *Handler) projectMemberJSON(ctx context.Context, member ProjectMember, admin bool) (gin.H, error) {
+	var user auth.User
+	if err := handler.db.WithContext(ctx).Where("id = ?", member.MemberID).Take(&user).Error; err != nil {
+		return nil, err
+	}
+	workspace, err := handler.workspaceLite(ctx, member.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
+	project, err := handler.projectLite(ctx, member.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+	return gin.H{
+		"id": member.ID, "created_at": member.CreatedAt, "updated_at": member.UpdatedAt,
+		"created_by": member.CreatedByID, "updated_by": member.UpdatedByID,
+		"deleted_at": member.DeletedAt, "workspace": workspace, "project": project,
+		"member": liteUserJSON(user, admin), "comment": member.Comment, "role": member.Role,
+		"view_props": decodeJSON(member.ViewProps), "default_props": decodeJSON(member.DefaultProps),
+		"preferences": decodeJSON(member.Preferences), "sort_order": member.SortOrder,
+		"is_active": member.IsActive,
+	}, nil
+}
+
+// projectMemberPreferenceJSON is ProjectMemberPreferenceSerializer, whose
+// project_id, member_id, and workspace_id resolve to the model's id attributes.
+func projectMemberPreferenceJSON(member ProjectMember) gin.H {
+	return gin.H{
+		"preferences": decodeJSON(member.Preferences), "project_id": member.ProjectID,
+		"member_id": member.MemberID, "workspace_id": member.WorkspaceID,
+	}
+}
+
+// projectLite is ProjectLiteSerializer.
+func (handler *Handler) projectLite(ctx context.Context, projectID string) (gin.H, error) {
+	var project Project
+	if err := handler.db.WithContext(ctx).Where("id = ?", projectID).Take(&project).Error; err != nil {
+		return nil, err
+	}
+	return gin.H{
+		"id": project.ID, "identifier": project.Identifier, "name": project.Name,
+		"cover_image": project.CoverImage, "cover_image_url": coverImageURL(project),
+		"logo_props": decodeJSON(project.LogoProps), "description": project.Description,
+	}, nil
+}
+
+// liteUserJSON is UserLiteSerializer, or UserAdminLiteSerializer when admin is
+// set.
+func liteUserJSON(user auth.User, admin bool) gin.H {
+	avatar := any(nil)
+	if user.AvatarAssetID != nil {
+		avatar = "/api/assets/v2/static/" + *user.AvatarAssetID + "/"
+	} else if user.Avatar != "" {
+		avatar = user.Avatar
+	}
+	data := gin.H{
+		"id": user.ID, "first_name": user.FirstName, "last_name": user.LastName,
+		"avatar": user.Avatar, "avatar_url": avatar, "is_bot": user.IsBot,
+		"display_name": user.DisplayName,
+	}
+	if admin {
+		data["email"] = user.Email
+		data["last_login_medium"] = user.LastLoginMedium
+	}
+	return data
 }

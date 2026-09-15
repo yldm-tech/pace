@@ -172,6 +172,36 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatalf("serialized project detail = %#v", detail)
 	}
 
+	// The member routes read through the same rows the create flow seeds.
+	projectMembers, err := handler.activeProjectMembers(ctx, slug, project.ID)
+	if err != nil {
+		t.Fatalf("list project members through Django schema: %v", err)
+	}
+	if len(projectMembers) != 1 || projectMembers[0].MemberID != user.ID || projectMembers[0].Role != roleAdmin {
+		t.Fatalf("project members = %#v", projectMembers)
+	}
+	if serialized := projectMemberRoleJSON(projectMembers[0]); serialized["original_role"] != roleAdmin {
+		t.Fatalf("serialized member role = %#v", serialized)
+	}
+	memberData, err := handler.projectMemberJSON(ctx, projectMembers[0], true)
+	if err != nil {
+		t.Fatalf("serialize project member: %v", err)
+	}
+	if memberData["project"] == nil || memberData["workspace"] == nil || memberData["member"] == nil {
+		t.Fatalf("serialized project member = %#v", memberData)
+	}
+	roleRow, found, err := handler.activeProjectMember(ctx, slug, project.ID, user.ID)
+	if err != nil || !found || roleRow.Role != roleAdmin {
+		t.Fatalf("active project member = %#v, found=%v, err=%v", roleRow, found, err)
+	}
+	sortOrders, err := handler.minimumPropertySortOrders(transaction, workspaceID, []string{user.ID})
+	if err != nil {
+		t.Fatalf("read minimum sort orders: %v", err)
+	}
+	if sortOrders[user.ID] != 65535 {
+		t.Fatalf("minimum sort order = %v", sortOrders[user.ID])
+	}
+
 	// The unique constraints Django relies on must reject a duplicate name.
 	duplicateID, err := newUUID()
 	if err != nil {

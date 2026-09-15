@@ -154,3 +154,22 @@ called with keywords.
 
 `projects/details/`, `project-identifiers/`, project members, invitations,
 archiving, favorites, and deploy boards remain on Django.
+
+## Migrated module: project members
+
+Project member list, add, retrieve, partial-update, remove, and leave routes are
+implemented in `internal/project`, together with `project-members/me/`,
+`project-views/`, the per-member preference routes, and
+`users/me/workspaces/<slug>/project-roles/`.
+
+They keep Django's `allow_permission` project level, which accepts one of the
+listed project roles or an active membership plus the workspace admin role, and
+the layered checks on role changes and member deactivation. Adding members
+reactivates and re-roles existing rows, rejects roles that do not fit the
+target's workspace role, seeds each new member's `ProjectUserProperty` ahead of
+their existing projects, and queues the same invitation email.
+
+`ProjectMemberRoleSerializer` returns every declared field: the views pass a
+`fields` argument, but `DynamicBaseSerializer` overwrites it with `expand`, so
+nothing is filtered. Retrieve returns the admin shape only when the caller's
+project role is above guest.

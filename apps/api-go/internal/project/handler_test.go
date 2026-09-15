@@ -22,6 +22,18 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/":    true,
 		"PATCH /api/workspaces/:slug/projects/:id/":  true,
 		"DELETE /api/workspaces/:slug/projects/:id/": true,
+
+		"GET /api/workspaces/:slug/projects/:id/members/":                      true,
+		"POST /api/workspaces/:slug/projects/:id/members/":                     true,
+		"GET /api/workspaces/:slug/projects/:id/members/:member/":              true,
+		"PATCH /api/workspaces/:slug/projects/:id/members/:member/":            true,
+		"DELETE /api/workspaces/:slug/projects/:id/members/:member/":           true,
+		"POST /api/workspaces/:slug/projects/:id/members/leave/":               true,
+		"GET /api/workspaces/:slug/projects/:id/project-members/me/":           true,
+		"POST /api/workspaces/:slug/projects/:id/project-views/":               true,
+		"GET /api/workspaces/:slug/projects/:id/preferences/member/:member/":   true,
+		"PATCH /api/workspaces/:slug/projects/:id/preferences/member/:member/": true,
+		"GET /api/users/me/workspaces/:slug/project-roles/":                    true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path
@@ -48,6 +60,10 @@ func TestProjectRoutesRequireDjangoSession(t *testing.T) {
 		{method: http.MethodGet, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
 		{method: http.MethodPatch, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
 		{method: http.MethodDelete, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/members/"},
+		{method: http.MethodPost, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/members/leave/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/projects/01234567-89ab-4def-8123-456789abcdef/project-members/me/"},
+		{method: http.MethodGet, path: "/api/users/me/workspaces/pace/project-roles/"},
 	} {
 		request := httptest.NewRequest(test.method, test.path, nil)
 		response := httptest.NewRecorder()

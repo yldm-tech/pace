@@ -228,6 +228,43 @@ func TestCommunityProxyCutsOverOnlyCoreProjectRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyProjectMemberRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_project_members")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	for _, route := range []string{
+		project + "members/",
+		project + "members/11111111-2222-3333-4444-555555555555/",
+		project + "members/leave/",
+		project + "project-members/me/",
+		project + "project-views/",
+		project + "preferences/member/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Project member route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		project + "invitations/",
+		project + "members/11111111-2222-3333-4444-555555555555/history/",
+		project + "preferences/",
+		project + "issues/",
+		project,
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated Project route %q would be cut over to Go", route)
+		}
+	}
+	for _, directive := range []string{
+		"reverse_proxy @go_project_members api-go:8000",
+		"reverse_proxy /api/users/me/workspaces/*/project-roles/ api-go:8000",
+	} {
+		if !strings.Contains(config, directive) {
+			t.Errorf("community proxy is missing %q", directive)
+		}
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
