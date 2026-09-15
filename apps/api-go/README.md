@@ -188,6 +188,36 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated cycle: transferring issues to another cycle
+
+`POST` on `cycles/<uuid>/transfer-issues/`, the last of the cycle app's own routes.
+
+The endpoint is more than an update because of what it has to freeze. Once the issues are gone the old cycle can no longer be measured, so everything its board would have shown — the six counts, both distributions, both burndowns — is computed first and written into `progress_snapshot`. That is the record the progress and analytics endpoints read from then on, which is why those two branch on it.
+
+Naming a destination cycle that does not exist answers `500`, not `400`: Django reads the end date off the result of `.first()` with no guard. A destination whose end date has passed answers `400`, and a missing source answers `400`.
+
+### Three ways to count the same cycle
+
+The snapshot's six counts are **not** the cycle list's and not the analytics endpoint's. They count **links** rather than distinct issues, and they exclude only what their filter names — deleted, archived and draft issues and dead links. A triage issue, or one in an archived project, is counted here and excluded by the `issue_objects` manager that the distributions beside it go through.
+
+And the frozen distribution counts `id` where the analytics endpoint counts the **grouping column**. So the bucket holding the issues with no assignee is counted properly in the snapshot and reported as zero by the live endpoint, for the same cycle. Two blocks that read alike and do not agree; both reproduced, and a test states the difference.
+
+### What moves
+
+Only backlog, unstarted and started work. A completed or cancelled issue stays with the cycle it was finished in, and an issue with **no state at all** moves nowhere, because the filter is a join to `states` rather than a test on the column. A soft-deleted issue's link does move, since only the link's own deletion is checked.
+
+Only the cycle column is written. A bulk update touches the named column and nothing else, so the links keep the timestamps and the author they had.
+
+The snapshot and the move are two statements, not one transaction. Django runs this view in autocommit — `ATOMIC_REQUESTS` is not set — so a failure between them leaves the snapshot written and the issues where they were.
+
+The single activity it sends names **no issue**: the move is about the cycle, and the task fans it out over the list it carries. `issue_id` therefore has to be `null` rather than the empty string, which is what `nullableID` is for.
+
+### GORM drops a second anonymous struct
+
+The obvious row for this query — the cycle embedded beside a struct holding the six counts — parses to the cycle alone. The fields under the second embedded struct get **no column, scan no value and raise no error**, and the `embedded` tag does not help. Nothing in the library says so. The counts are therefore declared inline, and a test pins all three shapes: two embedded structs, the second one tagged, and an embedded struct beside a plain field, which is what every annotated row in this package relies on.
+
+It is the same family of silent failure as a struct embedded two levels deep, which cost a CI run earlier in this migration. Second time, different shape.
+
 ## Migrated cycle: the analytics endpoint and the burndown chart
 
 `GET` on `cycles/<uuid>/analytics/`, which is the cycle board's chart: the work spread across people and labels, and a day-by-day burndown.
