@@ -76,6 +76,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerInviteRoutes(router)
 	handler.registerIntakeRoutes(router)
 	handler.registerAssetRoutes(router)
+	handler.registerUserAssetRoutes(router)
 	handler.registerCycleRoutes(router)
 	handler.registerModuleRoutes(router)
 	handler.registerProjectDetailRoutes(router)

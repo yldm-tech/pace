@@ -609,6 +609,34 @@ func TestCommunityProxyCutsOverOnlyTheExternalWorkItems(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheExternalUserAssets(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_user_assets")
+	asset := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		"/api/v1/assets/user-assets/",
+		"/api/v1/assets/user-assets/" + asset,
+		"/api/v1/assets/user-assets/server/",
+		"/api/v1/assets/user-assets/" + asset + "server/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External user asset route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The workspace's own assets are a different route.
+		"/api/v1/workspaces/acme/assets/",
+		"/api/assets/v2/user-assets/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the user asset matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_user_assets api-go:8000") {
+		t.Error("community proxy is missing the external user asset reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalAttachments(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_attachments")
