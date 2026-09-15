@@ -133,6 +133,14 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: the issue sync list
+
+`GET` on `v2/issues/`, which a client walks to keep a local copy of a project. It is the only issue list that pages with the **cursor** paginator rather than the offset one, and the only one ordered **ascending** — by `updated_at`, which is what lets a client resume from where it stopped.
+
+Its three id arrays carry **no** soft-delete filter on the through table, which every other issue list does. So a soft-deleted label link still contributes its id here. That is reproduced rather than corrected, and a test asserts the two selects genuinely differ.
+
+Its counts are raw rather than coalesced, so a null stays null. `description_html` is added only when `?description=true`, taking the projection from twenty-six fields to twenty-seven.
+
 ## Migrated module: the issue detail list
 
 `GET` on `issues-detail/`, a flat paginated list that never groups. It differs from `issues/` in three ways.

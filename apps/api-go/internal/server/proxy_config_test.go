@@ -441,6 +441,27 @@ func TestCommunityProxyCutsOverOnlyTheWorkItemIdentifierRoute(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheIssueSyncRoute(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_issue_sync")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	if !matcher.MatchString(project + "v2/issues/") {
+		t.Error("the issue sync route is not cut over to Go")
+	}
+	for _, route := range []string{
+		project + "issues/",
+		project + "v2/issues/11111111-2222-3333-4444-555555555555/",
+		project + "v2/cycles/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_issue_sync api-go:8000") {
+		t.Error("community proxy is missing the Issue sync reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_list")
@@ -451,7 +472,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The other two list routes are separate endpoints with their own matchers.
+		// The sync route is a separate endpoint with its own matcher.
 		project + "v2/issues/",
 		// The detail route is its own matcher.
 		project + "issues/11111111-2222-3333-4444-555555555555/",
