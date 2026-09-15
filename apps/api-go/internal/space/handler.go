@@ -76,6 +76,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerCommentRoutes(router)
 	handler.registerIntakeRoutes(router)
 	handler.registerAssetRoutes(router)
+	handler.registerIssueRoutes(router)
 }
 
 func (handler *Handler) serverError(c *gin.Context, err error) {

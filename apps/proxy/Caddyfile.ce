@@ -153,7 +153,7 @@
 	@go_space_assets path_regexp go_space_assets ^/api/public/assets/v2/anchor/[^/]+/([0-9A-Fa-f-]+/(bulk/)?|restore/[0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_space_assets api-go:8000
 
-	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/((settings|meta|members|states|labels|cycles|modules)/|issues/[0-9A-Fa-f-]+/(votes|reactions|comments)/|issues/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/|issues/[0-9A-Fa-f-]+/reactions/[^/]+/|comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?|intakes/[0-9A-Fa-f-]+/(intake-issues/([0-9A-Fa-f-]+/)?|inbox-issues/))|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
+	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/((settings|meta|members|states|labels|cycles|modules)/|issues/[0-9A-Fa-f-]+/(votes|reactions|comments)/|issues/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/|issues/[0-9A-Fa-f-]+/|issues/[0-9A-Fa-f-]+/reactions/[^/]+/|comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?|intakes/[0-9A-Fa-f-]+/(intake-issues/([0-9A-Fa-f-]+/)?|inbox-issues/))|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
 	reverse_proxy @go_space_read api-go:8000
 
 	@go_states path_regexp go_states ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(states/([0-9A-Fa-f-]+/(mark-default/)?)?|intake-state/)$
