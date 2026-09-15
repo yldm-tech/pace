@@ -1056,14 +1056,7 @@ func integerValue(raw json.RawMessage) (int, error) {
 }
 
 func decodeJSON(value auth.JSONValue) any {
-	if len(value) == 0 {
-		return nil
-	}
-	var decoded any
-	if json.Unmarshal(value, &decoded) != nil {
-		return nil
-	}
-	return decoded
+	return drf.DecodeJSON([]byte(value))
 }
 
 func defaultPropsJSON() auth.JSONValue {

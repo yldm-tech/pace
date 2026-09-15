@@ -2,6 +2,7 @@
 
 This directory contains the incremental Gin, GORM, and PostgreSQL replacement for the Django API. Business modules are migrated in separate pull requests; Django remains the behavioral reference until a module passes its contract and integration tests.
 
+
 ## Run locally
 
 Set `DATABASE_URL`, `SECRET_KEY`, and `REDIS_URL` to the same values used by the Django deployment, then run:
@@ -512,6 +513,22 @@ Go's `encoding/json` writes a time as RFC 3339 with trailing zeros trimmed from 
 `Respond` walks maps and slices and copies rather than mutating, because the grouped responses serialize one map into several buckets. It does not reach into structs: a struct field is the serializer's own business.
 
 The fixture, `internal/drf/testdata/iso8601.tsv`, comes from DRF itself via `tools/generate_drf_time_fixture.py`, and CI regenerates and diffs it. The generator checks both DRF paths against each other — `DateTimeField.to_representation` for serializer output and the `JSONEncoder` the renderer falls back to for a raw `values()` dict — so one Go type covering both is a checked claim rather than an assumption.
+
+## Shared: float rendering
+
+`internal/drf.Float`, applied by `Respond` to every float it walks.
+
+Go's `encoding/json` writes a float with the shortest digits that round-trip and a plain decimal point, so `65535.0` comes out as `65535` — indistinguishable from an integer. Python's `json.dumps` hands a float to `repr()`, which always leaves a decimal point behind, so the same value is `65535.0`. Every `sort_order`, every estimate sum and every progress total is a Django `FloatField`, which puts this on most responses rather than a few. It is the same shape of bug as the datetime rendering, and was found the same way: by reading what Python would actually print.
+
+The two encoders also disagree about when to switch to exponential notation. `encoding/json` switches below `1e-6` and at or above `1e21`; Python switches when the decimal point would land past the sixteenth significant digit or more than four places left of the first one. Between those thresholds sit values like `1e16`, which Go writes out in full and Python writes as `1e+16`.
+
+`FormatFloat` is CPython's `format_float_short` in `'r'` mode with `ADD_DOT_0`. The fixture is 519 rows keyed by the **bit pattern** rather than by a decimal string, so nothing is lost on the way into the test, and most of it is drawn uniformly from the 64-bit space rather than from round numbers — that is what reaches the awkward values. CI regenerates it against Python and diffs.
+
+A value Python would write as `NaN` or `Infinity` is not JSON, and nothing in the schema can hold one, so `MarshalJSON` refuses rather than emit a body no parser accepts.
+
+### A number out of a jsonb column is not one of these
+
+`drf.DecodeJSON` reads blob columns with `UseNumber`, so a number inside `view_props` or `progress_snapshot` keeps the literal text it was stored with. psycopg hands Django the blob's own parse, so an integer stored there comes back an integer; Go's plain decoder turns every blob number into a `float64`, and after this change `Respond` would have rewritten all of them as floats. The three package-local `decodeJSON` helpers now call it.
 
 ## Shared: editor HTML sanitization
 

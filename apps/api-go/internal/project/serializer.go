@@ -2,10 +2,11 @@ package project
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 )
 
 // projectJSON is ProjectListSerializer: every Project model field plus the
@@ -140,14 +141,7 @@ func (handler *Handler) workspaceLite(ctx context.Context, workspaceID string) (
 }
 
 func decodeJSON(value []byte) any {
-	if len(value) == 0 {
-		return nil
-	}
-	var decoded any
-	if json.Unmarshal(value, &decoded) != nil {
-		return nil
-	}
-	return decoded
+	return drf.DecodeJSON(value)
 }
 
 // projectMemberRoleJSON is ProjectMemberRoleSerializer. DynamicBaseSerializer

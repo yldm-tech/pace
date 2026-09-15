@@ -114,3 +114,42 @@ func TestEverySuccessResponseGoesThroughRespond(t *testing.T) {
 			strings.Join(offenders, "\n  "))
 	}
 }
+
+// A float anywhere in a response body is a Django FloatField, and Python renders one with repr(). The walk has to reach into maps, slices and pointers alike, because sort_order sits in a map while an estimate sum arrives through a pointer.
+func TestRespondRendersEveryFloatTheWayPythonDoes(t *testing.T) {
+	sortOrder := 65535.0
+	payload := gin.H{
+		"sort_order": 65535.0,
+		"nested":     gin.H{"total_estimate_points": 0.0},
+		"list":       []any{1.0, 2.5},
+		"pointer":    &sortOrder,
+		"typed":      []float64{3.0},
+		"integer":    7,
+	}
+	body := recordResponse(t, payload)
+	for _, expected := range []string{
+		`"sort_order":65535.0`,
+		`"total_estimate_points":0.0`,
+		`"list":[1.0,2.5]`,
+		`"pointer":65535.0`,
+		`"typed":[3.0]`,
+		`"integer":7`,
+	} {
+		if !strings.Contains(body, expected) {
+			t.Errorf("the body is missing %s:\n%s", expected, body)
+		}
+	}
+}
+
+// A number that came out of a jsonb column keeps whatever it was stored as. Django gets the blob's own parse from psycopg, so an integer in view_props stays an integer, and rewriting it as a float would be a new kind of wrong.
+func TestADecodedBlobKeepsItsOwnNumbers(t *testing.T) {
+	body := recordResponse(t, gin.H{"view_props": DecodeJSON([]byte(`{"count": 3, "ratio": 0.5, "big": 12345678901234567890}`))})
+	for _, expected := range []string{`"count":3`, `"ratio":0.5`, `"big":12345678901234567890`} {
+		if !strings.Contains(body, expected) {
+			t.Errorf("the body is missing %s:\n%s", expected, body)
+		}
+	}
+	if DecodeJSON(nil) != nil || DecodeJSON([]byte("not json")) != nil {
+		t.Error("an unreadable blob must decode to null, the way the previous decoder did")
+	}
+}

@@ -18,7 +18,7 @@ func Respond(c *gin.Context, status int, payload any) {
 	c.JSON(status, convert(payload))
 }
 
-// convert walks maps and slices, replacing datetimes. It copies rather than mutating in place, so a caller that keeps serializing the same map — the sub-issue grouping files one issue under several assignees — is not left holding rewritten values.
+// convert walks maps and slices, replacing datetimes and floats. It copies rather than mutating in place, so a caller that keeps serializing the same map — the sub-issue grouping files one issue under several assignees — is not left holding rewritten values.
 func convert(value any) any {
 	switch typed := value.(type) {
 	case nil:
@@ -28,6 +28,12 @@ func convert(value any) any {
 	case *time.Time:
 		return At(typed)
 	case Time, *Time:
+		return value
+	case float64:
+		return Float(typed)
+	case float32:
+		return Float(float64(typed))
+	case Float:
 		return value
 	case gin.H:
 		return convertMap(typed)
@@ -84,12 +90,17 @@ func convertReflected(value any) any {
 			converted[iterator.Key().String()] = convert(iterator.Value().Interface())
 		}
 		return converted
+	case reflect.Float32, reflect.Float64:
+		return Float(reflected.Float())
 	case reflect.Pointer:
 		if reflected.IsNil() {
 			return value
 		}
 		if reflected.Type().Elem() == timeType {
 			return Time(reflected.Elem().Interface().(time.Time))
+		}
+		if reflected.Elem().Kind() == reflect.Float32 || reflected.Elem().Kind() == reflect.Float64 {
+			return Float(reflected.Elem().Float())
 		}
 	}
 	return value
