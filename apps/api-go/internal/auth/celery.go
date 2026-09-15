@@ -12,6 +12,9 @@ import (
 const magicLinkTaskName = "plane.bgtasks.magic_link_code_task.magic_link"
 const forgotPasswordTaskName = "plane.bgtasks.forgot_password_task.forgot_password"
 const userActivationTaskName = "plane.bgtasks.user_activation_email_task.user_activation_email"
+const emailUpdateCodeTaskName = "plane.bgtasks.user_email_update_task.send_email_update_magic_code"
+const emailUpdateConfirmationTaskName = "plane.bgtasks.user_email_update_task.send_email_update_confirmation"
+const userDeactivationTaskName = "plane.bgtasks.user_deactivation_email_task.user_deactivation_email"
 
 type CeleryPublisher struct{ brokerURL string }
 
@@ -29,6 +32,18 @@ func (publisher *CeleryPublisher) PublishForgotPassword(ctx context.Context, fir
 
 func (publisher *CeleryPublisher) PublishUserActivation(ctx context.Context, currentSite, userID string) error {
 	return publisher.publish(ctx, userActivationTaskName, []any{currentSite, userID})
+}
+
+func (publisher *CeleryPublisher) PublishEmailUpdateCode(ctx context.Context, email, token string) error {
+	return publisher.publish(ctx, emailUpdateCodeTaskName, []any{email, token})
+}
+
+func (publisher *CeleryPublisher) PublishEmailUpdateConfirmation(ctx context.Context, email string) error {
+	return publisher.publish(ctx, emailUpdateConfirmationTaskName, []any{email})
+}
+
+func (publisher *CeleryPublisher) PublishUserDeactivation(ctx context.Context, currentSite, userID string) error {
+	return publisher.publish(ctx, userDeactivationTaskName, []any{currentSite, userID})
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {
