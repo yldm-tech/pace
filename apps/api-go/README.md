@@ -188,6 +188,36 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: pages
+
+Thirteen routes: the list, the summary, create, retrieve, update, delete, lock and unlock, access, archive and unarchive, and the two favourite ones.
+
+A page belongs to a **workspace** and reaches its projects through a link table, so the same page can sit in more than one. The list shows only pages with **no parent** — a child is reached through its parent — and only those the caller owns or that are public.
+
+### Zero is the public page
+
+The access column reads the opposite way round from every other flag in this codebase: `0` is public and `1` is private. Pinned by a test, because it is exactly the sort of thing that gets "corrected" later.
+
+### The two halves of one button sit behind different permissions
+
+`ProjectPagePermission` keys its role rules on the **HTTP method** rather than on the action. Locking a page is a `POST` and needs a member; **unlocking it is a `DELETE` and needs an admin**. Same button in the interface, two different rules behind it. A guest may read and nothing else.
+
+And a **private** page is readable by its owner alone — the community implementation of the private-page hook returns false for everyone else, whatever their role.
+
+### Archiving and its timestamp
+
+Archiving walks the page and its descendants in one recursive statement and clears **every** member's favourite of it. The body reports `str(datetime.now())`, which is a naive **local** wall clock with a space where the `T` would be, rather than an ISO instant — and it reads the clock a second time, so the value in the body is not quite the one in the column. The column itself is a `DateField`, so the page list reports a day rather than a moment.
+
+Unarchiving cuts the page loose from a parent that is still archived, rather than leaving it under something invisible.
+
+A page has to be archived before it can be deleted. Deleting cuts its children loose, clears the favourites, and removes the recent visits for good rather than marking them deleted.
+
+### Small asymmetries kept
+
+The update route answers **the same message for every failure inside its try block** — including a parent that does not exist, which has nothing to do with ownership. The access route reads the request twice with different defaults: it refuses only when the caller named an access that differs from the page's, while the value written falls back to public, so a request naming nothing makes the page public. And the summary's queryset has no `deleted_at` filter on the project link where the list's does, so a page whose link was removed is still counted.
+
+The description, the versions and the duplicate route are not migrated yet; they are separate paths, so the matcher stops before them.
+
 ## Migrated module: notifications
 
 The ten routes under `workspaces/<slug>/users/notifications/`: the list, the unread counts, mark-all-read, and the six that act on one notification.

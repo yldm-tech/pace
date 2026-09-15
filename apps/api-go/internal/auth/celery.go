@@ -27,6 +27,7 @@ const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
 const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
+const pageTransactionTaskName = "plane.bgtasks.page_transaction_task.page_transaction"
 const assetObjectMetadataTaskName = "plane.bgtasks.storage_metadata_task.get_asset_object_metadata"
 const issueDescriptionVersionTaskName = "plane.bgtasks.issue_description_version_task.issue_description_version_task"
 
@@ -160,6 +161,19 @@ func (publisher *CeleryPublisher) PublishIssueActivity(ctx context.Context, keyw
 // calls positionally. The crawler still runs on the Python worker.
 func (publisher *CeleryPublisher) PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error {
 	return publisher.publish(ctx, crawlLinkTitleTaskName, []any{linkID, url})
+}
+
+// PublishPageTransaction mirrors page_transaction.delay, which Django calls with keywords. It turns a description change into a page version and rewrites the issue links embedded in the page, and still runs on the Python worker.
+func (publisher *CeleryPublisher) PublishPageTransaction(ctx context.Context, newDescriptionHTML string, oldDescriptionHTML *string, pageID string) error {
+	old := any(nil)
+	if oldDescriptionHTML != nil {
+		old = *oldDescriptionHTML
+	}
+	return publisher.publishKeywords(ctx, pageTransactionTaskName, map[string]any{
+		"new_description_html": newDescriptionHTML,
+		"old_description_html": old,
+		"page_id":              pageID,
+	})
 }
 
 // PublishAssetObjectMetadata mirrors get_asset_object_metadata.delay, which reads the object's headers back out of the bucket. It still runs on the Python worker.
