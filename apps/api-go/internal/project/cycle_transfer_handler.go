@@ -36,58 +36,14 @@ func (handler *Handler) cycleTransferIssues(c *gin.Context, user *auth.User) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "New Cycle Id is required"})
 		return
 	}
-
-	var destination Cycle
-	err := handler.db.WithContext(c.Request.Context()).Table("cycles c").Select("c.*").
-		Joins("JOIN workspaces w ON w.id = c.workspace_id").
-		Where("w.slug = ? AND c.project_id = ? AND c.id = ? AND c.deleted_at IS NULL", slug, projectID, request.NewCycleID).
-		Take(&destination).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		// Django reads the end date off the result of .first() with no guard, so naming a cycle that is not there raises rather than answering 400.
-		handler.internalError(c, errors.New("cycle transfer: the destination cycle does not exist"))
-		return
-	}
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
 	now := handler.clock().UTC()
-	if destination.EndDate != nil && destination.EndDate.Before(now) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "The cycle where the issues are transferred is already completed"})
-		return
-	}
-
-	source, err := handler.cycleWithTransferCounts(c, slug, projectID, cycleID)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Source cycle not found"})
-		return
-	}
+	moved, refusal, err := TransferCycleIssues(c, handler.db, now, slug, projectID, cycleID, request.NewCycleID)
 	if err != nil {
 		handler.internalError(c, err)
 		return
 	}
-
-	snapshot, err := handler.cycleProgressSnapshot(c, slug, projectID, cycleID, source)
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	encoded, err := json.Marshal(snapshot)
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	// The snapshot and the move are two statements, not one transaction: Django runs this view in autocommit, so a failure between them leaves the snapshot written and the issues where they were.
-	err = handler.db.WithContext(c.Request.Context()).Model(&Cycle{}).
-		Where("id = ?", cycleID).Update("progress_snapshot", encoded).Error
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-
-	moved, err := handler.moveUnfinishedCycleIssues(c, slug, projectID, cycleID, request.NewCycleID)
-	if err != nil {
-		handler.internalError(c, err)
+	if refusal != nil {
+		c.JSON(refusal.Status, refusal.Body)
 		return
 	}
 	if err := handler.publishCycleTransferActivity(c, user, projectID, cycleID, request.NewCycleID, moved, now); err != nil {
@@ -299,4 +255,62 @@ func (handler *Handler) publishCycleTransferActivity(c *gin.Context, user *auth.
 		Type: "cycle.activity.created", RequestedData: &requestedData, CurrentInstance: &snapshot,
 		ActorID: user.ID, ProjectID: projectID, Notification: true, Origin: handler.origin(), Epoch: now,
 	})
+}
+
+// TransferFailure is one of the two refusals the transfer answers with, carried out of the shared path so the caller can word its own response around it.
+type TransferFailure struct {
+	Status int
+	Body   gin.H
+}
+
+// TransferCycleIssues is transfer_cycle_issues, the utility both APIs' transfer routes run.
+//
+// It lives here rather than in a package of its own because the snapshot it freezes **is** the session API's analytics — the distributions and the burndowns those endpoints compute — and moving that would mean moving them. The external API calls in rather than keeping a second copy, and publishes its own activity afterwards, since the two APIs queue it with different keywords.
+func TransferCycleIssues(c *gin.Context, database *gorm.DB, now time.Time, slug, projectID, cycleID, newCycleID string) ([]map[string]string, *TransferFailure, error) {
+	runner := &Handler{db: database, clock: func() time.Time { return now }}
+
+	var destination Cycle
+	err := database.WithContext(c.Request.Context()).Table("cycles c").Select("c.*").
+		Joins("JOIN workspaces w ON w.id = c.workspace_id").
+		Where("w.slug = ? AND c.project_id = ? AND c.id = ? AND c.deleted_at IS NULL", slug, projectID, newCycleID).
+		Take(&destination).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		// Django reads the end date off the result of .first() with no guard, so naming a cycle that is not there raises rather than answering 400.
+		return nil, nil, errors.New("cycle transfer: the destination cycle does not exist")
+	}
+	if err != nil {
+		return nil, nil, err
+	}
+	if destination.EndDate != nil && destination.EndDate.Before(now) {
+		return nil, &TransferFailure{Status: http.StatusBadRequest, Body: gin.H{
+			"error": "The cycle where the issues are transferred is already completed",
+		}}, nil
+	}
+
+	source, err := runner.cycleWithTransferCounts(c, slug, projectID, cycleID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, &TransferFailure{Status: http.StatusBadRequest, Body: gin.H{"error": "Source cycle not found"}}, nil
+	}
+	if err != nil {
+		return nil, nil, err
+	}
+	snapshot, err := runner.cycleProgressSnapshot(c, slug, projectID, cycleID, source)
+	if err != nil {
+		return nil, nil, err
+	}
+	encoded, err := json.Marshal(snapshot)
+	if err != nil {
+		return nil, nil, err
+	}
+	// The snapshot and the move are two statements, not one transaction: Django runs this view in autocommit, so a failure between them leaves the snapshot written and the issues where they were.
+	err = database.WithContext(c.Request.Context()).Model(&Cycle{}).
+		Where("id = ?", cycleID).Update("progress_snapshot", encoded).Error
+	if err != nil {
+		return nil, nil, err
+	}
+	moved, err := runner.moveUnfinishedCycleIssues(c, slug, projectID, cycleID, newCycleID)
+	if err != nil {
+		return nil, nil, err
+	}
+	return moved, nil, nil
 }
