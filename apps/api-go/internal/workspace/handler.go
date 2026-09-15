@@ -100,6 +100,7 @@ func (handler *Handler) SetCache(invalidator auth.CacheInvalidator) { handler.ca
 
 func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerAssetRoutes(router)
+	handler.registerProjectAssetRoutes(router)
 	router.GET("/api/workspace-slug-check/", handler.authenticated(handler.slugCheck))
 	router.GET("/api/workspaces/", handler.authenticated(handler.workspaceList))
 	router.POST("/api/workspaces/", handler.authenticated(handler.workspaceCreate))
@@ -1101,6 +1102,11 @@ func newUUID() (string, error) {
 
 func isUniqueViolation(err error) bool {
 	return strings.Contains(strings.ToLower(err.Error()), "duplicate key") || strings.Contains(strings.ToLower(err.Error()), "unique constraint")
+}
+
+// isForeignKeyViolation names the failure a claim hits when the entity it points at has been deleted since the upload, which Django swallows for three of the five kinds.
+func isForeignKeyViolation(err error) bool {
+	return strings.Contains(strings.ToLower(err.Error()), "foreign key constraint")
 }
 
 func invitationToken(secret string, email any, now time.Time) (string, error) {

@@ -1417,6 +1417,16 @@ The `PATCH` does more than mark the bytes present: it **moves the asset onto its
 
 Two smaller shapes: `check/` answers `200` with `false` rather than a `404` when the asset is not there, and `restore/` reads through the manager that shows deleted rows — the only route here that does. The three detail routes are authorised at the **workspace** level, so an asset bound to a project needs a membership of that project as well, or a workspace guest could reach a project they are not in.
 
+## Migrated module: project assets
+
+The project half of the v2 asset API is implemented and cut over, which completes it: the reserve under a project, the three detail routes, the project download, the bulk claim, and `duplicate-assets/`.
+
+The two halves are **not the same endpoint with a project id added**. The project route asks nothing of the entity beyond being one — a workspace logo reserved here is written with the project's id beside it and nobody objects — and its `PATCH` and `DELETE` move the asset onto and off **nothing**, where the workspace route puts a logo or a cover on its owner. Its entity table differs by a single line: a draft issue description writes a column here and writes none there.
+
+The bulk claim is what attaches an asset uploaded before its entity existed — a project cover uploaded during project creation has no project until this call gives it one. The entity it acts on is read off the **first** asset the query finds and then applied to all of them, so a call naming two assets of different kinds treats both as whatever the first one is. Its scope is the caller's own uploads that are either unattached or already in this project, and an entity that has been deleted since the upload is a foreign key failure that three of the five kinds swallow.
+
+`duplicate-assets/` copies the bytes inside the bucket rather than through the API, keeps the **unsanitized** name in the copy's attributes even though the key it is written under is sanitized, and marks the copy uploaded in a second statement after the row is written.
+
 ## Migrated module: workspace quick links
 
 The workspace quick link list, create, retrieve, partial-update, and delete
