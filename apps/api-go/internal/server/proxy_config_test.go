@@ -555,6 +555,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		cycle + "cycle-issues/",
 		project + "archived-cycles/",
 		cycle + "progress/",
+		cycle + "analytics/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Cycle route %q is not cut over to Go", route)
@@ -563,7 +564,6 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	for _, route := range []string{
 		// The rest of the cycle module is not migrated. The cycle issue detail path serves four methods on Django and only one here, so it stays until the other three exist.
 		cycle + "cycle-issues/66666666-7777-8888-9999-000000000000/",
-		cycle + "analytics/",
 		cycle + "transfer-issues/",
 		project + "archived-cycles/11111111-2222-3333-4444-555555555555/",
 	} {
