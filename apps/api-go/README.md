@@ -30,6 +30,26 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: the project picker, archive and summary
+
+`GET` on `projects-lite/`, `POST` and `DELETE` on `projects/<uuid>/archive/`, and `GET` on `projects/<uuid>/summary/`.
+
+The picker offers the projects the caller is an active member of **plus every public one** — the one place in this API where membership is not required to see something. Its serializer is nine fields and nothing else: no network, no lead, no counts.
+
+The `include_archived` switch reads `true` or `1` after lowercasing, and nothing else. Asking it to order by `sort_order` **fails**: the lite list never joins the membership that carries one, so Postgres refuses the column rather than falling back. Reproduced rather than papered over.
+
+### Archiving takes the favourites of everything inside with it
+
+The clear is by **project** rather than by entity, so a favourited cycle or page in an archived project stops being favourited too. Unarchiving does **not** put them back.
+
+Both carry `WorkSpaceAdminPermission` rather than the project permission the rest of this app uses.
+
+### The summary counts almost nothing through a manager
+
+Seven of the eight count rows of their own table, **soft-deleted ones included** — the subqueries are built from the plain default managers, and those only filter the model they are asked about. The eighth, the issue count, excludes **triage alone**: not archived issues, not drafts.
+
+Asking for nothing valid asks for all eight.
+
 ## Migrated external module: states
 
 The five routes under `/api/v1/.../states/`.
