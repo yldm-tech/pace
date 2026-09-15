@@ -1413,6 +1413,12 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the intake cutover and the intake's description versions
+
+The work items inside an intake were implemented some time ago but the proxy never reached them: the matcher covered `intakes/` and `inboxes/` and stopped there, so all ten routes — five methods under each of the two names the viewset is mounted with — were still being answered by Django. They are cut over now, with no code change behind them.
+
+The two **intake description-version** routes are added at the same time, because they sit on the same path prefix. The detail route is the work item's endpoint reached through a second url and nothing more. The list is not: the work item copy sorts newest first, this one applies no ordering at all, and the model declares none either — so what comes back is whatever order the database chose, and a second page can repeat or skip a version. Reproduced rather than corrected, since adding an order would change what the endpoint returns.
+
 ## Migrated module: one person's corner of a workspace
 
 Six routes are implemented and cut over: the profile, the numbers, the activity feed and its csv export, the recent visits, and the per-project member map.

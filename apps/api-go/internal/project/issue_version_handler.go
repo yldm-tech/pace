@@ -19,6 +19,9 @@ func (handler *Handler) registerIssueVersionRoutes(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/:id/issues/:issue/versions/:version/", handler.authenticatedIssueUUID(handler.issueVersionDetail))
 	router.GET("/api/workspaces/:slug/projects/:id/work-items/:issue/description-versions/", handler.authenticatedIssueUUID(handler.descriptionVersionList))
 	router.GET("/api/workspaces/:slug/projects/:id/work-items/:issue/description-versions/:version/", handler.authenticatedIssueUUID(handler.descriptionVersionDetail))
+	// The intake copy of the same two routes. The detail is the same endpoint twice over; the list is not, because this one leaves the ordering off.
+	router.GET("/api/workspaces/:slug/projects/:id/intake-work-items/:issue/description-versions/", handler.authenticatedIssueUUID(handler.intakeDescriptionVersionList))
+	router.GET("/api/workspaces/:slug/projects/:id/intake-work-items/:issue/description-versions/:version/", handler.authenticatedIssueUUID(handler.descriptionVersionDetail))
 }
 
 // IssueVersion is the db.IssueVersion table: a snapshot of an issue's fields at a point in time.
@@ -171,6 +174,17 @@ func issueVersionJSON(version IssueVersion) gin.H {
 }
 
 func (handler *Handler) descriptionVersionList(c *gin.Context, user *auth.User) {
+	handler.serveDescriptionVersionList(c, user, true)
+}
+
+// intakeDescriptionVersionList is the same list read through the intake's own path, and it differs in one way: it applies no ordering at all.
+//
+// The work item copy sorts newest first. This one does not, and the model declares no ordering either, so what comes back is whatever order the database chose — which means a second page can repeat or skip a version. Reproduced rather than corrected: adding an order here would change what the endpoint returns.
+func (handler *Handler) intakeDescriptionVersionList(c *gin.Context, user *auth.User) {
+	handler.serveDescriptionVersionList(c, user, false)
+}
+
+func (handler *Handler) serveDescriptionVersionList(c *gin.Context, user *auth.User, ordered bool) {
 	if !handler.requireDescriptionVersionAccess(c, user) {
 		return
 	}
@@ -191,11 +205,12 @@ func (handler *Handler) descriptionVersionList(c *gin.Context, user *auth.User) 
 	}
 	var rows []IssueDescriptionVersion
 	if page.End > page.Start {
-		// This queryset orders explicitly rather than relying on the model.
-		err := scope(handler.db.WithContext(c.Request.Context())).
-			Order("v.created_at DESC").Offset(page.Start).Limit(page.End - page.Start).
-			Find(&rows).Error
-		if err != nil {
+		query := scope(handler.db.WithContext(c.Request.Context()))
+		if ordered {
+			// The work item queryset orders explicitly rather than relying on the model, which declares none.
+			query = query.Order("v.created_at DESC")
+		}
+		if err := query.Offset(page.Start).Limit(page.End - page.Start).Find(&rows).Error; err != nil {
 			handler.internalError(c, err)
 			return
 		}
