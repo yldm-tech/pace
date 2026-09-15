@@ -25,6 +25,8 @@ type cycleRow struct {
 	CancelledIssues int64          `gorm:"column:cancelled_issues"`
 	AssigneeIDs     pq.StringArray `gorm:"column:assignee_ids;type:uuid[]"`
 	Status          string         `gorm:"column:status"`
+	// SubIssues is annotated only by the retrieve, which is the one route that reports how many of a cycle's issues are sub-issues.
+	SubIssues *int64 `gorm:"column:sub_issues"`
 }
 
 // cycleList returns every cycle of a project that is not archived. Its timestamps are rendered in the **project's** timezone rather than the caller's, which is the one place in the codebase that distinction is made.
@@ -88,6 +90,28 @@ func (handler *Handler) cycleRows(c *gin.Context, slug, projectID, userID string
 	var rows []cycleRow
 	// The list overrides the queryset's own ordering: favourites first, then newest.
 	err := query.Group("c.id").Order("is_favorite DESC, c.created_at DESC").Scan(&rows).Error
+	return rows, err
+}
+
+// cycleRowsByID reads one cycle through the same annotated queryset the list uses, optionally with the sub-issue count only the retrieve carries.
+func (handler *Handler) cycleRowsByID(c *gin.Context, slug, projectID, userID, cycleID string, now time.Time, withSubIssues bool) ([]cycleRow, error) {
+	selection := cycleAnnotations()
+	arguments := []any{userID, projectID, slug, now, now, now, now}
+	if withSubIssues {
+		selection += `,
+		(SELECT COUNT(*) FROM issues si
+			JOIN cycle_issues sci ON sci.issue_id = si.id AND sci.cycle_id = c.id AND sci.deleted_at IS NULL
+			WHERE si.project_id = ? AND si.parent_id IS NOT NULL AND ` + issueObjectsPredicate("si") + `) AS sub_issues`
+		arguments = append(arguments, projectID)
+	}
+	var rows []cycleRow
+	err := handler.db.WithContext(c.Request.Context()).Table("cycles c").
+		Select(selection, arguments...).
+		Joins("JOIN workspaces w ON w.id = c.workspace_id").
+		Joins("JOIN projects p ON p.id = c.project_id AND p.archived_at IS NULL").
+		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Where("w.slug = ? AND c.project_id = ? AND c.id = ? AND c.deleted_at IS NULL", slug, projectID, cycleID).
+		Group("c.id").Limit(1).Scan(&rows).Error
 	return rows, err
 }
 

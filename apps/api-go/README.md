@@ -133,6 +133,18 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: cycle create, read, update and delete
+
+The four routes under `cycles/<uuid>/`, plus `POST` on `cycles/`.
+
+The two dates travel together: either both are given or neither is, and one alone is refused. When both are given they go through `convert_to_utc` as a pair, anchored to the project's own day; when they are not, neither is written at all. That is what the write serializer's `validate` does, and it is why a request supplying only an end date changes nothing rather than half of something.
+
+An **archived** cycle cannot be updated at all. A **completed** one — one whose end date has passed — can only be reordered, and a request that also carries other fields is narrowed to the sort order rather than refused, which is what lets a board be rearranged after a cycle closes.
+
+The three write responses drop `cancelled_issues`, which only the list carries, and the retrieve adds `sub_issues`, which only it carries. The update's snapshot is `CycleSerializer` over the **instance**, so it carries none of the annotated counts.
+
+Deleting needs a project admin or whoever created the cycle. The favourite is soft deleted along with it and the recent visit is removed outright, and the activity carries the cycle's id in the issue slot, which is how the task finds it.
+
 ## Migrated module: the cycle list
 
 `GET` on `cycles/`, which returns every cycle of a project that is not archived.
