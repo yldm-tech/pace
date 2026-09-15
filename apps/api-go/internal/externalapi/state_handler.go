@@ -387,7 +387,12 @@ func stateJSON(state State) gin.H {
 
 // respondPaged wraps a list in the same offset envelope the session API uses, which the external API inherits from the same paginator.
 func (handler *Handler) respondPaged(c *gin.Context, results []gin.H) {
-	perPage, err := pagination.PerPage(c.Query("per_page"), pagination.DefaultPerPage, pagination.DefaultPerPage)
+	handler.respondPagedWithDefault(c, results, pagination.DefaultPerPage)
+}
+
+// respondPagedWithDefault is the same envelope with the page size a route chooses. Most take the paginator's own default; the sticky list asks for twenty.
+func (handler *Handler) respondPagedWithDefault(c *gin.Context, results []gin.H, defaultPerPage int) {
+	perPage, err := pagination.PerPage(c.Query("per_page"), defaultPerPage, defaultPerPage)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
@@ -401,7 +406,7 @@ func (handler *Handler) respondPaged(c *gin.Context, results []gin.H) {
 		}
 		cursor = parsed
 	}
-	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), pagination.DefaultPerPage)
+	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), defaultPerPage)
 	offset := page.Offset
 	if offset > len(results) {
 		offset = len(results)

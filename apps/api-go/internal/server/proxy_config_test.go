@@ -576,6 +576,36 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalStickyAndInviteRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_stickies")
+	workspace := "/api/v1/workspaces/acme/"
+	identifier := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		workspace + "stickies/",
+		workspace + "stickies/" + identifier,
+		workspace + "invitations/",
+		workspace + "invitations/" + identifier,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The format-suffix routes a DRF router appends stay on Django: nothing here claims them.
+		workspace + "stickies.json",
+		workspace + "stickies/11111111-2222-3333-4444-555555555555.json",
+		workspace + "invitations.json",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_stickies api-go:8000") {
+		t.Error("community proxy is missing the external stickies reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalLabelRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_labels")

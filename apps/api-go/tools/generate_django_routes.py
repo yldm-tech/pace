@@ -25,6 +25,12 @@ from django.urls.resolvers import URLPattern, URLResolver  # noqa: E402
 
 PARAMETER = re.compile(r"<[^>]+>")
 PARAMETER_NAME = re.compile(r"<[^:>]*:?([^>]+)>")
+# A DRF router contributes regex patterns rather than path() routes, so its entries arrive as raw
+# regular expressions. They are rewritten into the same <name> notation before anything else looks
+# at them, or the table would carry literal patterns that match nothing and the guard would silently
+# stop checking those paths.
+REGEX_GROUP = re.compile(r"\(\?P<([^>]+)>[^)]*\)")
+OPTIONAL_SLASH = re.compile(r"/\?$")
 METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
 
@@ -76,9 +82,24 @@ def accepts(handler, captured):
     return required <= captured <= (required | optional)
 
 
+def normalize(pattern):
+    """The route a pattern contributes, in path() notation whether it was written that way or not."""
+    route = getattr(pattern.pattern, "_route", None)
+    if route is not None:
+        return str(route)
+    # A regex pattern: strip the anchors and the trailing optional slash, unescape the literal dots
+    # a format suffix carries, and turn each named group into <name>. The format-suffix routes a DRF
+    # router appends are kept rather than dropped: they are paths Django really serves, and the guard
+    # is only useful if the table is complete.
+    expression = str(pattern.pattern).lstrip("^").rstrip("$")
+    expression = OPTIONAL_SLASH.sub("", expression)
+    expression = expression.replace("\\.", ".")
+    return REGEX_GROUP.sub(lambda match: "<" + match.group(1) + ">", expression)
+
+
 def walk(resolver, prefix=""):
     for pattern in resolver.url_patterns:
-        route = prefix + str(getattr(pattern.pattern, "_route", pattern.pattern))
+        route = prefix + normalize(pattern)
         if isinstance(pattern, URLResolver):
             yield from walk(pattern, route)
             continue
