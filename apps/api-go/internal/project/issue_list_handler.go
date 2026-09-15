@@ -41,14 +41,21 @@ type issueListRequest struct {
 	conditions []string
 	arguments  []any
 	total      int
+	// basePredicate is the manager the route reads through. The live list uses issue_objects; the archive uses the plain soft-delete manager plus its own predicates, which is the only way to reach a row issue_objects hides.
+	basePredicate string
+	baseArguments []any
 }
 
 // issueListScope is the filtered set both halves share: the issue_objects manager, the workspace and project, and whatever the filters added.
 func (handler *Handler) issueListScope(ctx context.Context, request issueListRequest) *gorm.DB {
+	predicate := request.basePredicate
+	if predicate == "" {
+		predicate = issueObjectsPredicate("i")
+	}
 	query := handler.db.WithContext(ctx).Table("issues i").
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Where("w.slug = ? AND i.project_id = ?", request.slug, request.projectID).
-		Where(issueObjectsPredicate("i"))
+		Where(predicate, request.baseArguments...)
 	for _, join := range request.joins {
 		query = query.Joins(join)
 	}
