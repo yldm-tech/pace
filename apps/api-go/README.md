@@ -99,6 +99,24 @@ The workspace home preference GET and PATCH routes seed the `quick_links`,
 return the stored `config` on the list route only, and reject writes from
 non-members with the `allow_permission` error body.
 
+## Shared: editor HTML sanitization
+
+`internal/htmlsanitizer` ports `plane.utils.content_validator.validate_html_content`,
+which Django runs over stored editor HTML with nh3, the Python binding for the
+Rust ammonia crate. ammonia parses with html5ever, filters the tree, and
+serializes it again, so its output carries HTML5 tree construction: unclosed
+elements get closed, a bare table gains its `tbody`, and misnested inline
+elements are repaired. The port therefore parses with `golang.org/x/net/html`,
+which implements the same algorithm, rather than filtering tokens.
+
+Expectations in `sanitizer_test.go` are the output of nh3 0.2.18, the version
+pinned in `apps/api/requirements/base.txt`. Output matches nh3 on the editor
+markup this policy is meant for; `<svg>` and `<math>` subtrees can serialize
+differently because html5ever and `x/net/html` build foreign content
+differently. Those elements are in no allowlist and are unwrapped either way,
+and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
+nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
+
 ## Migrated module: workspace quick links
 
 The workspace quick link list, create, retrieve, partial-update, and delete

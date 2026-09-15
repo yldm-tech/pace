@@ -11,6 +11,7 @@ require (
 	github.com/rabbitmq/amqp091-go v1.10.0
 	github.com/redis/go-redis/v9 v9.7.0
 	golang.org/x/crypto v0.23.0
+	golang.org/x/net v0.25.0
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )
@@ -64,7 +65,6 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
