@@ -582,15 +582,21 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatal("the unarchive queryset must still reach the archived row")
 	}
 
-	// Unarchiving clears the column back to null.
+	// Unarchiving clears the column back to null. The column is read on its own rather than through a struct scan, so a failure here names the database's value rather than whatever a reused destination happened to be holding.
 	if err := handler.writeArchivedAt(ctx, archived, nil, now.Add(2*time.Minute)); err != nil {
 		t.Fatalf("unarchive the issue: %v", err)
 	}
-	if err := transaction.Where("id = ?", archivableID).Take(&archived).Error; err != nil {
+	var remaining []*time.Time
+	err = transaction.Session(&gorm.Session{}).Model(&Issue{}).
+		Where("id = ?", archivableID).Pluck("archived_at", &remaining).Error
+	if err != nil {
 		t.Fatal(err)
 	}
-	if archived.ArchivedAt != nil {
-		t.Fatalf("archived_at = %v, want null after unarchiving", archived.ArchivedAt)
+	if len(remaining) != 1 {
+		t.Fatalf("read %d rows for the unarchived issue, want 1", len(remaining))
+	}
+	if remaining[0] != nil {
+		t.Fatalf("archived_at is %v in the database, want null after unarchiving", remaining[0])
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.
