@@ -767,13 +767,14 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/intake-issues/",
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/intake-issues/66666666-7777-8888-9999-000000000000/",
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/inbox-issues/",
+		anchor + "issues/11111111-2222-3333-4444-555555555555/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Space route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The work item list and detail and the public assets are not migrated.
+		// The work item list needs the grouped paginator and is the last route here still on Django.
 		anchor + "issues/",
 	} {
 		if matcher.MatchString(route) {

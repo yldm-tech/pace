@@ -1489,6 +1489,14 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: the work item detail
+
+`GET` on `issues/<uuid>/` under an anchor is implemented and cut over. The **list** beside it is the one route of this app still on Django: it needs the grouped paginator, the same machinery the session API's own work item list is waiting on.
+
+A work item that is not there is answered with a **null body and a 200** rather than a `404`, because the view serializes whatever the query returned and the query returned nothing. The work item is read through the manager the board itself reads, so a draft, an archived one or one in triage is not here whatever its id.
+
+Its votes and its reactions are folded into the body, each with the person who left it. The reaction's `avatar_url` is computed from the **voter's** avatar rather than the reactor's — the expression names the votes relation where it means the reactions one — so a work item with reactions and no votes reports a null url for every reaction, and one with both reports whichever voter the join lands on. Reproduced rather than corrected: the `avatar` beside it is the reactor's, and a client that reads either one sees what Django shows it.
+
 ## Migrated space module: assets
 
 The six asset routes a published board carries are implemented and cut over. The read is the only one **without a session**: a board's images are public and everything that writes one is not.
