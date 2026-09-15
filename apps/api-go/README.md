@@ -280,3 +280,21 @@ The beat's schema test uses the same rollback-only approach:
 ```bash
 BEAT_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/beat -run TestBeatStoreAgainstDjangoSchema
 ```
+
+## Shared: SSRF-safe outbound requests
+
+`internal/httpsafe` ports `plane.utils.ip_address` and
+`plane.utils.url_security`, the guard every outbound request on a user-supplied
+URL goes through. The rule is not merely "reject private IPs": the host is
+resolved, every returned address is checked, and the connection is then made to
+the validated IP literal so DNS cannot be rebound between the check and the
+connect. IPv4 addresses embedded in IPv6 transition formats are decoded and
+checked too, because that embedded address is what the packet reaches. Redirects
+are never followed.
+
+The classification tables are CPython's own, read out of
+`ipaddress.IPv4Address._constants` and `IPv6Address._constants`. They are easy
+to get wrong by hand: an earlier draft used a narrower IPv6 reserved list and
+would have allowed 791 of the 3298 addresses in the first cross-check corpus
+that Python blocks. The port now matches `is_blocked_ip` on all 67288 addresses
+checked, including dense sweeps either side of every boundary.

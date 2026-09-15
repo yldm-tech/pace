@@ -51,6 +51,7 @@ func (tasks *EmailTasks) Register(consumer *Consumer) {
 	consumer.Register(EmailUpdateConfirmationTask, tasks.emailUpdateConfirmation)
 	consumer.Register(WorkspaceInvitationTask, tasks.workspaceInvitation)
 	consumer.Register(ProjectAddUserEmailTask, tasks.projectAddUser)
+	consumer.Register(WebhookDeactivationTask, tasks.webhookDeactivation)
 }
 
 func (tasks *EmailTasks) magicLink(ctx context.Context, arguments []any, keywords map[string]any) error {
@@ -277,7 +278,7 @@ func MigratedTaskNames() []string {
 	return []string{
 		MagicLinkTask, ForgotPasswordTask, UserActivationTask, UserDeactivationTask,
 		EmailUpdateCodeTask, EmailUpdateConfirmationTask, WorkspaceInvitationTask,
-		ProjectAddUserEmailTask,
+		ProjectAddUserEmailTask, WebhookDeactivationTask,
 		DeleteAPILogsTask, DeleteEmailNotificationLogsTask, DeletePageVersionsTask,
 		DeleteIssueDescriptionVersionsTask, DeleteWebhookLogsTask, RecentVisitedTask,
 		SoftDeleteRelatedObjectsTask, HardDeleteTask,
@@ -293,4 +294,41 @@ func newTaskUUID() (string, error) {
 	value[6] = (value[6] & 0x0f) | 0x40
 	value[8] = (value[8] & 0x3f) | 0x80
 	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", value[0:4], value[4:6], value[6:8], value[8:10], value[10:16]), nil
+}
+
+// WebhookDeactivationTask is send_webhook_deactivation_email, queued when a
+// webhook has failed often enough to be switched off.
+const WebhookDeactivationTask = "plane.bgtasks.webhook_task.send_webhook_deactivation_email"
+
+func (tasks *EmailTasks) webhookDeactivation(ctx context.Context, arguments []any, keywords map[string]any) error {
+	webhookID := stringArgument(arguments, keywords, 0, "webhook_id")
+	receiverID := stringArgument(arguments, keywords, 1, "receiver_id")
+	currentSite := stringArgument(arguments, keywords, 2, "current_site")
+
+	receiver, found, err := tasks.user(ctx, receiverID)
+	if err != nil || !found {
+		return err
+	}
+	var webhook struct {
+		ID            string `gorm:"column:id"`
+		URL           string `gorm:"column:url"`
+		WorkspaceSlug string `gorm:"column:workspace_slug"`
+	}
+	err = tasks.db.WithContext(ctx).Table("webhooks w").
+		Joins("JOIN workspaces ws ON ws.id = w.workspace_id").
+		Where("w.id = ?", webhookID).
+		Select("w.id, w.url, ws.slug AS workspace_slug").Take(&webhook).Error
+	if err != nil {
+		// Django lets the lookup failure fall into its own except and returns.
+		return nil
+	}
+	return tasks.send(ctx, receiver.Email,
+		"Webhook Deactivated",
+		"emails/notifications/webhook-deactivate.html",
+		map[string]any{
+			"email":   receiver.Email,
+			"message": fmt.Sprintf("Webhook %s has been deactivated due to failed requests.", webhook.URL),
+			"webhook_url": fmt.Sprintf("%s/%s/settings/webhooks/%s",
+				currentSite, webhook.WorkspaceSlug, webhook.ID),
+		})
 }
