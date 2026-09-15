@@ -54,6 +54,9 @@
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
 	reverse_proxy @go_work_item_identifier api-go:8000
+	@go_notifications path_regexp go_notifications ^/api/workspaces/[^/]+/users/notifications/(unread/|mark-all-read/|[0-9A-Fa-f-]+/(read/|archive/)?)?$
+	reverse_proxy @go_notifications api-go:8000
+
 	@go_workspace_views path_regexp go_workspace_views ^/api/workspaces/[^/]+/views/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_workspace_views api-go:8000
 
