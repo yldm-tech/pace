@@ -1,0 +1,54 @@
+filters	query
+{}	{}
+{"state": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"state__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"state": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f", "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"]}	{"state__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f", "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"]}
+{"state": []}	{}
+{"state": null}	{}
+{"state": "null"}	{}
+{"state": "not-a-uuid"}	{"state__in": "not-a-uuid"}
+{"state_group": ["backlog", "started"]}	{"state__group__in": ["backlog", "started"]}
+{"estimate_point": ["1", "2"]}	{"estimate_point__in": ["1", "2"]}
+{"priority": ["urgent", "high", "none"]}	{"priority__in": ["urgent", "high", "none"]}
+{"parent": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"parent__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"labels": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f", "None"]}	{"label_issue__deleted_at__isnull": true, "labels__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f", "None"]}
+{"labels": []}	{"label_issue__deleted_at__isnull": true}
+{"assignees": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"assignees__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "issue_assignee__deleted_at__isnull": true}
+{"assignees": []}	{"issue_assignee__deleted_at__isnull": true}
+{"mentions": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"issue_mention__mention__id__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"created_by": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"created_by__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"logged_by": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"logged_by__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"project": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"project__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"cycle": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"issue_cycle__cycle_id__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "issue_cycle__deleted_at__isnull": true}
+{"cycle": []}	{"issue_cycle__deleted_at__isnull": true}
+{"module": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"issue_module__deleted_at__isnull": true, "issue_module__module_id__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"module": []}	{"issue_module__deleted_at__isnull": true}
+{"subscriber": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"issue_subscribers__deleted_at__isnull": true, "issue_subscribers__subscriber_id__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"subscriber": []}	{"issue_subscribers__deleted_at__isnull": true}
+{"inbox_status": ["1"]}	{"issue_intake__status__in": ["1"]}
+{"intake_status": ["1"]}	{"issue_intake__status__in": null}
+{"inbox_status": ["2"], "intake_status": ["1"]}	{"issue_intake__status__in": ["2"]}
+{"name": "bug"}	{"name__icontains": "bug"}
+{"name": ""}	{}
+{"created_at": ["2026-01-01;after"]}	{"created_at__date__gte": "2026-01-01"}
+{"created_at": ["2026-01-01;before"]}	{"created_at__date__lte": "2026-01-01"}
+{"created_at": ["2026-01-01;after", "2026-03-01;before"]}	{"created_at__date__gte": "2026-01-01", "created_at__date__lte": "2026-03-01"}
+{"created_at": ["2026-01-01"]}	{"created_at__date__contains": "2026-01-01"}
+{"created_at": []}	{}
+{"created_at": "2026-01-01;after"}	{"created_at__date__contains": "r", "created_at__date__lte": ""}
+{"created_at": ["2_weeks;after;fromnow"]}	RAISES
+{"updated_at": ["2026-02-02;before"]}	{"updated_at__date__lte": "2026-02-02"}
+{"completed_at": ["2026-02-02;after"]}	{"completed_at__date__gte": "2026-02-02"}
+{"start_date": ["2026-01-01;after"]}	{"start_date": ["2026-01-01;after"]}
+{"target_date": ["2026-01-01;before"]}	{"target_date": ["2026-01-01;before"]}
+{"start_date": []}	{}
+{"type": "backlog"}	{"state__group__in": ["backlog"]}
+{"type": "active"}	{"state__group__in": ["unstarted", "started"]}
+{"type": "all"}	{"state__group__in": ["backlog", "unstarted", "started", "completed", "cancelled"]}
+{"type": "anything-else"}	{"state__group__in": ["backlog", "unstarted", "started", "completed", "cancelled"]}
+{"sub_issue": "true"}	{}
+{"sub_issue": "false"}	{"parent__isnull": true}
+{"sub_issue": []}	{}
+{"start_target_date": "true"}	{"start_date__isnull": false, "target_date__isnull": false}
+{"start_target_date": "false"}	{}
+{"labels": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"], "name": "crash", "priority": ["urgent"], "state": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}	{"label_issue__deleted_at__isnull": true, "labels__in": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"], "name__icontains": "crash", "priority__in": ["urgent"], "state__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"]}
+{"assignees": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "cycle": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "module": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"], "subscriber": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"]}	{"assignees__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "issue_assignee__deleted_at__isnull": true, "issue_cycle__cycle_id__in": ["ae3b0f5e-6c9b-4b6e-8b8a-0f2a1c3d4e5f"], "issue_cycle__deleted_at__isnull": true, "issue_module__deleted_at__isnull": true, "issue_module__module_id__in": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"], "issue_subscribers__deleted_at__isnull": true, "issue_subscribers__subscriber_id__in": ["b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"]}

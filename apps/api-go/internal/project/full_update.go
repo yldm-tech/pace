@@ -18,6 +18,7 @@ var fullUpdateRequirements = map[string][]string{
 	"comment": {},
 	"module":  {"name"},
 	"link":    {"url"},
+	"view":    {"name"},
 }
 
 // requireFullUpdateFields is the difference between PUT and PATCH. Everything else about the two is the same, so each PUT route runs the partial handler once this has passed.
