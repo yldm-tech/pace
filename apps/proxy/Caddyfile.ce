@@ -48,6 +48,8 @@
 	reverse_proxy @go_project_labels api-go:8000
 	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?)$
 	reverse_proxy @go_issue_interactions api-go:8000
+	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$
+	reverse_proxy @go_issue_detail api-go:8000
 	@go_comment_reactions path_regexp go_comment_reactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?$
 	reverse_proxy @go_comment_reactions api-go:8000
 	reverse_proxy /api/users/me/workspaces/*/project-roles/ api-go:8000

@@ -27,6 +27,7 @@ const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
 const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
+const issueDescriptionVersionTaskName = "plane.bgtasks.issue_description_version_task.issue_description_version_task"
 
 // defaultCeleryQueue is the queue the Python worker consumes.
 const defaultCeleryQueue = "celery"
@@ -158,6 +159,13 @@ func (publisher *CeleryPublisher) PublishIssueActivity(ctx context.Context, keyw
 // calls positionally. The crawler still runs on the Python worker.
 func (publisher *CeleryPublisher) PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error {
 	return publisher.publish(ctx, crawlLinkTitleTaskName, []any{linkID, url})
+}
+
+// PublishIssueDescriptionVersion mirrors issue_description_version_task.delay.
+func (publisher *CeleryPublisher) PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error {
+	return publisher.publishKeywords(ctx, issueDescriptionVersionTaskName, map[string]any{
+		"updated_issue": updatedIssue, "issue_id": issueID, "user_id": userID,
+	})
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {

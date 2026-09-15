@@ -351,3 +351,23 @@ The create route refuses a guest unless the project opens all features to guests
 or the guest raised the issue, and update and delete follow
 `allow_permission(creator=True)`, so the comment's author may always act on it
 and otherwise a project or workspace admin may.
+
+## Migrated module: issue detail
+
+`GET`, `PATCH` and `DELETE` on `issues/<uuid>/` are implemented, with the
+annotated queryset behind `IssueDetailSerializer`: the cycle, the link,
+attachment and sub-issue counts, and the label, assignee and module id arrays.
+
+Two shape details are reproduced rather than tidied. `is_intake` is declared on
+the serializer but only annotated by `IssueDetailIdentifierEndpoint`; DRF makes
+a read-only field not required, so `get_attribute` raises `SkipField` and the
+key is dropped, which means these routes never return it. And `current_instance`
+on the update path comes from a queryset that does not annotate `is_subscribed`,
+so that key is absent from the snapshot the activity carries even though the
+retrieve response has it.
+
+`PATCH` answers `204` with no body. It narrows assignees to project members at
+member level or above and labels to the project, silently dropping the rest
+rather than refusing, and skips every activity when `skip_activity` accompanies
+a description update. The list route stays on Django: it needs the grouped
+paginator and the filter machinery.

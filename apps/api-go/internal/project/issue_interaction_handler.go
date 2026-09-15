@@ -428,6 +428,8 @@ type issueActivity struct {
 	Notification    bool
 	Origin          string
 	Epoch           time.Time
+	// SubscriberSet marks the one call that turns the subscriber flag off.
+	SubscriberSet bool
 }
 
 // publishIssueActivity queues issue_activity, which still runs on the Python
@@ -436,7 +438,7 @@ func (handler *Handler) publishIssueActivity(c *gin.Context, activity issueActiv
 	if handler.tasks == nil {
 		return nil
 	}
-	return handler.tasks.PublishIssueActivity(c.Request.Context(), map[string]any{
+	keywords := map[string]any{
 		"type":             activity.Type,
 		"requested_data":   nullableString(activity.RequestedData),
 		"current_instance": nullableString(activity.CurrentInstance),
@@ -447,7 +449,11 @@ func (handler *Handler) publishIssueActivity(c *gin.Context, activity issueActiv
 		"epoch":        activity.Epoch.Unix(),
 		"notification": activity.Notification,
 		"origin":       activity.Origin,
-	})
+	}
+	if activity.SubscriberSet {
+		keywords["subscriber"] = false
+	}
+	return handler.tasks.PublishIssueActivity(c.Request.Context(), keywords)
 }
 
 func nullableString(value *string) any {
