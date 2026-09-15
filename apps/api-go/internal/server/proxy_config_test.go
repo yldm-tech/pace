@@ -313,6 +313,7 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "issue-relation/",
 		issue + "remove-relation/",
 		issue + "archive/",
+		issue + "history/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
