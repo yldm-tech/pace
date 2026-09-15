@@ -10,6 +10,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/externalapi"
 	projectapi "github.com/yldm-tech/pace/apps/api-go/internal/project"
+	spaceapi "github.com/yldm-tech/pace/apps/api-go/internal/space"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
 	workspaceapi "github.com/yldm-tech/pace/apps/api-go/internal/workspace"
@@ -138,6 +139,8 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			projectHandler.SetCache(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
 		}
 		projectHandler.Register(router)
+		spaceHandler := spaceapi.NewHandler(dependencies.Database)
+		spaceHandler.Register(router)
 		externalHandler := externalapi.NewHandler(dependencies.Database, externalapi.Settings{
 			RateLimit:     dependencies.AuthSettings.APIKeyRateLimit,
 			FileSizeLimit: dependencies.AuthSettings.FileSizeLimit,

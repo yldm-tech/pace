@@ -715,6 +715,40 @@ func TestCommunityProxyCutsOverTheDeployBoards(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_space_read")
+	anchor := "/api/public/anchor/0123456789abcdef0123456789abcdef/"
+	for _, route := range []string{
+		anchor + "settings/",
+		anchor + "meta/",
+		anchor + "members/",
+		anchor + "states/",
+		anchor + "labels/",
+		anchor + "cycles/",
+		anchor + "modules/",
+		"/api/public/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/anchor/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Space route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The work items, the comments and the intake under an anchor are not migrated.
+		anchor + "issues/",
+		anchor + "issues/11111111-2222-3333-4444-555555555555/comments/",
+		anchor + "intakes/11111111-2222-3333-4444-555555555555/intake-issues/",
+		"/api/public/assets/v2/anchor/0123456789abcdef0123456789abcdef/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_space_read api-go:8000") {
+		t.Error("community proxy is missing the space reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")
