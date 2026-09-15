@@ -19,7 +19,7 @@ import (
 var workspacePreferenceKeys = []string{"views", "active_cycles", "analytics", "drafts", "your_work", "archives", "stickies"}
 
 func (handler *Handler) sidebarPreferencesGet(c *gin.Context, user *auth.User) {
-	if !handler.requireWorkspaceViewer(c, user) {
+	if !handler.requireWorkspaceMember(c, user) {
 		return
 	}
 	if err := handler.ensureSidebarPreferences(c, user); err != nil {
@@ -47,7 +47,7 @@ func (handler *Handler) sidebarPreferencesGet(c *gin.Context, user *auth.User) {
 }
 
 func (handler *Handler) sidebarPreferencesPatch(c *gin.Context, user *auth.User) {
-	if !handler.requireWorkspaceViewer(c, user) {
+	if !handler.requireWorkspaceMember(c, user) {
 		return
 	}
 	var entries []map[string]json.RawMessage
@@ -75,7 +75,9 @@ func (handler *Handler) sidebarPreferencesPatch(c *gin.Context, user *auth.User)
 			handler.internalError(c, err)
 			return
 		}
-		updates := map[string]any{"updated_at": handler.clock().UTC(), "updated_by_id": user.ID}
+		// Django saves with update_fields=["is_pinned", "sort_order"], so neither
+		// the auto_now updated_at nor updated_by is written on this route.
+		updates := map[string]any{}
 		if raw, ok := entry["is_pinned"]; ok {
 			var isPinned bool
 			if json.Unmarshal(raw, &isPinned) != nil {
@@ -91,6 +93,9 @@ func (handler *Handler) sidebarPreferencesPatch(c *gin.Context, user *auth.User)
 				return
 			}
 			updates["sort_order"] = value
+		}
+		if len(updates) == 0 {
+			continue
 		}
 		if err := handler.db.WithContext(c.Request.Context()).Model(&WorkspaceUserPreference{}).Where("id = ?", preference.ID).Updates(updates).Error; err != nil {
 			handler.internalError(c, err)
@@ -131,8 +136,9 @@ func (handler *Handler) ensureSidebarPreferencesFor(ctx context.Context, slug st
 		if err != nil {
 			return err
 		}
+		// Django bulk_create bypasses BaseModel.save, so created_by stays null.
 		missing = append(missing, WorkspaceUserPreference{
-			ID: id, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+			ID: id, CreatedAt: now, UpdatedAt: now,
 			WorkspaceID: workspaceID, UserID: user.ID, Key: key,
 			IsPinned:  key == "drafts" || key == "your_work" || key == "stickies",
 			SortOrder: 65535 + float64(missingIndex)*10000,

@@ -993,6 +993,17 @@ func (handler *Handler) assetExists(ctx context.Context, assetID string) (bool, 
 	return count > 0, err
 }
 
+// requireWorkspaceMember matches Django's allow_permission decorator, which
+// accepts every workspace role but denies with a different body than the DRF
+// permission classes used by the other workspace routes.
+func (handler *Handler) requireWorkspaceMember(c *gin.Context, user *auth.User) bool {
+	if _, err := handler.workspaceRole(c.Request.Context(), c.Param("slug"), user.ID); err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"error": "You don't have the required permissions."})
+		return false
+	}
+	return true
+}
+
 func (handler *Handler) notFound(c *gin.Context) {
 	c.JSON(http.StatusNotFound, gin.H{"error": "The required object does not exist."})
 }
