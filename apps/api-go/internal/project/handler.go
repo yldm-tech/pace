@@ -142,6 +142,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerWebhookRoutes(router)
 	handler.registerAnalyticViewRoutes(router)
 	handler.registerAnalyticsRoutes(router)
+	handler.registerAnalyticsSummaryRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
