@@ -34,6 +34,14 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/preferences/member/:member/":   true,
 		"PATCH /api/workspaces/:slug/projects/:id/preferences/member/:member/": true,
 		"GET /api/users/me/workspaces/:slug/project-roles/":                    true,
+
+		"GET /api/workspaces/:slug/projects/:id/issue-labels/":           true,
+		"POST /api/workspaces/:slug/projects/:id/issue-labels/":          true,
+		"GET /api/workspaces/:slug/projects/:id/issue-labels/:label/":    true,
+		"PUT /api/workspaces/:slug/projects/:id/issue-labels/:label/":    true,
+		"PATCH /api/workspaces/:slug/projects/:id/issue-labels/:label/":  true,
+		"DELETE /api/workspaces/:slug/projects/:id/issue-labels/:label/": true,
+		"POST /api/workspaces/:slug/projects/:id/bulk-create-labels/":    true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path

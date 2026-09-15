@@ -265,6 +265,34 @@ func TestCommunityProxyCutsOverOnlyProjectMemberRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_project_labels")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	for _, route := range []string{
+		project + "issue-labels/",
+		project + "issue-labels/11111111-2222-3333-4444-555555555555/",
+		project + "bulk-create-labels/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Project Label route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		project + "issues/",
+		project + "issue-labels/11111111-2222-3333-4444-555555555555/history/",
+		project + "bulk-delete-issues/",
+		"/api/workspaces/acme/labels/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_project_labels api-go:8000") {
+		t.Error("community proxy is missing the Project Labels reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
