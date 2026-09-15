@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
 )
 
@@ -18,8 +19,14 @@ import (
 type Handler struct {
 	db       *gorm.DB
 	sessions *auth.SessionManager
-	now      func() time.Time
+	storage  *storage.Store
+	// fileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every reserved upload is clamped to.
+	fileSizeLimit int64
+	now           func() time.Time
 }
+
+// SetFileSizeLimit gives the handler the cap an upload is clamped to.
+func (handler *Handler) SetFileSizeLimit(limit int64) { handler.fileSizeLimit = limit }
 
 func NewHandler(database *gorm.DB) *Handler {
 	return &Handler{db: database}
@@ -68,6 +75,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerReactionRoutes(router)
 	handler.registerCommentRoutes(router)
 	handler.registerIntakeRoutes(router)
+	handler.registerAssetRoutes(router)
 }
 
 func (handler *Handler) serverError(c *gin.Context, err error) {

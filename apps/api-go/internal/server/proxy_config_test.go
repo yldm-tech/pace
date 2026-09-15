@@ -715,6 +715,35 @@ func TestCommunityProxyCutsOverTheDeployBoards(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheSpaceAssets(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_space_assets")
+	base := "/api/public/assets/v2/anchor/0123456789abcdef0123456789abcdef/"
+	asset := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		base,
+		base + asset,
+		base + asset + "bulk/",
+		base + "restore/" + asset,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Space asset route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The application's own assets are a different route.
+		"/api/assets/v2/workspaces/acme/",
+		"/api/assets/v2/static/" + asset,
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the space asset matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_space_assets api-go:8000") {
+		t.Error("community proxy is missing the space asset reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_space_read")
@@ -746,7 +775,6 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 	for _, route := range []string{
 		// The work item list and detail and the public assets are not migrated.
 		anchor + "issues/",
-		"/api/public/assets/v2/anchor/0123456789abcdef0123456789abcdef/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

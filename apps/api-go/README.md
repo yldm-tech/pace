@@ -1489,6 +1489,16 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: assets
+
+The six asset routes a published board carries are implemented and cut over. The read is the only one **without a session**: a board's images are public and everything that writes one is not.
+
+The read serves two entity types and nothing else — a work item's description and a comment's — so whatever else the board holds is out of reach here. A type a browser would execute is served as an **attachment** rather than inline, which is what stops an uploaded SVG running as script on the board's own origin.
+
+An upload may name **any** entity there is, and the identifier it carries is written to `comment_id` and to nothing else — so an upload calling itself a work item description still lands on a comment, or on no comment at all. The size is clamped at **both** ends here, unlike every other reserve in the codebase, so an upload of nothing still carries a policy the bucket accepts.
+
+The bulk claim moves assets onto a comment and **only** onto a comment: the entity is read off the first asset the query finds, and anything that is not a comment description is left where it is. The delete asks that the board be a project's and the update does not, which is the one difference between the two lookups.
+
 ## Migrated space module: the intake queue
 
 The seven intake routes are implemented and cut over. The queue is mounted **twice** under two names — `intake-issues/` and the older `inbox-issues/` — and the older one serves only the list and the create.
