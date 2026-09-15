@@ -2,6 +2,7 @@ package worker
 
 import (
 	"context"
+	"github.com/yldm-tech/pace/apps/api-go/internal/httpsafe"
 	"strings"
 	"testing"
 )
@@ -235,6 +236,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	deletions.Register(consumer)
 	NewVersionTasks(nil, nil).Register(consumer)
 	NewAssetTasks(nil, nil, nil).Register(consumer)
+	NewLinkTasks(nil, httpsafe.Settings{}, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true

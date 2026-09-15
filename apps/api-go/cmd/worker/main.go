@@ -18,6 +18,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/config"
 	"github.com/yldm-tech/pace/apps/api-go/internal/database"
+	"github.com/yldm-tech/pace/apps/api-go/internal/httpsafe"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"github.com/yldm-tech/pace/apps/api-go/internal/worker"
 )
@@ -83,6 +84,12 @@ func main() {
 		logger.Warn("object storage is not configured, asset metadata will be skipped", "error", err)
 		assetStore = nil
 	}
+	allowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
+	links := worker.NewLinkTasks(db, httpsafe.Settings{
+		AllowedIPs:   allowedIPs,
+		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
+	}, logger)
+
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
 
@@ -92,6 +99,7 @@ func main() {
 	deletions.Register(consumer)
 	versions.Register(consumer)
 	assets.Register(consumer)
+	links.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

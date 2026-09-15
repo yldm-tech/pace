@@ -1437,6 +1437,18 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the work item link crawler
+
+`crawl_work_item_link_title` now runs on the Go worker. It goes and looks at a link somebody attached to a work item so the list can show its title rather than its address, and it keeps the site's icon beside it.
+
+**A link somebody pasted is an address this server will go to**, so the whole of the care here is about not being talked into going somewhere internal. `internal/httpsafe` already had the pinned POST the webhooks use; this adds the GET and the redirect follower. Every hop resolves the host, checks every address it resolves to, and then connects to the **validated address literal** — the hostname is still used for the `Host` header, TLS SNI and certificate verification, but no second lookup happens, so the address that was checked is the address that is reached. A redirect is never followed by the client; the chain is walked by hand, up to five hops, re-resolving and re-checking each one. A declared favicon is checked on its own account, because a page can point its icon somewhere the page itself was not.
+
+**Nothing here fails the delivery.** A site that is down, refuses, or turns out to be internal leaves a null title and the fallback icon, which is what the row ends up holding. That fallback is the same bytes the Python task carries, so a link with no icon looks the same whichever worker crawled it.
+
+**Crawling a link forgets who added it.** Django saves the whole link row and `BaseModel.save` blanks the two audit columns, because the worker has no current user. Reproduced.
+
+One deliberate difference: the body is read up to five megabytes rather than without limit. Django reads whatever arrives; a page that never ends would fill the worker rather than time out, and the timeout is one second.
+
 ## Migrated task: the two that look after an uploaded file
 
 `get_asset_object_metadata` and `delete_unuploaded_file_asset` now run on the Go worker. The first is queued by the Go API when an upload is confirmed; the second is a nightly one the Go beat already schedules.

@@ -283,7 +283,7 @@ func MigratedTaskNames() []string {
 		DeleteIssueDescriptionVersionsTask, DeleteWebhookLogsTask, RecentVisitedTask,
 		SoftDeleteRelatedObjectsTask, HardDeleteTask,
 		PageTransactionTask, TrackPageVersionTask, IssueDescriptionVersionTask,
-		AssetObjectMetadataTask, DeleteUnuploadedFileAssetTask,
+		AssetObjectMetadataTask, DeleteUnuploadedFileAssetTask, CrawlLinkTitleTask,
 	}
 }
 
