@@ -43,6 +43,7 @@ type TaskPublisher interface {
 	PublishRecentVisit(ctx context.Context, entityName, entityIdentifier, userID, projectID, slug string) error
 	PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error
 	PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error
+	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
 }
 
 type Handler struct {
@@ -72,6 +73,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.DELETE("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.destroy))
 	handler.registerMemberRoutes(router)
 	handler.registerLabelRoutes(router)
+	handler.registerIssueInteractionRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

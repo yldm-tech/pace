@@ -25,6 +25,7 @@ const modelActivityTaskName = "plane.bgtasks.webhook_task.model_activity"
 const webhookActivityTaskName = "plane.bgtasks.webhook_task.webhook_activity"
 const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_task"
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
+const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
 
 // defaultCeleryQueue is the queue the Python worker consumes.
 const defaultCeleryQueue = "celery"
@@ -143,6 +144,13 @@ func (publisher *CeleryPublisher) PublishRecentVisit(ctx context.Context, entity
 // calls positionally.
 func (publisher *CeleryPublisher) PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error {
 	return publisher.publish(ctx, projectAddUserEmailTaskName, []any{currentSite, projectMemberID, invitorID})
+}
+
+// PublishIssueActivity mirrors issue_activity.delay, which Django always calls
+// with keyword arguments. The task itself still runs on the Python worker, so
+// the publisher routes it to the Celery queue.
+func (publisher *CeleryPublisher) PublishIssueActivity(ctx context.Context, keywords map[string]any) error {
+	return publisher.publishKeywords(ctx, issueActivityTaskName, keywords)
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {
