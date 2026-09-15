@@ -81,7 +81,10 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			options = append(options, auth.WithCacheInvalidator(auth.NewRedisCacheInvalidator(dependencies.AuthRedis)))
 		}
 		auth.NewHandler(repository, sessions, *dependencies.AuthSettings, options...).Register(router)
-		userHandler := userapi.NewHandler(dependencies.Database, sessions, repository, userapi.Settings{AppBaseURL: dependencies.AuthSettings.AppBaseURL})
+		userHandler := userapi.NewHandler(dependencies.Database, sessions, repository, userapi.Settings{
+			AppBaseURL:    dependencies.AuthSettings.AppBaseURL,
+			FileSizeLimit: dependencies.AuthSettings.FileSizeLimit,
+		})
 		if dependencies.AuthRedis != nil {
 			userHandler.SetRedis(dependencies.AuthRedis)
 		}
@@ -108,6 +111,7 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		})
 		if err == nil {
 			workspaceHandler.SetStorage(attachmentStore)
+			userHandler.SetStorage(attachmentStore)
 		}
 		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
 			workspaceHandler.SetTasks(publisher)

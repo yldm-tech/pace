@@ -14,11 +14,13 @@ import (
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
 )
 
 type Handler struct {
 	db       *gorm.DB
+	storage  *storage.Store
 	sessions *auth.SessionManager
 	users    auth.Repository
 	settings Settings
@@ -29,6 +31,8 @@ type Handler struct {
 
 type Settings struct {
 	AppBaseURL string
+	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every reserved upload is clamped to.
+	FileSizeLimit int64
 }
 
 func NewHandler(db *gorm.DB, sessions *auth.SessionManager, users auth.Repository, settings Settings) *Handler {
@@ -39,6 +43,7 @@ func (handler *Handler) SetRedis(client redis.UniversalClient)    { handler.redi
 func (handler *Handler) SetTasks(publisher *auth.CeleryPublisher) { handler.tasks = publisher }
 
 func (handler *Handler) Register(router gin.IRouter) {
+	handler.registerAssetRoutes(router)
 	router.GET("/api/users/me/", handler.authenticated(handler.me))
 	router.PATCH("/api/users/me/", handler.authenticated(handler.updateMe))
 	router.DELETE("/api/users/me/", handler.authenticated(handler.deactivate))

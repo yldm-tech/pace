@@ -148,9 +148,9 @@ func TestUserRouteInventory(t *testing.T) {
 	}
 	router := gin.New()
 	NewHandler(nil, sessions, fakeUsers{}, Settings{}).Register(router)
-	// Fifteen, not sixteen: the external API's /api/v1/users/me/ is served by internal/externalapi, because it authenticates with a key rather than a session.
-	if got := len(router.Routes()); got != 15 {
-		t.Fatalf("user routes = %d, want 15", got)
+	// Eighteen: fifteen of the person's own routes plus the three that reserve and manage a profile image. The external API's /api/v1/users/me/ is not among them — it is served by internal/externalapi, because it authenticates with a key rather than a session.
+	if got := len(router.Routes()); got != 18 {
+		t.Fatalf("user routes = %d, want 18", got)
 	}
 	for _, route := range router.Routes() {
 		if strings.HasPrefix(route.Path, "/api/v1/") {
