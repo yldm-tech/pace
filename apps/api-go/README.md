@@ -73,7 +73,7 @@ the migrated core routes to Go. Workspace metadata, preferences, favorites,
 drafts, activity, and dashboard routes remain on Django for later module-specific
 pull requests.
 
-## Module in progress: workspace themes
+## Migrated module: workspace themes
 
 Workspace Theme list, create, retrieve, partial-update, and soft-delete routes
 are implemented separately from the core Workspace module. The module retains
