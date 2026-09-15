@@ -95,6 +95,15 @@ func main() {
 	nightly := worker.NewNightlyTasks(db, assetStore, activityPublisher, logger)
 	// webhook_activity, the next link in the chain, still runs on the Python worker.
 	modelActivity := worker.NewModelActivityTasks(activityPublisher, logger)
+	// The activity task parks the request origin in Redis for the notification emails to read, and hands the rows it wrote to notifications, which still runs on the Python worker.
+	redisClient, err := auth.OpenRedis(ctx, settings.Auth.RedisURL)
+	if err != nil {
+		logger.Warn("redis is not reachable, the request origin will not be parked", "error", err)
+		redisClient = nil
+	} else {
+		defer redisClient.Close()
+	}
+	issueActivity := worker.NewIssueActivityTasks(db, redisClient, activityPublisher, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -108,6 +117,7 @@ func main() {
 	links.Register(consumer)
 	nightly.Register(consumer)
 	modelActivity.Register(consumer)
+	issueActivity.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

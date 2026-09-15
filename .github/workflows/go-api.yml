@@ -146,6 +146,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the work item activity fixture matches Python
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_issue_activity_fixture.py > /tmp/issue_activity.tsv
+          if ! diff -u ../api-go/internal/worker/testdata/issue_activity.tsv /tmp/issue_activity.tsv; then
+            echo "::error::apps/api-go/internal/worker/testdata/issue_activity.tsv is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_issue_activity_fixture.py > ../api-go/internal/worker/testdata/issue_activity.tsv"
+            exit 1
+          fi
+
       - name: Verify the complex filter fixture matches Python
         working-directory: apps/api
         run: |
