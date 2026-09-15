@@ -813,6 +813,33 @@ func TestCommunityProxyCutsOverTheProjectDetailRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheWorkspaceAggregates(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_aggregates")
+	for _, route := range []string{
+		"/api/workspaces/acme/labels/",
+		"/api/workspaces/acme/states/",
+		"/api/workspaces/acme/cycles/",
+		"/api/workspaces/acme/modules/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace aggregate route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// A project's own lists are different routes with different shapes.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/labels/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/cycles/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the workspace aggregate matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_aggregates api-go:8000") {
+		t.Error("community proxy is missing the workspace aggregate reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheStickies(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_stickies")
