@@ -9,12 +9,7 @@ import (
 )
 
 func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
-	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
-	contents, err := os.ReadFile(configPath)
-	if err != nil {
-		t.Fatalf("read %s: %v", configPath, err)
-	}
-	config := string(contents)
+	config := communityProxyConfig(t)
 
 	staticRoutes := []string{
 		"/api/workspace-slug-check/",
@@ -29,14 +24,7 @@ func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
 		}
 	}
 
-	matcherLine := regexp.MustCompile(`(?m)^\s*@go_workspace_core path_regexp go_workspace_core (\S+)\s*$`).FindStringSubmatch(config)
-	if len(matcherLine) != 2 {
-		t.Fatal("community proxy is missing the go_workspace_core path_regexp matcher")
-	}
-	workspaceMatcher, err := regexp.Compile(matcherLine[1])
-	if err != nil {
-		t.Fatalf("compile go_workspace_core matcher: %v", err)
-	}
+	workspaceMatcher := communityProxyMatcher(t, config, "go_workspace_core")
 
 	goRoutes := []string{
 		"/api/workspaces/acme/",
@@ -82,4 +70,58 @@ func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
 	if !strings.Contains(config, "reverse_proxy /api/* api:8000") {
 		t.Error("community proxy is missing the Django API fallback")
 	}
+}
+
+func TestCommunityProxyCutsOverOnlyWorkspaceThemeRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	themeMatcher := communityProxyMatcher(t, config, "go_workspace_themes")
+
+	goRoutes := []string{
+		"/api/workspaces/acme/workspace-themes/",
+		"/api/workspaces/acme/workspace-themes/01234567-89ab-cdef-0123-456789abcdef/",
+	}
+	for _, route := range goRoutes {
+		if !themeMatcher.MatchString(route) {
+			t.Errorf("Workspace Theme route %q is not cut over to Go", route)
+		}
+	}
+
+	djangoRoutes := []string{
+		"/api/workspaces/acme/workspace-themes/not-a-uuid/",
+		"/api/workspaces/acme/workspace-themes/01234567-89ab-cdef-0123-456789abcdef/history/",
+		"/api/workspaces/acme/labels/",
+		"/api/workspaces/acme/user-properties/",
+	}
+	for _, route := range djangoRoutes {
+		if themeMatcher.MatchString(route) {
+			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
+		}
+	}
+
+	if !strings.Contains(config, "reverse_proxy @go_workspace_themes api-go:8000") {
+		t.Error("community proxy is missing the Workspace Themes reverse proxy")
+	}
+}
+
+func communityProxyConfig(t *testing.T) string {
+	t.Helper()
+	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
+	contents, err := os.ReadFile(configPath)
+	if err != nil {
+		t.Fatalf("read %s: %v", configPath, err)
+	}
+	return string(contents)
+}
+
+func communityProxyMatcher(t *testing.T, config, name string) *regexp.Regexp {
+	t.Helper()
+	matcherLine := regexp.MustCompile(`(?m)^\s*@` + regexp.QuoteMeta(name) + ` path_regexp ` + regexp.QuoteMeta(name) + ` (\S+)\s*$`).FindStringSubmatch(config)
+	if len(matcherLine) != 2 {
+		t.Fatalf("community proxy is missing the %s path_regexp matcher", name)
+	}
+	matcher, err := regexp.Compile(matcherLine[1])
+	if err != nil {
+		t.Fatalf("compile %s matcher: %v", name, err)
+	}
+	return matcher
 }

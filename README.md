@@ -33,13 +33,14 @@ For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
 
 The migration is intentionally incremental. Django remains the behavioral reference and continues to serve every module that has not passed contract and integration verification in Go.
 
-| Stage                                             | Scope                                                   | Status    |
-| ------------------------------------------------- | ------------------------------------------------------- | --------- |
-| [PR #1](https://github.com/yldm-tech/pace/pull/1) | Pace brand update                                       | Complete  |
-| [PR #2](https://github.com/yldm-tech/pace/pull/2) | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete  |
-| [PR #3](https://github.com/yldm-tech/pace/pull/3) | Authentication (`/auth/`)                               | Complete  |
-| [PR #4](https://github.com/yldm-tech/pace/pull/4) | User, profile, and account APIs                         | Complete  |
-| [PR #5](https://github.com/yldm-tech/pace/pull/5) | Core Workspace APIs                                     | In review |
+| Stage                                                                                                 | Scope                                                   | Status      |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------- |
+| [PR #1](https://github.com/yldm-tech/pace/pull/1)                                                     | Pace brand update                                       | Complete    |
+| [PR #2](https://github.com/yldm-tech/pace/pull/2)                                                     | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete    |
+| [PR #3](https://github.com/yldm-tech/pace/pull/3)                                                     | Authentication (`/auth/`)                               | Complete    |
+| [PR #4](https://github.com/yldm-tech/pace/pull/4)                                                     | User, profile, and account APIs                         | Complete    |
+| [PR #5](https://github.com/yldm-tech/pace/pull/5)                                                     | Core Workspace APIs                                     | In review   |
+| [`feat/go-api-workspace-themes`](https://github.com/yldm-tech/pace/tree/feat/go-api-workspace-themes) | Workspace Themes                                        | In progress |
 
 Migration rules:
 

@@ -62,6 +62,13 @@ implemented in `internal/workspace`. They preserve Django session authentication
 role checks, soft-delete behavior, cache invalidation, Celery workspace seed and
 invitation tasks, and the existing PostgreSQL tables. Shared-schema integration
 tests run against the authoritative Django migrations, and the proxy sends only
-the migrated core routes to Go. Workspace themes, metadata, preferences,
-favorites, drafts, activity, and dashboard routes remain on Django for later
-module-specific pull requests.
+the migrated core routes to Go. Workspace metadata, preferences, favorites,
+drafts, activity, and dashboard routes remain on Django for later module-specific
+pull requests.
+
+## Module in progress: workspace themes
+
+Workspace Theme list, create, retrieve, partial-update, and soft-delete routes
+are implemented separately from the core Workspace module. The module retains
+Django's admin/member permission boundary, JSON response shape, audit fields,
+name uniqueness, and related-object soft-delete task behavior.
