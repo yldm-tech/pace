@@ -134,6 +134,12 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.PATCH("/api/workspaces/:slug/sidebar-preferences/", handler.authenticated(handler.sidebarPreferencesPatch))
 	router.GET("/api/workspaces/:slug/home-preferences/", handler.authenticated(handler.homePreferencesGet))
 	router.PATCH("/api/workspaces/:slug/home-preferences/:key/", handler.authenticated(handler.homePreferencePatch))
+
+	router.GET("/api/workspaces/:slug/quick-links/", handler.authenticated(handler.quickLinkList))
+	router.POST("/api/workspaces/:slug/quick-links/", handler.authenticated(handler.quickLinkCreate))
+	router.GET("/api/workspaces/:slug/quick-links/:id/", handler.authenticatedUUID(handler.quickLinkRetrieve))
+	router.PATCH("/api/workspaces/:slug/quick-links/:id/", handler.authenticatedUUID(handler.quickLinkPatch))
+	router.DELETE("/api/workspaces/:slug/quick-links/:id/", handler.authenticatedUUID(handler.quickLinkDelete))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

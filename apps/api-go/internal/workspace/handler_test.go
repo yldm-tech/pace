@@ -60,6 +60,11 @@ func TestWorkspaceRouteInventory(t *testing.T) {
 		"PATCH /api/workspaces/:slug/sidebar-preferences/":   true,
 		"GET /api/workspaces/:slug/home-preferences/":        true,
 		"PATCH /api/workspaces/:slug/home-preferences/:key/": true,
+		"GET /api/workspaces/:slug/quick-links/":             true,
+		"POST /api/workspaces/:slug/quick-links/":            true,
+		"GET /api/workspaces/:slug/quick-links/:id/":         true,
+		"PATCH /api/workspaces/:slug/quick-links/:id/":       true,
+		"DELETE /api/workspaces/:slug/quick-links/:id/":      true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path
@@ -90,6 +95,8 @@ func TestWorkspaceRoutesRequireDjangoSession(t *testing.T) {
 		{method: http.MethodGet, path: "/api/workspaces/pace/sidebar-preferences/"},
 		{method: http.MethodGet, path: "/api/workspaces/pace/home-preferences/"},
 		{method: http.MethodPatch, path: "/api/workspaces/pace/home-preferences/quick_links/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/quick-links/"},
+		{method: http.MethodPost, path: "/api/workspaces/pace/quick-links/"},
 	} {
 		request := httptest.NewRequest(test.method, test.path, nil)
 		response := httptest.NewRecorder()
@@ -112,6 +119,7 @@ func TestUUIDRoutesRejectMalformedIdentifiersBeforeDatabaseAccess(t *testing.T) 
 		"/api/workspaces/pace/invitations/not-a-uuid/",
 		"/api/workspaces/pace/invitations/not-a-uuid/join/",
 		"/api/workspaces/pace/workspace-themes/not-a-uuid/",
+		"/api/workspaces/pace/quick-links/not-a-uuid/",
 	} {
 		request := httptest.NewRequest(http.MethodGet, path, nil)
 		response := httptest.NewRecorder()

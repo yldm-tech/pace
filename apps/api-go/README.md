@@ -98,3 +98,13 @@ The workspace home preference GET and PATCH routes seed the `quick_links`,
 `recents`, and `my_stickies` widgets with Django's descending sort order,
 return the stored `config` on the list route only, and reject writes from
 non-members with the `allow_permission` error body.
+
+## Migrated module: workspace quick links
+
+The workspace quick link list, create, retrieve, partial-update, and delete
+routes are scoped to the requesting user's own links. They keep Django's
+scheme-prefixing of bare URLs, its `URLValidator` rules, the project-derived
+workspace resolution in `WorkspaceBaseModel.save`, the soft delete and its
+related-object task, and the two different not-found bodies the retrieve and
+partial-update routes return. `validURL` is a port of Django 5.2's
+`URLValidator` and is verified against its output.
