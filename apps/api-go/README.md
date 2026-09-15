@@ -188,6 +188,40 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: notifications
+
+The ten routes under `workspaces/<slug>/users/notifications/`: the list, the unread counts, mark-all-read, and the six that act on one notification.
+
+Only **issue** notifications appear at all — the queryset pins `entity_name` — and they are ordered by when they wake from snoozing before how recent they are.
+
+### The same notification has two shapes
+
+The list annotates three read-only flags; no detail route does. DRF skips a read-only field whose attribute is missing rather than failing, so a notification read one at a time carries **three fewer fields** than the same notification inside a list. Two of those three, `is_inbox_issue` and `is_intake_issue`, are the same subquery under different names.
+
+### Asking for `mentioned=false` asks for the mentions
+
+The parameter is read as a string and every non-empty string is true in Python, so **any** value turns the mention filter on. Only leaving the parameter out turns it off.
+
+### The snoozed filter's two halves are not two halves of a whole
+
+`snoozed=true` is `snoozed_till < now OR snoozed_till IS NOT NULL` — the second half subsumes the first, so it really means "has ever been snoozed". A notification snoozed until tomorrow satisfies **both** branches. Kept as written.
+
+And the pair is looked up in a two-key dictionary rather than tested, so `snoozed=maybe` is a `KeyError` and a `500`. The mark-all-read route reads the same two flags for **truth** instead, so there any value works and an unknown one is not an error. Two routes, same two names, different rules.
+
+### A guest asking about what they created gets nothing
+
+Not nothing *from that set* — nothing at all. The branch replaces the whole queryset, so the other types the caller asked for go with it.
+
+The `type` parameter is a comma-separated **set** on the list, unioned; on mark-all-read it is a single choice, and its name for the subscribed set is `watching` rather than `subscribed`. That is also the one place the subscription is counted without first asking whether the person made or was given the issue.
+
+### Paging
+
+The list is paged only when the caller sends **both** `per_page` and `cursor`. Naming one of them alone returns everything, unwrapped.
+
+The update route reads exactly one field out of the body and builds its own payload, so everything else a caller sends is dropped — and a request that names nothing still **clears** the snooze, because the payload puts a null there rather than leaving it out.
+
+The notification preferences under `users/me/notification-preferences/` stay on Django: they belong to the user app rather than to this one.
+
 ## Migrated module: workspace views
 
 The six routes under `workspaces/<slug>/views/`: the views that belong to no project.

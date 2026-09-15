@@ -576,6 +576,37 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheNotificationRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_notifications")
+	base := "/api/workspaces/acme/users/notifications/"
+	notification := base + "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		base,
+		base + "unread/",
+		base + "mark-all-read/",
+		notification,
+		notification + "read/",
+		notification + "archive/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Notification route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The notification preferences live under the user app, not this one.
+		"/api/users/me/notification-preferences/",
+		notification + "something-else/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_notifications api-go:8000") {
+		t.Error("community proxy is missing the Notifications reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheWorkspaceViewRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_workspace_views")
