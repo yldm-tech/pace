@@ -589,17 +589,19 @@ func TestCommunityProxyCutsOverOnlyTheMigratedPageRoutes(t *testing.T) {
 		page + "access/",
 		page + "archive/",
 		project + "favorite-pages/11111111-2222-3333-4444-555555555555/",
+		page + "description/",
+		page + "versions/",
+		page + "versions/66666666-7777-8888-9999-000000000000/",
+		page + "duplicate/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Page route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The description, the versions and the duplicate are not migrated.
-		page + "description/",
-		page + "versions/",
-		page + "versions/66666666-7777-8888-9999-000000000000/",
-		page + "duplicate/",
+		// The workspace-level pages are a different app.
+		"/api/workspaces/acme/pages/",
+		page + "something-else/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

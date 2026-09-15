@@ -188,6 +188,32 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: the page description, its versions and its duplicate
+
+The five routes left on the page app: reading and writing the description, listing and reading its versions, and duplicating the page.
+
+The description is a **file**, not a field. The `GET` streams the raw binary column back with a `Content-Disposition`, and a page that has none answers an empty file rather than a null or a `404`.
+
+A locked or archived page refuses the write with a **numbered error code** rather than a message — `4701` and `4702`, the only place that shape appears in the migrated surface.
+
+### The suspicious-content window is counted in characters
+
+`validate_binary_data` decodes the whole document first, dropping what it cannot read, and only then takes **two hundred characters**. A byte window would be the obvious reading and it is wrong: a document full of multibyte characters is scanned further in than two hundred bytes would reach. A test builds a document where the two disagree.
+
+The window also means a pattern that merely **straddles** the edge is missed, which is reproduced rather than tightened.
+
+### The duplicate drops the collaborative binary
+
+The copy carries the original's rendered description but not its binary, so the editor rebuilds the document from the HTML. It is linked into **every** project the original sits in.
+
+And the asset copy is told the project the **loop variable was left holding** — the last of the page's projects, not the one the request named. A page in one project is unaffected; a page in several is not. Reproduced, with the reason in the comment.
+
+The duplicate's response is read back through a queryset that annotates only the project ids, so its labels come back empty whatever the original carried.
+
+### The version list and its detail
+
+The list omits the documents; the detail carries all five of them. Both are scoped to a page with a **live** link to the project in the URL, which is what stops a version being read through a project the page was taken out of — GHSA-g49r and GHSA-ghcr.
+
 ## Migrated module: pages
 
 Thirteen routes: the list, the summary, create, retrieve, update, delete, lock and unlock, access, archive and unarchive, and the two favourite ones.
