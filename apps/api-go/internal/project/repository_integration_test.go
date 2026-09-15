@@ -508,6 +508,91 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatalf("the pair exists %d times, want the conflict to have been ignored", pairCount)
 	}
 
+	// Archiving: the state group gate, the write Issue.save performs, and the queryset that can reach an archived row.
+	completedState := states[3]
+	if completedState.Group != "completed" {
+		t.Fatalf("state 3 is %q, want completed", completedState.Group)
+	}
+	archivableID := insertIssue("Archivable "+suffix, &completedState.ID, false, false, now)
+	var archivable Issue
+	if err := transaction.Where("id = ?", archivableID).Take(&archivable).Error; err != nil {
+		t.Fatal(err)
+	}
+	// The gate reads the group through the state, batched the way select_related does.
+	groups, err := handler.issueStateGroups(ctx, []Issue{archivable})
+	if err != nil {
+		t.Fatalf("read the state groups: %v", err)
+	}
+	if groups[archivableID] != "completed" {
+		t.Fatalf("state group = %q, want completed", groups[archivableID])
+	}
+	if !archivableStateGroups[groups[archivableID]] {
+		t.Fatal("a completed issue must be archivable")
+	}
+	// A stateless issue is absent from the map, which is the case Django turns into an AttributeError.
+	var stateless Issue
+	if err := transaction.Where("id = ?", newestChild).Take(&stateless).Error; err != nil {
+		t.Fatal(err)
+	}
+	if statelessGroups, err := handler.issueStateGroups(ctx, []Issue{stateless}); err != nil || len(statelessGroups) != 0 {
+		t.Fatalf("a stateless issue must have no group: %v, %v", statelessGroups, err)
+	}
+
+	archiveDate := now.Format("2006-01-02")
+	if err := handler.writeArchivedAt(ctx, archivable, &archiveDate, now.Add(time.Minute)); err != nil {
+		t.Fatalf("archive the issue: %v", err)
+	}
+	var archived Issue
+	if err := transaction.Where("id = ?", archivableID).Take(&archived).Error; err != nil {
+		t.Fatal(err)
+	}
+	if archived.ArchivedAt == nil || archived.ArchivedAt.Format("2006-01-02") != archiveDate {
+		t.Fatalf("archived_at = %v, want the bare date", archived.ArchivedAt)
+	}
+	// save writes the whole instance, so the timestamp moves and description_stripped is recomputed.
+	if !archived.UpdatedAt.After(archivable.UpdatedAt) {
+		t.Fatal("archiving must move updated_at, because save writes the whole instance")
+	}
+	if archived.DescriptionStripped == nil || *archived.DescriptionStripped != "" {
+		// The fixture's description_html is the empty paragraph Django defaults to, which strips to nothing.
+		t.Fatalf("description_stripped = %v, want the stripped body", archived.DescriptionStripped)
+	}
+	// completed_at must not move: _sync_completed_at returns early unless the state itself changed.
+	if (archived.CompletedAt == nil) != (archivable.CompletedAt == nil) {
+		t.Fatal("archiving must not touch completed_at")
+	}
+
+	// issue_objects hides the archived row, so the archive route reads through the plain manager instead.
+	stillListed, err := handler.subIssueRows(ctx, slug, project.ID, issueID, "-created_at")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, sub := range stillListed {
+		if sub.ID == archivableID {
+			t.Fatal("an archived issue must not appear through issue_objects")
+		}
+	}
+	var reachable int64
+	err = transaction.Model(&Issue{}).
+		Where("id = ? AND deleted_at IS NULL AND archived_at IS NOT NULL", archivableID).Count(&reachable).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if reachable != 1 {
+		t.Fatal("the unarchive queryset must still reach the archived row")
+	}
+
+	// Unarchiving clears the column back to null.
+	if err := handler.writeArchivedAt(ctx, archived, nil, now.Add(2*time.Minute)); err != nil {
+		t.Fatalf("unarchive the issue: %v", err)
+	}
+	if err := transaction.Where("id = ?", archivableID).Take(&archived).Error; err != nil {
+		t.Fatal(err)
+	}
+	if archived.ArchivedAt != nil {
+		t.Fatalf("archived_at = %v, want null after unarchiving", archived.ArchivedAt)
+	}
+
 	// The unique constraints Django relies on must reject a duplicate name.
 	duplicateID, err := newUUID()
 	if err != nil {

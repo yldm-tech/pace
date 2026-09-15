@@ -273,6 +273,7 @@ func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
 		project + "issue-labels/",
 		project + "issue-labels/11111111-2222-3333-4444-555555555555/",
 		project + "bulk-create-labels/",
+		project + "bulk-archive-issues/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Project Label route %q is not cut over to Go", route)
@@ -311,12 +312,15 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "sub-issues/",
 		issue + "issue-relation/",
 		issue + "remove-relation/",
+		issue + "archive/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
+		// The archived-issues list needs the grouped paginator and stays on Django.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/archived-issues/",
 		issue + "issue-attachments/",
 		issue + "reactions/thumbsup/extra/",
 		// Only the collection is migrated; there is no sub-issue detail route.
