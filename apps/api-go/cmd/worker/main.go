@@ -93,6 +93,8 @@ func main() {
 	// The automation queues issue_activity, which still runs on the Python worker; publishing it from here is how a sweep's changes still show up in a work item's history.
 	activityPublisher := auth.NewCeleryPublisher(settings.Auth.AMQPURL)
 	nightly := worker.NewNightlyTasks(db, assetStore, activityPublisher, logger)
+	// webhook_activity, the next link in the chain, still runs on the Python worker.
+	modelActivity := worker.NewModelActivityTasks(activityPublisher, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -105,6 +107,7 @@ func main() {
 	assets.Register(consumer)
 	links.Register(consumer)
 	nightly.Register(consumer)
+	modelActivity.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
