@@ -1413,6 +1413,22 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: draft work items
+
+The five draft routes and the one that raises a draft are implemented and cut over. A draft is a work item somebody started and has not committed to yet, which is why it needs no project: the whole point is that the decision can wait.
+
+Three things about it are not what you would guess, and all three are reproduced rather than corrected.
+
+**Only a workspace admin can read a draft back.** The read allows the admin role alone, and the creator rule beside it names `Issue` rather than `DraftIssue` — so it looks the draft's id up in the work item table, where it will never be. The edit has the same slip, which is why a guest cannot edit a draft they made themselves. The delete is the one route whose creator rule names the right model.
+
+**Most filters are a 500.** `issue_filters` emits lookups like `label_issue__deleted_at__isnull` alongside `labels__in`, and those reach through related names that belong to `Issue`. A `DraftIssue` has none of them, so Django raises `FieldError`. Every lookup that needs a join is refused here for exactly that reason; what is left — priority, state, parent, project, the two dates, the three timestamps, `created_by`, the name search and `state__group` — is translated onto the draft's own table.
+
+**The project is taken on trust.** The view reads `project_id` straight out of the request body and hands it to the model, so a project from another workspace is accepted and the draft follows it: `WorkspaceBaseModel.save` reads the workspace off the project rather than from the url. The related rows it writes keep the workspace the url named, so a draft aimed across a workspace boundary ends up with its links in one workspace and itself in another.
+
+`DraftIssue.save` is close to `Issue.save` but not the same. There is no sequence number and so no advisory lock. The sort order is recomputed on creation **even when the request asked for one**. And `completed_at` follows the state on every save rather than only when the state changes, so editing anything at all on a finished draft rewrites the moment it was finished.
+
+Raising the draft runs the work item's own creation path over the **request body**, not over the draft — a field filled in on the draft and left out of this request is not carried over. The assets that were uploaded against the draft do move onto the work item. The cycle activity it sends names its project from a url keyword this route does not have, so Django sends the literal string `"None"` and the task then finds no project by that id; moving a draft into a cycle therefore records no cycle activity today.
+
 ## Migrated module: API keys
 
 The five key routes are implemented and cut over. A key is a fixed prefix and thirty-two hexadecimal characters, which is what makes one recognisable in a log.
