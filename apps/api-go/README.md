@@ -187,6 +187,16 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: module read, update, delete and archive
+
+The four routes under `modules/<uuid>/`, and the archive toggle.
+
+A module is archived on its **status** — completed or cancelled — where a cycle is archived on its **end date**. The two apps judge "finished" differently, and a test names the difference. And unlike a cycle, a module has no completed rule on update: a finished module can still be edited, and only an archived one is refused.
+
+The member set is **replaced** rather than merged on update: the existing rows are soft deleted and the new ones inserted, so removing a member is a matter of leaving them out.
+
+Deleting sends one activity per issue the module held, before the module goes, since each of those issues loses a module. Archiving clears **every member's** favourite, where deleting clears only the caller's — the same asymmetry the cycle routes have.
+
 ## Migrated module: the module list and create
 
 `GET` and `POST` on `modules/`.
