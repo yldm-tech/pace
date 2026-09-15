@@ -1557,6 +1557,14 @@ The shapes are narrow on purpose — a published board shows what a reader needs
 
 `members/` reports the avatar **column** rather than the url every other API reports, so a member whose picture is an uploaded asset comes back with an empty avatar here. That is upstream's and is left as it is.
 
+## Migrated module: the project sidebar, archive and identifiers
+
+Five more project routes are implemented and cut over: `projects/details/`, the archive and unarchive, and the two identifier routes.
+
+`projects/details/` is the project list ordered for a sidebar — by the caller's own place in it and then by name, with a project they have no ordering for sorting last. It paginates only when **both** `per_page` and `cursor` are given and answers a plain list otherwise, so a caller who sends one of the two gets every project rather than a page. Both list routes read the same annotated set and apply the same guest and member narrowing.
+
+Archiving a project **removes every favourite pointing at it**, for everybody rather than for the caller alone, and unarchiving does not bring them back. The identifier check upper-cases and trims the name before it looks, so it agrees with what a create would write, and reports a **count** beside the rows. Freeing an identifier is refused while a project still carries it, and the row goes for good rather than being soft deleted — which is what lets the name be taken again.
+
 ## Migrated module: project deploy boards
 
 The five deploy board routes are implemented and cut over. A deploy board is what makes a project readable without an account: the anchor in its url — thirty-two hexadecimal characters — is the whole of the credential.
