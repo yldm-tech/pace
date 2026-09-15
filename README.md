@@ -33,20 +33,22 @@ For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
 
 The migration is intentionally incremental. Django remains the behavioral reference and continues to serve every module that has not passed contract and integration verification in Go.
 
-| Stage                                                                                   | Scope                                                   | Status      |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------- |
-| [PR #1](https://github.com/yldm-tech/pace/pull/1)                                       | Pace brand update                                       | Complete    |
-| [PR #2](https://github.com/yldm-tech/pace/pull/2)                                       | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete    |
-| [PR #3](https://github.com/yldm-tech/pace/pull/3)                                       | Authentication (`/auth/`)                               | Complete    |
-| [PR #4](https://github.com/yldm-tech/pace/pull/4)                                       | User, profile, and account APIs                         | Complete    |
-| [`feat/go-api-workspace`](https://github.com/yldm-tech/pace/tree/feat/go-api-workspace) | Workspace APIs                                          | In progress |
+| Stage                                             | Scope                                                   | Status   |
+| ------------------------------------------------- | ------------------------------------------------------- | -------- |
+| [PR #1](https://github.com/yldm-tech/pace/pull/1) | Pace brand update                                       | Complete |
+| [PR #2](https://github.com/yldm-tech/pace/pull/2) | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete |
+| Authentication (`/auth/`)                         | First serial business-module migration                  | Next     |
+| User, profile, and account APIs                   | Second serial business-module migration                 | Planned  |
+| Core Workspace APIs                               | Third serial business-module migration                  | Planned  |
+| Workspace Themes                                  | Fourth serial business-module migration                 | Planned  |
 
 Migration rules:
 
 1. One business module gets one independent branch and pull request.
-2. Django behavior is the compatibility baseline for URLs, status codes, JSON, permissions, sessions, cookies, and database side effects.
-3. A module is cut over only after contract and integration tests pass against the existing Django schema.
-4. Unmigrated routes continue to be served by Django; migration work does not require a flag day.
+2. Only one migration pull request is open at a time; the next module starts after the current module is merged into `main`.
+3. Django behavior is the compatibility baseline for URLs, status codes, JSON, permissions, sessions, cookies, and database side effects.
+4. A module is cut over only after contract and integration tests pass against the existing Django schema.
+5. Unmigrated routes continue to be served by Django; migration work does not require a flag day.
 
 ### Verify the Go API
 
@@ -55,14 +57,6 @@ cd apps/api-go
 go test -count=1 ./...
 go test -race -count=1 ./...
 go vet ./...
-```
-
-To verify GORM writes against a disposable PostgreSQL database that already has the Django schema, opt in with a connection string:
-
-```bash
-AUTH_TEST_DATABASE_URL=postgres://... \
-  go test -count=1 ./internal/auth \
-  -run TestGORMRepositoryAgainstDjangoSchema
 ```
 
 ## Community and contributing
