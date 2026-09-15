@@ -11,6 +11,7 @@ import (
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/issues"
 	"github.com/yldm-tech/pace/apps/api-go/internal/pagination"
 	"gorm.io/gorm"
 )
@@ -827,7 +828,7 @@ func (handler *Handler) applyIntakeStatus(c *gin.Context, user *auth.User, body 
 	// The default state is checked before anything is written, so a project without one leaves the issue where it was.
 	defaultStateID := ""
 	if status == intakeStatusAccepted {
-		group, err := stateGroupOf(handler.db.WithContext(c.Request.Context()), link.issueStateID(c, handler))
+		group, err := issues.StateGroup(handler.db.WithContext(c.Request.Context()), link.issueStateID(c, handler))
 		if err != nil {
 			handler.internalError(c, err)
 			return false

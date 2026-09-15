@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/issues"
 	"gorm.io/gorm"
 )
 
@@ -211,11 +212,7 @@ func (handler *Handler) writeArchivedAt(ctx context.Context, issue Issue, archiv
 
 // strippedIssueDescription is Issue.save's description_stripped. Unlike the comment's, an empty body stores null rather than an empty string.
 func strippedIssueDescription(html string) *string {
-	if html == "" {
-		return nil
-	}
-	stripped := strippedComment(html)
-	return &stripped
+	return issues.StripTags(html)
 }
 
 // publishArchiveActivity queues the activity both routes send. current_instance is IssueSerializer over the plain instance, so it carries none of the annotated fields.
