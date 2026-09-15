@@ -413,6 +413,31 @@ func TestCommunityProxyCutsOverOnlyCommentReactionRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_issue_list")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	if !matcher.MatchString(project + "issues/") {
+		t.Error("the issue list route is not cut over to Go")
+	}
+	for _, route := range []string{
+		// The other three list routes are separate endpoints and stay on Django.
+		project + "archived-issues/",
+		project + "issues/list/",
+		project + "v2/issues/",
+		project + "issues-detail/",
+		// The detail route is its own matcher.
+		project + "issues/11111111-2222-3333-4444-555555555555/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_issue_list api-go:8000") {
+		t.Error("community proxy is missing the Issue list reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheIssueDetailRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_detail")
