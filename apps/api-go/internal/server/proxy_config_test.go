@@ -309,6 +309,8 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "comments/",
 		issue + "comments/88888888-9999-0000-1111-222222222222/",
 		issue + "sub-issues/",
+		issue + "issue-relation/",
+		issue + "remove-relation/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
@@ -319,6 +321,8 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "reactions/thumbsup/extra/",
 		// Only the collection is migrated; there is no sub-issue detail route.
 		issue + "sub-issues/99999999-0000-1111-2222-333333333333/",
+		// Both relation routes are collections; there is no detail route under either.
+		issue + "issue-relation/99999999-0000-1111-2222-333333333333/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/comments/11111111-2222-3333-4444-555555555555/reactions/",
 	} {
 		if matcher.MatchString(route) {

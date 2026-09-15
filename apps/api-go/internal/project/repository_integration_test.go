@@ -11,6 +11,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // TestProjectModelsAgainstDjangoSchema is opt-in because it writes to the
@@ -382,6 +383,129 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	byID, err := handler.subIssuesByID(ctx, slug, project.ID, []string{visibleChild, newestChild})
 	if err != nil || len(byID) != 2 {
 		t.Fatalf("re-read sub-issues by id: %v, got %d", err, len(byID))
+	}
+
+	// Issue relations: the list reads from whichever end of the row the bucket names, and the create path collapses the requested type onto the stored one.
+	relationID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// visibleChild blocks the parent issue, stored as the parent being blocked_by it.
+	err = transaction.Create(&IssueRelation{
+		ID: relationID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID,
+		IssueID: issueID, RelatedIssueID: visibleChild, RelationType: "blocked_by",
+	}).Error
+	if err != nil {
+		t.Fatalf("create issue relation through Django schema: %v", err)
+	}
+
+	blockedBy, err := handler.relatedIssues(ctx, slug, issueID, relationBucket{key: "blocked_by", stored: "blocked_by", reversed: []bool{false}})
+	if err != nil {
+		t.Fatalf("read the blocked_by relations: %v", err)
+	}
+	if len(blockedBy) != 1 || blockedBy[0].ID != visibleChild {
+		t.Fatalf("blocked_by = %v, want the related child", blockedBy)
+	}
+	if blockedBy[0].LabelIDs == nil || len(blockedBy[0].LabelIDs) != 0 {
+		t.Fatalf("label_ids = %v, want an empty array rather than null", blockedBy[0].LabelIDs)
+	}
+	// Read from the other end, the same row is the child's blocking relation and not the parent's.
+	blocking, err := handler.relatedIssues(ctx, slug, issueID, relationBucket{key: "blocking", stored: "blocked_by", reversed: []bool{true}})
+	if err != nil {
+		t.Fatalf("read the blocking relations: %v", err)
+	}
+	if len(blocking) != 0 {
+		t.Fatalf("blocking = %v, want nothing from this end", blocking)
+	}
+	childBlocking, err := handler.relatedIssues(ctx, slug, visibleChild, relationBucket{key: "blocking", stored: "blocked_by", reversed: []bool{true}})
+	if err != nil {
+		t.Fatalf("read the child's blocking relations: %v", err)
+	}
+	if len(childBlocking) != 1 || childBlocking[0].ID != issueID {
+		t.Fatalf("the child's blocking = %v, want the parent", childBlocking)
+	}
+
+	// A symmetric type reads from both ends inside one query, so a pair related in both directions is returned once.
+	reverseID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Create(&IssueRelation{
+		ID: reverseID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID,
+		IssueID: newestChild, RelatedIssueID: issueID, RelationType: "relates_to",
+	}).Error
+	if err != nil {
+		t.Fatalf("create the reverse relation: %v", err)
+	}
+	forwardID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Create(&IssueRelation{
+		ID: forwardID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID,
+		IssueID: issueID, RelatedIssueID: newestChild, RelationType: "relates_to",
+	}).Error
+	if err != nil {
+		t.Fatalf("create the forward relation: %v", err)
+	}
+	relatesTo, err := handler.relatedIssues(ctx, slug, issueID, relationBucket{key: "relates_to", stored: "relates_to", reversed: []bool{false, true}})
+	if err != nil {
+		t.Fatalf("read the relates_to relations: %v", err)
+	}
+	if len(relatesTo) != 1 || relatesTo[0].ID != newestChild {
+		t.Fatalf("relates_to = %v, want the one issue related from both ends", relatesTo)
+	}
+
+	// The serializer path follows the foreign key, and drops state_id when the issue has no state.
+	serializedRelations, err := handler.relationSerializerData(ctx, []IssueRelation{{
+		ID: relationID, IssueID: issueID, RelatedIssueID: newestChild, RelationType: "blocked_by",
+		CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID, UpdatedByID: &user.ID,
+	}}, false)
+	if err != nil || len(serializedRelations) != 1 {
+		t.Fatalf("serialize the relation: %v, got %d", err, len(serializedRelations))
+	}
+	if serializedRelations[0]["name"] != "Newest child "+suffix {
+		t.Fatalf("serialized relation = %#v", serializedRelations[0])
+	}
+	if _, present := serializedRelations[0]["state_id"]; present {
+		t.Fatal("the newest child has no state, so state_id must be absent rather than null")
+	}
+	withState, err := handler.relationSerializerData(ctx, []IssueRelation{{
+		ID: relationID, IssueID: issueID, RelatedIssueID: visibleChild, RelationType: "blocked_by",
+		CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID, UpdatedByID: &user.ID,
+	}}, false)
+	if err != nil {
+		t.Fatalf("serialize the stated relation: %v", err)
+	}
+	if withState[0]["state_id"] != states[2].ID {
+		t.Fatalf("state_id = %v, want the child's state", withState[0]["state_id"])
+	}
+
+	// bulk_create(ignore_conflicts=True) is how the create path writes, so re-adding a pair that already exists must be a silent skip rather than an error — and must not leave a second row behind.
+	repeatID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Clauses(clause.OnConflict{DoNothing: true}).Create(&IssueRelation{
+		ID: repeatID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID,
+		IssueID: issueID, RelatedIssueID: visibleChild, RelationType: "duplicate",
+	}).Error
+	if err != nil {
+		t.Fatalf("re-adding an existing pair must be ignored, not rejected: %v", err)
+	}
+	var pairCount int64
+	err = transaction.Model(&IssueRelation{}).
+		Where("issue_id = ? AND related_issue_id = ? AND deleted_at IS NULL", issueID, visibleChild).
+		Count(&pairCount).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if pairCount != 1 {
+		t.Fatalf("the pair exists %d times, want the conflict to have been ignored", pairCount)
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.

@@ -82,6 +82,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerCommentReactionRoutes(router)
 	handler.registerIssueDetailRoutes(router)
 	handler.registerSubIssueRoutes(router)
+	handler.registerIssueRelationRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

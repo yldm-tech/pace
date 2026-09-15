@@ -46,7 +46,7 @@
 	reverse_proxy @go_project_members api-go:8000
 	@go_project_labels path_regexp go_project_labels ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issue-labels/([0-9A-Fa-f-]+/)?|bulk-create-labels/)$
 	reverse_proxy @go_project_labels api-go:8000
-	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/)$
+	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/|issue-relation/|remove-relation/)$
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$
 	reverse_proxy @go_issue_detail api-go:8000
