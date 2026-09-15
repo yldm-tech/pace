@@ -188,6 +188,32 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: project views
+
+The nine routes under `views/` and `user-favorite-views/`: list, create, retrieve, update, full update, delete, and the three favourite ones.
+
+A view is visible to its owner and, when its access is public, to everyone. On top of that a **guest** sees only their own unless the project has been opened up with `guest_view_all_features` — a second narrowing rather than a replacement for the first.
+
+The retrieve checks the guest rule **after** reading the view rather than folding it into the query, so a guest asking for someone else's view is told no rather than told it does not exist. A view that is not there at all answers `500` for a caller the rule applies to and an empty body for everyone else, because Django reads the owner off the result of `.first()` with no guard and the expression short-circuits before reaching it.
+
+Updating is refused for a locked view and for anyone who is not the owner — both as a plain `400`, not as a permission failure. Deleting wants an admin or the owner, and clears the view's favourites and its recent-visit rows; the visits go for good rather than being marked deleted.
+
+The list's `fields` parameter narrows what each view renders. An empty entry is dropped, so a trailing comma does not ask for a field with no name.
+
+### The query column, and the second POST shape
+
+`query` is derived from `filters` on every save and never accepted from the caller. Nothing in the backend reads it back — it is returned in the body and that is all — but it has to be written the way Django writes it.
+
+That turns out to need a **second** filter shape. The issue lists parse a query string, where every value is text; this path is handed decoded JSON, where a value is usually a list and occasionally a string, and the POST branch stores it **as it arrived**. The difference is visible: a string date is iterated one character at a time and a list of the same dates one clause at a time. Both are upstream, both are reachable from this one endpoint, and the fixture covers both.
+
+`viewQueryFromFilters` is that shape, diffed against `issue_filters(filters, "POST")` over 53 blobs. The GET path is untouched.
+
+An update that does not mention `filters` **clears the stored query**, because the model recomputes it from whatever the instance now holds rather than from what the request named.
+
+And a filter carrying a relative date term — `2_weeks;after;fromnow` — cannot be saved at all. It resolves to a `datetime.date`, the column is a plain `JSONField`, and `json.dumps` refuses a date, so the request answers `500`. Nothing rewrites the value on the way in and nothing catches the error on the way out. One fixture row covers it.
+
+The serializer computes the query twice on update, the second time with a method the parser does not know — but the model runs last and always parses as a POST, so the serializer's version never reaches the column and there is nothing to reproduce.
+
 ## Migrated cycle: transferring issues to another cycle
 
 `POST` on `cycles/<uuid>/transfer-issues/`, the last of the cycle app's own routes.

@@ -120,6 +120,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerCycleProgressRoutes(router)
 	handler.registerCycleAnalyticsRoutes(router)
 	handler.registerCycleTransferRoutes(router)
+	handler.registerViewRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
