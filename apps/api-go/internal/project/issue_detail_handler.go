@@ -240,15 +240,13 @@ func (handler *Handler) issueDestroy(c *gin.Context, user *auth.User) {
 	c.Status(http.StatusNoContent)
 }
 
-// issueDetailRow builds the annotated row the detail routes serialize.
-func (handler *Handler) issueDetailRow(ctx context.Context, slug, projectID, issueID, userID string) (issueRow, bool, error) {
-	var rows []issueRow
-	err := handler.db.WithContext(ctx).Table("issues i").
-		Select(`i.*,
+// issueDetailAnnotations is the select the detail route builds, kept in one place because the intake routes read the same shape for the work item inside a link.
+func issueDetailAnnotations() string {
+	return `i.*,
 			(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 			(SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL) AS link_count,
 			(SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL) AS attachment_count,
-			(SELECT COUNT(*) FROM issues sub WHERE sub.parent_id = i.id AND `+issueObjectsPredicate("sub")+`) AS sub_issues_count,
+			(SELECT COUNT(*) FROM issues sub WHERE sub.parent_id = i.id AND ` + issueObjectsPredicate("sub") + `) AS sub_issues_count,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT il2.label_id) FROM issue_labels il2 WHERE il2.issue_id = i.id AND il2.deleted_at IS NULL), '{}') AS label_ids,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT ia.assignee_id) FROM issue_assignees ia
 				JOIN project_members pm2 ON pm2.member_id = ia.assignee_id AND pm2.is_active = TRUE
@@ -257,7 +255,14 @@ func (handler *Handler) issueDetailRow(ctx context.Context, slug, projectID, iss
 				JOIN modules m ON m.id = mi.module_id AND m.archived_at IS NULL
 				WHERE mi.issue_id = i.id AND mi.deleted_at IS NULL), '{}') AS module_ids,
 			EXISTS (SELECT 1 FROM issue_subscribers isub WHERE isub.issue_id = i.id AND isub.subscriber_id = ?
-				AND isub.project_id = i.project_id AND isub.deleted_at IS NULL) AS is_subscribed`, userID).
+				AND isub.project_id = i.project_id AND isub.deleted_at IS NULL) AS is_subscribed`
+}
+
+// issueDetailRow builds the annotated row the detail routes serialize.
+func (handler *Handler) issueDetailRow(ctx context.Context, slug, projectID, issueID, userID string) (issueRow, bool, error) {
+	var rows []issueRow
+	err := handler.db.WithContext(ctx).Table("issues i").
+		Select(issueDetailAnnotations(), userID).
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Where("i.id = ? AND i.project_id = ? AND w.slug = ? AND i.deleted_at IS NULL", issueID, projectID, slug).
 		Limit(1).Scan(&rows).Error

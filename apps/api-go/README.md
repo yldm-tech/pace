@@ -214,6 +214,34 @@ The duplicate's response is read back through a queryset that annotates only the
 
 The list omits the documents; the detail carries all five of them. Both are scoped to a page with a **live** link to the project in the URL, which is what stops a version being read through a project the page was taken out of — GHSA-g49r and GHSA-ghcr.
 
+## Migrated module: the issues inside an intake
+
+The ten routes under `intake-issues/` and `inbox-issues/` — mounted twice, like the intake itself.
+
+The status filter **defaults to pending alone**, so a caller that names nothing sees only what still needs triaging rather than everything that ever passed through. A filter of nothing but `null` narrows nothing instead of matching nothing.
+
+### Two halves, separately gated
+
+An update carries a work item and a link, and they are gated apart. A **guest may edit the work item**, and only its name and description at that — everything else they send is silently dropped rather than refused. The **link** moves only for someone above a member, or a workspace admin, which is what stops a guest accepting their own work item.
+
+Accepting an issue that is still in triage moves it to the project's default state. A project with **no** default refuses the acceptance rather than leaving the issue stuck in triage, and the check runs before anything is written.
+
+The status activity is sent **without a notification**, unlike the work item's, and both carry the intake link's id — the one activity keyword nothing else in the migrated surface sends.
+
+### Deleting takes the work item too
+
+Unless the issue was **accepted**: an accepted issue has left the intake and become ordinary work, so only the link goes. Every other status takes the issue with it.
+
+### Small things kept
+
+The priority is checked by hand before the serializer sees it, so an unknown one is a plain message rather than a field error. The create answers `200` rather than `201`. A project with no intake raises rather than answering, because the id is read off `.first()` with no guard. And the triage state is created on the spot when the project has none, so a project that has never used intake gets one the first time something lands in it.
+
+The version task is handed the **previous** state on an update and the **request** on a create, which is what makes one a diff and the other a first version.
+
+`skip_activity` together with a description change is how the migration tool writes without leaving a trail; anything else is recorded.
+
+The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
+
 ## Migrated module: the intake itself
 
 The ten routes under `intakes/` and `inboxes/`: the queue a project's untriaged work lands in.
