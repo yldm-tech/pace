@@ -31,6 +31,14 @@ type Settings struct {
 	CSRFTrustedOrigins      []string
 	AuthenticationRateLimit string
 	Environment             map[string]string
+	AWSAccessKeyID          string
+	AWSSecretAccessKey      string
+	AWSRegion               string
+	AWSBucketName           string
+	AWSEndpointURL          string
+	UseMinio                bool
+	MinioEndpointSSL        bool
+	FileSizeLimit           int64
 }
 
 type Session struct {

@@ -135,6 +135,7 @@ type GORMRepository struct {
 	skipEnvironmentConfig bool
 	secretKey             string
 	cache                 CacheInvalidator
+	avatarStore           AvatarStore
 }
 
 func NewGORMRepository(db *gorm.DB, skipEnvironmentConfig bool, secretKey string) *GORMRepository {
@@ -143,6 +144,10 @@ func NewGORMRepository(db *gorm.DB, skipEnvironmentConfig bool, secretKey string
 
 func (repository *GORMRepository) SetCacheInvalidator(invalidator CacheInvalidator) {
 	repository.cache = invalidator
+}
+
+func (repository *GORMRepository) SetAvatarStore(store AvatarStore) {
+	repository.avatarStore = store
 }
 
 func (repository *GORMRepository) InstanceConfigured(ctx context.Context) (bool, error) {
@@ -209,7 +214,23 @@ func (repository *GORMRepository) CreateUser(ctx context.Context, email, encoded
 }
 
 func (repository *GORMRepository) CreateOAuthUser(ctx context.Context, identity OAuthIdentity, encodedPassword string) (*User, error) {
-	return repository.createUser(ctx, identity.Email, encodedPassword, true, true, identity.FirstName, identity.LastName, identity.Avatar)
+	user, err := repository.createUser(ctx, identity.Email, encodedPassword, true, true, identity.FirstName, identity.LastName, identity.Avatar)
+	if err != nil || repository.avatarStore == nil || identity.Avatar == "" {
+		return user, err
+	}
+	asset, err := repository.avatarStore.Upload(ctx, identity.Provider, identity.Avatar)
+	if err != nil {
+		return nil, err
+	}
+	if asset == nil {
+		return user, nil
+	}
+	assetID, err := repository.createAvatarAsset(ctx, user.ID, asset)
+	if err != nil {
+		return nil, err
+	}
+	user.AvatarAssetID = &assetID
+	return user, repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", user.ID).Update("avatar_asset_id", assetID).Error
 }
 
 func (repository *GORMRepository) createUser(ctx context.Context, email, encodedPassword string, passwordAutoset, emailVerified bool, firstName, lastName, avatar string) (*User, error) {
@@ -270,13 +291,75 @@ func (repository *GORMRepository) createUser(ctx context.Context, email, encoded
 }
 
 func (repository *GORMRepository) SyncOAuthUser(ctx context.Context, userID string, identity OAuthIdentity, at time.Time) error {
-	return repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", userID).Updates(map[string]any{
+	var oldAsset struct {
+		AvatarAssetID *string `gorm:"column:avatar_asset_id"`
+	}
+	if err := repository.db.WithContext(ctx).Table("users").Select("avatar_asset_id").Where("id = ?", userID).Take(&oldAsset).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	var newAssetID *string
+	if repository.avatarStore != nil && identity.Avatar != "" {
+		asset, err := repository.avatarStore.Upload(ctx, identity.Provider, identity.Avatar)
+		if err != nil {
+			return err
+		}
+		if asset != nil {
+			id, err := repository.createAvatarAsset(ctx, userID, asset)
+			if err != nil {
+				return err
+			}
+			newAssetID = &id
+		}
+	}
+	updates := map[string]any{
 		"first_name": identity.FirstName, "last_name": identity.LastName, "avatar": identity.Avatar,
-		// Django removes the previous avatar asset before falling back to the
-		// provider URL when an upload is unavailable; never leave a stale asset
-		// taking precedence over the freshly synchronized URL.
-		"avatar_asset_id": nil, "updated_at": at,
-	}).Error
+		"avatar_asset_id": newAssetID, "updated_at": at,
+	}
+	if err := repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", userID).Updates(updates).Error; err != nil {
+		return err
+	}
+	if oldAsset.AvatarAssetID != nil && (newAssetID == nil || *oldAsset.AvatarAssetID != *newAssetID) {
+		if repository.avatarStore != nil {
+			var oldAssetRow struct {
+				Asset string `gorm:"column:asset"`
+			}
+			if err := repository.db.WithContext(ctx).Table("file_assets").Select("asset").Where("id = ?", *oldAsset.AvatarAssetID).Take(&oldAssetRow).Error; err == nil {
+				_ = repository.avatarStore.Delete(ctx, oldAssetRow.Asset)
+			}
+		}
+		_ = repository.db.WithContext(ctx).Table("file_assets").Where("id = ? AND deleted_at IS NULL", *oldAsset.AvatarAssetID).Update("deleted_at", at).Error
+	}
+	return nil
+}
+
+type fileAsset struct {
+	ID              string    `gorm:"column:id;type:uuid;primaryKey"`
+	Attributes      JSONValue `gorm:"column:attributes;type:jsonb"`
+	Asset           string    `gorm:"column:asset"`
+	UserID          *string   `gorm:"column:user_id;type:uuid"`
+	EntityType      string    `gorm:"column:entity_type"`
+	Size            float64   `gorm:"column:size"`
+	IsUploaded      bool      `gorm:"column:is_uploaded"`
+	StorageMetadata JSONValue `gorm:"column:storage_metadata;type:jsonb"`
+	CreatedAt       time.Time `gorm:"column:created_at"`
+	UpdatedAt       time.Time `gorm:"column:updated_at"`
+	CreatedByID     *string   `gorm:"column:created_by_id;type:uuid"`
+}
+
+func (fileAsset) TableName() string { return "file_assets" }
+
+func (repository *GORMRepository) createAvatarAsset(ctx context.Context, userID string, upload *AvatarUpload) (string, error) {
+	id, err := randomUUID()
+	if err != nil {
+		return "", err
+	}
+	at := time.Now().UTC()
+	asset := &fileAsset{
+		ID: id, Attributes: JSONValue(fmt.Sprintf(`{"name":%q,"type":%q,"size":%d}`, upload.AttributeName, upload.ContentType, upload.Size)),
+		Asset: upload.ObjectName, UserID: &userID, EntityType: "USER_AVATAR", Size: float64(upload.Size),
+		IsUploaded: true, StorageMetadata: upload.StorageMetadata, CreatedAt: at, UpdatedAt: at, CreatedByID: &userID,
+	}
+	return id, repository.db.WithContext(ctx).Create(asset).Error
 }
 
 type OAuthAccount struct {

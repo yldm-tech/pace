@@ -21,6 +21,7 @@ type Dependencies struct {
 	AuthTaskPublisher         auth.TaskPublisher
 	AuthRateLimiter           auth.RateLimiter
 	AuthRedis                 redis.UniversalClient
+	AuthAvatarStore           auth.AvatarStore
 }
 
 func NewRouter(dependencies Dependencies) *gin.Engine {
@@ -54,6 +55,7 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			dependencies.AuthSettings.SecretKey,
 		)
 		repository.SetCacheInvalidator(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
+		repository.SetAvatarStore(dependencies.AuthAvatarStore)
 		sessions, err := auth.NewSessionManager(
 			auth.NewGORMSessionRepository(dependencies.Database),
 			repository,

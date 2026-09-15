@@ -39,6 +39,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	avatarStore, err := auth.NewS3AvatarStore(rootContext, auth.AvatarStoreSettings{
+		AccessKey: cfg.Auth.AWSAccessKeyID, SecretKey: cfg.Auth.AWSSecretAccessKey,
+		Region: cfg.Auth.AWSRegion, Bucket: cfg.Auth.AWSBucketName, Endpoint: cfg.Auth.AWSEndpointURL,
+		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, MaxSize: cfg.Auth.FileSizeLimit,
+	})
+	if err != nil {
+		log.Printf("OAuth avatar storage unavailable: %v", err)
+	}
 
 	authSettings := auth.Settings{
 		SecretKey: cfg.Auth.SecretKey, SecretKeyFallbacks: cfg.Auth.SecretKeyFallbacks,
@@ -49,7 +57,10 @@ func main() {
 		CSRFCookieName: cfg.Auth.CSRFCookieName, CSRFCookieDomain: cfg.Auth.CSRFCookieDomain,
 		CSRFCookieSecure: cfg.Auth.CSRFCookieSecure, CSRFCookieAge: cfg.Auth.CSRFCookieAge,
 		CSRFTrustedOrigins: cfg.Auth.CSRFTrustedOrigins, AuthenticationRateLimit: cfg.Auth.AuthenticationRateLimit,
-		Environment: authenticationEnvironment(),
+		Environment:    authenticationEnvironment(),
+		AWSAccessKeyID: cfg.Auth.AWSAccessKeyID, AWSSecretAccessKey: cfg.Auth.AWSSecretAccessKey,
+		AWSRegion: cfg.Auth.AWSRegion, AWSBucketName: cfg.Auth.AWSBucketName, AWSEndpointURL: cfg.Auth.AWSEndpointURL,
+		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, FileSizeLimit: cfg.Auth.FileSizeLimit,
 	}
 	httpServer := &http.Server{
 		Addr: cfg.Address,
@@ -57,6 +68,7 @@ func main() {
 			Database: connection.GORM, CORSOrigins: cfg.CORSOrigins, AuthSettings: &authSettings,
 			AuthSkipEnvironmentConfig: cfg.Auth.SkipEnvironmentConfig,
 			AuthRedis:                 redisClient,
+			AuthAvatarStore:           avatarStore,
 			AuthMagicStore:            auth.NewRedisMagicStore(redisClient), AuthTaskPublisher: auth.NewCeleryPublisher(cfg.Auth.AMQPURL),
 			AuthRateLimiter: authLimiter,
 		}),

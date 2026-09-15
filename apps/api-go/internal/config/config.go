@@ -46,6 +46,14 @@ type AuthConfig struct {
 	CSRFTrustedOrigins      []string
 	AuthenticationRateLimit string
 	SkipEnvironmentConfig   bool
+	AWSAccessKeyID          string
+	AWSSecretAccessKey      string
+	AWSRegion               string
+	AWSBucketName           string
+	AWSEndpointURL          string
+	UseMinio                bool
+	MinioEndpointSSL        bool
+	FileSizeLimit           int64
 }
 
 func Load() (Config, error) {
@@ -83,6 +91,14 @@ func Load() (Config, error) {
 			CSRFTrustedOrigins:      trustedOrigins,
 			AuthenticationRateLimit: envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
 			SkipEnvironmentConfig:   boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
+			AWSAccessKeyID:          strings.TrimSpace(os.Getenv("AWS_ACCESS_KEY_ID")),
+			AWSSecretAccessKey:      strings.TrimSpace(os.Getenv("AWS_SECRET_ACCESS_KEY")),
+			AWSRegion:               strings.TrimSpace(os.Getenv("AWS_REGION")),
+			AWSBucketName:           envOrDefault("AWS_S3_BUCKET_NAME", "uploads"),
+			AWSEndpointURL:          firstNonEmpty(os.Getenv("AWS_S3_ENDPOINT_URL"), os.Getenv("MINIO_ENDPOINT_URL")),
+			UseMinio:                boolOrDefault(os.Getenv("USE_MINIO"), false),
+			MinioEndpointSSL:        boolOrDefault(os.Getenv("MINIO_ENDPOINT_SSL"), false),
+			FileSizeLimit:           int64(positiveIntOrDefault(os.Getenv("FILE_SIZE_LIMIT"), 5*1024*1024)),
 		},
 	}
 	if config.DatabaseURL == "" {
