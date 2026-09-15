@@ -27,6 +27,7 @@ const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
 const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
+const assetObjectMetadataTaskName = "plane.bgtasks.storage_metadata_task.get_asset_object_metadata"
 const issueDescriptionVersionTaskName = "plane.bgtasks.issue_description_version_task.issue_description_version_task"
 
 // defaultCeleryQueue is the queue the Python worker consumes.
@@ -159,6 +160,11 @@ func (publisher *CeleryPublisher) PublishIssueActivity(ctx context.Context, keyw
 // calls positionally. The crawler still runs on the Python worker.
 func (publisher *CeleryPublisher) PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error {
 	return publisher.publish(ctx, crawlLinkTitleTaskName, []any{linkID, url})
+}
+
+// PublishAssetObjectMetadata mirrors get_asset_object_metadata.delay, which reads the object's headers back out of the bucket. It still runs on the Python worker.
+func (publisher *CeleryPublisher) PublishAssetObjectMetadata(ctx context.Context, assetID string) error {
+	return publisher.publish(ctx, assetObjectMetadataTaskName, []any{assetID})
 }
 
 // PublishIssueDescriptionVersion mirrors issue_description_version_task.delay.

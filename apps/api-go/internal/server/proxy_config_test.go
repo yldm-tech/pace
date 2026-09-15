@@ -380,6 +380,35 @@ func TestCommunityProxyCutsOverOnlyTheIssueDetailRoute(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheVersionTwoAttachmentRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_issue_attachments")
+	attachments := "/api/assets/v2/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/11111111-2222-3333-4444-555555555555/attachments/"
+	for _, route := range []string{
+		attachments,
+		attachments + "66666666-7777-8888-9999-000000000000/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Attachment route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The version one endpoint uploads through the API with a multipart body and stays on Django.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/11111111-2222-3333-4444-555555555555/issue-attachments/",
+		// Other asset entities are not migrated.
+		"/api/assets/v2/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/66666666-7777-8888-9999-000000000000/",
+		"/api/assets/v2/static/66666666-7777-8888-9999-000000000000/",
+		attachments + "66666666-7777-8888-9999-000000000000/extra/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_issue_attachments api-go:8000") {
+		t.Error("community proxy is missing the Issue attachments reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")

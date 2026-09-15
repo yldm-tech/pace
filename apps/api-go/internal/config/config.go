@@ -54,6 +54,7 @@ type AuthConfig struct {
 	UseMinio                bool
 	MinioEndpointSSL        bool
 	FileSizeLimit           int64
+	SignedURLExpiration     time.Duration
 }
 
 func Load() (Config, error) {
@@ -99,6 +100,7 @@ func Load() (Config, error) {
 			UseMinio:                boolOrDefault(os.Getenv("USE_MINIO"), false),
 			MinioEndpointSSL:        boolOrDefault(os.Getenv("MINIO_ENDPOINT_SSL"), false),
 			FileSizeLimit:           int64(positiveIntOrDefault(os.Getenv("FILE_SIZE_LIMIT"), 5*1024*1024)),
+			SignedURLExpiration:     secondsOrDefault(os.Getenv("SIGNED_URL_EXPIRATION"), time.Hour),
 		},
 	}
 	if config.DatabaseURL == "" {

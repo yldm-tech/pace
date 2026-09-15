@@ -39,6 +39,7 @@ type Settings struct {
 	UseMinio                bool
 	MinioEndpointSSL        bool
 	FileSizeLimit           int64
+	SignedURLExpiration     time.Duration
 }
 
 type Session struct {

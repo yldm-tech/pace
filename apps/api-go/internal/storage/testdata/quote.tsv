@@ -1,0 +1,9 @@
+# Python's urllib.parse.quote with its default safe set, which S3Storage._get_content_disposition uses on the filename.
+report.pdf	report.pdf
+my file.txt	my%20file.txt
+报告 v2.pdf	%E6%8A%A5%E5%91%8A%20v2.pdf
+a+b&c=d.txt	a%2Bb%26c%3Dd.txt
+naïve/name.png	na%C3%AFve/name.png
+100%.csv	100%25.csv
+~tilde-._.txt	~tilde-._.txt
+a"b'c.txt	a%22b%27c.txt

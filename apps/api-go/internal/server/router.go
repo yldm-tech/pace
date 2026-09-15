@@ -9,6 +9,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	projectapi "github.com/yldm-tech/pace/apps/api-go/internal/project"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
 	workspaceapi "github.com/yldm-tech/pace/apps/api-go/internal/workspace"
 	"gorm.io/gorm"
@@ -100,9 +101,24 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		}
 		workspaceHandler.Register(router)
 		projectHandler := projectapi.NewHandler(dependencies.Database, sessions, projectapi.Settings{
-			AppBaseURL: dependencies.AuthSettings.AppBaseURL,
-			WebURL:     dependencies.AuthSettings.WebURL,
+			AppBaseURL:    dependencies.AuthSettings.AppBaseURL,
+			WebURL:        dependencies.AuthSettings.WebURL,
+			FileSizeLimit: dependencies.AuthSettings.FileSizeLimit,
 		})
+		// A misconfigured bucket leaves the store nil, and the attachment routes answer 500 rather than reserving a row nothing can upload against.
+		attachmentStore, err := storage.New(storage.Settings{
+			AccessKey:        dependencies.AuthSettings.AWSAccessKeyID,
+			SecretKey:        dependencies.AuthSettings.AWSSecretAccessKey,
+			Region:           dependencies.AuthSettings.AWSRegion,
+			Bucket:           dependencies.AuthSettings.AWSBucketName,
+			Endpoint:         dependencies.AuthSettings.AWSEndpointURL,
+			UseMinio:         dependencies.AuthSettings.UseMinio,
+			MinioEndpointSSL: dependencies.AuthSettings.MinioEndpointSSL,
+			SignedURLExpiry:  dependencies.AuthSettings.SignedURLExpiration,
+		})
+		if err == nil {
+			projectHandler.SetStorage(attachmentStore)
+		}
 		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
 			projectHandler.SetTasks(publisher)
 		}
