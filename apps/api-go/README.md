@@ -187,6 +187,16 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: module favourites, saved views and links
+
+The first slice of the module app, which mirrors the cycle one closely enough that the favourite writes are now shared: both entity types live in the one `user_favorites` table and differ only in the type they record.
+
+Its favourite list is broken the same way the cycle one is — the viewset inherits DRF's `list` but declares no `serializer_class`, so `get_serializer_class` asserts and answers `500`. Reproduced, not invented.
+
+The saved view is a `get_or_create` on read but not on update, and the update answers `201` even though it creates nothing. Both match the cycle route exactly.
+
+The links are a full set of six methods, including the `PUT` that differs from `PATCH` only in requiring the url. The url goes through the same Django validator the issue links use.
+
 ## Migrated module: cycle date checks, favourites and saved views
 
 The first slice of the cycle module: `cycles/date-check/`, `user-favorite-cycles/` and `cycles/<uuid>/user-properties/`.

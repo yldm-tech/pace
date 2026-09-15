@@ -574,6 +574,39 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_module_basics")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	module := project + "modules/11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		project + "user-favorite-modules/",
+		project + "user-favorite-modules/11111111-2222-3333-4444-555555555555/",
+		module + "user-properties/",
+		module + "module-links/",
+		module + "module-links/66666666-7777-8888-9999-000000000000/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Module route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The rest of the module app is not migrated.
+		project + "modules/",
+		module,
+		module + "issues/",
+		module + "archive/",
+		project + "archived-modules/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_module_basics api-go:8000") {
+		t.Error("community proxy is missing the Module basics reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
