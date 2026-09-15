@@ -242,6 +242,24 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: the analytics summaries
+
+`GET` on `default-analytics/` and on `project-stats/`.
+
+The dashboard is ten numbers and lists over one filtered set of issues. The classification counts the **state group** rather than the row, so the bucket of issues with no state counts zero of them. Only the current year is charted, and the year is the server's rather than the caller's.
+
+The three "who did the most" lists differ in more than their measure. Two keep five rows and the pending one keeps all of them; two exclude the rows with nobody attached and the **pending** one does not, so it carries a bucket whose user fields are all null. All three group by the rendered avatar as well as the four name fields, which Django does because a non-aggregate annotation joins the grouping whether it is added before or after the count — checked against the rendered SQL, where the two orderings produce the same five-column grouping.
+
+The estimate sums read the issue's own `point` column rather than joining an estimate, and a set with nothing in it sums to **null** rather than to zero.
+
+### Asking for nothing asks for everything
+
+`project-stats/` intersects the requested fields with the valid ones, and an empty result is treated as asking for **all five**. Each is computed only when asked for.
+
+The two issue counts go through the `issue_objects` manager and the other three do not — they count rows of their own table, which has no manager to apply. A bot is not a member for this purpose, and the completed count includes **cancelled** as well as completed, so an abandoned issue counts as finished here.
+
+The three advance-analytics endpoints stay on Django.
+
 ## Migrated module: the analytics charts
 
 `GET` on `analytics/` and on `saved-analytic-view/<uuid>/`, and with them `build_graph_plot`.
