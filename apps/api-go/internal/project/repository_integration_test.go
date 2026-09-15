@@ -331,19 +331,12 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	insertIssue("Draft child "+suffix, &startedState, true, false, now)
 	insertIssue("Archived child "+suffix, &startedState, false, true, now)
 
-	triageStateID, err := newUUID()
-	if err != nil {
-		t.Fatal(err)
+	// The default states already include the triage one, which issue_objects excludes.
+	triageState := states[len(states)-1]
+	if triageState.Group != "triage" {
+		t.Fatalf("last default state = %q, want the triage one", triageState.Group)
 	}
-	err = transaction.Create(&State{
-		ID: triageStateID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
-		ProjectID: project.ID, WorkspaceID: workspaceID, Name: "Triage",
-		Color: "#ff7700", Sequence: 65535, Group: "triage", IsTriage: true,
-	}).Error
-	if err != nil {
-		t.Fatalf("create triage state through Django schema: %v", err)
-	}
-	insertIssue("Triage child "+suffix, &triageStateID, false, false, now)
+	insertIssue("Triage child "+suffix, &triageState.ID, false, false, now)
 
 	subIssues, err := handler.subIssueRows(ctx, slug, project.ID, issueID, "-created_at")
 	if err != nil {
