@@ -61,6 +61,7 @@ type AuthConfig struct {
 	WebhookAllowedIPs        []netip.Prefix
 	WebhookAllowedHosts      []string
 	WebhookDisallowedDomains []string
+	APIKeyRateLimit          string
 }
 
 func Load() (Config, error) {
@@ -113,6 +114,7 @@ func Load() (Config, error) {
 			WebhookAllowedIPs:        webhookAllowedIPs,
 			WebhookAllowedHosts:      httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
 			WebhookDisallowedDomains: parseDisallowedDomains(os.Getenv("WEBHOOK_DISALLOWED_DOMAINS")),
+			APIKeyRateLimit:          envOrDefault("API_KEY_RATE_LIMIT", "60/minute"),
 		},
 	}
 	if config.DatabaseURL == "" {

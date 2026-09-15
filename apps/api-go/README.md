@@ -3,6 +3,45 @@
 This directory contains the incremental Gin, GORM, and PostgreSQL replacement for the Django API. Business modules are migrated in separate pull requests; Django remains the behavioral reference until a module passes its contract and integration tests.
 
 
+
+## The external API is a second application
+
+`internal/externalapi` serves `plane.api`, the key-authenticated surface integrations call. It is not the session API with a different prefix — it differs in five ways, and mixing them up is how an integration breaks:
+
+- **Authentication** is an `X-Api-Key` header against the `api_tokens` table, not a session cookie.
+- **Rate limiting** is per key, with the key's own limit taking precedence over the configured default.
+- **Errors** have their own vocabulary. A missing object is `{"error": "The requested resource does not exist."}`, not `{"detail": ...}`.
+- **Serializers** are a different set. Its `UserLiteSerializer` carries the **email**, which the session API's reveals only to an admin.
+- **Create answers 200**, not 201.
+
+### It found a live regression
+
+`/api/v1/users/me/` had already been cut over — to the **session-authenticated** user package. Every integration calling it with a key and no cookie was getting a `401` where Django answered. It is now served by this package with the right authentication, and a test refuses any `/api/v1/` route registered in the user package.
+
+### The rate limit is per process here
+
+Django keeps the throttle window in its cache, which is Redis in a deployment, so every process shares one budget. This keeps it per process while both halves run side by side — sharing the counter would mean the two APIs throttling each other. The headers are set only on an **allowed** request, which is upstream's doing: a refused one carries no remaining count.
+
+DRF reads only the **first letter** of the period, so `60/month` is sixty a minute. Ported as written, with a test.
+
+### Two ways to be unauthenticated
+
+A request with no key at all is not refused by the authenticator — it returns nothing and lets the permission class answer. A key that is present and wrong gets the authenticator's message. Two bodies, both `401`.
+
+Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
+
+## Migrated external module: states
+
+The five routes under `/api/v1/.../states/`.
+
+The **triage** state is hidden from the list and the retrieve entirely — it is an implementation detail of intake. But the update's queryset does **not** exclude it, so an integration that knows the id can edit the state the list never showed it.
+
+Creating has two different conflicts: a repeated **external id**, checked before the write, and a repeated **name**, caught from the database afterwards. Both carry the id of the state that was already there, which is what makes them useful to an integration replaying a sync. On update the external id is compared against the one the state already has, so rewriting a state with its own id is not a conflict.
+
+Making a state the default clears the flag from every other state in the project — and the serializer does it during **validation** rather than on save, so it happens even when the save that follows fails.
+
+Deleting refuses the default state and any that still holds work. The emptiness check counts through the plain manager, so an archived or draft issue keeps a state alive just as a live one does.
+
 ## Run locally
 
 Set `DATABASE_URL`, `SECRET_KEY`, and `REDIS_URL` to the same values used by the Django deployment, then run:

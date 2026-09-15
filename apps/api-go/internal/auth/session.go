@@ -45,6 +45,8 @@ type Settings struct {
 	WebhookAllowedIPs        []netip.Prefix
 	WebhookAllowedHosts      []string
 	WebhookDisallowedDomains []string
+	// APIKeyRateLimit is API_KEY_RATE_LIMIT, the default throttle for a key that does not carry its own.
+	APIKeyRateLimit string
 }
 
 type Session struct {
