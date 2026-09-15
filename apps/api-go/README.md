@@ -1489,6 +1489,14 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: the work item list
+
+`GET` on `issues/` under an anchor is implemented and cut over, which **completes the space app**.
+
+The work is the session API's rather than this one's: the filters, the ordering, the annotations and both grouped paginators are the same code, reached through one exported entry point, because the board shows the same list to somebody who is not signed in. What differs is the way in — an anchor rather than a membership — and that the project comes off the board rather than out of the url, read from its **entity identifier** rather than its project column.
+
+The parts that need an account are the parts that are left out: no project lookup of its own, no guest rule, no recorded visit.
+
 ## Migrated space module: the work item detail
 
 `GET` on `issues/<uuid>/` under an anchor is implemented and cut over. The **list** beside it is the one route of this app still on Django: it needs the grouped paginator, the same machinery the session API's own work item list is waiting on.

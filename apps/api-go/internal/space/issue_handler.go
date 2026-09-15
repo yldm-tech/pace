@@ -7,10 +7,40 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/project"
 )
 
 func (handler *Handler) registerIssueRoutes(router gin.IRouter) {
+	router.GET("/api/public/anchor/:anchor/issues/", handler.issueList)
 	router.GET("/api/public/anchor/:anchor/issues/:issue/", handler.issueRetrieve)
+}
+
+// issueList is the board's work item list, which is the session API's list read by somebody who is not signed in.
+//
+// The work is that API's rather than this one's: the filters, the ordering, the annotations and both grouped paginators are the same code, because the board shows the same list. What differs is the way in — an anchor rather than a membership — and that the project comes off the board rather than out of the url.
+func (handler *Handler) issueList(c *gin.Context) {
+	board, found, err := handler.projectBoardByAnchor(c)
+	if err != nil {
+		handler.serverError(c, err)
+		return
+	}
+	if !found || board.EntityIdentifier == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Project is not published"})
+		return
+	}
+	var slugs []string
+	err = handler.db.WithContext(c.Request.Context()).Table("workspaces").
+		Where("id = ?", board.WorkspaceID).Limit(1).Pluck("slug", &slugs).Error
+	if err != nil {
+		handler.serverError(c, err)
+		return
+	}
+	if len(slugs) == 0 {
+		notFound(c)
+		return
+	}
+	// The project is the board's **entity identifier** rather than its project column, which for a project board is the same id twice.
+	project.ServePublicIssueList(c, handler.db, handler.clock().UTC(), slugs[0], *board.EntityIdentifier)
 }
 
 // issueRetrieve returns one work item of a published board, with its votes and its reactions folded in.
