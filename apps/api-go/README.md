@@ -172,6 +172,16 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: work item activities
+
+Four read-only routes, mounted under both `issues/` and `work-items/`.
+
+A history **reads forwards**: the default order here is ascending, where every other list in this API is newest first. Two fields are orderable and nothing else reaches the query.
+
+Four kinds of entry are never shown — a comment's own activity, because the comment routes report it; votes and reactions, which belong to the space app; and a draft's, which describes work that was never published. The exclusion is a `NOT IN`, and a null is not in any list, so an entry with **no field at all** survives it. The query says so explicitly rather than relying on that.
+
+The detail route answers a **different 404** from every other route in this app: `{"message": ..., "code": "NOT_FOUND"}` rather than the base view's `{"error": ...}`.
+
 ## Migrated external module: work item comments
 
 Ten routes, mounted under both `issues/` and `work-items/`.
