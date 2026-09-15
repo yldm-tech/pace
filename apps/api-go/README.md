@@ -1438,6 +1438,18 @@ called with keywords.
 `projects/details/`, `project-identifiers/`, invitations, archiving, favorites,
 and deploy boards remain on Django.
 
+## Migrated module: project states
+
+`GET` and `POST` on `states/`, `GET`, `PATCH` and `DELETE` on `states/<uuid>/`, `POST` on `mark-default/`, and `GET` on `intake-state/` are implemented and cut over.
+
+The list is the one shape that carries `order`, which is not a column. States are numbered within their own **group** and each reports its place as a fraction of that group's size, so a group of four reads 0.25, 0.5, 0.75, 1. The serializer declares the field and an instance never has it, so every other route drops the key rather than returning a null. `grouped=true` answers an object keyed by group rather than a list, with the groups in the order their names sort.
+
+The create answers **200** rather than 201, and a name that is taken is a `400` rather than a conflict — on both the create and the update, since both read the database's own wording. The update is open to every member **including a guest**, which is the only write on a project's workflow that is; the create, the delete and the default switch are admin-only.
+
+Triage is refused by the serializer's `validate`, so it lands under `non_field_errors` rather than under the field, and the triage state is hidden from every route here but `intake-state/`. The delete refuses two states: the project's default, and any state that still holds work — and the emptiness check reads the plain manager, so an archived or draft work item keeps its state alive while a soft-deleted one does not.
+
+Three of the routes drop the cached workspace state list and the update does not, which is upstream's and is left as it is. `mark-default` runs two unguarded updates: naming a state that is not there clears the project's default and sets nothing.
+
 ## Migrated module: project labels
 
 The project label list, create, retrieve, update, delete, and bulk-create routes

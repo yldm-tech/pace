@@ -228,6 +228,13 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/work-items/:issue/description-versions/:version/": true,
 		"GET /api/workspaces/:slug/projects/:id/user-properties/":                                 true,
 		"PATCH /api/workspaces/:slug/projects/:id/user-properties/":                               true,
+		"GET /api/workspaces/:slug/projects/:id/states/":                                          true,
+		"POST /api/workspaces/:slug/projects/:id/states/":                                         true,
+		"GET /api/workspaces/:slug/projects/:id/states/:state/":                                   true,
+		"PATCH /api/workspaces/:slug/projects/:id/states/:state/":                                 true,
+		"DELETE /api/workspaces/:slug/projects/:id/states/:state/":                                true,
+		"POST /api/workspaces/:slug/projects/:id/states/:state/mark-default/":                     true,
+		"GET /api/workspaces/:slug/projects/:id/intake-state/":                                    true,
 		"DELETE /api/workspaces/:slug/projects/:id/bulk-delete-issues/":                           true,
 		"GET /api/workspaces/:slug/projects/:id/deleted-issues/":                                  true,
 	}
