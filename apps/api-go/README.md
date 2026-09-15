@@ -187,6 +187,18 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: the module list and create
+
+`GET` and `POST` on `modules/`.
+
+The list renders its timestamps in the **caller's** timezone, where the cycle list uses the **project's**. The two apps genuinely differ here and both are reproduced; a test names the asymmetry so neither drifts toward the other.
+
+Every count and estimate sum reads through the `issue_objects` manager **and** requires a live link, so an issue removed from a module counts towards none of its totals. Only an estimate of the points type has a number to add, so a category estimate contributes nothing to either sum.
+
+Creating checks the name against the project itself rather than letting the unique index answer, which is why a clash is a plain `400` with its own message.
+
+The cutover guard earned its keep here: it refused the matcher when only `GET` was implemented, so the create landed in the same change rather than after a broken deploy.
+
 ## Migrated module: module favourites, saved views and links
 
 The first slice of the module app, which mirrors the cycle one closely enough that the favourite writes are now shared: both entity types live in the one `user_favorites` table and differ only in the type they record.

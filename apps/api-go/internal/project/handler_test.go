@@ -110,6 +110,8 @@ func TestProjectRouteInventory(t *testing.T) {
 		"DELETE /api/workspaces/:slug/projects/:id/cycles/:cycle/archive/":                        true,
 		"POST /api/workspaces/:slug/projects/:id/user-favorite-cycles/":                           true,
 		"POST /api/workspaces/:slug/projects/:id/user-favorite-modules/":                          true,
+		"GET /api/workspaces/:slug/projects/:id/modules/":                                         true,
+		"POST /api/workspaces/:slug/projects/:id/modules/":                                        true,
 		"GET /api/workspaces/:slug/projects/:id/user-favorite-modules/":                           true,
 		"DELETE /api/workspaces/:slug/projects/:id/user-favorite-modules/:module/":                true,
 		"GET /api/workspaces/:slug/projects/:id/modules/:module/user-properties/":                 true,
