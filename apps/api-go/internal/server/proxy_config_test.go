@@ -326,6 +326,7 @@ func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
 		project + "deleted-issues/",
 		project + "user-properties/",
 		project + "archived-issues/",
+		project + "issue-dates/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Project issue operation %q is not cut over to Go", route)
