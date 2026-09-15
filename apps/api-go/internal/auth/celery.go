@@ -29,6 +29,7 @@ const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activit
 const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
 const pageTransactionTaskName = "plane.bgtasks.page_transaction_task.page_transaction"
 const trackPageVersionTaskName = "plane.bgtasks.page_version_task.track_page_version"
+const analyticExportTaskName = "plane.bgtasks.analytic_plot_export.analytic_export_task"
 const copyDescriptionAssetsTaskName = "plane.bgtasks.copy_s3_object.copy_s3_objects_of_description_and_assets"
 const assetObjectMetadataTaskName = "plane.bgtasks.storage_metadata_task.get_asset_object_metadata"
 const issueDescriptionVersionTaskName = "plane.bgtasks.issue_description_version_task.issue_description_version_task"
@@ -190,6 +191,13 @@ func (publisher *CeleryPublisher) PublishCopyDescriptionAssets(ctx context.Conte
 	return publisher.publishKeywords(ctx, copyDescriptionAssetsTaskName, map[string]any{
 		"entity_name": entityName, "entity_identifier": entityIdentifier,
 		"project_id": projectID, "slug": slug, "user_id": userID,
+	})
+}
+
+// PublishAnalyticExport mirrors analytic_export_task.delay, which builds the spreadsheet and emails it. It still runs on the Python worker.
+func (publisher *CeleryPublisher) PublishAnalyticExport(ctx context.Context, email string, data map[string]any, slug string) error {
+	return publisher.publishKeywords(ctx, analyticExportTaskName, map[string]any{
+		"email": email, "data": data, "slug": slug,
 	})
 }
 
