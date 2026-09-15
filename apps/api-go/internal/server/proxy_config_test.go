@@ -859,6 +859,34 @@ func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheAdvanceAnalytics(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_advance_analytics")
+	for _, route := range []string{
+		"/api/workspaces/acme/advance-analytics/",
+		"/api/workspaces/acme/advance-analytics-stats/",
+		"/api/workspaces/acme/advance-analytics-charts/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("analytics route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The project-scoped copies of all three are a separate set of views and are not migrated.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/advance-analytics/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/advance-analytics-charts/",
+		// So is the older analytics page, which is already served elsewhere.
+		"/api/workspaces/acme/analytics/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_advance_analytics api-go:8000") {
+		t.Error("community proxy is missing the advance analytics reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnePersonsCornerOfAWorkspace(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_workspace_user")
