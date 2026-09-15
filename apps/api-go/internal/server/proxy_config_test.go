@@ -576,6 +576,35 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalIssueSearch(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_issue_search")
+	for _, name := range []string{"issues", "work-items"} {
+		for _, route := range []string{
+			"/api/v1/workspaces/acme/" + name + "/search/",
+			// The one route addressed by something other than a uuid.
+			"/api/v1/workspaces/acme/" + name + "/PROJ-42/",
+		} {
+			if !matcher.MatchString(route) {
+				t.Errorf("External search route %q is not cut over to Go", route)
+			}
+		}
+	}
+	for _, route := range []string{
+		// The session API's workspace issue list is a different path and stays on Django.
+		"/api/workspaces/acme/issues/",
+		"/api/v1/workspaces/acme/issues/",
+		"/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_issue_search api-go:8000") {
+		t.Error("community proxy is missing the external issue search reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalIssueRelations(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_relations")

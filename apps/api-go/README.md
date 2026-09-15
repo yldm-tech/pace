@@ -172,6 +172,28 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: the work item search and reference lookup
+
+Four routes: a search and a lookup, each under both names.
+
+### The one route addressed by something other than a uuid
+
+`work-items/PROJ-42/` names a work item the way a person would. Django captures **twice in one path segment** — the project's identifier and the number, with a hyphen between — and a Gin route cannot: it captures the whole segment and splits the text itself. The split is at the **last** hyphen, because a project identifier may not contain one.
+
+That difference broke the cutover guard, which compares path shapes: Django's was `*-*` and the Go one `*`. The guard now collapses any segment holding a parameter down to a lone star before comparing, on both sides — both shapes describe the same URL, and without it the guard reports a served route as unserved. Worth fixing properly rather than special-casing, since the next multi-capture route would hit it too.
+
+A number that is not a number answers `500` rather than `404`: Django matches the segment as two strings and then compares the second against an integer column.
+
+### The search has no length guard
+
+Unlike its session-API cousin, which skips the sequence branch for a query over twenty characters, this one scans **every** query for numbers.
+
+An **empty** search answers an empty list — the opposite of the session API's workspace search, which treats an empty query as no filter at all and returns everything. Two searches, two readings of the same emptiness.
+
+The limit is parsed with `int()`, so a value that is not a number raises. And the endpoint has **no permission class at all**: the base view asks only that the caller is authenticated, and what keeps it honest is the queryset, which narrows to projects the caller is an active member of.
+
+The issue serializer renders the two many-to-many sets as **lists of ids**, and reports the type twice — once as the relation and once as its id.
+
 ## Migrated external module: work item relations
 
 Two routes — and the **one** work item route in this API mounted under a single name. The urls list `relations/` for `work-items/` and not for `issues/`, so the older spelling answers `404` and nothing here claims it.
