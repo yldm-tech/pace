@@ -568,6 +568,12 @@ func (tasks *IssueActivityTasks) publishNotifications(ctx context.Context, activ
 			"project": row.ProjectID, "workspace": row.WorkspaceID,
 			"issue": nullableString(row.IssueID), "issue_comment": nullableString(row.IssueCommentID),
 			"actor": nullableString(row.ActorID),
+			// The notification task reads the work item out of issue_detail to tell a line about this work item from a line about the other side of a relation. Only its id is read, which is why the rest of the serializer's nested details are not built.
+			"issue_detail":     issueDetail(row.IssueID),
+			"actor_detail":     nil,
+			"project_detail":   nil,
+			"workspace_detail": nil,
+			"source_data":      nil,
 		})
 	}
 	encoded, err := json.Marshal(serialized)
@@ -580,4 +586,12 @@ func (tasks *IssueActivityTasks) publishNotifications(ctx context.Context, activ
 		"issue_activities_created": string(encoded),
 		"requested_data":           anyString(requestedData), "current_instance": anyString(currentInstance),
 	})
+}
+
+// issueDetail is the one nested object the notification task reads, and it reads one field of it.
+func issueDetail(issueID *string) any {
+	if issueID == nil {
+		return nil
+	}
+	return map[string]any{"id": *issueID}
 }
