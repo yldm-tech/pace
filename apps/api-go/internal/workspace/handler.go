@@ -101,6 +101,7 @@ func (handler *Handler) SetCache(invalidator auth.CacheInvalidator) { handler.ca
 func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerAssetRoutes(router)
 	handler.registerProjectAssetRoutes(router)
+	handler.registerFavoriteRoutes(router)
 	router.GET("/api/workspace-slug-check/", handler.authenticated(handler.slugCheck))
 	router.GET("/api/workspaces/", handler.authenticated(handler.workspaceList))
 	router.POST("/api/workspaces/", handler.authenticated(handler.workspaceCreate))
