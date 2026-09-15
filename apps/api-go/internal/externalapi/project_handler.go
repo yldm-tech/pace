@@ -38,6 +38,9 @@ type Project struct {
 	IntakeView  bool       `gorm:"column:intake_view"`
 	// DefaultAssigneeID is who a work item goes to when its creator names nobody.
 	DefaultAssigneeID *string `gorm:"column:default_assignee_id;type:uuid"`
+	// CycleView is the switch a project turns cycles off with, which the cycle serializer refuses to write against.
+	CycleView bool   `gorm:"column:cycle_view"`
+	Timezone  string `gorm:"column:timezone"`
 }
 
 func (Project) TableName() string { return "projects" }

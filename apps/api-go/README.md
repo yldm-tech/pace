@@ -46,6 +46,23 @@ The archived module list does **not** check membership at all: its queryset filt
 
 The lite list accepts an order parameter and ignores it, for the same reason its cycle twin does.
 
+## Migrated external module: the cycle list, create, detail and delete
+
+`GET` and `POST` on `cycles/`, and `GET`, `PATCH` and `DELETE` on `cycles/<uuid>/`, are implemented and cut over.
+
+`cycle_view` narrows the list, and `current` is the one value that answers a **plain list** rather than a page — every other value, including one nobody recognises, comes back in the paginated envelope. The list queryset annotates the six counts and not the three estimates, so the estimate keys are **absent** there while the archived list carries them: a read-only field with nothing behind it is dropped by DRF rather than rendered as null. The create and the update answer over a plain instance, so none of the nine numbers is on those bodies at all — twenty-eight fields on a list row, twenty-two on a create.
+
+The two dates go together, both or neither, and the pair is refused before the serializer is built — which is why that message is worded from the outside rather than as a field error. Only the **day** of each survives: the pair is rewritten as the project's day boundaries, a start becoming the first second of the day and an end its last minute, so two cycles that meet do not read as overlapping. A start that falls on today becomes the current instant instead, so a cycle created this afternoon does not claim to have begun this morning. That conversion now lives in `internal/cycles`, because the session API's date check runs a cycle's dates through the same one.
+
+A new cycle is placed **ahead** of the ones already there — the smallest sort order less ten thousand — which is the opposite of how a new work item is placed.
+
+Two behaviours are reproduced rather than tidied:
+
+- A cycle whose end date has passed is meant to be frozen but for its sort order. The narrowing is written and then dropped on the floor: the serializer is handed the original payload rather than the narrowed one, so a completed cycle really can be edited in full as long as the payload names a sort order at all.
+- The delete queues its activity **before** the cycle is gone, so that it can still name the work items that were in it, and removes the favourites for good rather than soft deleting them. Like the work item delete it names no notification and no origin.
+
+Deleting is narrower than the permission class the route carries: only an admin or the person who **owns** the cycle may, and it answers `Only admin or creator can delete the cycle`.
+
 ## Migrated external module: the cycle picker, archive and archived list
 
 Six routes: `cycles-lite/`, `archived-cycles/`, and the archive pair — which is four routes rather than two.

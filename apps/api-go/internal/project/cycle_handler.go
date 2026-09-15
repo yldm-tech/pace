@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/cycles"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
@@ -89,35 +90,9 @@ func (handler *Handler) cycleDateCheck(c *gin.Context, user *auth.User) {
 	drf.Respond(c, http.StatusOK, gin.H{"status": true})
 }
 
-// cycleInterval is convert_to_utc over the pair. A start date becomes the first second of that day in the project's timezone; an end date becomes 23:59 of it. Both are then read as instants.
-//
-// A start date that falls on today in the project's timezone is the exception: it becomes the current instant rather than the start of the day, so a cycle created this afternoon does not claim to have begun this morning.
+// cycleInterval is convert_to_utc over the pair, which lives in internal/cycles because the external API writes a cycle's dates through the same conversion.
 func cycleInterval(start, end, timezone string, now time.Time) (time.Time, time.Time, bool) {
-	location, err := time.LoadLocation(timezone)
-	if err != nil {
-		return time.Time{}, time.Time{}, false
-	}
-	startDay, err := time.ParseInLocation("2006-01-02", start, location)
-	if err != nil {
-		return time.Time{}, time.Time{}, false
-	}
-	endDay, err := time.ParseInLocation("2006-01-02", end, location)
-	if err != nil {
-		return time.Time{}, time.Time{}, false
-	}
-	startAt := startDay.Add(time.Second)
-	if sameDayIn(startAt, now, location) {
-		startAt = now
-	}
-	// The end gains 23 hours and 59 minutes, which is what keeps two adjacent cycles from reading as overlapping.
-	return startAt.UTC(), endDay.Add(23*time.Hour + 59*time.Minute).UTC(), true
-}
-
-// sameDayIn compares two instants by the calendar day they fall on in the given zone.
-func sameDayIn(left, right time.Time, location *time.Location) bool {
-	leftDay := left.In(location)
-	rightDay := right.In(location)
-	return leftDay.Year() == rightDay.Year() && leftDay.YearDay() == rightDay.YearDay()
+	return cycles.ConvertToUTC(start, end, timezone, now)
 }
 
 // cycleFavoriteList is broken upstream and reproduced as such. The viewset inherits DRF's list from ModelViewSet but declares no serializer_class, so get_serializer_class asserts and answers 500. Answering anything else here would be inventing a response the endpoint has never given.
