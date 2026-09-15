@@ -50,6 +50,7 @@ type Handler struct {
 	sessions *auth.SessionManager
 	settings Settings
 	tasks    TaskPublisher
+	cache    auth.CacheInvalidator
 	clock    func() time.Time
 }
 
@@ -59,6 +60,10 @@ func NewHandler(db *gorm.DB, sessions *auth.SessionManager, settings Settings) *
 
 func (handler *Handler) SetTasks(publisher TaskPublisher) { handler.tasks = publisher }
 
+// SetCache wires the Redis invalidator the label routes need, since Django
+// drops the cached workspace label list when a project label changes.
+func (handler *Handler) SetCache(invalidator auth.CacheInvalidator) { handler.cache = invalidator }
+
 func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/", handler.authenticated(handler.list))
 	router.POST("/api/workspaces/:slug/projects/", handler.authenticated(handler.create))
@@ -66,6 +71,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.PATCH("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.partialUpdate))
 	router.DELETE("/api/workspaces/:slug/projects/:id/", handler.authenticatedUUID(handler.destroy))
 	handler.registerMemberRoutes(router)
+	handler.registerLabelRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

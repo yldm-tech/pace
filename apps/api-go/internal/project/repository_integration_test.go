@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -200,6 +201,48 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	}
 	if sortOrders[user.ID] != 65535 {
 		t.Fatalf("minimum sort order = %v", sortOrders[user.ID])
+	}
+
+	// Labels exercise the sort_order rule in Label.save.
+	firstOrder, err := handler.nextLabelSortOrder(ctx, project.ID)
+	if err != nil {
+		t.Fatalf("compute the first label sort order: %v", err)
+	}
+	if firstOrder != 65535 {
+		t.Fatalf("first label sort order = %v, want the 65535 default", firstOrder)
+	}
+	labelID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	label := Label{
+		ID: labelID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		WorkspaceID: workspaceID, ProjectID: &project.ID, Name: "Bug " + suffix,
+		Color: "#FF0000", SortOrder: firstOrder,
+	}
+	if err := transaction.Create(&label).Error; err != nil {
+		t.Fatalf("create label through Django schema: %v", err)
+	}
+	secondOrder, err := handler.nextLabelSortOrder(ctx, project.ID)
+	if err != nil {
+		t.Fatalf("compute the second label sort order: %v", err)
+	}
+	if secondOrder != firstOrder+10000 {
+		t.Fatalf("second label sort order = %v, want %v", secondOrder, firstOrder+10000)
+	}
+	// validate_name is case insensitive within the project.
+	taken, err := handler.labelNameTaken(ctx, project.ID, strings.ToUpper(label.Name), "")
+	if err != nil {
+		t.Fatalf("check the label name: %v", err)
+	}
+	if !taken {
+		t.Fatal("the label name check should be case insensitive")
+	}
+	if taken, err := handler.labelNameTaken(ctx, project.ID, label.Name, label.ID); err != nil || taken {
+		t.Fatalf("excluding the row itself should clear the name: %v, %v", taken, err)
+	}
+	if serialized := labelJSON(label); serialized["sort_order"] != firstOrder {
+		t.Fatalf("serialized label = %#v", serialized)
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.

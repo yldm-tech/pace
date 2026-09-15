@@ -105,6 +105,9 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
 			projectHandler.SetTasks(publisher)
 		}
+		if dependencies.AuthRedis != nil {
+			projectHandler.SetCache(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
+		}
 		projectHandler.Register(router)
 	}
 	return router

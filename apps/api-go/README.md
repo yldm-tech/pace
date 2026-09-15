@@ -152,8 +152,18 @@ same Celery tasks. The Celery publisher gained keyword-argument support here,
 because `model_activity`, `webhook_activity`, and `recent_visited_task` are all
 called with keywords.
 
-`projects/details/`, `project-identifiers/`, project members, invitations,
-archiving, favorites, and deploy boards remain on Django.
+`projects/details/`, `project-identifiers/`, invitations, archiving, favorites,
+and deploy boards remain on Django.
+
+## Migrated module: project labels
+
+The project label list, create, retrieve, update, delete, and bulk-create routes
+are implemented. They keep `Label.save`'s sort ordering, where a new label lands
+10000 past the project's current highest, the case-insensitive
+`LABEL_NAME_ALREADY_EXISTS` check from `validate_name`, the separate
+case-sensitive pre-check the update route runs before it loads the row, the
+narrow seven-field serializer shape, and the workspace label cache invalidation
+these routes trigger.
 
 ## Migrated module: project members
 
