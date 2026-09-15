@@ -91,16 +91,15 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 		t.Fatalf("create project through Django schema: %v", err)
 	}
 
-	identifierID, err := newUUID()
-	if err != nil {
-		t.Fatal(err)
-	}
 	identifier := ProjectIdentifier{
-		ID: identifierID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
 		WorkspaceID: &workspaceID, ProjectID: project.ID, Name: project.Identifier,
 	}
 	if err := transaction.Create(&identifier).Error; err != nil {
 		t.Fatalf("create project identifier through Django schema: %v", err)
+	}
+	if identifier.ID == 0 {
+		t.Fatal("project identifier should receive its BigAutoField primary key")
 	}
 
 	if err := handler.addProjectAdmin(transaction, project, user.ID, user.ID, now); err != nil {

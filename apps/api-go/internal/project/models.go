@@ -70,8 +70,10 @@ type ProjectMember struct {
 
 func (ProjectMember) TableName() string { return "project_members" }
 
+// ProjectIdentifier extends Django's AuditModel rather than BaseModel, so its
+// primary key is the default BigAutoField instead of a UUID.
 type ProjectIdentifier struct {
-	ID          string     `gorm:"column:id;type:uuid;primaryKey"`
+	ID          int64      `gorm:"column:id;primaryKey;autoIncrement"`
 	CreatedAt   time.Time  `gorm:"column:created_at"`
 	UpdatedAt   time.Time  `gorm:"column:updated_at"`
 	CreatedByID *string    `gorm:"column:created_by_id;type:uuid"`

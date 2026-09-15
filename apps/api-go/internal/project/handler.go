@@ -233,12 +233,8 @@ func (handler *Handler) create(c *gin.Context, user *auth.User) {
 		if err := tx.Create(&project).Error; err != nil {
 			return err
 		}
-		identifierID, err := newUUID()
-		if err != nil {
-			return err
-		}
 		identifier := ProjectIdentifier{
-			ID: identifierID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+			CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
 			WorkspaceID: &workspace.ID, ProjectID: project.ID, Name: project.Identifier,
 		}
 		if err := tx.Create(&identifier).Error; err != nil {
