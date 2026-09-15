@@ -25,6 +25,7 @@ func (handler *Handler) registerIssueCommentRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/issues/:issue/comments/", handler.authenticatedIssueUUID(handler.commentCreate))
 	router.GET("/api/workspaces/:slug/projects/:id/issues/:issue/comments/:comment/", handler.authenticatedCommentUUID(handler.commentRetrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/issues/:issue/comments/:comment/", handler.authenticatedCommentUUID(handler.commentPatch))
+	router.PUT("/api/workspaces/:slug/projects/:id/issues/:issue/comments/:comment/", handler.authenticatedCommentUUID(handler.fullUpdate("comment", handler.commentPatch)))
 	router.DELETE("/api/workspaces/:slug/projects/:id/issues/:issue/comments/:comment/", handler.authenticatedCommentUUID(handler.commentDelete))
 }
 

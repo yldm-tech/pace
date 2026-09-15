@@ -15,6 +15,7 @@ import (
 func (handler *Handler) registerCycleBasicsRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/date-check/", handler.authenticated(handler.cycleDateCheck))
 	router.POST("/api/workspaces/:slug/projects/:id/user-favorite-cycles/", handler.authenticated(handler.cycleFavoriteCreate))
+	router.GET("/api/workspaces/:slug/projects/:id/user-favorite-cycles/", handler.authenticated(handler.cycleFavoriteList))
 	router.DELETE("/api/workspaces/:slug/projects/:id/user-favorite-cycles/:cycle/", handler.authenticated(handler.cycleFavoriteDestroy))
 	router.GET("/api/workspaces/:slug/projects/:id/cycles/:cycle/user-properties/", handler.authenticated(handler.cycleUserProperties))
 	router.PATCH("/api/workspaces/:slug/projects/:id/cycles/:cycle/user-properties/", handler.authenticated(handler.updateCycleUserProperties))
@@ -117,6 +118,23 @@ func sameDayIn(left, right time.Time, location *time.Location) bool {
 	leftDay := left.In(location)
 	rightDay := right.In(location)
 	return leftDay.Year() == rightDay.Year() && leftDay.YearDay() == rightDay.YearDay()
+}
+
+// cycleFavoriteList is broken upstream and reproduced as such. The viewset inherits DRF's list from ModelViewSet but declares no serializer_class, so get_serializer_class asserts and answers 500. Answering anything else here would be inventing a response the endpoint has never given.
+func (handler *Handler) cycleFavoriteList(c *gin.Context, user *auth.User) {
+	if !handler.requireProjectRole(c, user, roleAdmin, roleMember) {
+		return
+	}
+	handler.internalError(c, errFavouriteListHasNoSerializer)
+}
+
+// errFavouriteListHasNoSerializer names the assertion DRF raises for that viewset.
+var errFavouriteListHasNoSerializer = errNoSerializer{}
+
+type errNoSerializer struct{}
+
+func (errNoSerializer) Error() string {
+	return "cycle favourites: the viewset declares no serializer_class, so DRF cannot list them"
 }
 
 // cycleFavoriteCreate marks a cycle as one of the caller's own. It writes unconditionally, so favouriting twice is a constraint violation rather than a no-op.

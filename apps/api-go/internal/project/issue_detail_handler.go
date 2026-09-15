@@ -23,6 +23,7 @@ const roleMemberOrAbove = 15
 func (handler *Handler) registerIssueDetailRoutes(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/:id/issues/:issue/", handler.authenticatedIssueUUID(handler.issueRetrieve))
 	router.PATCH("/api/workspaces/:slug/projects/:id/issues/:issue/", handler.authenticatedIssueUUID(handler.issuePartialUpdate))
+	router.PUT("/api/workspaces/:slug/projects/:id/issues/:issue/", handler.authenticatedIssueUUID(handler.fullUpdate("issue", handler.issuePartialUpdate)))
 	router.DELETE("/api/workspaces/:slug/projects/:id/issues/:issue/", handler.authenticatedIssueUUID(handler.issueDestroy))
 }
 
