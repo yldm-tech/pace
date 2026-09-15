@@ -576,6 +576,32 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalLabelRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_labels")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	for _, route := range []string{
+		project + "labels/",
+		project + "labels/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External label route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		project + "issues/",
+		// The external estimate urls exist as a file but are never wired into the URLconf, so Django answers 404 and nothing here may claim them.
+		project + "estimates/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_labels api-go:8000") {
+		t.Error("community proxy is missing the external labels reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalMemberRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_members")

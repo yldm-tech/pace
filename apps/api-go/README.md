@@ -30,6 +30,20 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: labels
+
+The five routes under `/api/v1/.../labels/`.
+
+The same pair of conflicts the external states have — a repeated **external id** checked before the write, a repeated **name** caught from the database afterwards — but the external-id check is **not the same rule**. The label's needs **both** halves in the request; the state's fires on the id alone, comparing it against the value the state already holds. So an integration changing only the id gets through on a label and is refused on a state. Both reproduced, with a test stating the difference.
+
+On update the conflict body carries the id of the label **being edited**, not the one that clashed — the opposite of what the message suggests, and what makes it useless for finding the duplicate.
+
+The list narrows by the `fields` parameter and the retrieve does not, because the retrieve never reads it.
+
+### The external estimate routes are dead and stay that way
+
+`plane/api/urls/estimate.py` exists and defines three endpoints. It is **never included** in the external API's URLconf, so Django answers `404` for all of them — verified with the real resolver. They are deliberately not migrated: cutting them over would invent routes that do not exist upstream, which is a behaviour change rather than a port. A negative case in the proxy test records it.
+
 ## Migrated external module: members
 
 Thirteen routes. The project member endpoints are mounted under **both** `members/` and `project-members/`, with every method bound on each — serving one of the pair would leave half the integrations on Django.
