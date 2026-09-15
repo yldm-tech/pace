@@ -28,6 +28,13 @@ the Django schema, run the rollback-only integration test:
 AUTH_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/auth -run TestGORMRepositoryAgainstDjangoSchema
 ```
 
+The user/profile/account module uses the same rollback-only shared-schema
+verification:
+
+```bash
+USER_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/user -run TestUserModelsAgainstDjangoSchema
+```
+
 Health endpoints are `/api/health`, `/api/health/db`, and `/ready`.
 
 ## Migrated module: authentication
