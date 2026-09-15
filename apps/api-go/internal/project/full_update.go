@@ -16,6 +16,7 @@ var fullUpdateRequirements = map[string][]string{
 	"cycle":   {"name"},
 	"issue":   {"name"},
 	"comment": {},
+	"module":  {"name"},
 	"link":    {"url"},
 }
 

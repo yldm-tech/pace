@@ -586,6 +586,8 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 		module + "module-links/",
 		module + "module-links/66666666-7777-8888-9999-000000000000/",
 		project + "modules/",
+		module,
+		module + "archive/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Module route %q is not cut over to Go", route)
@@ -593,9 +595,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 	}
 	for _, route := range []string{
 		// The rest of the module app is not migrated.
-		module,
 		module + "issues/",
-		module + "archive/",
 		project + "archived-modules/",
 	} {
 		if matcher.MatchString(route) {
