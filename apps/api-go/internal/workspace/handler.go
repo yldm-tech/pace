@@ -127,6 +127,9 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themeRetrieve))
 	router.PATCH("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themePatch))
 	router.DELETE("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themeDelete))
+
+	router.GET("/api/workspaces/:slug/user-properties/", handler.authenticated(handler.userPropertiesGet))
+	router.PATCH("/api/workspaces/:slug/user-properties/", handler.authenticated(handler.userPropertiesPatch))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

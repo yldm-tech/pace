@@ -79,3 +79,8 @@ Workspace Theme list, create, retrieve, partial-update, and soft-delete routes
 are implemented separately from the core Workspace module. The module retains
 Django's admin/member permission boundary, JSON response shape, audit fields,
 name uniqueness, and related-object soft-delete task behavior.
+
+## Module in progress: workspace user properties
+
+The workspace user properties GET and PATCH routes are implemented for the
+current user's filters, display settings, rich filters, and navigation settings.

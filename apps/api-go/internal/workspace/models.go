@@ -83,6 +83,25 @@ type WorkspaceTheme struct {
 
 func (WorkspaceTheme) TableName() string { return "workspace_themes" }
 
+type WorkspaceUserProperties struct {
+	ID                          string         `gorm:"column:id;type:uuid;primaryKey"`
+	CreatedAt                   time.Time      `gorm:"column:created_at"`
+	UpdatedAt                   time.Time      `gorm:"column:updated_at"`
+	CreatedByID                 *string        `gorm:"column:created_by_id;type:uuid"`
+	UpdatedByID                 *string        `gorm:"column:updated_by_id;type:uuid"`
+	DeletedAt                   *time.Time     `gorm:"column:deleted_at"`
+	WorkspaceID                 string         `gorm:"column:workspace_id;type:uuid"`
+	UserID                      string         `gorm:"column:user_id;type:uuid"`
+	Filters                     auth.JSONValue `gorm:"column:filters;type:jsonb"`
+	DisplayFilters              auth.JSONValue `gorm:"column:display_filters;type:jsonb"`
+	DisplayProperties           auth.JSONValue `gorm:"column:display_properties;type:jsonb"`
+	RichFilters                 auth.JSONValue `gorm:"column:rich_filters;type:jsonb"`
+	NavigationProjectLimit      int            `gorm:"column:navigation_project_limit"`
+	NavigationControlPreference string         `gorm:"column:navigation_control_preference"`
+}
+
+func (WorkspaceUserProperties) TableName() string { return "workspace_user_properties" }
+
 type workspaceRow struct {
 	Workspace
 	TotalMembers int `gorm:"column:total_members"`
