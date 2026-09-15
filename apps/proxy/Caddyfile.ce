@@ -22,6 +22,12 @@
 	reverse_proxy /api/users/me/instance-admin/ api-go:8000
 	reverse_proxy /api/users/me/onboard/ api-go:8000
 	reverse_proxy /api/users/me/tour-completed/ api-go:8000
+	reverse_proxy /api/users/me/notification-preferences/ api-go:8000
+	reverse_proxy /api/users/me/activities/ api-go:8000
+	reverse_proxy /api/users/last-visited-workspace/ api-go:8000
+	reverse_proxy /api/users/me/workspaces/*/activity-graph/ api-go:8000
+	reverse_proxy /api/users/me/workspaces/*/issues-completed-graph/ api-go:8000
+	reverse_proxy /api/users/me/workspaces/*/dashboard/ api-go:8000
 	reverse_proxy /api/v1/users/me/ api-go:8000
 
 	@go_external_work_items path_regexp go_external_work_items ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues|work-items)/([0-9A-Fa-f-]+/)?$
