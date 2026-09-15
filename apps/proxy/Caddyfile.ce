@@ -34,6 +34,8 @@
 	reverse_proxy @go_workspace_themes api-go:8000
 	@go_workspace_user_properties path_regexp go_workspace_user_properties ^/api/workspaces/[^/]+/user-properties/$
 	reverse_proxy @go_workspace_user_properties api-go:8000
+	@go_workspace_sidebar_preferences path_regexp go_workspace_sidebar_preferences ^/api/workspaces/[^/]+/sidebar-preferences/$
+	reverse_proxy @go_workspace_sidebar_preferences api-go:8000
 
 	reverse_proxy /api/* api:8000
 

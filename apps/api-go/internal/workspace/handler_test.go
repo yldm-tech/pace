@@ -56,6 +56,8 @@ func TestWorkspaceRouteInventory(t *testing.T) {
 		"DELETE /api/workspaces/:slug/workspace-themes/:id/": true,
 		"GET /api/workspaces/:slug/user-properties/":         true,
 		"PATCH /api/workspaces/:slug/user-properties/":       true,
+		"GET /api/workspaces/:slug/sidebar-preferences/":     true,
+		"PATCH /api/workspaces/:slug/sidebar-preferences/":   true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path
@@ -83,6 +85,7 @@ func TestWorkspaceRoutesRequireDjangoSession(t *testing.T) {
 		{method: http.MethodGet, path: "/api/users/me/workspaces/invitations/"},
 		{method: http.MethodGet, path: "/api/workspaces/pace/workspace-themes/"},
 		{method: http.MethodGet, path: "/api/workspaces/pace/user-properties/"},
+		{method: http.MethodGet, path: "/api/workspaces/pace/sidebar-preferences/"},
 	} {
 		request := httptest.NewRequest(test.method, test.path, nil)
 		response := httptest.NewRecorder()

@@ -84,3 +84,8 @@ name uniqueness, and related-object soft-delete task behavior.
 
 The workspace user properties GET and PATCH routes are implemented for the
 current user's filters, display settings, rich filters, and navigation settings.
+
+## Module in progress: workspace user preferences
+
+The workspace sidebar preference GET and PATCH routes are being migrated with
+the seven Django preference keys, default ordering, and pinned-item behavior.

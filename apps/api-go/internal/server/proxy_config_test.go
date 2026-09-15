@@ -126,6 +126,25 @@ func TestCommunityProxyCutsOverOnlyWorkspaceUserPropertiesRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyWorkspaceSidebarPreferencesRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_sidebar_preferences")
+	if !matcher.MatchString("/api/workspaces/acme/sidebar-preferences/") {
+		t.Error("Workspace Sidebar Preferences route is not cut over to Go")
+	}
+	for _, route := range []string{
+		"/api/workspaces/acme/sidebar-preferences/views/",
+		"/api/workspaces/acme/home-preferences/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_sidebar_preferences api-go:8000") {
+		t.Error("community proxy is missing the Workspace Sidebar Preferences reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
