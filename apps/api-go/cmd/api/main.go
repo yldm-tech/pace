@@ -5,10 +5,12 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/config"
 	"github.com/yldm-tech/pace/apps/api-go/internal/database"
 	"github.com/yldm-tech/pace/apps/api-go/internal/server"
@@ -28,10 +30,48 @@ func main() {
 		log.Fatal(err)
 	}
 	defer connection.SQL.Close()
+	redisClient, err := auth.OpenRedis(rootContext, cfg.Auth.RedisURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer redisClient.Close()
+	authLimiter, err := auth.NewRedisRateLimiter(redisClient, cfg.Auth.AuthenticationRateLimit)
+	if err != nil {
+		log.Fatal(err)
+	}
+	avatarStore, err := auth.NewS3AvatarStore(rootContext, auth.AvatarStoreSettings{
+		AccessKey: cfg.Auth.AWSAccessKeyID, SecretKey: cfg.Auth.AWSSecretAccessKey,
+		Region: cfg.Auth.AWSRegion, Bucket: cfg.Auth.AWSBucketName, Endpoint: cfg.Auth.AWSEndpointURL,
+		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, MaxSize: cfg.Auth.FileSizeLimit,
+	})
+	if err != nil {
+		log.Printf("OAuth avatar storage unavailable: %v", err)
+	}
 
+	authSettings := auth.Settings{
+		SecretKey: cfg.Auth.SecretKey, SecretKeyFallbacks: cfg.Auth.SecretKeyFallbacks,
+		WebURL: cfg.Auth.WebURL, AppBaseURL: cfg.Auth.AppBaseURL, SpaceBaseURL: cfg.Auth.SpaceBaseURL,
+		SpaceBasePath: cfg.Auth.SpaceBasePath, SessionCookieName: cfg.Auth.SessionCookieName,
+		SessionCookieDomain: cfg.Auth.SessionCookieDomain, SessionCookieSecure: cfg.Auth.SessionCookieSecure,
+		SessionCookieAge: cfg.Auth.SessionCookieAge, SessionSaveEveryRequest: cfg.Auth.SessionSaveEveryRequest,
+		CSRFCookieName: cfg.Auth.CSRFCookieName, CSRFCookieDomain: cfg.Auth.CSRFCookieDomain,
+		CSRFCookieSecure: cfg.Auth.CSRFCookieSecure, CSRFCookieAge: cfg.Auth.CSRFCookieAge,
+		CSRFTrustedOrigins: cfg.Auth.CSRFTrustedOrigins, AuthenticationRateLimit: cfg.Auth.AuthenticationRateLimit,
+		Environment:    authenticationEnvironment(),
+		AWSAccessKeyID: cfg.Auth.AWSAccessKeyID, AWSSecretAccessKey: cfg.Auth.AWSSecretAccessKey,
+		AWSRegion: cfg.Auth.AWSRegion, AWSBucketName: cfg.Auth.AWSBucketName, AWSEndpointURL: cfg.Auth.AWSEndpointURL,
+		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, FileSizeLimit: cfg.Auth.FileSizeLimit,
+	}
 	httpServer := &http.Server{
-		Addr:              cfg.Address,
-		Handler:           server.NewRouter(server.Dependencies{Database: connection.GORM, CORSOrigins: cfg.CORSOrigins}),
+		Addr: cfg.Address,
+		Handler: server.NewRouter(server.Dependencies{
+			Database: connection.GORM, CORSOrigins: cfg.CORSOrigins, AuthSettings: &authSettings,
+			AuthSkipEnvironmentConfig: cfg.Auth.SkipEnvironmentConfig,
+			AuthRedis:                 redisClient,
+			AuthAvatarStore:           avatarStore,
+			AuthMagicStore:            auth.NewRedisMagicStore(redisClient), AuthTaskPublisher: auth.NewCeleryPublisher(cfg.Auth.AMQPURL),
+			AuthRateLimiter: authLimiter,
+		}),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
@@ -54,4 +94,20 @@ func main() {
 	if err := httpServer.Shutdown(shutdownContext); err != nil {
 		log.Printf("graceful shutdown failed: %v", err)
 	}
+}
+
+func authenticationEnvironment() map[string]string {
+	values := make(map[string]string)
+	for _, key := range []string{
+		"ENABLE_EMAIL_PASSWORD", "ENABLE_SIGNUP", "EMAIL_HOST", "ENABLE_MAGIC_LINK_LOGIN",
+		"GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "ENABLE_GOOGLE_SYNC",
+		"GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET", "GITHUB_ORGANIZATION_ID", "ENABLE_GITHUB_SYNC",
+		"GITLAB_CLIENT_ID", "GITLAB_CLIENT_SECRET", "GITLAB_HOST", "ENABLE_GITLAB_SYNC",
+		"GITEA_CLIENT_ID", "GITEA_CLIENT_SECRET", "GITEA_HOST", "ENABLE_GITEA_SYNC",
+	} {
+		if value, exists := os.LookupEnv(key); exists {
+			values[key] = value
+		}
+	}
+	return values
 }
