@@ -105,6 +105,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerInviteRoutes(router)
 	handler.registerDeployBoardRoutes(router)
 	handler.registerProjectDetailRoutes(router)
+	handler.registerWorkspaceAggregateRoutes(router)
 	handler.registerSubIssueRoutes(router)
 	handler.registerIssueRelationRoutes(router)
 	handler.registerIssueArchiveRoutes(router)

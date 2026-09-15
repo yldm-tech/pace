@@ -1609,6 +1609,12 @@ Accepting puts the invitee into the workspace and then into the project, and two
 
 One deliberate divergence: the list, the retrieve and the delete ask for an active membership of the project. Django asks only that the caller be signed in — the viewset carries no permission class and its queryset is scoped to the project alone, so any account could read any project's invitations, emails included. The workspace's own invitation list already asks for admin, and every other project-scoped read here asks for membership.
 
+## Migrated module: the workspace-wide lists
+
+`labels/`, `states/`, `cycles/` and `modules/` under a workspace are implemented and cut over. They are the same question asked four ways — everything of a kind the caller can see across a workspace — and each is scoped to the projects they are an **active member** of, skipping an archived project, so the answer is what their sidebar could show rather than what the workspace holds.
+
+Two shapes differ from the project's own list of the same thing. A state's `order` is its place as a fraction of its group, and the group is counted **across the whole workspace** here, so one state is ordered differently in the two lists. The cycle list reports neither the assignees nor the version its project's list carries, and renders its dates in the **caller's** timezone where the project's list uses the project's — the same asymmetry, the other way round. The module list carries the archive stamp its project's list leaves out, and comes back newest first rather than favourites first.
+
 ## Migrated module: project states
 
 `GET` and `POST` on `states/`, `GET`, `PATCH` and `DELETE` on `states/<uuid>/`, `POST` on `mark-default/`, and `GET` on `intake-state/` are implemented and cut over.
