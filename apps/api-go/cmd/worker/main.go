@@ -65,10 +65,13 @@ func main() {
 	// settings reads this one with a bare int() and a default of 60.
 	deletions.SetHardDeleteAfterDays(retentionDays("HARD_DELETE_AFTER_DAYS", worker.HardDeleteAfterDays))
 
+	versions := worker.NewVersionTasks(db, logger)
+
 	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
 	tasks.Register(consumer)
 	maintenance.Register(consumer)
 	deletions.Register(consumer)
+	versions.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

@@ -1437,6 +1437,20 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the three that keep a description's history
+
+`page_transaction`, `track_page_version` and `issue_description_version_task` now run on the Go worker. All three were already queued by the Go API and answered by the Python one.
+
+**The page log almost never gets written.** `page_transaction` logs one row per component a description gained, and an image component's row puts the image's `src` into `entity_identifier` — a column that is a uuid. A source that is a url raises before anything is written, the task swallows it, and neither the insertions nor the deletions happen. So a page with a single image logs nothing about its mentions either. Reproduced rather than corrected: correcting it here would write rows the Python worker never wrote, which is a data difference rather than a behaviour one.
+
+The two version tasks look like the same task and are not:
+
+- **The page's rewrite does not move `last_saved_at`.** A run of quick edits keeps folding into the version the first of them made, and the ten-minute window is measured from that first edit rather than the last — so a long session can fold an hour of work into one version. The work item's copy does move it.
+- **Only the page's is capped.** It trims to twenty; the work item's keeps every version it makes.
+- **Only the page's recomputes the stripped copy.** Its model's `save` derives it from the html; the work item's carries across whatever the work item already had.
+
+Both write their two audit columns empty whatever they were built with, because the worker has no current user and `BaseModel.save` blanks them.
+
 ## Migrated module: the workspace work item list
 
 `GET /api/workspaces/<slug>/issues/` is implemented and cut over — every work item in the workspace the caller can see, across all their projects. It is the first route to use `internal/complexfilters`, and this piece adds the SQL half of that package.
