@@ -35,6 +35,7 @@ type Project struct {
 	IconProp    []byte     `gorm:"column:icon_prop;type:jsonb"`
 	Emoji       *string    `gorm:"column:emoji"`
 	ArchivedAt  *time.Time `gorm:"column:archived_at"`
+	IntakeView  bool       `gorm:"column:intake_view"`
 }
 
 func (Project) TableName() string { return "projects" }

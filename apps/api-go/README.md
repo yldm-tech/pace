@@ -30,6 +30,28 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: intake
+
+The five routes under `/api/v1/.../intake-issues/`.
+
+The list **hides what is still snoozed** — a work item put off until tomorrow is not in the list today — which is a narrowing the session API's version does not have.
+
+### The list and the writes read the same two facts differently
+
+Whether the project has an intake row, and whether the feature is switched on. The **list** empties when **either** is missing; the **writes** refuse only when **both** are. So a project with the feature on and no intake row has an empty list and a create that is let through — and then raises on the intake it did not find. Reproduced, with a test walking all four combinations.
+
+### The create skips almost everything the session API does
+
+The work item is written directly rather than through the serializer, so it gets **no sequence number, no default assignee and no sort order of its own**. And the description is sanitized with the validity flag **discarded**: a rejected one becomes the empty paragraph rather than an error.
+
+### Two halves, gated apart again
+
+A **guest** may edit the work item and only its name and description; anything else is dropped. The **queue entry** moves only for a role **above** member, so a plain member may edit a work item and not triage it. Somebody who is not in the project at all raises rather than being refused, because the role is read off an unguarded `.get`.
+
+Deleting takes the work item with it unless it was **accepted**, and removing the work item wants the person who raised it or a project admin — the queue entry goes either way.
+
+The intake is reported **twice** in the body, once under its own name and once under the one it had before intake was called inbox.
+
 ## Migrated external module: stickies and invitations
 
 Ten routes, and a correction to the route inventory that made them checkable.
