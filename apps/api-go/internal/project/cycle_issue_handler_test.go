@@ -98,3 +98,23 @@ func TestArchivingClearsEveryFavourite(t *testing.T) {
 		t.Fatal("deleting clears only the caller's favourite")
 	}
 }
+
+// The cycle's issue list narrows the issue_objects manager with one EXISTS carrying both halves of the link condition, because Django puts them in a single filter call and so applies them to the same joined row.
+func TestTheCycleIssueListNarrowsWithOneExists(t *testing.T) {
+	predicate := cycleIssueListPredicate()
+	if !strings.Contains(predicate, issueObjectsPredicate("i")) {
+		t.Error("the cycle's list still reads through issue_objects")
+	}
+	if strings.Count(predicate, "EXISTS (SELECT 1 FROM cycle_issues") != 1 {
+		t.Fatalf("both halves belong in one EXISTS:\n%s", predicate)
+	}
+	for _, fragment := range []string{"cil.cycle_id = ?", "cil.deleted_at IS NULL"} {
+		if !strings.Contains(predicate, fragment) {
+			t.Errorf("the predicate is missing %q", fragment)
+		}
+	}
+	// It takes exactly the cycle id.
+	if strings.Count(predicate, "?") != 1 {
+		t.Fatalf("the predicate takes %d arguments, want 1", strings.Count(predicate, "?"))
+	}
+}

@@ -98,6 +98,7 @@ func TestProjectRouteInventory(t *testing.T) {
 		"PATCH /api/workspaces/:slug/projects/:id/cycles/:cycle/":                                 true,
 		"DELETE /api/workspaces/:slug/projects/:id/cycles/:cycle/":                                true,
 		"POST /api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/":                     true,
+		"GET /api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/":                      true,
 		"DELETE /api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/:issue/":            true,
 		"POST /api/workspaces/:slug/projects/:id/cycles/:cycle/archive/":                          true,
 		"DELETE /api/workspaces/:slug/projects/:id/cycles/:cycle/archive/":                        true,

@@ -133,6 +133,12 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: the cycle issue list
+
+`GET` on `cycles/<uuid>/cycle-issues/`, flat and grouped. It shares the project list's filtering, ordering, grouping and paging, narrowing the issue_objects manager with a single EXISTS that carries both halves of the link condition — Django puts them in one filter call, so they apply to the same joined row.
+
+It carries neither the guest narrowing nor the recorded visit the project list does.
+
 ## Migrated module: cycle issues and the archive toggle
 
 Adding and removing a cycle's issues, and archiving or unarchiving the cycle itself.
