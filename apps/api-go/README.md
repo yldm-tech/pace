@@ -1405,6 +1405,14 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: profile images
+
+`POST` on `assets/v2/user-assets/` and `PATCH` and `DELETE` on `<uuid>/` are implemented and cut over, which completes the v2 asset API.
+
+A profile image belongs to a **person** rather than to a workspace, so nothing here is scoped to one and the asset key has no workspace in front of it — the only asset key the application writes that does not. The entity has to be `USER_AVATAR` or `USER_COVER`, the type has to be one of five images, and a name that sanitizes away to nothing is stored as `unnamed` rather than refused.
+
+The `PATCH` puts the image **on the person**: it replaces whatever was there, marks the one it replaces deleted, and clears the url the person used to carry, so an uploaded image always wins over a linked one. The `DELETE` takes it off again. Both drop the two cached views of the person.
+
 ## Migrated module: workspace assets
 
 The workspace half of the v2 asset API is implemented and cut over: `POST` on `assets/v2/workspaces/<slug>/`, `GET`, `PATCH` and `DELETE` on `<uuid>/`, and the `check/`, `download/`, `restore/` and `static/` routes. The project half and `duplicate-assets/` are still Django's.

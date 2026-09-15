@@ -637,9 +637,18 @@ func TestCommunityProxyCutsOverTheWorkspaceAssets(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
+		"/api/assets/v2/user-assets/",
+		"/api/assets/v2/user-assets/" + asset,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("User asset route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
 		// The work item attachments under a project are their own route and were cut over separately.
 		project + "issues/11111111-2222-3333-4444-555555555555/attachments/",
-		"/api/assets/v2/user-assets/",
+		// And the external API's user assets are a different application.
+		"/api/v1/assets/user-assets/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
