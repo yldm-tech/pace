@@ -54,7 +54,7 @@
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
 	reverse_proxy @go_work_item_identifier api-go:8000
-	@go_pages path_regexp go_pages ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(pages-summary/|pages/([0-9A-Fa-f-]+/(lock/|access/|archive/)?)?|favorite-pages/[0-9A-Fa-f-]+/)$
+	@go_pages path_regexp go_pages ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(pages-summary/|pages/([0-9A-Fa-f-]+/(lock/|access/|archive/|description/|duplicate/|versions/([0-9A-Fa-f-]+/)?)?)?|favorite-pages/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_pages api-go:8000
 
 	@go_notifications path_regexp go_notifications ^/api/workspaces/[^/]+/users/notifications/(unread/|mark-all-read/|[0-9A-Fa-f-]+/(read/|archive/)?)?$

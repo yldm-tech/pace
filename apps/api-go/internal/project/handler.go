@@ -50,6 +50,8 @@ type TaskPublisher interface {
 	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
 	PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error
 	PublishPageTransaction(ctx context.Context, newDescriptionHTML string, oldDescriptionHTML *string, pageID string) error
+	PublishTrackPageVersion(ctx context.Context, pageID, existingInstance, userID string) error
+	PublishCopyDescriptionAssets(ctx context.Context, entityName, entityIdentifier, projectID, slug, userID string) error
 	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 	PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error
 }
@@ -125,6 +127,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerWorkspaceViewRoutes(router)
 	handler.registerNotificationRoutes(router)
 	handler.registerPageRoutes(router)
+	handler.registerPageDescriptionRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

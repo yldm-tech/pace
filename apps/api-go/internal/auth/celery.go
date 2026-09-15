@@ -28,6 +28,8 @@ const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.p
 const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
 const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
 const pageTransactionTaskName = "plane.bgtasks.page_transaction_task.page_transaction"
+const trackPageVersionTaskName = "plane.bgtasks.page_version_task.track_page_version"
+const copyDescriptionAssetsTaskName = "plane.bgtasks.copy_s3_object.copy_s3_objects_of_description_and_assets"
 const assetObjectMetadataTaskName = "plane.bgtasks.storage_metadata_task.get_asset_object_metadata"
 const issueDescriptionVersionTaskName = "plane.bgtasks.issue_description_version_task.issue_description_version_task"
 
@@ -173,6 +175,21 @@ func (publisher *CeleryPublisher) PublishPageTransaction(ctx context.Context, ne
 		"new_description_html": newDescriptionHTML,
 		"old_description_html": old,
 		"page_id":              pageID,
+	})
+}
+
+// PublishTrackPageVersion mirrors track_page_version.delay, which writes a page version from the state the page was in before the save. It still runs on the Python worker.
+func (publisher *CeleryPublisher) PublishTrackPageVersion(ctx context.Context, pageID, existingInstance, userID string) error {
+	return publisher.publishKeywords(ctx, trackPageVersionTaskName, map[string]any{
+		"page_id": pageID, "existing_instance": existingInstance, "user_id": userID,
+	})
+}
+
+// PublishCopyDescriptionAssets mirrors copy_s3_objects_of_description_and_assets.delay, which copies the objects a duplicated description points at.
+func (publisher *CeleryPublisher) PublishCopyDescriptionAssets(ctx context.Context, entityName, entityIdentifier, projectID, slug, userID string) error {
+	return publisher.publishKeywords(ctx, copyDescriptionAssetsTaskName, map[string]any{
+		"entity_name": entityName, "entity_identifier": entityIdentifier,
+		"project_id": projectID, "slug": slug, "user_id": userID,
 	})
 }
 
