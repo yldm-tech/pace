@@ -101,9 +101,12 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		}
 		workspaceHandler.Register(router)
 		projectHandler := projectapi.NewHandler(dependencies.Database, sessions, projectapi.Settings{
-			AppBaseURL:    dependencies.AuthSettings.AppBaseURL,
-			WebURL:        dependencies.AuthSettings.WebURL,
-			FileSizeLimit: dependencies.AuthSettings.FileSizeLimit,
+			AppBaseURL:               dependencies.AuthSettings.AppBaseURL,
+			WebURL:                   dependencies.AuthSettings.WebURL,
+			FileSizeLimit:            dependencies.AuthSettings.FileSizeLimit,
+			WebhookAllowedIPs:        dependencies.AuthSettings.WebhookAllowedIPs,
+			WebhookAllowedHosts:      dependencies.AuthSettings.WebhookAllowedHosts,
+			WebhookDisallowedDomains: dependencies.AuthSettings.WebhookDisallowedDomains,
 		})
 		// A misconfigured bucket leaves the store nil, and the attachment routes answer 500 rather than reserving a row nothing can upload against.
 		attachmentStore, err := storage.New(storage.Settings{

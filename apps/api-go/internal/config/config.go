@@ -6,6 +6,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/yldm-tech/pace/apps/api-go/internal/httpsafe"
+	"net/netip"
 )
 
 const (
@@ -26,35 +29,38 @@ type Config struct {
 }
 
 type AuthConfig struct {
-	SecretKey               string
-	SecretKeyFallbacks      []string
-	RedisURL                string
-	AMQPURL                 string
-	WebURL                  string
-	AppBaseURL              string
-	SpaceBaseURL            string
-	SpaceBasePath           string
-	SessionCookieName       string
-	SessionCookieDomain     string
-	SessionCookieSecure     bool
-	SessionCookieAge        time.Duration
-	SessionSaveEveryRequest bool
-	CSRFCookieName          string
-	CSRFCookieDomain        string
-	CSRFCookieSecure        bool
-	CSRFCookieAge           time.Duration
-	CSRFTrustedOrigins      []string
-	AuthenticationRateLimit string
-	SkipEnvironmentConfig   bool
-	AWSAccessKeyID          string
-	AWSSecretAccessKey      string
-	AWSRegion               string
-	AWSBucketName           string
-	AWSEndpointURL          string
-	UseMinio                bool
-	MinioEndpointSSL        bool
-	FileSizeLimit           int64
-	SignedURLExpiration     time.Duration
+	SecretKey                string
+	SecretKeyFallbacks       []string
+	RedisURL                 string
+	AMQPURL                  string
+	WebURL                   string
+	AppBaseURL               string
+	SpaceBaseURL             string
+	SpaceBasePath            string
+	SessionCookieName        string
+	SessionCookieDomain      string
+	SessionCookieSecure      bool
+	SessionCookieAge         time.Duration
+	SessionSaveEveryRequest  bool
+	CSRFCookieName           string
+	CSRFCookieDomain         string
+	CSRFCookieSecure         bool
+	CSRFCookieAge            time.Duration
+	CSRFTrustedOrigins       []string
+	AuthenticationRateLimit  string
+	SkipEnvironmentConfig    bool
+	AWSAccessKeyID           string
+	AWSSecretAccessKey       string
+	AWSRegion                string
+	AWSBucketName            string
+	AWSEndpointURL           string
+	UseMinio                 bool
+	MinioEndpointSSL         bool
+	FileSizeLimit            int64
+	SignedURLExpiration      time.Duration
+	WebhookAllowedIPs        []netip.Prefix
+	WebhookAllowedHosts      []string
+	WebhookDisallowedDomains []string
 }
 
 func Load() (Config, error) {
@@ -64,6 +70,9 @@ func Load() (Config, error) {
 	)
 	trustedOrigins := csvOrDefault(os.Getenv("CSRF_TRUSTED_ORIGINS"), corsOrigins)
 	secureCookies := originsRequireSecureCookies(corsOrigins)
+	// An entry that cannot be parsed is skipped rather than stopping the process, which is what settings.py does with a warning.
+	webhookAllowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
+
 	config := Config{
 		Address:         envOrDefault("PACE_API_ADDRESS", defaultAddress),
 		DatabaseURL:     strings.TrimSpace(os.Getenv("DATABASE_URL")),
@@ -72,35 +81,38 @@ func Load() (Config, error) {
 		MaxOpenConns:    positiveIntOrDefault(os.Getenv("DB_MAX_OPEN_CONNS"), defaultMaxOpenConns),
 		MaxIdleConns:    positiveIntOrDefault(os.Getenv("DB_MAX_IDLE_CONNS"), defaultMaxIdleConns),
 		Auth: AuthConfig{
-			SecretKey:               strings.TrimSpace(os.Getenv("SECRET_KEY")),
-			SecretKeyFallbacks:      csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
-			RedisURL:                strings.TrimSpace(os.Getenv("REDIS_URL")),
-			AMQPURL:                 celeryBrokerURL(),
-			WebURL:                  strings.TrimRight(envOrDefault("WEB_URL", "http://localhost:8000"), "/"),
-			AppBaseURL:              strings.TrimRight(envOrDefault("APP_BASE_URL", "http://localhost:3000"), "/"),
-			SpaceBaseURL:            strings.TrimRight(envOrDefault("SPACE_BASE_URL", "http://localhost:3002"), "/"),
-			SpaceBasePath:           normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
-			SessionCookieName:       envOrDefault("SESSION_COOKIE_NAME", "session-id"),
-			SessionCookieDomain:     strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
-			SessionCookieSecure:     secureCookies,
-			SessionCookieAge:        secondsOrDefault(os.Getenv("SESSION_COOKIE_AGE"), 7*24*time.Hour),
-			SessionSaveEveryRequest: boolOrDefault(os.Getenv("SESSION_SAVE_EVERY_REQUEST"), false),
-			CSRFCookieName:          envOrDefault("CSRF_COOKIE_NAME", "csrftoken"),
-			CSRFCookieDomain:        strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
-			CSRFCookieSecure:        secureCookies,
-			CSRFCookieAge:           secondsOrDefault(os.Getenv("CSRF_COOKIE_AGE"), 364*24*time.Hour),
-			CSRFTrustedOrigins:      trustedOrigins,
-			AuthenticationRateLimit: envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
-			SkipEnvironmentConfig:   boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
-			AWSAccessKeyID:          strings.TrimSpace(os.Getenv("AWS_ACCESS_KEY_ID")),
-			AWSSecretAccessKey:      strings.TrimSpace(os.Getenv("AWS_SECRET_ACCESS_KEY")),
-			AWSRegion:               strings.TrimSpace(os.Getenv("AWS_REGION")),
-			AWSBucketName:           envOrDefault("AWS_S3_BUCKET_NAME", "uploads"),
-			AWSEndpointURL:          firstNonEmpty(os.Getenv("AWS_S3_ENDPOINT_URL"), os.Getenv("MINIO_ENDPOINT_URL")),
-			UseMinio:                boolOrDefault(os.Getenv("USE_MINIO"), false),
-			MinioEndpointSSL:        boolOrDefault(os.Getenv("MINIO_ENDPOINT_SSL"), false),
-			FileSizeLimit:           int64(positiveIntOrDefault(os.Getenv("FILE_SIZE_LIMIT"), 5*1024*1024)),
-			SignedURLExpiration:     secondsOrDefault(os.Getenv("SIGNED_URL_EXPIRATION"), time.Hour),
+			SecretKey:                strings.TrimSpace(os.Getenv("SECRET_KEY")),
+			SecretKeyFallbacks:       csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
+			RedisURL:                 strings.TrimSpace(os.Getenv("REDIS_URL")),
+			AMQPURL:                  celeryBrokerURL(),
+			WebURL:                   strings.TrimRight(envOrDefault("WEB_URL", "http://localhost:8000"), "/"),
+			AppBaseURL:               strings.TrimRight(envOrDefault("APP_BASE_URL", "http://localhost:3000"), "/"),
+			SpaceBaseURL:             strings.TrimRight(envOrDefault("SPACE_BASE_URL", "http://localhost:3002"), "/"),
+			SpaceBasePath:            normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
+			SessionCookieName:        envOrDefault("SESSION_COOKIE_NAME", "session-id"),
+			SessionCookieDomain:      strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			SessionCookieSecure:      secureCookies,
+			SessionCookieAge:         secondsOrDefault(os.Getenv("SESSION_COOKIE_AGE"), 7*24*time.Hour),
+			SessionSaveEveryRequest:  boolOrDefault(os.Getenv("SESSION_SAVE_EVERY_REQUEST"), false),
+			CSRFCookieName:           envOrDefault("CSRF_COOKIE_NAME", "csrftoken"),
+			CSRFCookieDomain:         strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			CSRFCookieSecure:         secureCookies,
+			CSRFCookieAge:            secondsOrDefault(os.Getenv("CSRF_COOKIE_AGE"), 364*24*time.Hour),
+			CSRFTrustedOrigins:       trustedOrigins,
+			AuthenticationRateLimit:  envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
+			SkipEnvironmentConfig:    boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
+			AWSAccessKeyID:           strings.TrimSpace(os.Getenv("AWS_ACCESS_KEY_ID")),
+			AWSSecretAccessKey:       strings.TrimSpace(os.Getenv("AWS_SECRET_ACCESS_KEY")),
+			AWSRegion:                strings.TrimSpace(os.Getenv("AWS_REGION")),
+			AWSBucketName:            envOrDefault("AWS_S3_BUCKET_NAME", "uploads"),
+			AWSEndpointURL:           firstNonEmpty(os.Getenv("AWS_S3_ENDPOINT_URL"), os.Getenv("MINIO_ENDPOINT_URL")),
+			UseMinio:                 boolOrDefault(os.Getenv("USE_MINIO"), false),
+			MinioEndpointSSL:         boolOrDefault(os.Getenv("MINIO_ENDPOINT_SSL"), false),
+			FileSizeLimit:            int64(positiveIntOrDefault(os.Getenv("FILE_SIZE_LIMIT"), 5*1024*1024)),
+			SignedURLExpiration:      secondsOrDefault(os.Getenv("SIGNED_URL_EXPIRATION"), time.Hour),
+			WebhookAllowedIPs:        webhookAllowedIPs,
+			WebhookAllowedHosts:      httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
+			WebhookDisallowedDomains: parseDisallowedDomains(os.Getenv("WEBHOOK_DISALLOWED_DOMAINS")),
 		},
 	}
 	if config.DatabaseURL == "" {
@@ -219,4 +231,16 @@ func celeryBrokerURL() string {
 	port := envOrDefault("RABBITMQ_PORT", "5672")
 	vhost := envOrDefault("RABBITMQ_VHOST", "/")
 	return fmt.Sprintf("amqp://%s:%s@%s:%s/%s", user, password, host, port, vhost)
+}
+
+// parseDisallowedDomains reads WEBHOOK_DISALLOWED_DOMAINS the way settings.py does: split on commas, trimmed, with a trailing dot removed and the case flattened.
+func parseDisallowedDomains(raw string) []string {
+	domains := []string{}
+	for _, entry := range strings.Split(raw, ",") {
+		entry = strings.ToLower(strings.TrimSuffix(strings.TrimSpace(entry), "."))
+		if entry != "" {
+			domains = append(domains, entry)
+		}
+	}
+	return domains
 }

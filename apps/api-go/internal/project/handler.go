@@ -14,6 +14,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
+	"net/netip"
 )
 
 const (
@@ -39,6 +40,10 @@ type Settings struct {
 	WebURL     string
 	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every attachment size is clamped to.
 	FileSizeLimit int64
+	// The three webhook settings, which together decide which urls a workspace may be told to call.
+	WebhookAllowedIPs        []netip.Prefix
+	WebhookAllowedHosts      []string
+	WebhookDisallowedDomains []string
 }
 
 type TaskPublisher interface {
@@ -133,6 +138,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueSearchRoutes(router)
 	handler.registerGlobalSearchRoutes(router)
 	handler.registerEntitySearchRoutes(router)
+	handler.registerWebhookRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

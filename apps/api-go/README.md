@@ -242,6 +242,30 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: webhooks
+
+The seven routes under `webhooks/` and `webhook-logs/`. Admin only, at the workspace level.
+
+### The secret is shown twice and no more often
+
+On creation and on a regenerate. Everywhere else it is dropped, and the **only** thing dropping it is a context flag.
+
+The `fields=` allowlists the views pass are dead on two independent levels — `DynamicBaseSerializer` discards the caller's list and overwrites it with `expand`, and the filter never *removes* anything even when it does receive one. So every route renders the whole model, and fixing either level alone would not make those allowlists confidential. The Go port renders the whole model too, with one flag for the secret, which is the behaviour rather than the intent.
+
+### The url has to pass three checks, and they report differently
+
+The scheme and the local-name check come from the field's own validators and answer under `url` as a **list**; the SSRF resolve and the disallowed-domain check come from the serializer and answer as a **string**. The frontend shows both, so both shapes are kept.
+
+The local-name check looks at the whole netloc rather than the hostname, so `localhost:8000` passes it — the port makes the string stop matching. The SSRF check catches that host anyway.
+
+A host on `WEBHOOK_ALLOWED_HOSTS` skips the **disallowed-domain** check as well as the SSRF one. It is already trusted, and the loop-back guard would only get in the way of a sibling service sharing a parent domain with Plane.
+
+This is `internal/httpsafe`'s first caller; the package was written for the webhook delivery task and had none until now.
+
+### Other
+
+A repeat registration of the same url is a `409` rather than a `400`, because the unique index on the workspace and the url is the only one this table has. The token is a fixed prefix and a **version four uuid's hex with no dashes**, which a test checks nibble by nibble.
+
 ## Migrated module: the entity search
 
 `GET` on `entity-search/`, which is what the editor's mention menu and the link pickers call. With this the whole search app is on Go.

@@ -576,6 +576,33 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheWebhookRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_webhooks")
+	webhook := "/api/workspaces/acme/webhooks/11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		"/api/workspaces/acme/webhooks/",
+		webhook,
+		webhook + "regenerate/",
+		"/api/workspaces/acme/webhook-logs/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Webhook route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		"/api/workspaces/acme/webhook-logs/",
+		webhook + "something-else/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_webhooks api-go:8000") {
+		t.Error("community proxy is missing the Webhooks reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheWorkspaceSearches(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_global_search")

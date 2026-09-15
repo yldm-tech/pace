@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/netip"
 	"strings"
 	"time"
 )
@@ -40,6 +41,10 @@ type Settings struct {
 	MinioEndpointSSL        bool
 	FileSizeLimit           int64
 	SignedURLExpiration     time.Duration
+	// The three webhook settings, read the way settings.py reads them: entries that cannot be parsed are skipped rather than stopping the process.
+	WebhookAllowedIPs        []netip.Prefix
+	WebhookAllowedHosts      []string
+	WebhookDisallowedDomains []string
 }
 
 type Session struct {
