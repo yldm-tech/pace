@@ -153,6 +153,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerDraftIssueRoutes(router)
 	handler.registerWorkspaceUserRoutes(router)
 	handler.registerAdvanceAnalyticsRoutes(router)
+	handler.registerProjectAnalyticsRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

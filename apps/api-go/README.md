@@ -1413,6 +1413,18 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the project advance analytics
+
+The three project-scoped routes are implemented and cut over. They read the same filters as the workspace ones and the same chart builder, and then differ in ways worth knowing.
+
+**Naming a cycle or a module replaces the project rather than narrowing it.** On the two totals routes the work items become whichever ones that cycle or module holds, and the project in the url stops mattering — as do the analytics filters on the work items themselves, which move onto the link table instead. The cycle is only checked against the workspace, so a cycle belonging to a different project of the same workspace is accepted and its work items are counted. The custom chart makes the opposite choice: there the cycle or module *narrows* a set that is already the project's.
+
+**The per-assignee split includes a row for nobody.** The assignee join is an outer one, so work items with no assignee group together under an empty name and an empty id. The join also does not check whether the assignment was taken back, so a deleted assignee link still puts that person in the list.
+
+**The completion chart is two different charts wearing one name.** For a project it is monthly, its count is what was created, and it runs to the current month whatever the caller asked for. For a cycle or a module it is **daily**, it counts *links* rather than work items — so the created curve is when work items were put into the cycle rather than when they were raised — and its count is the created and the completed added together rather than the created alone.
+
+Three ways it reaches a 500, all of them upstream's: a cycle with a start date and no end date, a module with a start date and no target date, and a project id that does not exist. A cycle or module with **no** start date is different — that answers with an empty chart rather than failing.
+
 ## Migrated module: the advance analytics
 
 The three workspace-level routes are implemented and cut over: the totals across the top of the page, the per-project split, and the three charts. The project-scoped copies of all three are a separate set of views and are not migrated yet.
