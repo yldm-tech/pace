@@ -1437,6 +1437,24 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the two nightly sweeps
+
+`delete_old_s3_link` and `archive_and_close_old_issues` now run on the Go worker. Both are daily jobs the Go beat already schedules.
+
+**An expired export loses its link, not its history.** The spreadsheet goes out of the bucket and the row keeps everything but its url — so the history still says an export was made and what it was called; it just no longer offers a way to fetch it.
+
+**Archiving and closing share a schedule and nothing else.** One takes work items that have been finished and left alone for as long as their project asks; the other takes ones still open and moves them into the project's default state. A work item is only eligible when nothing it belongs to is still running.
+
+Three things about that eligibility are worth knowing, and all three come from Django joining the links rather than asking about them one at a time:
+
+- **One finished module is enough.** The rule is "it is in none of these, or it is in one that has finished", not "every one it is in has finished". A work item in one module past its target date and another still running is archived.
+- **A work item in three finished modules gets three activity rows.** The queryset is not made distinct, so it contributes one entry per matching link. The row itself is only written once; the history is what shows the repetition. Reproduced rather than corrected.
+- **Having no intake row counts as decided**, the same as being accepted, declined or marked duplicate.
+
+**A project with no default state closes its work items into whatever cancelled state comes first anywhere in the installation.** The lookup is scoped to neither the project nor the workspace. Reproduced rather than corrected: correcting it would move work items into a state this port chose, which is a different outcome rather than a fixed one.
+
+One deliberate difference: an object the bucket will not remove is logged and the sweep carries on. Django lets that raise out of the loop, which leaves every later expired link in place.
+
 ## Migrated task: the work item link crawler
 
 `crawl_work_item_link_title` now runs on the Go worker. It goes and looks at a link somebody attached to a work item so the list can show its title rather than its address, and it keeps the site's icon beside it.

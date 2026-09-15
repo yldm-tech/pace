@@ -193,6 +193,11 @@ func (store *Store) StatObject(ctx context.Context, objectName string) (*ObjectM
 	}, nil
 }
 
+// RemoveObject takes an object out of the bucket. The exporter sweep uses it on the spreadsheets whose links have expired.
+func (store *Store) RemoveObject(ctx context.Context, objectName string) error {
+	return store.client.RemoveObject(ctx, store.bucket, objectName, minio.RemoveObjectOptions{})
+}
+
 // CopyObject is copy_object: the bucket copies the bytes from one key to another without them passing through here.
 func (store *Store) CopyObject(ctx context.Context, sourceKey, destinationKey string) error {
 	_, err := store.client.CopyObject(ctx,
