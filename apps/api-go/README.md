@@ -1413,6 +1413,22 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the complex filter backend
+
+`internal/complexfilters` is the JSON filter tree the two cross-project work item lists accept — `?filters={...}`, nested `and`, `or` and `not` around leaf objects of field lookups. The package parses, validates and evaluates it into the same Q tree Django builds. Nothing calls it yet; the two lists that will are the next piece.
+
+It was built against a truth table generated from the real backend rather than from a reading of it, and the table found five things that reading would not have:
+
+**A JSON list on an `__in` filter keeps only its last item.** The leaf is written into a QueryDict with `setlist` and then read back with `get`, which takes the last value. So `{"priority__in": ["high", "urgent"]}` filters on urgent alone, while `{"priority__in": "high,urgent"}` — the same thing as a comma-separated string — filters on both.
+
+**A capitalised operator silently filters nothing.** The structure check lowercases the key before deciding it is an operator, and the evaluator does not, so `{"OR": [...]}` passes every check and is then read as a leaf where no field matches.
+
+**`"1"` and `"0"` are not booleans.** The boolean widget's table maps `"True"`, `"true"` and `"2"` to true and `"False"`, `"false"` and `"3"` to false; everything else, `"1"` and `"0"` included, becomes null. For `is_draft` that writes `is_draft IS NULL`; for `is_archived`, which runs through a method, it writes no condition at all.
+
+**The two range filters are not the same filter.** `start_date__range` and `target_date__range` insist on exactly two dates; `created_at__range` and `updated_at__range` take however many they are given, including one or three.
+
+**An empty Q combines away rather than wrapping.** That is why `{"or": [x]}` comes back as an AND of one thing rather than an OR, and it is visible in the SQL.
+
 ## Migrated module: the project advance analytics
 
 The three project-scoped routes are implemented and cut over. They read the same filters as the workspace ones and the same chart builder, and then differ in ways worth knowing.

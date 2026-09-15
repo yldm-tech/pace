@@ -146,6 +146,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the complex filter fixture matches Python
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_complex_filter_fixture.py > /tmp/complex_filters.tsv
+          if ! diff -u ../api-go/internal/complexfilters/testdata/filters.tsv /tmp/complex_filters.tsv; then
+            echo "::error::apps/api-go/internal/complexfilters/testdata/filters.tsv is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_complex_filter_fixture.py > ../api-go/internal/complexfilters/testdata/filters.tsv"
+            exit 1
+          fi
+
       - name: Verify the sort data fixture matches Python
         working-directory: apps/api
         run: |
