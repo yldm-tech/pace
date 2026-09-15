@@ -1405,6 +1405,18 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: workspace assets
+
+The workspace half of the v2 asset API is implemented and cut over: `POST` on `assets/v2/workspaces/<slug>/`, `GET`, `PATCH` and `DELETE` on `<uuid>/`, and the `check/`, `download/`, `restore/` and `static/` routes. The project half and `duplicate-assets/` are still Django's.
+
+An upload names the **entity** it belongs to, and the entity decides which column its identifier is written to — a workspace logo writes `workspace_id`, a page description writes `page_id`, and the two draft entities are accepted and write no column at all, so their identifier is dropped. This endpoint holds every upload to an **image** however it names itself, so an `ISSUE_ATTACHMENT` reserved here cannot be a pdf while the same entity reserved through the project route can. A workspace logo is the one entity with a role of its own: only a workspace admin may reserve one, whatever the route's permission allows.
+
+The `PATCH` does more than mark the bytes present: it **moves the asset onto its entity**. A workspace logo or a project cover replaces whatever was there, the one it replaces is marked deleted, and the url the entity used to carry is cleared — so an uploaded image always wins over a linked one. Only those two entities have that step; everything else is just marked uploaded.
+
+`static/<uuid>/` is the route every avatar and logo url points at, and the one asset route with **no authentication at all**. It serves only the four entities a person or a workspace wears, which is what keeps a work item's attachment off an unauthenticated route, and a type a browser would execute is served as an attachment rather than inline. It signs without a filename, so the browser keeps the name the object has in the bucket.
+
+Two smaller shapes: `check/` answers `200` with `false` rather than a `404` when the asset is not there, and `restore/` reads through the manager that shows deleted rows — the only route here that does. The three detail routes are authorised at the **workspace** level, so an asset bound to a project needs a membership of that project as well, or a workspace guest could reach a project they are not in.
+
 ## Migrated module: workspace quick links
 
 The workspace quick link list, create, retrieve, partial-update, and delete
