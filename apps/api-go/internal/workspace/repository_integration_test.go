@@ -177,4 +177,32 @@ func TestWorkspaceModelsAgainstDjangoSchema(t *testing.T) {
 	if seeded != int64(len(workspaceHomePreferenceKeys)) {
 		t.Fatalf("home preference count = %d", seeded)
 	}
+
+	linkID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	linkTitle := "Go Quick Link " + suffix
+	link := WorkspaceUserLink{
+		ID: linkID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		WorkspaceID: workspace.ID, OwnerID: user.ID, Title: &linkTitle,
+		URL: "http://example.com/" + suffix, Metadata: auth.JSONValue([]byte(`{"icon":"book"}`)),
+	}
+	if err := transaction.Create(&link).Error; err != nil {
+		t.Fatalf("create quick link through Django schema: %v", err)
+	}
+	serializedLink := quickLinkJSON(link)
+	if serializedLink["url"] != link.URL || serializedLink["owner"] != user.ID {
+		t.Fatalf("serialized quick link = %#v", serializedLink)
+	}
+	if err := transaction.Model(&WorkspaceUserLink{}).Where("id = ?", link.ID).Updates(map[string]any{
+		"title": "Updated " + linkTitle, "updated_at": now, "updated_by_id": user.ID,
+	}).Error; err != nil {
+		t.Fatalf("update quick link through Django schema: %v", err)
+	}
+	if err := transaction.Model(&WorkspaceUserLink{}).Where("id = ?", link.ID).Updates(map[string]any{
+		"deleted_at": now, "updated_at": now, "updated_by_id": user.ID,
+	}).Error; err != nil {
+		t.Fatalf("soft-delete quick link through Django schema: %v", err)
+	}
 }

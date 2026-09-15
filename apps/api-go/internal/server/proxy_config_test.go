@@ -172,6 +172,32 @@ func TestCommunityProxyCutsOverOnlyWorkspaceHomePreferencesRoutes(t *testing.T) 
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyWorkspaceQuickLinkRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_quick_links")
+	for _, route := range []string{
+		"/api/workspaces/acme/quick-links/",
+		"/api/workspaces/acme/quick-links/01234567-89ab-cdef-0123-456789abcdef/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace Quick Link route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		"/api/workspaces/acme/quick-links/01234567-89ab-cdef-0123-456789abcdef/history/",
+		"/api/workspaces/acme/home-preferences/",
+		"/api/workspaces/acme/stickies/",
+		"/api/workspaces/acme/recent-visits/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_quick_links api-go:8000") {
+		t.Error("community proxy is missing the Workspace Quick Links reverse proxy")
+	}
+}
+
 func communityProxyConfig(t *testing.T) string {
 	t.Helper()
 	configPath := filepath.Join("..", "..", "..", "proxy", "Caddyfile.ce")
