@@ -840,6 +840,25 @@ func TestCommunityProxyCutsOverTheWorkspaceAggregates(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_api_tokens")
+	for _, route := range []string{
+		"/api/users/api-tokens/",
+		"/api/users/api-tokens/11111111-2222-3333-4444-555555555555/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("API token route %q is not cut over to Go", route)
+		}
+	}
+	if matcher.MatchString("/api/users/me/") {
+		t.Error("the person's own route would be cut over by the token matcher")
+	}
+	if !strings.Contains(config, "reverse_proxy @go_api_tokens api-go:8000") {
+		t.Error("community proxy is missing the API token reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheStickies(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_stickies")
