@@ -1,165 +1,68 @@
-<br /><br />
+# Pace
 
-<p align="center">
-<a href="https://plane.so">
-  <img src="https://media.docs.plane.so/logo/plane_github_readme.png" alt="Plane Logo" width="400">
-</a>
-</p>
-<p align="center"><b>Modern project management for all teams</b></p>
+Pace is an open-source project management platform for tracking work items, running cycles, and managing product roadmaps without the overhead of managing the tool itself.
 
-<p align="center">
-    <a href="https://plane.so/"><b>Website</b></a> •
-    <a href="https://forum.plane.so"><b>Forum</b></a> •
-    <a href="https://x.com/planepowers"><b>X</b></a> •
-    <a href="https://docs.plane.so/"><b>Documentation</b></a>
-</p>
+This repository is the Pace application and its gradual backend migration. The web application remains compatible with the existing product while API modules move from Django to Go (Gin + GORM) against the same PostgreSQL schema.
 
-<p>
-    <a href="https://app.plane.so/#gh-light-mode-only" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-top.webp"
-        alt="Plane Screens"
-        width="100%"
-      />
-    </a>
-</p>
+## Features
 
-Meet [Plane](https://plane.so/), an open-source project management tool to track issues, run ~sprints~ cycles, and manage product roadmaps without the chaos of managing the tool itself. 🧘‍♀️
+- **Work items** — create, organize, and track tasks with rich text, files, and relationships.
+- **Cycles** — plan iterations and monitor progress with cycle views and burn-down charts.
+- **Modules** — break large projects into smaller, manageable units.
+- **Views** — save and share filters for the issues that matter most.
+- **Pages** — capture ideas and turn notes into actionable work.
+- **Analytics** — understand project health and remove blockers with real-time insights.
 
-> Plane is evolving every day. Your suggestions, ideas, and reported bugs help us immensely. Do not hesitate to join in the conversation on [Forum](https://forum.plane.so) or raise a GitHub issue. We read everything and respond to most.
+## Installation
 
-## 🚀 Installation
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for local development instructions. The existing Docker and Kubernetes deployment configuration is still supported while the migration is in progress.
 
-Getting started with Plane is simple. Choose the setup that works best for you:
+For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
 
-- **Plane Cloud**
-  Sign up for a free account on [Plane Cloud](https://app.plane.so)—it's the fastest way to get up and running without worrying about infrastructure.
-
-- **Self-host Plane**
-  Prefer full control over your data and infrastructure? Install and run Plane on your own servers. Follow our detailed [deployment guides](https://developers.plane.so/self-hosting/overview) to get started.
-
-| Installation methods | Docs link                                                                                                                                                                               |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Docker               | [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://developers.plane.so/self-hosting/methods/docker-compose)         |
-| Kubernetes           | [![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)](https://developers.plane.so/self-hosting/methods/kubernetes) |
-
-`Instance admins` can configure instance settings with [God mode](https://developers.plane.so/self-hosting/govern/instance-admin).
-
-## 🌟 Features
-
-- **Work Items**
-  Efficiently create and manage tasks with a robust rich text editor that supports file uploads. Enhance organization and tracking by adding sub-properties and referencing related issues.
-
-- **Cycles**
-  Maintain your team’s momentum with Cycles. Track progress effortlessly using burn-down charts and other insightful tools.
-
-- **Modules**
-  Simplify complex projects by dividing them into smaller, manageable modules.
-
-- **Views**
-  Customize your workflow by creating filters to display only the most relevant issues. Save and share these views with ease.
-
-- **Pages**
-  Capture and organize ideas using Plane Pages, complete with AI capabilities and a rich text editor. Format text, insert images, add hyperlinks, or convert your notes into actionable items.
-
-- **Analytics**
-  Access real-time insights across all your Plane data. Visualize trends, remove blockers, and keep your projects moving forward.
-
-## 🛠️ Local development
-
-See [CONTRIBUTING](./CONTRIBUTING.md)
-
-## ⚙️ Built with
+## Built with
 
 [![React Router](https://img.shields.io/badge/-React%20Router-CA4245?logo=react-router&style=for-the-badge&logoColor=white)](https://reactrouter.com/)
 [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green)](https://www.djangoproject.com/)
+[![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
+[![Gin](https://img.shields.io/badge/Gin-008ECF?style=for-the-badge&logo=gin&logoColor=white)](https://gin-gonic.com/)
+[![GORM](https://img.shields.io/badge/GORM-1F6FEB?style=for-the-badge&logo=go&logoColor=white)](https://gorm.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Node JS](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white)](https://nodejs.org/en)
 
-## 📸 Screenshots
+## Backend migration status
 
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-work-items.webp"
-        alt="Plane Views"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-cycles.webp"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-modules.webp"
-        alt="Plane Cycles and Modules"
-        width="100%"
-      />
-    </a>
-  </p>
-  <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-views.webp"
-        alt="Plane Analytics"
-        width="100%"
-      />
-    </a>
-  </p>
-   <p>
-    <a href="https://plane.so" target="_blank">
-      <img
-        src="https://media.docs.plane.so/GitHub-readme/github-analytics.webp"
-        alt="Plane Pages"
-        width="100%"
-      />
-    </a>
-  </p>
-</p>
+The migration is intentionally incremental. Django remains the behavioral reference and continues to serve every module that has not passed contract and integration verification in Go.
 
-## 📝 Documentation
+| Stage                                             | Scope                                                   | Status   |
+| ------------------------------------------------- | ------------------------------------------------------- | -------- |
+| [PR #1](https://github.com/yldm-tech/pace/pull/1) | Pace brand update                                       | Complete |
+| [PR #2](https://github.com/yldm-tech/pace/pull/2) | Go API foundation (Gin, GORM, PostgreSQL, proxy wiring) | Complete |
+| Authentication (`/auth/`)                         | First serial business-module migration                  | Next     |
+| User, profile, and account APIs                   | Second serial business-module migration                 | Planned  |
+| Core Workspace APIs                               | Third serial business-module migration                  | Planned  |
+| Workspace Themes                                  | Fourth serial business-module migration                 | Planned  |
 
-Explore Plane's [product documentation](https://docs.plane.so/) and [developer documentation](https://developers.plane.so/) to learn about features, setup, and usage.
+Migration rules:
 
-## ❤️ Community
+1. One business module gets one independent branch and pull request.
+2. Only one migration pull request is open at a time; the next module starts after the current module is merged into `main`.
+3. Django behavior is the compatibility baseline for URLs, status codes, JSON, permissions, sessions, cookies, and database side effects.
+4. A module is cut over only after contract and integration tests pass against the existing Django schema.
+5. Unmigrated routes continue to be served by Django; migration work does not require a flag day.
 
-Join the Plane community on [GitHub Discussions](https://github.com/orgs/makeplane/discussions) and our [Forum](https://forum.plane.so). We follow a [Code of conduct](https://github.com/makeplane/plane/blob/master/CODE_OF_CONDUCT.md) in all our community channels.
+### Verify the Go API
 
-Feel free to ask questions, report bugs, participate in discussions, share ideas, request features, or showcase your projects. We’d love to hear from you!
+```bash
+cd apps/api-go
+go test -count=1 ./...
+go test -race -count=1 ./...
+go vet ./...
+```
 
-## 🛡️ Security
+## Community and contributing
 
-If you discover a security vulnerability in Plane, please report it responsibly instead of opening a public issue. We take all legitimate reports seriously and will investigate them promptly. See [Security policy](https://github.com/makeplane/plane/blob/master/SECURITY.md) for more info.
-
-To disclose any security issues, please email us at security@plane.so.
-
-## 🤝 Contributing
-
-There are many ways you can contribute to Plane:
-
-- Report [bugs](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%F0%9F%90%9Bbug&projects=&template=--bug-report.yaml&title=%5Bbug%5D%3A+) or submit [feature requests](https://github.com/makeplane/plane/issues/new?assignees=srinivaspendem%2Cpushya22&labels=%E2%9C%A8feature&projects=&template=--feature-request.yaml&title=%5Bfeature%5D%3A+).
-- Review the [documentation](https://docs.plane.so/) and submit [pull requests](https://github.com/makeplane/docs) to improve it—whether it's fixing typos or adding new content.
-- Talk or write about Plane or any other ecosystem integration and [let us know](https://forum.plane.so)!
-- Show your support by upvoting [popular feature requests](https://github.com/makeplane/plane/issues).
-
-Please read [CONTRIBUTING.md](https://github.com/makeplane/plane/blob/master/CONTRIBUTING.md) for details on the process for submitting pull requests to us.
-
-### Repo activity
-
-![Plane Repo Activity](https://repobeats.axiom.co/api/embed/2523c6ed2f77c082b7908c33e2ab208981d76c39.svg "Repobeats analytics image")
-
-### We couldn't have done this without you.
-
-<a href="https://github.com/makeplane/plane/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=makeplane/plane" />
-</a>
+Open an issue or pull request in the [Pace repository](https://github.com/yldm-tech/pace). Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before submitting changes. Security issues should be reported privately to the maintainers rather than disclosed in a public issue.
 
 ## License
 
-This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/makeplane/plane/blob/master/LICENSE.txt).
+This project is licensed under the [GNU Affero General Public License v3.0](./LICENSE.txt).
