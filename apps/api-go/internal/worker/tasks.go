@@ -280,7 +280,7 @@ func MigratedTaskNames() []string {
 		ProjectAddUserEmailTask,
 		DeleteAPILogsTask, DeleteEmailNotificationLogsTask, DeletePageVersionsTask,
 		DeleteIssueDescriptionVersionsTask, DeleteWebhookLogsTask, RecentVisitedTask,
-		SoftDeleteRelatedObjectsTask,
+		SoftDeleteRelatedObjectsTask, HardDeleteTask,
 	}
 }
 

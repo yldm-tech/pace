@@ -235,3 +235,109 @@ func TestSoftDeleteCascadeAgainstDjangoSchema(t *testing.T) {
 		t.Fatal("the workspace itself should have been soft deleted")
 	}
 }
+
+// TestHardDeleteAgainstDjangoSchema proves the collector cascade satisfies the
+// real foreign keys: Django creates them without ON DELETE actions, so a delete
+// that forgets a child row fails on the constraint.
+func TestHardDeleteAgainstDjangoSchema(t *testing.T) {
+	databaseURL := os.Getenv("WORKER_TEST_DATABASE_URL")
+	if databaseURL == "" {
+		t.Skip("set WORKER_TEST_DATABASE_URL to a disposable database with the Django schema")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+	database, err := gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("open integration database: %v", err)
+	}
+	sqlDatabase, err := database.DB()
+	if err != nil {
+		t.Fatalf("access integration database: %v", err)
+	}
+	t.Cleanup(func() { _ = sqlDatabase.Close() })
+
+	transaction := database.WithContext(ctx).Begin()
+	if transaction.Error != nil {
+		t.Fatalf("begin integration transaction: %v", transaction.Error)
+	}
+	t.Cleanup(func() { _ = transaction.Rollback().Error })
+
+	now := time.Date(2026, time.September, 15, 12, 0, 0, 0, time.UTC)
+	tasks, err := NewDeletionTasks(transaction, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tasks.clock = func() time.Time { return now }
+
+	suffix := fmt.Sprintf("%d", time.Now().UnixNano())
+	userID, err := newTaskUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Exec(
+		`INSERT INTO users (id, password, is_superuser, username, email, is_staff, is_active, date_joined,
+			created_at, updated_at, is_bot, is_password_autoset, is_email_verified, display_name,
+			first_name, last_name, mobile_number, avatar, cover_image, last_location, created_location,
+			is_managed, is_onboarded, is_password_expired, token, user_timezone, masked_at, is_active_mobile, is_active_desktop)
+		 VALUES (?, '!', FALSE, ?, ?, FALSE, TRUE, ?, ?, ?, FALSE, TRUE, FALSE, ?, '', '', NULL, '', NULL, '', '',
+			FALSE, FALSE, FALSE, '', 'UTC', NULL, TRUE, TRUE)`,
+		userID, "harddel-"+suffix, "harddel-"+suffix+"@pace.invalid", now, now, now, "harddel",
+	).Error
+	if err != nil {
+		t.Skipf("user columns differ from this fixture: %v", err)
+	}
+
+	// A workspace soft-deleted well past the window, with a theme hanging off
+	// it. The theme's foreign key has no ON DELETE action, so deleting the
+	// workspace without collecting the theme first would fail.
+	workspaceID, err := newTaskUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	expired := now.AddDate(0, 0, -HardDeleteAfterDays-5)
+	err = transaction.Exec(
+		`INSERT INTO workspaces (id, created_at, updated_at, deleted_at, created_by_id, name, owner_id, slug, timezone, background_color)
+		 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'UTC', '#3f76ff')`,
+		workspaceID, now, now, expired, userID, "Hard WS "+suffix, userID, "harddel-"+suffix,
+	).Error
+	if err != nil {
+		t.Fatalf("insert workspace: %v", err)
+	}
+	themeID, err := newTaskUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Exec(
+		`INSERT INTO workspace_themes (id, created_at, updated_at, created_by_id, workspace_id, name, actor_id, colors)
+		 VALUES (?, ?, ?, ?, ?, ?, ?, '{}')`,
+		themeID, now, now, userID, workspaceID, "Hard Theme", userID,
+	).Error
+	if err != nil {
+		t.Fatalf("insert workspace theme: %v", err)
+	}
+
+	deleted, err := tasks.hardDeleteModel(ctx, "db.workspace", now.AddDate(0, 0, -HardDeleteAfterDays))
+	if err != nil {
+		t.Fatalf("hard delete the workspace: %v", err)
+	}
+	if deleted < 2 {
+		t.Fatalf("hard delete removed %d rows, want the workspace and its theme", deleted)
+	}
+	// The constraint is deferred, so force it to be checked now rather than at
+	// a commit this test never reaches.
+	if err := transaction.Exec("SET CONSTRAINTS ALL IMMEDIATE").Error; err != nil {
+		t.Fatalf("a foreign key was left dangling by the cascade: %v", err)
+	}
+	for _, check := range []struct {
+		table string
+		id    string
+	}{{table: "workspaces", id: workspaceID}, {table: "workspace_themes", id: themeID}} {
+		var count int64
+		if err := transaction.Table(check.table).Where("id = ?", check.id).Count(&count).Error; err != nil {
+			t.Fatalf("count %s: %v", check.table, err)
+		}
+		if count != 0 {
+			t.Errorf("%s row survived the hard delete", check.table)
+		}
+	}
+}
