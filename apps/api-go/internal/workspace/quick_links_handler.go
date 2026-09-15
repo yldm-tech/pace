@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/validate"
 	"gorm.io/gorm"
 )
@@ -32,7 +33,7 @@ func (handler *Handler) quickLinkList(c *gin.Context, user *auth.User) {
 	for _, link := range links {
 		response = append(response, quickLinkJSON(link))
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) quickLinkCreate(c *gin.Context, user *auth.User) {
@@ -87,7 +88,7 @@ func (handler *Handler) quickLinkCreate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, quickLinkJSON(link))
+	drf.Respond(c, http.StatusCreated, quickLinkJSON(link))
 }
 
 func (handler *Handler) quickLinkRetrieve(c *gin.Context, user *auth.User) {
@@ -98,7 +99,7 @@ func (handler *Handler) quickLinkRetrieve(c *gin.Context, user *auth.User) {
 	if !ok {
 		return
 	}
-	c.JSON(http.StatusOK, quickLinkJSON(link))
+	drf.Respond(c, http.StatusOK, quickLinkJSON(link))
 }
 
 func (handler *Handler) quickLinkPatch(c *gin.Context, user *auth.User) {
@@ -166,7 +167,7 @@ func (handler *Handler) quickLinkPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, quickLinkJSON(link))
+	drf.Respond(c, http.StatusOK, quickLinkJSON(link))
 }
 
 func (handler *Handler) quickLinkDelete(c *gin.Context, user *auth.User) {

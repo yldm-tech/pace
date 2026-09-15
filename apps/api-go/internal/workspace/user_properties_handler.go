@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -35,7 +36,7 @@ func (handler *Handler) userPropertiesGet(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, userPropertiesJSON(properties))
+	drf.Respond(c, http.StatusOK, userPropertiesJSON(properties))
 }
 
 func (handler *Handler) userPropertiesPatch(c *gin.Context, user *auth.User) {
@@ -97,7 +98,7 @@ func (handler *Handler) userPropertiesPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, userPropertiesJSON(properties))
+	drf.Respond(c, http.StatusOK, userPropertiesJSON(properties))
 }
 
 func (handler *Handler) requireWorkspaceViewer(c *gin.Context, user *auth.User) bool {

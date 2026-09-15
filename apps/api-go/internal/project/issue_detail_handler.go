@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/htmlsanitizer"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -72,7 +73,7 @@ func (handler *Handler) issueRetrieve(c *gin.Context, user *auth.User) {
 			return
 		}
 	}
-	c.JSON(http.StatusOK, issueDetailJSON(row, true))
+	drf.Respond(c, http.StatusOK, issueDetailJSON(row, true))
 }
 
 func (handler *Handler) issuePartialUpdate(c *gin.Context, user *auth.User) {

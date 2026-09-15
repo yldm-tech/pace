@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -65,7 +66,7 @@ func (handler *Handler) issueReactionList(c *gin.Context, user *auth.User) {
 		}
 		response = append(response, data)
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) issueReactionCreate(c *gin.Context, user *auth.User) {
@@ -146,7 +147,7 @@ func (handler *Handler) issueReactionCreate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, data)
+	drf.Respond(c, http.StatusCreated, data)
 }
 
 func (handler *Handler) issueReactionDelete(c *gin.Context, user *auth.User) {
@@ -230,7 +231,7 @@ func (handler *Handler) issueSubscriberList(c *gin.Context, user *auth.User) {
 		}
 		response = append(response, data)
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) issueSubscriberCreate(c *gin.Context, user *auth.User) {
@@ -267,7 +268,7 @@ func (handler *Handler) issueSubscriberCreate(c *gin.Context, user *auth.User) {
 	if !ok {
 		return
 	}
-	c.JSON(http.StatusCreated, issueSubscriberJSON(subscriber))
+	drf.Respond(c, http.StatusCreated, issueSubscriberJSON(subscriber))
 }
 
 func (handler *Handler) issueSubscriberDelete(c *gin.Context, user *auth.User) {
@@ -300,7 +301,7 @@ func (handler *Handler) issueSubscribe(c *gin.Context, user *auth.User) {
 	if !ok {
 		return
 	}
-	c.JSON(http.StatusCreated, issueSubscriberJSON(subscriber))
+	drf.Respond(c, http.StatusCreated, issueSubscriberJSON(subscriber))
 }
 
 func (handler *Handler) issueUnsubscribe(c *gin.Context, user *auth.User) {
@@ -322,7 +323,7 @@ func (handler *Handler) issueSubscriptionStatus(c *gin.Context, user *auth.User)
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"subscribed": count > 0})
+	drf.Respond(c, http.StatusOK, gin.H{"subscribed": count > 0})
 }
 
 func (handler *Handler) createSubscriber(c *gin.Context, slug, projectID, issueID, subscriberID, actorID string) (IssueSubscriber, bool) {

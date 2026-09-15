@@ -91,6 +91,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the DRF datetime fixture matches Django
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_drf_time_fixture.py > /tmp/iso8601.tsv
+          if ! diff -u ../api-go/internal/drf/testdata/iso8601.tsv /tmp/iso8601.tsv; then
+            echo "::error::apps/api-go/internal/drf/testdata/iso8601.tsv is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_drf_time_fixture.py > ../api-go/internal/drf/testdata/iso8601.tsv"
+            exit 1
+          fi
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:

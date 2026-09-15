@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -59,7 +60,7 @@ func (handler *Handler) labelList(c *gin.Context, user *auth.User) {
 	for _, label := range labels {
 		response = append(response, labelJSON(label))
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) labelRetrieve(c *gin.Context, user *auth.User) {
@@ -75,7 +76,7 @@ func (handler *Handler) labelRetrieve(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, labelJSON(label))
+	drf.Respond(c, http.StatusOK, labelJSON(label))
 }
 
 func (handler *Handler) labelCreate(c *gin.Context, user *auth.User) {
@@ -139,7 +140,7 @@ func (handler *Handler) labelCreate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, labelJSON(label))
+	drf.Respond(c, http.StatusCreated, labelJSON(label))
 }
 
 func (handler *Handler) labelUpdate(c *gin.Context, user *auth.User) {
@@ -229,7 +230,7 @@ func (handler *Handler) labelUpdate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, labelJSON(label))
+	drf.Respond(c, http.StatusOK, labelJSON(label))
 }
 
 func (handler *Handler) labelDelete(c *gin.Context, user *auth.User) {
@@ -333,7 +334,7 @@ func (handler *Handler) labelBulkCreate(c *gin.Context, user *auth.User) {
 	for _, label := range labels {
 		response = append(response, labelJSON(label))
 	}
-	c.JSON(http.StatusCreated, gin.H{"labels": response})
+	drf.Respond(c, http.StatusCreated, gin.H{"labels": response})
 }
 
 // requireWorkspaceMembership is ProjectBasePermission's safe method branch.

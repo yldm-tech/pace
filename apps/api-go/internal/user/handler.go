@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -70,20 +71,20 @@ func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.H
 func (handler *Handler) session(c *gin.Context) {
 	user, _, err := handler.sessions.Authenticate(c.Request.Context(), c.Request, c.Writer)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"is_authenticated": false})
+		drf.Respond(c, http.StatusOK, gin.H{"is_authenticated": false})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"is_authenticated": true, "user": userMe(user)})
+	drf.Respond(c, http.StatusOK, gin.H{"is_authenticated": true, "user": userMe(user)})
 }
 
 func (handler *Handler) me(c *gin.Context, user *auth.User) {
 	c.Header("Cache-Control", "private, max-age=12")
 	c.Header("Vary", "Cookie")
-	c.JSON(http.StatusOK, userMe(user))
+	drf.Respond(c, http.StatusOK, userMe(user))
 }
 
 func (handler *Handler) liteMe(c *gin.Context, user *auth.User) {
-	c.JSON(http.StatusOK, gin.H{
+	drf.Respond(c, http.StatusOK, gin.H{
 		"id": user.ID, "first_name": user.FirstName, "last_name": user.LastName, "email": user.Email,
 		"avatar": user.Avatar, "avatar_url": avatarURL(user), "display_name": user.DisplayName,
 	})
@@ -124,7 +125,7 @@ func (handler *Handler) settingsEndpoint(c *gin.Context, user *auth.User) {
 	}
 	c.Header("Cache-Control", "private, max-age=12")
 	c.Header("Vary", "Cookie")
-	c.JSON(http.StatusOK, gin.H{"id": user.ID, "email": user.Email, "workspace": response})
+	drf.Respond(c, http.StatusOK, gin.H{"id": user.ID, "email": user.Email, "workspace": response})
 }
 
 func (handler *Handler) updateMe(c *gin.Context, user *auth.User) {
@@ -158,7 +159,7 @@ func (handler *Handler) updateMe(c *gin.Context, user *auth.User) {
 			user = refreshed
 		}
 	}
-	c.JSON(http.StatusOK, fullUser(user))
+	drf.Respond(c, http.StatusOK, fullUser(user))
 }
 
 func (handler *Handler) profileGet(c *gin.Context, user *auth.User) {
@@ -169,7 +170,7 @@ func (handler *Handler) profileGet(c *gin.Context, user *auth.User) {
 	}
 	c.Header("Cache-Control", "private, max-age=12")
 	c.Header("Vary", "Cookie")
-	c.JSON(http.StatusOK, profileJSON(profile))
+	drf.Respond(c, http.StatusOK, profileJSON(profile))
 }
 
 func (handler *Handler) profilePatch(c *gin.Context, user *auth.User) {
@@ -209,7 +210,7 @@ func (handler *Handler) profilePatch(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, profileJSON(profile))
+	drf.Respond(c, http.StatusOK, profileJSON(profile))
 }
 
 func (handler *Handler) accountsGet(c *gin.Context, user *auth.User) {
@@ -222,7 +223,7 @@ func (handler *Handler) accountsGet(c *gin.Context, user *auth.User) {
 	for _, account := range accounts {
 		result = append(result, accountJSON(account))
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) accountGet(c *gin.Context, user *auth.User) {
@@ -231,7 +232,7 @@ func (handler *Handler) accountGet(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, accountJSON(account))
+	drf.Respond(c, http.StatusOK, accountJSON(account))
 }
 
 func (handler *Handler) accountDelete(c *gin.Context, user *auth.User) {
@@ -254,7 +255,7 @@ func (handler *Handler) instanceAdmin(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"is_instance_admin": count > 0})
+	drf.Respond(c, http.StatusOK, gin.H{"is_instance_admin": count > 0})
 }
 
 func (handler *Handler) onboard(c *gin.Context, user *auth.User) {
@@ -269,7 +270,7 @@ func (handler *Handler) onboard(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successfully"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Updated successfully"})
 }
 
 func (handler *Handler) tourCompleted(c *gin.Context, user *auth.User) {
@@ -284,7 +285,7 @@ func (handler *Handler) tourCompleted(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successfully"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Updated successfully"})
 }
 
 func (handler *Handler) generateEmailCode(c *gin.Context, user *auth.User) {
@@ -346,7 +347,7 @@ func (handler *Handler) generateEmailCode(c *gin.Context, user *auth.User) {
 			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Verification code sent to email"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Verification code sent to email"})
 }
 
 func (handler *Handler) updateEmail(c *gin.Context, user *auth.User) {
@@ -413,7 +414,7 @@ func (handler *Handler) updateEmail(c *gin.Context, user *auth.User) {
 		refreshed = user
 		refreshed.Email = email
 	}
-	c.JSON(http.StatusOK, userMe(refreshed))
+	drf.Respond(c, http.StatusOK, userMe(refreshed))
 }
 
 func (handler *Handler) deactivate(c *gin.Context, user *auth.User) {
