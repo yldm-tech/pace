@@ -443,9 +443,10 @@ func (handler *Handler) publishIssueActivity(c *gin.Context, activity issueActiv
 		"type":             activity.Type,
 		"requested_data":   nullableString(activity.RequestedData),
 		"current_instance": nullableString(activity.CurrentInstance),
-		"issue_id":         activity.IssueID,
-		"actor_id":         activity.ActorID,
-		"project_id":       activity.ProjectID,
+		// The cycle transfer is the one activity that names no issue: the move is about the cycle and the task fans it out over the list it carries. Django sends None there, and an empty string is not the same thing to a task that looks the issue up.
+		"issue_id":   nullableID(activity.IssueID),
+		"actor_id":   activity.ActorID,
+		"project_id": activity.ProjectID,
 		// Django sends the epoch as an integer second count.
 		"epoch":        activity.Epoch.Unix(),
 		"notification": activity.Notification,
@@ -455,6 +456,14 @@ func (handler *Handler) publishIssueActivity(c *gin.Context, activity issueActiv
 		keywords["subscriber"] = false
 	}
 	return handler.tasks.PublishIssueActivity(c.Request.Context(), keywords)
+}
+
+// nullableID renders an unset id as null rather than as the empty string.
+func nullableID(value string) any {
+	if value == "" {
+		return nil
+	}
+	return value
 }
 
 func nullableString(value *string) any {
