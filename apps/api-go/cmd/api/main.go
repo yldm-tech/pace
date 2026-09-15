@@ -63,6 +63,8 @@ func main() {
 		AWSRegion: cfg.Auth.AWSRegion, AWSBucketName: cfg.Auth.AWSBucketName, AWSEndpointURL: cfg.Auth.AWSEndpointURL,
 		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, FileSizeLimit: cfg.Auth.FileSizeLimit,
 		SignedURLExpiration: cfg.Auth.SignedURLExpiration,
+		WebhookAllowedIPs:   cfg.Auth.WebhookAllowedIPs, WebhookAllowedHosts: cfg.Auth.WebhookAllowedHosts,
+		WebhookDisallowedDomains: cfg.Auth.WebhookDisallowedDomains,
 	}
 	// Tasks the Go worker implements go to its own queue; everything else keeps
 	// going to the queue the Python worker consumes. Leaving PACE_WORKER_QUEUE
