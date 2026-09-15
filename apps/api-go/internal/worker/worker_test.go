@@ -232,6 +232,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 		t.Fatal(err)
 	}
 	deletions.Register(consumer)
+	NewVersionTasks(nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true
