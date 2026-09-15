@@ -576,6 +576,39 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalWorkItems(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_work_items")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	issue := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		project + "issues/",
+		project + "issues/" + issue,
+		project + "work-items/",
+		project + "work-items/" + issue,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External work item route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// Everything hanging off a work item is its own route and stays where it was.
+		project + "issues/" + issue + "comments/",
+		project + "issues/" + issue + "issue-attachments/",
+		project + "work-items/" + issue + "attachments/",
+		"/api/v1/workspaces/acme/issues/search/",
+		// The session API's work items are a different application on a different path.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the work item matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_work_items api-go:8000") {
+		t.Error("community proxy is missing the external work item reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalAttachments(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_attachments")

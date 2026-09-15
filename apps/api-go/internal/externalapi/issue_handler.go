@@ -17,7 +17,10 @@ func (handler *Handler) registerIssueRoutes(router gin.IRouter) {
 	// Both spellings carry the same two routes here, unlike the attachments, where each name has a path of its own.
 	for _, name := range []string{"issues/", "work-items/"} {
 		router.GET(base+name, handler.authenticated(handler.issueList))
+		router.POST(base+name, handler.authenticated(handler.issueCreate))
 		router.GET(base+name+":issue/", handler.authenticated(handler.issueRetrieve))
+		router.PATCH(base+name+":issue/", handler.authenticated(handler.issueUpdate))
+		router.DELETE(base+name+":issue/", handler.authenticated(handler.issueDestroy))
 	}
 }
 

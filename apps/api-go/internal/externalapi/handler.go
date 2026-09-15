@@ -40,6 +40,8 @@ type TaskPublisher interface {
 	PublishModelActivity(ctx context.Context, modelName, modelID string, requestedData any, currentInstance *string, actorID, slug, origin string) error
 	PublishWebhookActivity(ctx context.Context, event, verb string, actorID, slug, currentSite, eventID string) error
 	PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error
+	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
+	PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error
 }
 
 func NewHandler(database *gorm.DB, settings Settings) *Handler {
