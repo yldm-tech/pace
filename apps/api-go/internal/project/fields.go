@@ -15,23 +15,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/htmlsanitizer"
+	"github.com/yldm-tech/pace/apps/api-go/internal/projects"
 )
-
-// defaultStates is DEFAULT_STATES from plane/db/models/state.py.
-var defaultStates = []struct {
-	Name     string
-	Color    string
-	Sequence float64
-	Group    string
-	Default  bool
-}{
-	{Name: "Backlog", Color: "#60646C", Sequence: 15000, Group: "backlog", Default: true},
-	{Name: "Todo", Color: "#60646C", Sequence: 25000, Group: "unstarted"},
-	{Name: "In Progress", Color: "#F59E0B", Sequence: 35000, Group: "started"},
-	{Name: "Done", Color: "#46A758", Sequence: 45000, Group: "completed"},
-	{Name: "Cancelled", Color: "#9AA4BC", Sequence: 55000, Group: "cancelled"},
-	{Name: "Triage", Color: "#4E5355", Sequence: 65000, Group: "triage"},
-}
 
 type projectRelation struct {
 	field string
@@ -518,24 +503,14 @@ func newUUID() (string, error) {
 	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", value[0:4], value[4:6], value[6:8], value[8:10], value[10:16]), nil
 }
 
-func emptyJSON() auth.JSONValue { return auth.JSONValue([]byte(`{}`)) }
+func emptyJSON() auth.JSONValue { return projects.EmptyJSON() }
 
-func defaultPropsJSON() auth.JSONValue {
-	return auth.JSONValue([]byte(`{"filters":{"priority":null,"state":null,"state_group":null,"assignees":null,"created_by":null,"labels":null,"start_date":null,"target_date":null,"subscriber":null},"display_filters":{"group_by":null,"order_by":"-created_at","type":null,"sub_issue":true,"show_empty_groups":true,"layout":"list","calendar_date_range":""}}`))
-}
+func defaultPropsJSON() auth.JSONValue { return projects.DefaultPropsJSON() }
 
-func defaultPreferencesJSON() auth.JSONValue {
-	return auth.JSONValue([]byte(`{"pages":{"block_display":true},"navigation":{"default_tab":"work_items","hide_in_more_menu":[]}}`))
-}
+func defaultPreferencesJSON() auth.JSONValue { return projects.DefaultPreferencesJSON() }
 
-func defaultFiltersJSON() auth.JSONValue {
-	return auth.JSONValue([]byte(`{"priority":null,"state":null,"state_group":null,"assignees":null,"created_by":null,"labels":null,"start_date":null,"target_date":null,"subscriber":null}`))
-}
+func defaultFiltersJSON() auth.JSONValue { return projects.DefaultFiltersJSON() }
 
-func defaultDisplayFiltersJSON() auth.JSONValue {
-	return auth.JSONValue([]byte(`{"group_by":null,"order_by":"-created_at","type":null,"sub_issue":true,"show_empty_groups":true,"layout":"list","calendar_date_range":""}`))
-}
+func defaultDisplayFiltersJSON() auth.JSONValue { return projects.DefaultDisplayFiltersJSON() }
 
-func defaultDisplayPropertiesJSON() auth.JSONValue {
-	return auth.JSONValue([]byte(`{"assignee":true,"attachment_count":true,"created_on":true,"due_date":true,"estimate":true,"key":true,"labels":true,"link":true,"priority":true,"start_date":true,"state":true,"sub_issue_count":true,"updated_on":true}`))
-}
+func defaultDisplayPropertiesJSON() auth.JSONValue { return projects.DefaultDisplayPropertiesJSON() }

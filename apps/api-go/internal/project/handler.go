@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/projects"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
 	"net/netip"
@@ -556,63 +557,14 @@ func (handler *Handler) projectRowByID(ctx context.Context, slug, projectID, use
 	return rows[0], true, nil
 }
 
-// addProjectAdmin reproduces ProjectMember.save, which seeds a
-// ProjectUserProperty ordered ahead of the member's existing projects.
+// addProjectAdmin reproduces ProjectMember.save, which seeds a ProjectUserProperty ordered ahead of the member's existing projects. It lives in internal/projects because the external API makes projects through the same model.
 func (handler *Handler) addProjectAdmin(tx *gorm.DB, project Project, memberID, actorID string, now time.Time) error {
-	var minimum *float64
-	err := tx.Table("project_user_properties").
-		Where("workspace_id = ? AND user_id = ? AND deleted_at IS NULL", project.WorkspaceID, memberID).
-		Select("MIN(sort_order)").Scan(&minimum).Error
-	if err != nil {
-		return err
-	}
-	sortOrder := 65535.0
-	if minimum != nil {
-		sortOrder = *minimum - 10000
-	}
-	propertyID, err := newUUID()
-	if err != nil {
-		return err
-	}
-	property := ProjectUserProperty{
-		ID: propertyID, CreatedAt: now, UpdatedAt: now, CreatedByID: &actorID,
-		ProjectID: project.ID, WorkspaceID: project.WorkspaceID, UserID: memberID,
-		Filters: defaultFiltersJSON(), DisplayFilters: defaultDisplayFiltersJSON(),
-		DisplayProperties: defaultDisplayPropertiesJSON(), RichFilters: emptyJSON(),
-		Preferences: defaultPreferencesJSON(), SortOrder: sortOrder,
-	}
-	if err := tx.Create(&property).Error; err != nil {
-		return err
-	}
-	memberRowID, err := newUUID()
-	if err != nil {
-		return err
-	}
-	return tx.Create(&ProjectMember{
-		ID: memberRowID, CreatedAt: now, UpdatedAt: now, CreatedByID: &actorID,
-		ProjectID: project.ID, WorkspaceID: project.WorkspaceID, MemberID: memberID,
-		Role: roleAdmin, ViewProps: defaultPropsJSON(), DefaultProps: defaultPropsJSON(),
-		Preferences: defaultPreferencesJSON(), SortOrder: 65535, IsActive: true,
-	}).Error
+	return projects.AddMember(tx, project.ID, project.WorkspaceID, memberID, actorID, roleAdmin, now, newUUID)
 }
 
-// createDefaultStates bulk-inserts DEFAULT_STATES. Django uses bulk_create, so
-// State.save never runs and slug stays empty while sequence keeps the literal.
+// createDefaultStates bulk-inserts DEFAULT_STATES.
 func (handler *Handler) createDefaultStates(tx *gorm.DB, project Project, actorID string, now time.Time) error {
-	states := make([]State, 0, len(defaultStates))
-	for _, definition := range defaultStates {
-		stateID, err := newUUID()
-		if err != nil {
-			return err
-		}
-		states = append(states, State{
-			ID: stateID, CreatedAt: now, UpdatedAt: now, CreatedByID: &actorID,
-			ProjectID: project.ID, WorkspaceID: project.WorkspaceID,
-			Name: definition.Name, Color: definition.Color, Sequence: definition.Sequence,
-			Group: definition.Group, Default: definition.Default,
-		})
-	}
-	return tx.Create(&states).Error
+	return projects.CreateDefaultStates(tx, project.ID, project.WorkspaceID, actorID, now, newUUID)
 }
 
 func (handler *Handler) workspaceRole(ctx context.Context, slug, userID string) (int, error) {

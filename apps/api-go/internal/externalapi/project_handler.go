@@ -13,6 +13,7 @@ import (
 )
 
 func (handler *Handler) registerProjectRoutes(router gin.IRouter) {
+	handler.registerProjectListCreateRoutes(router)
 	router.GET("/api/v1/workspaces/:slug/projects-lite/", handler.authenticated(handler.projectLiteList))
 	router.POST("/api/v1/workspaces/:slug/projects/:project/archive/", handler.authenticated(handler.projectArchive))
 	router.DELETE("/api/v1/workspaces/:slug/projects/:project/archive/", handler.authenticated(handler.projectUnarchive))
@@ -36,6 +37,25 @@ type Project struct {
 	Emoji       *string    `gorm:"column:emoji"`
 	ArchivedAt  *time.Time `gorm:"column:archived_at"`
 	IntakeView  bool       `gorm:"column:intake_view"`
+	// The rest of the columns the full serializer reports.
+	DescriptionText      []byte  `gorm:"column:description_text;type:jsonb"`
+	DescriptionHTML      []byte  `gorm:"column:description_html;type:jsonb"`
+	ModuleViewOn         bool    `gorm:"column:module_view"`
+	IssueViewsView       bool    `gorm:"column:issue_views_view"`
+	PageView             bool    `gorm:"column:page_view"`
+	TimeTrackingEnabled  bool    `gorm:"column:is_time_tracking_enabled"`
+	IssueTypeEnabled     bool    `gorm:"column:is_issue_type_enabled"`
+	GuestViewAllFeatures bool    `gorm:"column:guest_view_all_features"`
+	ArchiveIn            int     `gorm:"column:archive_in"`
+	CloseIn              int     `gorm:"column:close_in"`
+	LogoProps            []byte  `gorm:"column:logo_props;type:jsonb"`
+	ExternalSource       *string `gorm:"column:external_source"`
+	ExternalID           *string `gorm:"column:external_id"`
+	CreatedByID          *string `gorm:"column:created_by_id;type:uuid"`
+	UpdatedByID          *string `gorm:"column:updated_by_id;type:uuid"`
+	ProjectLeadID        *string `gorm:"column:project_lead_id;type:uuid"`
+	EstimateID           *string `gorm:"column:estimate_id;type:uuid"`
+	DefaultStateID       *string `gorm:"column:default_state_id;type:uuid"`
 	// DefaultAssigneeID is who a work item goes to when its creator names nobody.
 	DefaultAssigneeID *string `gorm:"column:default_assignee_id;type:uuid"`
 	// CycleView is the switch a project turns cycles off with, which the cycle serializer refuses to write against.
