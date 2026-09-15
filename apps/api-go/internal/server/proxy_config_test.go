@@ -787,6 +787,32 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheProjectDetailRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_project_details")
+	for _, route := range []string{
+		"/api/workspaces/acme/projects/details/",
+		"/api/workspaces/acme/project-identifiers/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/archive/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Project route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The project list itself is its own matcher, and a work item's archive is a different route.
+		"/api/workspaces/acme/projects/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/11111111-2222-3333-4444-555555555555/archive/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the project detail matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_project_details api-go:8000") {
+		t.Error("community proxy is missing the project detail reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")

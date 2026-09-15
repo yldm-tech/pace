@@ -104,6 +104,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerEstimateRoutes(router)
 	handler.registerInviteRoutes(router)
 	handler.registerDeployBoardRoutes(router)
+	handler.registerProjectDetailRoutes(router)
 	handler.registerSubIssueRoutes(router)
 	handler.registerIssueRelationRoutes(router)
 	handler.registerIssueArchiveRoutes(router)
@@ -182,17 +183,7 @@ func (handler *Handler) list(c *gin.Context, user *auth.User) {
 		return
 	}
 	slug := c.Param("slug")
-	query := handler.db.WithContext(c.Request.Context()).Table("projects p").
-		Select(`p.id, p.name, p.identifier, p.logo_props, p.archived_at, p.workspace_id,
-			p.cycle_view, p.issue_views_view, p.module_view, p.page_view,
-			p.intake_view AS inbox_view, p.guest_view_all_features, p.project_lead_id,
-			p.network, p.created_at, p.updated_at, p.created_by_id, p.updated_by_id,
-			(SELECT pm.role FROM project_members pm WHERE pm.project_id = p.id AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL LIMIT 1) AS member_role,
-			(SELECT pup.sort_order FROM project_user_properties pup WHERE pup.user_id = ? AND pup.project_id = p.id AND pup.workspace_id = w.id AND pup.deleted_at IS NULL LIMIT 1) AS sort_order,
-			(SELECT COUNT(*) FROM intake_issues ii WHERE ii.project_id = p.id AND ii.status = ? AND ii.deleted_at IS NULL) AS intake_count`,
-			user.ID, user.ID, intakeIssueStatusPending).
-		Joins("JOIN workspaces w ON w.id = p.workspace_id").
-		Where("w.slug = ? AND p.deleted_at IS NULL", slug)
+	query := handler.projectListQuery(c, user, slug)
 
 	query, ok := handler.applyVisibility(c, query, user, slug)
 	if !ok {
@@ -208,6 +199,21 @@ func (handler *Handler) list(c *gin.Context, user *auth.User) {
 		response = append(response, projectListJSON(row))
 	}
 	drf.Respond(c, http.StatusOK, response)
+}
+
+// projectListQuery is the annotated set both list routes read, with the caller's own role, ordering and intake count on each row.
+func (handler *Handler) projectListQuery(c *gin.Context, user *auth.User, slug string) *gorm.DB {
+	return handler.db.WithContext(c.Request.Context()).Table("projects p").
+		Select(`p.id, p.name, p.identifier, p.logo_props, p.archived_at, p.workspace_id,
+			p.cycle_view, p.issue_views_view, p.module_view, p.page_view,
+			p.intake_view AS inbox_view, p.guest_view_all_features, p.project_lead_id,
+			p.network, p.created_at, p.updated_at, p.created_by_id, p.updated_by_id,
+			(SELECT pm.role FROM project_members pm WHERE pm.project_id = p.id AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL LIMIT 1) AS member_role,
+			(SELECT pup.sort_order FROM project_user_properties pup WHERE pup.user_id = ? AND pup.project_id = p.id AND pup.workspace_id = w.id AND pup.deleted_at IS NULL LIMIT 1) AS sort_order,
+			(SELECT COUNT(*) FROM intake_issues ii WHERE ii.project_id = p.id AND ii.status = ? AND ii.deleted_at IS NULL) AS intake_count`,
+			user.ID, user.ID, intakeIssueStatusPending).
+		Joins("JOIN workspaces w ON w.id = p.workspace_id").
+		Where("w.slug = ? AND p.deleted_at IS NULL", slug)
 }
 
 // applyVisibility reproduces the guest and member narrowing both list routes

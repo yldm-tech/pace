@@ -156,6 +156,9 @@
 	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/((settings|meta|members|states|labels|cycles|modules)/|issues/[0-9A-Fa-f-]+/(votes|reactions|comments)/|issues/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/|issues/([0-9A-Fa-f-]+/)?|issues/[0-9A-Fa-f-]+/reactions/[^/]+/|comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?|intakes/[0-9A-Fa-f-]+/(intake-issues/([0-9A-Fa-f-]+/)?|inbox-issues/))|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
 	reverse_proxy @go_space_read api-go:8000
 
+	@go_project_details path_regexp go_project_details ^/api/workspaces/[^/]+/(projects/details/|project-identifiers/|projects/[0-9A-Fa-f-]+/archive/)$
+	reverse_proxy @go_project_details api-go:8000
+
 	@go_states path_regexp go_states ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(states/([0-9A-Fa-f-]+/(mark-default/)?)?|intake-state/)$
 	reverse_proxy @go_states api-go:8000
 
