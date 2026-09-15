@@ -172,6 +172,20 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: work item attachments
+
+`GET`, `POST`, `PATCH` and `DELETE` on `issues/<uuid>/issue-attachments/` and on `work-items/<uuid>/attachments/` are implemented. The two spellings are two different paths here rather than the same word in two places: the older one reads `issue-attachments` under `issues`, the newer one reads `attachments` under `work-items`, and neither serves the other's shape — so the proxy matcher names both explicitly rather than accepting a wildcard between them.
+
+These routes do not use the project permission class the rest of the external API uses. They call `user_has_issue_permission`, which passes the person who **raised** the work item whatever their role, and otherwise asks for an active membership at admin, member or guest level. That is what lets a guest manage the attachments on an item they filed themselves. The download check calls it with no roles at all, and with no roles the role filter is skipped entirely, so any active project member may fetch the bytes regardless of level.
+
+Three details are reproduced rather than tidied, all of them divergences from the generic asset route that does the same job one level up:
+
+- The create answers `200`, not the `201` its sibling answers, and refuses a missing name or size with `{"error": "Invalid request.", "status": false}` where the workspace asset route words the same guard as `Name and size are required fields.`. It also has no default size, so an absent `size` is nothing and nothing is refused.
+- The external id conflict says `Issue with the same external id and external source already exists` although it is the attachment that clashed, not the work item.
+- The download always serves `disposition="attachment"` and answers an HTTP **redirect** rather than a JSON body — the only route in this API that does. The generic asset route decides the disposition per type; this one never consults the type at all, so nothing uploaded here is ever rendered inline.
+
+The detail lookup is scoped to the workspace and the project but **not** to the work item in the URL, so an asset id belonging to a sibling item in the same project resolves. That is upstream's query and is left as it is. The delete queues the storage-metadata task on its way out for an attachment that is going away, which is harmless rather than useful, and is likewise left alone.
+
 ## Migrated external module: the work item search and reference lookup
 
 Four routes: a search and a lookup, each under both names.
