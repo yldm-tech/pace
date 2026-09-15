@@ -130,6 +130,14 @@ func (publisher *CeleryPublisher) PublishModelActivity(ctx context.Context, mode
 	})
 }
 
+// notificationsTaskName is the task that turns the activity rows a change produced into the notifications people actually see.
+const notificationsTaskName = "plane.bgtasks.notification_task.notifications"
+
+// PublishNotifications mirrors notifications.delay, which the activity task calls once it has written the history.
+func (publisher *CeleryPublisher) PublishNotifications(ctx context.Context, keywords map[string]any) error {
+	return publisher.publishKeywords(ctx, notificationsTaskName, keywords)
+}
+
 // PublishWebhookActivityChange mirrors webhook_activity.delay over a change model_activity worked out, which unlike the plain one names a field and carries both of its values.
 func (publisher *CeleryPublisher) PublishWebhookActivityChange(ctx context.Context, keywords map[string]any) error {
 	return publisher.publishKeywords(ctx, webhookActivityTaskName, keywords)

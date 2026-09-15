@@ -1437,6 +1437,26 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the work item history
+
+`issue_activity` now runs on the Go worker. It is what writes every line of a work item's history, and nothing else in the worker is queued as often. All twenty-seven activity types move at once, because the routing is by task name — taking half of it would have left the other half writing nothing.
+
+**Three things happen before any history is written.** A project id that is not a uuid ends the task silently. The request's origin is parked in Redis beside the work item for ten minutes, which is what lets the notification emails build their links. And the work item's `updated_at` is touched, so a change to something hanging off it still counts as touching it.
+
+**A failure loses the whole batch, not the line that failed.** Django lets a missing row reach the task's own except, which throws away every activity the request would have written. Four places reach it, and all four are reproduced: a label or an assignee that has since been deleted, a cycle in a create record that has gone, a comment reaction whose row is not there, and — the one worth knowing — **clearing an estimate**. The field name is built from the *new* estimate's type, and with nothing to move to there is no new estimate to ask; so clearing an estimate writes no history at all, not even for the other fields that changed in the same request.
+
+**The first line of a history is never the one that was queued.** The create row is written on its own and then rewritten: its timestamp becomes the work item's own and its actor becomes whoever raised it, whoever queued the task and whenever it ran.
+
+**A run of description edits collapses into one line.** When the line before was also a description change by the same person, that line's timestamp is moved to now instead of a new one being written.
+
+**A state id that is not one reads as no state; a parent id that is not one abandons the field.** Two trackers, two answers to the same question.
+
+**Both names for a field reach the same tracker.** The session API sends `state_id` and the external one sends `state`; a payload naming both is walked twice and writes the change twice.
+
+A few more that are reproduced rather than corrected: a reaction is found by reaction, project and actor without naming the work item, so somebody who left the same reaction twice has the line point at one of them arbitrarily; deleting a relation names the far side's field by hand and only turns `blocking` and `blocked_by` around, so deleting a `start_after` leaves both lines saying `start_after`; a deleted draft's line names no work item at all; and the comment on a cycle move carries a newline and a run of spaces, because upstream builds it from a string laid out across two lines.
+
+The trackers that need no database are checked against a truth table generated from the real ones, and CI regenerates it.
+
 ## Migrated task: the first link in the webhook chain
 
 `model_activity` now runs on the Go worker. It is the task the Go API already queues after every tracked save, and its whole job is to work out what actually changed and fan one `webhook_activity` out per changed field. The two links after it — picking the webhooks that want the event, and delivering to them — still run on the Python worker.
