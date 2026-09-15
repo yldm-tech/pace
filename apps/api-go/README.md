@@ -1413,6 +1413,24 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the workspace work item list
+
+`GET /api/workspaces/<slug>/issues/` is implemented and cut over — every work item in the workspace the caller can see, across all their projects. It is the first route to use `internal/complexfilters`, and this piece adds the SQL half of that package.
+
+**It takes two filter languages at once.** `?filters=` is the JSON tree; the rest of the query string is the older flat one every other list takes. Both are applied and ANDed together.
+
+The SQL half is where the JSON tree stops being an abstract shape:
+
+**A relation is joined once however many conditions name it.** That is what Django does within a single `filter()` call, and it is why `{"and": [{"assignee_id": a}, {"assignee_id": b}]}` asks one row to be two people at once and therefore matches nothing. Reproduced rather than corrected.
+
+**The same relation under an `or` becomes an outer join.** An inner one would drop the work items the other branch of the `or` is there to find, so a relation named anywhere beneath an `or` is joined outer even where it also appears under an `and`.
+
+**A negated relation stops being a join at all** and becomes a pair of correlated `EXISTS` subqueries — which is what keeps "not assigned to this person" from quietly meaning "has some other assignee". The soft-delete companion is written as a left join inside its own subquery, so it is also true for a work item with no rows on the far side; that shape is Django's, oddity included.
+
+**An empty `IN` is an empty result** rather than a syntax error, and a range with a number of ends other than two is a `ValueError` inside the ORM, which answers 500 rather than 400.
+
+The list's own projection differs from the project list's in one way worth knowing: its module ids come from the prefetched links rather than from an aggregate that joins the module, so a module that has since been archived is still reported here and is not there.
+
 ## Migrated module: the complex filter backend
 
 `internal/complexfilters` is the JSON filter tree the two cross-project work item lists accept — `?filters={...}`, nested `and`, `or` and `not` around leaf objects of field lookups. The package parses, validates and evaluates it into the same Q tree Django builds. Nothing calls it yet; the two lists that will are the next piece.

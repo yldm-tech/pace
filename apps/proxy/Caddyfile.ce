@@ -165,6 +165,9 @@
 	@go_api_tokens path_regexp go_api_tokens ^/api/users/api-tokens/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_api_tokens api-go:8000
 
+	@go_workspace_issues path_regexp go_workspace_issues ^/api/workspaces/[^/]+/issues/$
+	reverse_proxy @go_workspace_issues api-go:8000
+
 	@go_advance_analytics path_regexp go_advance_analytics ^/api/workspaces/[^/]+/(projects/[0-9A-Fa-f-]+/)?advance-analytics(-stats|-charts)?/$
 	reverse_proxy @go_advance_analytics api-go:8000
 

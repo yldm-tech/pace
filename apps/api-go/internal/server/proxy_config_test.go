@@ -859,6 +859,27 @@ func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheWorkspaceIssueList(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_issues")
+	if !matcher.MatchString("/api/workspaces/acme/issues/") {
+		t.Error("the workspace work item list is not cut over to Go")
+	}
+	for _, route := range []string{
+		// The per-person list takes the same filters but is a different view and is not migrated.
+		"/api/workspaces/acme/user-issues/11111111-2222-3333-4444-555555555555/",
+		// A project's own list is served by its own matcher.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/issues/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_issues api-go:8000") {
+		t.Error("community proxy is missing the workspace issue list reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheAdvanceAnalytics(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_advance_analytics")
