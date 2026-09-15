@@ -63,6 +63,10 @@ To verify GORM writes against a disposable PostgreSQL database that already has 
 AUTH_TEST_DATABASE_URL=postgres://... \
   go test -count=1 ./internal/auth \
   -run TestGORMRepositoryAgainstDjangoSchema
+
+WORKSPACE_TEST_DATABASE_URL=postgres://... \
+  go test -count=1 ./internal/workspace \
+  -run TestWorkspaceModelsAgainstDjangoSchema
 ```
 
 ## Community and contributing

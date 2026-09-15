@@ -15,6 +15,9 @@ const userActivationTaskName = "plane.bgtasks.user_activation_email_task.user_ac
 const emailUpdateCodeTaskName = "plane.bgtasks.user_email_update_task.send_email_update_magic_code"
 const emailUpdateConfirmationTaskName = "plane.bgtasks.user_email_update_task.send_email_update_confirmation"
 const userDeactivationTaskName = "plane.bgtasks.user_deactivation_email_task.user_deactivation_email"
+const workspaceSeedTaskName = "plane.bgtasks.workspace_seed_task.workspace_seed"
+const workspaceInvitationTaskName = "plane.bgtasks.workspace_invitation_task.workspace_invitation"
+const softDeleteRelatedObjectsTaskName = "plane.bgtasks.deletion_task.soft_delete_related_objects"
 
 type CeleryPublisher struct{ brokerURL string }
 
@@ -44,6 +47,18 @@ func (publisher *CeleryPublisher) PublishEmailUpdateConfirmation(ctx context.Con
 
 func (publisher *CeleryPublisher) PublishUserDeactivation(ctx context.Context, currentSite, userID string) error {
 	return publisher.publish(ctx, userDeactivationTaskName, []any{currentSite, userID})
+}
+
+func (publisher *CeleryPublisher) PublishWorkspaceSeed(ctx context.Context, workspaceID string) error {
+	return publisher.publish(ctx, workspaceSeedTaskName, []any{workspaceID})
+}
+
+func (publisher *CeleryPublisher) PublishWorkspaceInvitation(ctx context.Context, email, workspaceID, token, currentSite, inviter string) error {
+	return publisher.publish(ctx, workspaceInvitationTaskName, []any{email, workspaceID, token, currentSite, inviter})
+}
+
+func (publisher *CeleryPublisher) PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error {
+	return publisher.publish(ctx, softDeleteRelatedObjectsTaskName, []any{appLabel, modelName, instanceID, nil})
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {
