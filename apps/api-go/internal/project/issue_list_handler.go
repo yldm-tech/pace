@@ -1,6 +1,7 @@
 package project
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"strings"
@@ -30,7 +31,37 @@ type issueListRow struct {
 	ModuleIDs       pq.StringArray `gorm:"column:module_ids;type:uuid[]"`
 }
 
-// issueList is the ungrouped half of the list route. Passing group_by is still answered by Django, since the window-function paths are not migrated yet.
+// issueListRequest is everything both halves of the route need once the query string has been read.
+type issueListRequest struct {
+	slug       string
+	projectID  string
+	perPage    int
+	cursor     pagination.OffsetCursor
+	joins      []string
+	conditions []string
+	arguments  []any
+	total      int
+}
+
+// issueListScope is the filtered set both halves share: the issue_objects manager, the workspace and project, and whatever the filters added.
+func (handler *Handler) issueListScope(ctx context.Context, request issueListRequest) *gorm.DB {
+	query := handler.db.WithContext(ctx).Table("issues i").
+		Joins("JOIN workspaces w ON w.id = i.workspace_id").
+		Where("w.slug = ? AND i.project_id = ?", request.slug, request.projectID).
+		Where(issueObjectsPredicate("i"))
+	for _, join := range request.joins {
+		query = query.Joins(join)
+	}
+	consumed := 0
+	for _, condition := range request.conditions {
+		count := countPlaceholders(condition)
+		query = query.Where(condition, request.arguments[consumed:consumed+count]...)
+		consumed += count
+	}
+	return query
+}
+
+// issueList reads the query string, then hands off to whichever half the request asked for.
 func (handler *Handler) issueList(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectRole(c, user, roleAdmin, roleMember, roleGuest) {
 		return
@@ -94,20 +125,17 @@ func (handler *Handler) issueList(c *gin.Context, user *auth.User) {
 		arguments = append(arguments, user.ID)
 	}
 
-	total, rows, err := handler.issueListRows(c, slug, projectID, joins, conditions, arguments, cursor, perPage)
-	if err != nil {
+	request := issueListRequest{
+		slug: slug, projectID: projectID, perPage: perPage, cursor: cursor,
+		joins: joins, conditions: conditions, arguments: arguments,
+	}
+	// The filtered set is counted before the annotations are applied, and over distinct issues, since a filter's join can multiply rows.
+	var total int64
+	if err := handler.issueListScope(c.Request.Context(), request).Distinct("i.id").Count(&total).Error; err != nil {
 		handler.internalError(c, err)
 		return
 	}
-
-	page := pagination.PlanOffsetPage(perPage, cursor, total, len(rows), pagination.DefaultPerPage)
-	if len(rows) > page.Limit {
-		rows = rows[:page.Limit]
-	}
-	results := make([]gin.H, 0, len(rows))
-	for _, row := range rows {
-		results = append(results, issueListRowJSON(row))
-	}
+	request.total = int(total)
 
 	if handler.tasks != nil {
 		// The list records a visit to the project, not to any issue.
@@ -117,45 +145,39 @@ func (handler *Handler) issueList(c *gin.Context, user *auth.User) {
 			return
 		}
 	}
+
+	if c.Query("group_by") != "" {
+		handler.issueListGrouped(c, user, request)
+		return
+	}
+
+	rows, err := handler.issueListPage(c, request)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
+	page := pagination.PlanOffsetPage(perPage, cursor, request.total, len(rows), pagination.DefaultPerPage)
+	if len(rows) > page.Limit {
+		rows = rows[:page.Limit]
+	}
+	results := make([]gin.H, 0, len(rows))
+	for _, row := range rows {
+		results = append(results, issueListRowJSON(row))
+	}
 	drf.Respond(c, http.StatusOK, page.Envelope(results, len(results), nil, nil, nil))
 }
 
-// issueListRows runs the count and the page. The filtered set is counted before the annotations are applied, which is what Django's separate total_count_queryset does; the joins a filter added still multiply rows, so the count is over distinct issues.
-func (handler *Handler) issueListRows(c *gin.Context, slug, projectID string, joins, conditions []string, arguments []any, cursor pagination.OffsetCursor, perPage int) (int, []issueListRow, error) {
-	ctx := c.Request.Context()
-	base := func() *gorm.DB {
-		query := handler.db.WithContext(ctx).Table("issues i").
-			Joins("JOIN workspaces w ON w.id = i.workspace_id").
-			Where("w.slug = ? AND i.project_id = ?", slug, projectID).
-			Where(issueObjectsPredicate("i"))
-		for _, join := range joins {
-			query = query.Joins(join)
-		}
-		consumed := 0
-		for _, condition := range conditions {
-			count := countPlaceholders(condition)
-			query = query.Where(condition, arguments[consumed:consumed+count]...)
-			consumed += count
-		}
-		return query
-	}
-
-	var total int64
-	if err := base().Distinct("i.id").Count(&total).Error; err != nil {
-		return 0, nil, err
-	}
-
-	page := pagination.PlanOffsetPage(perPage, cursor, int(total), 0, pagination.DefaultPerPage)
+// issueListPage reads the rows the cursor asked for, plus the one extra the paginator uses to decide whether a page follows.
+func (handler *Handler) issueListPage(c *gin.Context, request issueListRequest) ([]issueListRow, error) {
+	page := pagination.PlanOffsetPage(request.perPage, request.cursor, request.total, 0, pagination.DefaultPerPage)
 	var rows []issueListRow
-	err := base().Select(issueListAnnotations()).
+	err := handler.issueListScope(c.Request.Context(), request).
+		Select(issueListAnnotations()).
 		Group("i.id").
 		Order(issueOrderClause(c.Query("order_by"))).
 		Offset(page.Offset).Limit(page.Stop - page.Offset).
 		Scan(&rows).Error
-	if err != nil {
-		return 0, nil, err
-	}
-	return int(total), rows, nil
+	return rows, err
 }
 
 // issueListAnnotations is apply_annotations plus the id arrays issue_queryset_grouper adds. The counts do not coalesce here, which is why the serializer turns a null into zero rather than the query doing it.
