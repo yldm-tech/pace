@@ -304,6 +304,8 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "issue-subscribers/",
 		issue + "issue-subscribers/66666666-7777-8888-9999-000000000000/",
 		issue + "subscribe/",
+		issue + "issue-links/",
+		issue + "issue-links/77777777-8888-9999-0000-111111111111/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
@@ -312,7 +314,6 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 	for _, route := range []string{
 		issue,
 		issue + "comments/",
-		issue + "links/",
 		issue + "issue-attachments/",
 		issue + "reactions/thumbsup/extra/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/comments/11111111-2222-3333-4444-555555555555/reactions/",

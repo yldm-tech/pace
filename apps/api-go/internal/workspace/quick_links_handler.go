@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/validate"
 	"gorm.io/gorm"
 )
 
@@ -237,15 +238,6 @@ type quickLinkInput struct {
 	hasDeletedAt bool
 }
 
-// prefixQuickLinkURL mirrors WorkspaceUserLinkSerializer.to_internal_value,
-// which prepends the scheme before any field validation runs.
-func prefixQuickLinkURL(value string) string {
-	if value == "" || strings.HasPrefix(value, "http://") || strings.HasPrefix(value, "https://") {
-		return value
-	}
-	return "http://" + value
-}
-
 func (handler *Handler) quickLinkFields(c *gin.Context, partial bool) (quickLinkInput, bool) {
 	var fields map[string]json.RawMessage
 	if err := c.ShouldBindJSON(&fields); err != nil {
@@ -282,12 +274,12 @@ func (handler *Handler) quickLinkFields(c *gin.Context, partial bool) (quickLink
 			c.JSON(http.StatusBadRequest, gin.H{"url": []string{"Not a valid string."}})
 			return quickLinkInput{}, false
 		}
-		value = prefixQuickLinkURL(value)
+		value = validate.PrefixScheme(value)
 		if strings.TrimSpace(value) == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"url": []string{"This field may not be blank."}})
 			return quickLinkInput{}, false
 		}
-		if !validURL(value) {
+		if !validate.URL(value) {
 			c.JSON(http.StatusBadRequest, gin.H{"url": gin.H{"error": "Invalid URL format."}})
 			return quickLinkInput{}, false
 		}

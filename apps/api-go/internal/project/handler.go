@@ -44,6 +44,7 @@ type TaskPublisher interface {
 	PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error
 	PublishProjectAddUserEmail(ctx context.Context, currentSite, projectMemberID, invitorID string) error
 	PublishIssueActivity(ctx context.Context, keywords map[string]any) error
+	PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error
 }
 
 type Handler struct {
@@ -74,6 +75,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerMemberRoutes(router)
 	handler.registerLabelRoutes(router)
 	handler.registerIssueInteractionRoutes(router)
+	handler.registerIssueLinkRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

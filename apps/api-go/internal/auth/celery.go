@@ -26,6 +26,7 @@ const webhookActivityTaskName = "plane.bgtasks.webhook_task.webhook_activity"
 const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_task"
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 const issueActivityTaskName = "plane.bgtasks.issue_activities_task.issue_activity"
+const crawlLinkTitleTaskName = "plane.bgtasks.work_item_link_task.crawl_work_item_link_title"
 
 // defaultCeleryQueue is the queue the Python worker consumes.
 const defaultCeleryQueue = "celery"
@@ -151,6 +152,12 @@ func (publisher *CeleryPublisher) PublishProjectAddUserEmail(ctx context.Context
 // the publisher routes it to the Celery queue.
 func (publisher *CeleryPublisher) PublishIssueActivity(ctx context.Context, keywords map[string]any) error {
 	return publisher.publishKeywords(ctx, issueActivityTaskName, keywords)
+}
+
+// PublishCrawlLinkTitle mirrors crawl_work_item_link_title.delay, which Django
+// calls positionally. The crawler still runs on the Python worker.
+func (publisher *CeleryPublisher) PublishCrawlLinkTitle(ctx context.Context, linkID, url string) error {
+	return publisher.publish(ctx, crawlLinkTitleTaskName, []any{linkID, url})
 }
 
 func (publisher *CeleryPublisher) publish(ctx context.Context, taskName string, arguments []any) error {
