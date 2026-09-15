@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	zxcvbn "github.com/nbutton23/zxcvbn-go"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 )
 
 type Handler struct {
@@ -105,7 +106,7 @@ func (handler *Handler) getCSRFToken(c *gin.Context) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"csrf_token": token})
+	drf.Respond(c, http.StatusOK, gin.H{"csrf_token": token})
 }
 
 func (handler *Handler) csrfProtected(next gin.HandlerFunc) gin.HandlerFunc {
@@ -320,7 +321,7 @@ func (handler *Handler) emailCheck(c *gin.Context) {
 	if smtpConfigured && magicEnabled && (!existing || user.IsPasswordAutoset) {
 		status = "MAGIC_CODE"
 	}
-	c.JSON(http.StatusOK, gin.H{"existing": existing, "status": status})
+	drf.Respond(c, http.StatusOK, gin.H{"existing": existing, "status": status})
 }
 
 func (handler *Handler) magicGenerate(c *gin.Context) {
@@ -369,7 +370,7 @@ func (handler *Handler) magicGenerate(c *gin.Context) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"key": key})
+	drf.Respond(c, http.StatusOK, gin.H{"key": key})
 }
 
 func (handler *Handler) magicSignIn(space bool) gin.HandlerFunc {
@@ -553,7 +554,7 @@ func (handler *Handler) forgotPassword(space bool) gin.HandlerFunc {
 			handler.internalError(c, err)
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"message": "Check your email to reset your password"})
+		drf.Respond(c, http.StatusOK, gin.H{"message": "Check your email to reset your password"})
 	}
 }
 
@@ -646,7 +647,7 @@ func (handler *Handler) changePassword(c *gin.Context) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Password updated successfully"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Password updated successfully"})
 }
 
 func (handler *Handler) setPassword(c *gin.Context) {
@@ -690,7 +691,7 @@ func (handler *Handler) setPassword(c *gin.Context) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, serializeUser(user))
+	drf.Respond(c, http.StatusOK, serializeUser(user))
 }
 
 func (handler *Handler) passwordResetRedirect(c *gin.Context, space bool, authenticationError *Error) {

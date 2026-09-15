@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	projectapi "github.com/yldm-tech/pace/apps/api-go/internal/project"
 	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
 	workspaceapi "github.com/yldm-tech/pace/apps/api-go/internal/workspace"
@@ -38,13 +39,13 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 	}))
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"name": "pace-api", "status": "ok", "health": "/api/health", "version": "/api/version"})
+		drf.Respond(c, http.StatusOK, gin.H{"name": "pace-api", "status": "ok", "health": "/api/health", "version": "/api/version"})
 	})
 	router.GET("/api/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		drf.Respond(c, http.StatusOK, gin.H{"status": "ok"})
 	})
 	router.GET("/api/version", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"name": "pace-api", "runtime": "go", "version": Version})
+		drf.Respond(c, http.StatusOK, gin.H{"name": "pace-api", "runtime": "go", "version": Version})
 	})
 	router.GET("/api/health/db", databaseHealth(dependencies.Database, "unavailable"))
 	router.GET("/ready", databaseHealth(dependencies.Database, "not_ready"))
@@ -124,6 +125,6 @@ func databaseHealth(db *gorm.DB, failureStatus string) gin.HandlerFunc {
 			c.JSON(http.StatusServiceUnavailable, gin.H{"status": failureStatus})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		drf.Respond(c, http.StatusOK, gin.H{"status": "ok"})
 	}
 }

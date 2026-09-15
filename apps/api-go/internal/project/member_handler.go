@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -51,7 +52,7 @@ func (handler *Handler) memberList(c *gin.Context, user *auth.User) {
 	for _, member := range members {
 		response = append(response, projectMemberRoleJSON(member))
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) memberCreate(c *gin.Context, user *auth.User) {
@@ -215,7 +216,7 @@ func (handler *Handler) memberCreate(c *gin.Context, user *auth.User) {
 	for _, member := range members {
 		response = append(response, projectMemberRoleJSON(member))
 	}
-	c.JSON(http.StatusCreated, response)
+	drf.Respond(c, http.StatusCreated, response)
 }
 
 func (handler *Handler) memberRetrieve(c *gin.Context, user *auth.User) {
@@ -251,10 +252,10 @@ func (handler *Handler) memberRetrieve(c *gin.Context, user *auth.User) {
 			handler.internalError(c, err)
 			return
 		}
-		c.JSON(http.StatusOK, data)
+		drf.Respond(c, http.StatusOK, data)
 		return
 	}
-	c.JSON(http.StatusOK, projectMemberRoleJSON(member))
+	drf.Respond(c, http.StatusOK, projectMemberRoleJSON(member))
 }
 
 func (handler *Handler) memberPatch(c *gin.Context, user *auth.User) {
@@ -404,7 +405,7 @@ func (handler *Handler) memberPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) memberDelete(c *gin.Context, user *auth.User) {
@@ -503,7 +504,7 @@ func (handler *Handler) memberMe(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 // memberViews is ProjectUserViewsEndpoint, which answers 403 rather than 404
@@ -573,7 +574,7 @@ func (handler *Handler) memberPreferencesGet(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, projectMemberPreferenceJSON(member))
+	drf.Respond(c, http.StatusOK, projectMemberPreferenceJSON(member))
 }
 
 func (handler *Handler) memberPreferencesPatch(c *gin.Context, user *auth.User) {
@@ -617,7 +618,7 @@ func (handler *Handler) memberPreferencesPatch(c *gin.Context, user *auth.User) 
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"preferences": merged})
+	drf.Respond(c, http.StatusOK, gin.H{"preferences": merged})
 }
 
 func (handler *Handler) userProjectRoles(c *gin.Context, user *auth.User) {
@@ -648,7 +649,7 @@ func (handler *Handler) userProjectRoles(c *gin.Context, user *auth.User) {
 	for _, row := range rows {
 		response[row.ProjectID] = row.Role
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 // requireProjectRole is allow_permission at its default PROJECT level: the

@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -42,7 +43,7 @@ func (handler *Handler) subIssueList(c *gin.Context, user *auth.User) {
 
 	groupBy := c.Query("group_by")
 	if groupBy == "" {
-		c.JSON(http.StatusOK, gin.H{"sub_issues": serialized, "state_distribution": distribution})
+		drf.Respond(c, http.StatusOK, gin.H{"sub_issues": serialized, "state_distribution": distribution})
 		return
 	}
 	grouped := gin.H{}
@@ -68,7 +69,7 @@ func (handler *Handler) subIssueList(c *gin.Context, user *auth.User) {
 		key := pythonString(value)
 		grouped[key] = append(asMaps(grouped[key]), data)
 	}
-	c.JSON(http.StatusOK, gin.H{"sub_issues": grouped, "state_distribution": distribution})
+	drf.Respond(c, http.StatusOK, gin.H{"sub_issues": grouped, "state_distribution": distribution})
 }
 
 func (handler *Handler) subIssueAssign(c *gin.Context, user *auth.User) {
@@ -153,7 +154,7 @@ func (handler *Handler) subIssueAssign(c *gin.Context, user *auth.User) {
 		distribution[group] = append(asStrings(distribution[group]), row.ID)
 		serialized = append(serialized, issueSerializerJSON(row))
 	}
-	c.JSON(http.StatusOK, gin.H{"sub_issues": serialized, "state_distribution": distribution})
+	drf.Respond(c, http.StatusOK, gin.H{"sub_issues": serialized, "state_distribution": distribution})
 }
 
 func (handler *Handler) subIssueRows(ctx context.Context, slug, projectID, parentID, orderBy string) ([]issueRow, error) {

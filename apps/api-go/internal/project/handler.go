@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -140,7 +141,7 @@ func (handler *Handler) list(c *gin.Context, user *auth.User) {
 	for _, row := range rows {
 		response = append(response, projectListJSON(row))
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 // applyVisibility reproduces the guest and member narrowing both list routes
@@ -199,7 +200,7 @@ func (handler *Handler) retrieve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) create(c *gin.Context, user *auth.User) {
@@ -292,7 +293,7 @@ func (handler *Handler) create(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, data)
+	drf.Respond(c, http.StatusCreated, data)
 }
 
 func (handler *Handler) partialUpdate(c *gin.Context, user *auth.User) {
@@ -409,7 +410,7 @@ func (handler *Handler) partialUpdate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) destroy(c *gin.Context, user *auth.User) {

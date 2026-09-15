@@ -21,6 +21,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -185,7 +186,7 @@ func (handler *Handler) slugCheck(c *gin.Context, _ *auth.User) {
 		return
 	}
 	_, restricted := restrictedWorkspaceSlugs[slug]
-	c.JSON(http.StatusOK, gin.H{"status": count == 0 && !restricted})
+	drf.Respond(c, http.StatusOK, gin.H{"status": count == 0 && !restricted})
 }
 
 func (handler *Handler) workspaceList(c *gin.Context, user *auth.User) {
@@ -198,7 +199,7 @@ func (handler *Handler) workspaceList(c *gin.Context, user *auth.User) {
 	for _, row := range rows {
 		result = append(result, handler.workspaceJSON(c.Request.Context(), row))
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) userWorkspaces(c *gin.Context, user *auth.User) {
@@ -212,7 +213,7 @@ func (handler *Handler) userWorkspaces(c *gin.Context, user *auth.User) {
 		data := handler.workspaceJSON(c.Request.Context(), row)
 		result = append(result, data)
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) workspaceRetrieve(c *gin.Context, user *auth.User) {
@@ -225,7 +226,7 @@ func (handler *Handler) workspaceRetrieve(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, handler.workspaceJSON(c.Request.Context(), rows[0]))
+	drf.Respond(c, http.StatusOK, handler.workspaceJSON(c.Request.Context(), rows[0]))
 }
 
 func (handler *Handler) workspaceCreate(c *gin.Context, user *auth.User) {
@@ -370,7 +371,7 @@ func (handler *Handler) workspaceCreate(c *gin.Context, user *auth.User) {
 		}
 	}
 	row := workspaceRow{Workspace: workspace, TotalMembers: 1, Role: roleAdmin}
-	c.JSON(http.StatusCreated, handler.workspaceJSON(c.Request.Context(), row))
+	drf.Respond(c, http.StatusCreated, handler.workspaceJSON(c.Request.Context(), row))
 }
 
 func (handler *Handler) workspaceUpdate(c *gin.Context, user *auth.User) {
@@ -528,7 +529,7 @@ func (handler *Handler) workspaceUpdate(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, handler.workspaceJSON(c.Request.Context(), rows[0]))
+	drf.Respond(c, http.StatusOK, handler.workspaceJSON(c.Request.Context(), rows[0]))
 }
 
 func (handler *Handler) workspaceDelete(c *gin.Context, user *auth.User) {
@@ -651,7 +652,7 @@ func (handler *Handler) memberList(c *gin.Context, user *auth.User) {
 		}
 		result = append(result, data)
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) memberRetrieve(c *gin.Context, user *auth.User) {
@@ -675,7 +676,7 @@ func (handler *Handler) memberRetrieve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) memberPatch(c *gin.Context, user *auth.User) {
@@ -766,7 +767,7 @@ func (handler *Handler) memberPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) memberDelete(c *gin.Context, user *auth.User) {
@@ -878,7 +879,7 @@ func (handler *Handler) memberMe(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, memberJSONWithDraft(member, drafts))
+	drf.Respond(c, http.StatusOK, memberJSONWithDraft(member, drafts))
 }
 
 func (handler *Handler) memberViews(c *gin.Context, user *auth.User) {
@@ -1163,7 +1164,7 @@ func (handler *Handler) invitationList(c *gin.Context, user *auth.User) {
 		}
 		result = append(result, data)
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) invitationCreate(c *gin.Context, user *auth.User) {
@@ -1267,7 +1268,7 @@ func (handler *Handler) invitationCreate(c *gin.Context, user *auth.User) {
 			}
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Emails sent successfully"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Emails sent successfully"})
 }
 
 func (handler *Handler) invitationRetrieve(c *gin.Context, user *auth.User) {
@@ -1290,7 +1291,7 @@ func (handler *Handler) invitationRetrieve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) invitationPatch(c *gin.Context, user *auth.User) {
@@ -1348,7 +1349,7 @@ func (handler *Handler) invitationPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) invitationDelete(c *gin.Context, user *auth.User) {
@@ -1395,7 +1396,7 @@ func (handler *Handler) userInvitationList(c *gin.Context, user *auth.User) {
 		}
 		result = append(result, data)
 	}
-	c.JSON(http.StatusOK, result)
+	drf.Respond(c, http.StatusOK, result)
 }
 
 func (handler *Handler) userInvitationAccept(c *gin.Context, user *auth.User) {
@@ -1479,7 +1480,7 @@ func (handler *Handler) invitationPublic(c *gin.Context) {
 		handler.notFound(c)
 		return
 	}
-	c.JSON(http.StatusOK, invitationPublicJSON(invite, workspace))
+	drf.Respond(c, http.StatusOK, invitationPublicJSON(invite, workspace))
 }
 
 func (handler *Handler) invitationJoin(c *gin.Context) {
@@ -1569,9 +1570,9 @@ func (handler *Handler) invitationJoin(c *gin.Context) {
 		}
 	}
 	if request.Accepted {
-		c.JSON(http.StatusOK, gin.H{"message": "Workspace Invitation Accepted"})
+		drf.Respond(c, http.StatusOK, gin.H{"message": "Workspace Invitation Accepted"})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "Workspace Invitation was not accepted"})
+		drf.Respond(c, http.StatusOK, gin.H{"message": "Workspace Invitation was not accepted"})
 	}
 }
 

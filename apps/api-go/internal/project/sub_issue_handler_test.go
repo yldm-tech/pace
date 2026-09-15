@@ -1,12 +1,15 @@
 package project
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 )
 
 // The read route returns the values() projection, which is IssueSerializer's twenty-five fields plus state_group. description_html is not among them, so the sub-issue list does not carry issue bodies.
@@ -185,4 +188,36 @@ func TestAnnotationJoinsKeepDjangosMissingSoftDeleteFilters(t *testing.T) {
 func withStateGroup(row issueRow, group *string) issueRow {
 	row.StateGroup = group
 	return row
+}
+
+// The unit tests above prove the serializer's shape; this proves the shape survives the write. A timestamp whose microseconds end in a zero is where Go's own encoder and Django disagree, so that is the one to send through a real response.
+func TestSubIssueTimestampsLeaveTheHandlerInDjangosFormat(t *testing.T) {
+	row := sampleIssueRow()
+	row.CreatedAt = time.Date(2026, 9, 15, 4, 0, 0, 120000000, time.UTC)
+	row.UpdatedAt = row.CreatedAt
+	shanghai, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	c.Request = httptest.NewRequest(http.MethodGet, "/", nil)
+	drf.Respond(c, http.StatusOK, gin.H{
+		"sub_issues":         []gin.H{subIssueValuesJSON(row, shanghai)},
+		"state_distribution": gin.H{"None": []string{row.ID}},
+	})
+
+	body := recorder.Body.String()
+	if strings.Contains(body, "04:00:00.12+") {
+		t.Fatalf("the response carries Go's trimmed fraction rather than Django's six digits:\n%s", body)
+	}
+	if !strings.Contains(body, `"created_at":"2026-09-15T12:00:00.120000+08:00"`) {
+		t.Fatalf("created_at is not in Django's rendering in the caller's timezone:\n%s", body)
+	}
+	// start_date is a DateField, which renders as a bare date and must not have grown a time.
+	if !strings.Contains(body, `"start_date":"2026-09-15"`) {
+		t.Fatalf("start_date changed shape:\n%s", body)
+	}
 }

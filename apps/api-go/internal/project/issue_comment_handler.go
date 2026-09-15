@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/htmlsanitizer"
 	"gorm.io/gorm"
 )
@@ -70,7 +71,7 @@ func (handler *Handler) commentList(c *gin.Context, user *auth.User) {
 		}
 		response = append(response, data)
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) commentRetrieve(c *gin.Context, user *auth.User) {
@@ -96,7 +97,7 @@ func (handler *Handler) commentRetrieve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) commentCreate(c *gin.Context, user *auth.User) {
@@ -214,7 +215,7 @@ func (handler *Handler) commentCreate(c *gin.Context, user *auth.User) {
 			return
 		}
 	}
-	c.JSON(http.StatusCreated, data)
+	drf.Respond(c, http.StatusCreated, data)
 }
 
 func (handler *Handler) commentPatch(c *gin.Context, user *auth.User) {
@@ -332,7 +333,7 @@ func (handler *Handler) commentPatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, data)
+	drf.Respond(c, http.StatusOK, data)
 }
 
 func (handler *Handler) commentDelete(c *gin.Context, user *auth.User) {

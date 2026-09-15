@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +32,7 @@ func (handler *Handler) themeList(c *gin.Context, user *auth.User) {
 	for _, theme := range themes {
 		response = append(response, themeJSON(theme))
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) themeCreate(c *gin.Context, user *auth.User) {
@@ -75,7 +76,7 @@ func (handler *Handler) themeCreate(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, themeJSON(theme))
+	drf.Respond(c, http.StatusCreated, themeJSON(theme))
 }
 
 func (handler *Handler) themeRetrieve(c *gin.Context, user *auth.User) {
@@ -86,7 +87,7 @@ func (handler *Handler) themeRetrieve(c *gin.Context, user *auth.User) {
 	if !ok {
 		return
 	}
-	c.JSON(http.StatusOK, themeJSON(theme))
+	drf.Respond(c, http.StatusOK, themeJSON(theme))
 }
 
 func (handler *Handler) themePatch(c *gin.Context, user *auth.User) {
@@ -132,7 +133,7 @@ func (handler *Handler) themePatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, themeJSON(theme))
+	drf.Respond(c, http.StatusOK, themeJSON(theme))
 }
 
 func (handler *Handler) themeDelete(c *gin.Context, user *auth.User) {

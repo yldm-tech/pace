@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -51,7 +52,7 @@ func (handler *Handler) homePreferencesGet(c *gin.Context, user *auth.User) {
 			"sort_order": preference.SortOrder,
 		})
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) homePreferencePatch(c *gin.Context, user *auth.User) {
@@ -100,7 +101,7 @@ func (handler *Handler) homePreferencePatch(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, homePreferenceJSON(preference))
+	drf.Respond(c, http.StatusOK, homePreferenceJSON(preference))
 }
 
 // ensureHomePreferencesFor reproduces Django's seeding loop: each key missing

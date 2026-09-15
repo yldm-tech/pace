@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -43,7 +44,7 @@ func (handler *Handler) sidebarPreferencesGet(c *gin.Context, user *auth.User) {
 	for _, preference := range preferences {
 		response[preference.Key] = gin.H{"is_pinned": preference.IsPinned, "sort_order": preference.SortOrder}
 	}
-	c.JSON(http.StatusOK, response)
+	drf.Respond(c, http.StatusOK, response)
 }
 
 func (handler *Handler) sidebarPreferencesPatch(c *gin.Context, user *auth.User) {
@@ -102,7 +103,7 @@ func (handler *Handler) sidebarPreferencesPatch(c *gin.Context, user *auth.User)
 			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully updated"})
+	drf.Respond(c, http.StatusOK, gin.H{"message": "Successfully updated"})
 }
 
 func (handler *Handler) ensureSidebarPreferences(c *gin.Context, user *auth.User) error {
