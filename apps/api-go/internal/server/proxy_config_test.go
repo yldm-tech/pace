@@ -838,6 +838,8 @@ func TestCommunityProxyCutsOverOnlyTheExternalCycleRoutes(t *testing.T) {
 	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
 	cycle := "11111111-2222-3333-4444-555555555555/"
 	for _, route := range []string{
+		project + "cycles/",
+		project + "cycles/" + cycle,
 		project + "cycles-lite/",
 		project + "archived-cycles/",
 		project + "archived-cycles/" + cycle + "unarchive/",
@@ -848,9 +850,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalCycleRoutes(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The cycle list, create, detail and issues are not migrated.
-		project + "cycles/",
-		project + "cycles/" + cycle,
+		// The two work item routes under a cycle are not migrated.
 		project + "cycles/" + cycle + "cycle-issues/",
 		project + "cycles/" + cycle + "transfer-issues/",
 		project + "archived-cycles/" + cycle,

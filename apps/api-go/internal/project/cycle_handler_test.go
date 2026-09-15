@@ -1,6 +1,7 @@
 package project
 
 import (
+	"github.com/yldm-tech/pace/apps/api-go/internal/cycles"
 	"testing"
 	"time"
 )
@@ -61,15 +62,15 @@ func TestTodayIsMeasuredInTheProjectsZone(t *testing.T) {
 	}
 	// Late on the first in Shanghai is still the first there, but already the first in UTC too; an hour later it is the second in Shanghai and the first in UTC.
 	late := time.Date(2026, 6, 1, 23, 30, 0, 0, shanghai)
-	if !sameDayIn(late, late, shanghai) {
+	if !cycles.SameDayIn(late, late, shanghai) {
 		t.Fatal("an instant is always on its own day")
 	}
 	nextDay := late.Add(time.Hour)
-	if sameDayIn(late, nextDay, shanghai) {
+	if cycles.SameDayIn(late, nextDay, shanghai) {
 		t.Fatal("half past midnight is the next day in Shanghai")
 	}
 	// In UTC the two are still the same day, which is exactly why the zone matters.
-	if !sameDayIn(late, nextDay, time.UTC) {
+	if !cycles.SameDayIn(late, nextDay, time.UTC) {
 		t.Fatal("in UTC both instants fall on the first")
 	}
 }
