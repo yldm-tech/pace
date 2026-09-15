@@ -133,6 +133,18 @@ The window's ordering is not the list's, in two ways. It spells `NULLS LAST` exp
 
 Three group-bys append the literal `None` so an issue in no group still gets a bucket; the rest do not. And the project group list is workspace-wide even when a project is named, which is the one place the scoping is not applied.
 
+## Migrated module: cycle issues and the archive toggle
+
+Adding and removing a cycle's issues, and archiving or unarchiving the cycle itself.
+
+An issue belongs to at most one cycle, so adding one that is already in another **moves** it rather than duplicating it. Both the existing links and the ids that will get new ones are scoped to the workspace and project, which is what stops a foreign link from being reassigned into this cycle (GHSA-4w5x-wc9w-f47x).
+
+The activity the add sends is the awkward part. `created_cycle_issues` is a **JSON string** inside the snapshot rather than a nested object, because Django builds it with `serializers.serialize` and then dumps the whole snapshot around it — and the task calls `json.loads` on it, so the nesting has to survive. The task reads only `fields.cycle` and `fields.issue` out of each record, but the shape it reads them through is the full serialize format.
+
+Removing an issue sends its activity **before** the link goes, since the task reads the cycle by the id the request named rather than from the link. The delete is a queryset delete, so it answers `204` whether or not the link was there.
+
+Only a **completed** cycle may be archived — one with no end date, or one whose end date has not passed, is refused. Archiving clears **every member's** favourite, where deleting the cycle clears only the caller's.
+
 ## Migrated module: cycle create, read, update and delete
 
 The four routes under `cycles/<uuid>/`, plus `POST` on `cycles/`.
