@@ -30,6 +30,32 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: stickies and invitations
+
+Ten routes, and a correction to the route inventory that made them checkable.
+
+### The route table was not seeing DRF routers
+
+Both of these are mounted through a `DefaultRouter` rather than `path()` entries, so the generator was writing their raw regular expressions into the inventory — `^stickies/(?P<pk>[^/.]+)/$` and the like. Those strings match nothing, so the cutover guard was **silently not checking** either path.
+
+The generator now normalizes a regex pattern into the same `<name>` notation, which surfaced two things the inventory had been hiding: the router binds **PUT** on both detail paths, and it appends a **format-suffix** route to every one of them. The suffix routes are kept in the table rather than dropped — they are paths Django really serves, and the guard is only useful if the table is complete. Nothing here claims them, so they stay on Django.
+
+### A sticky is private to its owner
+
+The queryset narrows to the **owner**, not to the workspace's members, so no role lets one person read another's. The name is not required, which is unusual — a note can be saved with nothing but a colour. The search looks at the **stripped** text rather than the html, so a note is found by what it says and not by how it is marked up. And this list's page is **twenty** where every other list in this API defaults to a hundred.
+
+Its `PUT` is exactly its `PATCH`, because the serializer requires nothing at all.
+
+### An invitation's two update methods disagree about the same field
+
+`PATCH` **refuses any request naming an email**, with a code of its own. `PUT` **requires** one — a full update is not partial — and the serializer then refuses any address already invited in this workspace, which includes the invitation's **own**.
+
+So the only `PUT` that succeeds is one naming an address nobody has been invited with, and it does the very thing the `PATCH` exists to forbid: it changes the address. Both reproduced.
+
+Withdrawing an invitation refuses one already answered, and the two refusals are **ordered** — accepted is checked before responded, so an invitation that is both reports the first. The token is never rendered: it is what accepting the invitation proves.
+
+The list is one of the few in this API that is **not paginated**.
+
 ## Migrated external module: labels
 
 The five routes under `/api/v1/.../labels/`.
