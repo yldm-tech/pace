@@ -8,6 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+
+	"gorm.io/gorm/clause"
 )
 
 // The three project roles, which are the same numbers the session API uses.
@@ -59,4 +61,9 @@ func newUUID() (string, error) {
 func isUniqueViolation(err error) bool {
 	var pgErr *pgconn.PgError
 	return errors.As(err, &pgErr) && pgErr.Code == "23505"
+}
+
+// onConflictDoNothing is the clause a bulk create with ignore_conflicts needs.
+func onConflictDoNothing() clause.OnConflict {
+	return clause.OnConflict{DoNothing: true}
 }

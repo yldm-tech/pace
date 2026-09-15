@@ -80,6 +80,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueLinkRoutes(router)
 	handler.registerIssueCommentRoutes(router)
 	handler.registerIssueActivityRoutes(router)
+	handler.registerIssueRelationRoutes(router)
 }
 
 // serverError is the catch-all the base view maps an unrecognised failure to. Every message the external API answers with is its own: the session API's wording appears nowhere here.

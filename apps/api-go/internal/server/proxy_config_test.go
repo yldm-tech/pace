@@ -576,6 +576,28 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalIssueRelations(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_relations")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	issue := "11111111-2222-3333-4444-555555555555/"
+	if !matcher.MatchString(project + "work-items/" + issue + "relations/") {
+		t.Error("the external relations route is not cut over to Go")
+	}
+	for _, route := range []string{
+		// Relations are the one work item route mounted under a single name: the older spelling answers 404 on Django.
+		project + "issues/" + issue + "relations/",
+		project + "work-items/" + issue + "relations/66666666-7777-8888-9999-000000000000/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unserved route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_relations api-go:8000") {
+		t.Error("community proxy is missing the external relations reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalIssueActivities(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_activities")

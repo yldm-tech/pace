@@ -172,6 +172,26 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: work item relations
+
+Two routes — and the **one** work item route in this API mounted under a single name. The urls list `relations/` for `work-items/` and not for `issues/`, so the older spelling answers `404` and nothing here claims it.
+
+### Only three kinds are ever stored
+
+`blocked_by`, `start_before` and `finish_before`. Their opposites — blocking, start_after, finish_after — are the same rows read **from the other end**, which is why creating one of those writes the relation backwards. So one stored row fills two buckets in the list depending on which end the work item sits at, and the response renders through a different serializer for each direction: the forward one names the related work item, the reverse one names the work item it was written from. The id in the body is the other party either way.
+
+### Two kinds are deduplicated and four are not
+
+A duplicate or relates_to relation is symmetric, so the same pair could be reported twice and a seen-set holds it back. The four directional kinds have no such set: a pair recorded twice is reported twice.
+
+The set is keyed on the **other** work item alone and shared across both directions, so a work item related to the same other one under both a duplicate and a relates_to reports only the first.
+
+### An implemented_by relation is stored and never reported
+
+The mapper names it, the create stores it, and the grouping has no branch for it — so it goes in and never comes out of this endpoint. Kept, with a test saying so.
+
+Both the list and the create are **workspace-wide** rather than project-scoped, so a relation may cross projects within one workspace. A pair that already exists is skipped silently rather than refused.
+
 ## Migrated external module: work item activities
 
 Four read-only routes, mounted under both `issues/` and `work-items/`.
