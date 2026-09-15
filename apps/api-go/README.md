@@ -172,6 +172,22 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: the work item list and detail
+
+`GET` on `issues/` and `work-items/`, and on `<uuid>/` under either name, are implemented. Both spellings carry both routes here, unlike the attachments where each name has a path of its own. The write methods are still Django's, so neither path is cut over yet.
+
+`internal/externalapi/issue_order.go` is the ordering branch of the list, which the view writes inline rather than sharing with `order_issue_queryset` — and the two do not agree. `testdata/issue_order_by.tsv` is the `ORDER BY` Django renders for each of the fourteen allowlisted fields in both directions, extracted from Django rather than written by hand, and it pins three differences that reading the two implementations side by side does not show: this ordering carries **no secondary key**, it **reverses the priority list** for a descending sort rather than ordering the same way twice, and its state `Case` carries a **default** so a group outside the five sorts last rather than as a null.
+
+One allowlisted field cannot be served at all. `order_by=issue_module__module__name` reaches the module name through a join and leaves the column out of the select list, which a `SELECT DISTINCT` refuses — so the request fails in the database. The Go port fails it too, with the same body, rather than quietly returning work items in some other order.
+
+The view annotates a cycle id, a link count, an attachment count and a sub-issue count onto every row and then renders them through a serializer that declares none of them, so all four are computed and thrown away. They are not read here.
+
+`external_id` and `external_source` together turn the list into a single-work-item lookup that is not paginated and reads through the **plain** manager rather than the issue manager, so it is the one way to reach an archived, draft or triage work item through this route. Two work items carrying the same pair answer `500` rather than picking one. `pql` and `filters` are refused by name with a `400` naming them, since community builds have no query language.
+
+`expand` replaces an id with the record it names: `state`, `project`, `workspace`, `created_by`, `updated_by`, `parent`, `estimate_point`, `assignees` and `labels` each have a serializer of their own, and each is read in one query for the whole page rather than per work item. Two details come from DRF rather than from the view. A relation that is **null** expands to an empty object rather than to null, because a serializer handed `None` renders the empty mapping. And a name the expansion table does not know falls back to the instance's own `<name>_id`, which for everything but `type` does not exist and lands as null; a name the serializer does not declare at all is ignored.
+
+Three renderings are corrected here for the whole external work item shape, which the reference lookup migrated earlier shares. `start_date`, `target_date` and `archived_at` are `DateField`s and render as the day alone rather than as a midnight instant, and `point` is an `IntegerField` and must not be read as a float — every float this API renders carries a decimal point, so a point read as one would come back as `3.0`.
+
 ## Migrated external module: work item attachments
 
 `GET`, `POST`, `PATCH` and `DELETE` on `issues/<uuid>/issue-attachments/` and on `work-items/<uuid>/attachments/` are implemented. The two spellings are two different paths here rather than the same word in two places: the older one reads `issue-attachments` under `issues`, the newer one reads `attachments` under `work-items`, and neither serves the other's shape — so the proxy matcher names both explicitly rather than accepting a wildcard between them.

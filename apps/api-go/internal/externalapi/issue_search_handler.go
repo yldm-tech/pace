@@ -169,7 +169,7 @@ type externalIssueRow struct {
 	ParentID        *string        `gorm:"column:parent_id"`
 	EstimatePointID *string        `gorm:"column:estimate_point_id"`
 	TypeID          *string        `gorm:"column:type_id"`
-	Point           *float64       `gorm:"column:point"`
+	Point           *int64         `gorm:"column:point"`
 	AssigneeIDs     pq.StringArray `gorm:"column:assignee_ids;type:uuid[]"`
 	LabelIDs        pq.StringArray `gorm:"column:label_ids;type:uuid[]"`
 }
@@ -186,14 +186,16 @@ func externalIssueSelection() string {
 // externalIssueJSON is the external API's IssueSerializer: twenty-nine fields, with the two many-to-many sets rendered as **lists of ids**.
 //
 // The type is reported twice, once as the relation and once as its id, which is what `type` and `type_id` are.
+//
+// Three of the columns hold a date rather than an instant — the two planning dates and the archive stamp — and DRF renders a DateField as the day alone. The estimate is a **relation**, and the point beside it is the integer the older estimate used, so neither is a float however the column is read.
 func externalIssueJSON(row externalIssueRow) gin.H {
 	return gin.H{
 		"id": row.ID, "created_at": row.CreatedAt, "updated_at": row.UpdatedAt,
 		"created_by": row.CreatedByID, "updated_by": row.UpdatedByID, "deleted_at": row.DeletedAt,
 		"name": row.Name, "description_html": row.DescriptionHTML, "description_binary": row.DescriptionBin,
-		"priority": row.Priority, "start_date": row.StartDate, "target_date": row.TargetDate,
+		"priority": row.Priority, "start_date": issueDate(row.StartDate), "target_date": issueDate(row.TargetDate),
 		"sequence_id": row.SequenceID, "sort_order": row.SortOrder,
-		"completed_at": row.CompletedAt, "archived_at": row.ArchivedAt, "is_draft": row.IsDraft,
+		"completed_at": row.CompletedAt, "archived_at": issueDate(row.ArchivedAt), "is_draft": row.IsDraft,
 		"external_source": row.ExternalSource, "external_id": row.ExternalID,
 		"point": row.Point, "estimate_point": row.EstimatePointID,
 		"state": row.StateID, "parent": row.ParentID,
@@ -201,6 +203,14 @@ func externalIssueJSON(row externalIssueRow) gin.H {
 		"assignees": stringsOrEmptyList(row.AssigneeIDs), "labels": stringsOrEmptyList(row.LabelIDs),
 		"project": row.ProjectID, "workspace": row.WorkspaceID,
 	}
+}
+
+// issueDate renders a date column as the day alone, which is what DRF makes of a DateField. Rendering it as an instant would hand every caller a midnight that is not in the data.
+func issueDate(value *time.Time) any {
+	if value == nil {
+		return nil
+	}
+	return value.Format("2006-01-02")
 }
 
 // stringsOrEmptyList renders an id array as a list rather than a null.

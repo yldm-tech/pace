@@ -91,6 +91,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the external work item ordering fixture matches Django
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_external_issue_order_fixture.py > /tmp/external_issue_order_by.tsv
+          if ! diff -u ../api-go/internal/externalapi/testdata/issue_order_by.tsv /tmp/external_issue_order_by.tsv; then
+            echo "::error::apps/api-go/internal/externalapi/testdata/issue_order_by.tsv is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_external_issue_order_fixture.py > ../api-go/internal/externalapi/testdata/issue_order_by.tsv"
+            exit 1
+          fi
+
       - name: Verify the view query fixture matches Python
         working-directory: apps/api
         run: |
