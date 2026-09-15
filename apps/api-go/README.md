@@ -30,6 +30,26 @@ A request with no key at all is not refused by the authenticator — it returns 
 
 Every authenticated call writes the key's `last_used`, so every request is a write even when the route only reads.
 
+## Migrated external module: the cycle picker, archive and archived list
+
+Six routes: `cycles-lite/`, `archived-cycles/`, and the archive pair — which is four routes rather than two.
+
+### One class, two paths, both methods on each
+
+`CycleArchiveUnarchiveAPIEndpoint` is mounted at `cycles/<id>/archive/` **and** at `archived-cycles/<id>/unarchive/`, and an `APIView` dispatches on the **method name** rather than on the path. So both handlers are reachable on both paths: archiving through the unarchive path is nonsense and it is what Django serves. All four are registered.
+
+A cycle is finished by its **end date** rather than by any status — and one ending at this very moment has not ended yet, since the comparison is strict. A cycle with no end date is never archivable. Archiving clears **every** member's favourite of it; unarchiving does not put them back.
+
+### The estimates sum the key, not the value
+
+The archived list's three estimate sums add up `estimate_point__key` — the **position on the scale**, not the points it stands for. A scale of 1/2/3/5/8 reports 1/2/3/4/5, so these numbers do not match the session API's estimate sums, which add the value. Reproduced, with a test naming the difference.
+
+### The lite list accepts an order and ignores it
+
+Its `sanitize_order_by` call omits the allowlist argument, so the **empty** default is used and every field falls back to `-created_at`. The parameter is accepted and then has no effect, whatever it names.
+
+The lite serializer carries **no counts at all**; the full one carries nine.
+
 ## Migrated external module: generic assets
 
 The three routes under `/api/v1/workspaces/<slug>/assets/`: reserve, download, and mark uploaded.
