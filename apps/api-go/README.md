@@ -172,6 +172,28 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: the project detail
+
+`GET`, `PATCH` and `DELETE` on `/api/v1/workspaces/<slug>/projects/<uuid>/`.
+
+### A project cannot be called "Q1 (planning)"
+
+`FORBIDDEN_IDENTIFIER_CHARS_PATTERN` is applied to the **name** as well as the identifier, and it refuses brackets, ampersands, hyphens, dots, percent signs and apostrophes among others. So `Auth & billing`, `front-end` and `v1.0` are all refused as project **names** through this API. Surprising, reproduced, and tested with seventeen cases.
+
+An **archived** project refuses every change, checked before anything else runs.
+
+### intake_view is written whether the request names it or not
+
+It is read back out of the request with the project's own value as the default and then written unconditionally. And turning it on creates the project's default intake when it has none — with a name built from the project's name **as it was before this request**, so a request that renames the project and enables intake in one go names the intake after the old name.
+
+### Deleting clears one favourite, archiving clears them all
+
+The delete's favourite clear names the project **twice** — as the entity and as the scope — so it only removes somebody's favourite of the project itself. The archive route beside it clears the favourites of everything inside the project. Two routes on the same object, two scopes.
+
+The permission is `ProjectBasePermission`, which is three rules in one: a safe method wants any active workspace member, a create wants an admin or member of the **workspace**, and everything else wants a **project** admin — or a workspace admin who is also in the project.
+
+The project list and create stay on Django: they need the default-state seeding, which is the session API's to share first.
+
 ## Migrated external module: the project picker, archive and summary
 
 `GET` on `projects-lite/`, `POST` and `DELETE` on `projects/<uuid>/archive/`, and `GET` on `projects/<uuid>/summary/`.

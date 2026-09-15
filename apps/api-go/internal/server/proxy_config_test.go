@@ -576,6 +576,28 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalProjectDetail(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_project_detail")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	if !matcher.MatchString(project) {
+		t.Error("the external project detail is not cut over to Go")
+	}
+	for _, route := range []string{
+		// The list and create need the default states and stay on Django.
+		"/api/v1/workspaces/acme/projects/",
+		project + "states/",
+		project + "cycles/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_project_detail api-go:8000") {
+		t.Error("community proxy is missing the external project detail reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalModuleRoutes(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_modules")

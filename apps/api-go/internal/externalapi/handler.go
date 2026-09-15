@@ -37,6 +37,8 @@ type Handler struct {
 // TaskPublisher is the slice of the Celery publisher this app needs. The metadata task still runs on the Python worker.
 type TaskPublisher interface {
 	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
+	PublishModelActivity(ctx context.Context, modelName, modelID string, requestedData any, currentInstance *string, actorID, slug, origin string) error
+	PublishWebhookActivity(ctx context.Context, event, verb string, actorID, slug, currentSite, eventID string) error
 }
 
 func NewHandler(database *gorm.DB, settings Settings) *Handler {
@@ -73,6 +75,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerAssetRoutes(router)
 	handler.registerCycleRoutes(router)
 	handler.registerModuleRoutes(router)
+	handler.registerProjectDetailRoutes(router)
 }
 
 // serverError is the catch-all the base view maps an unrecognised failure to. Every message the external API answers with is its own: the session API's wording appears nowhere here.
