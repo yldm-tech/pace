@@ -99,3 +99,44 @@ func TestConditionsAndArgumentsStayInStep(t *testing.T) {
 		t.Fatalf("conditions want %d arguments but %d were produced", total, len(arguments))
 	}
 }
+
+// The bulk list has its own projection: it carries deleted_at, which the paginated one does not, and no state__group, which the paginated one does.
+func TestBulkListProjectionDiffersFromThePaginatedOne(t *testing.T) {
+	row := issueListRow{Issue: sampleIssueRow().Issue}
+	bulk := issueBulkListJSON(row, time.UTC)
+	paginated := issueListRowJSON(row)
+
+	if _, present := bulk["deleted_at"]; !present {
+		t.Error("the bulk list carries deleted_at")
+	}
+	if _, present := paginated["deleted_at"]; present {
+		t.Error("the paginated list does not carry deleted_at")
+	}
+	if _, present := bulk["state__group"]; present {
+		t.Error("the bulk list has no state__group")
+	}
+	if _, present := paginated["state__group"]; !present {
+		t.Error("the paginated list has state__group")
+	}
+	if len(bulk) != 26 {
+		t.Fatalf("the bulk projection has %d fields, want 26", len(bulk))
+	}
+}
+
+// Only created_at and updated_at move into the caller's timezone.
+func TestBulkListConvertsOnlyTheAuditTimestamps(t *testing.T) {
+	shanghai, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		t.Fatal(err)
+	}
+	row := issueListRow{Issue: sampleIssueRow().Issue}
+	data := issueBulkListJSON(row, shanghai)
+	created := data["created_at"].(time.Time)
+	if name, _ := created.Zone(); name != "CST" {
+		t.Fatalf("created_at is in %s", name)
+	}
+	// completed_at is not in the converter's list, and the date fields render as bare dates.
+	if data["start_date"] != "2026-09-15" {
+		t.Fatalf("start_date = %v", data["start_date"])
+	}
+}
