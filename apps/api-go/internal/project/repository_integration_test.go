@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -679,6 +681,105 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	}
 	if countOrZero(annotated.AttachmentCount) != 0 {
 		t.Fatalf("attachment_count = %v, want 0 once the attachment is flagged deleted", annotated.AttachmentCount)
+	}
+
+	// Activity history: the membership and archive gates, the four hidden fields, and the oldest-first ordering.
+	writeActivity := func(field string, createdAt time.Time) string {
+		activityID, err := newUUID()
+		if err != nil {
+			t.Fatal(err)
+		}
+		row := IssueActivity{
+			ID: activityID, CreatedAt: createdAt, UpdatedAt: createdAt, CreatedByID: &user.ID,
+			ProjectID: project.ID, WorkspaceID: workspaceID, IssueID: &issueID,
+			Verb: "updated", ActorID: &user.ID, Attachments: pq.StringArray{},
+		}
+		if field != "" {
+			row.Field = &field
+		}
+		if err := transaction.Create(&row).Error; err != nil {
+			t.Fatalf("create activity through Django schema: %v", err)
+		}
+		return activityID
+	}
+	newest := writeActivity("priority", now)
+	oldest := writeActivity("state", now.Add(-time.Hour))
+	// Each of the four hidden fields must be excluded, and a null field must not be.
+	for _, hidden := range hiddenActivityFields {
+		writeActivity(hidden, now)
+	}
+	nullField := writeActivity("", now.Add(-2*time.Hour))
+
+	history, err := handler.issueActivityRows(ctx, slug, project.ID, issueID, user.ID, nil)
+	if err != nil {
+		t.Fatalf("read the activity history: %v", err)
+	}
+	if len(history) != 3 {
+		fields := make([]string, 0, len(history))
+		for _, row := range history {
+			fields = append(fields, groupKey(row.Field))
+		}
+		t.Fatalf("history has %v, want the two named fields and the null one", fields)
+	}
+	// Oldest first, unlike the model's own ordering.
+	if history[0].ID != nullField || history[1].ID != oldest || history[2].ID != newest {
+		t.Fatal("the history must be ordered oldest first")
+	}
+	// A null field survives the exclusion, because Django's NOT IN over a nullable column keeps it.
+	if history[0].Field != nil {
+		t.Fatalf("the first row is %v, want the null-field activity", history[0].Field)
+	}
+
+	// created_at__gt narrows it.
+	cutoff := now.Add(-30 * time.Minute)
+	recent, err := handler.issueActivityRows(ctx, slug, project.ID, issueID, user.ID, &cutoff)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(recent) != 1 || recent[0].ID != newest {
+		t.Fatalf("the filtered history has %d rows, want only the newest", len(recent))
+	}
+
+	// The serializer fills the nested details from the real rows.
+	serializedHistory, err := handler.serializeActivities(ctx, history, true)
+	if err != nil {
+		t.Fatalf("serialize the history: %v", err)
+	}
+	if len(serializedHistory) != 3 {
+		t.Fatalf("serialized %d activities", len(serializedHistory))
+	}
+	first := serializedHistory[0]
+	if len(first) != 25 {
+		t.Fatalf("serialized activity has %d fields, want 25", len(first))
+	}
+	if detail, ok := first["actor_detail"].(gin.H); !ok || detail["id"] != user.ID {
+		t.Fatalf("actor_detail = %v", first["actor_detail"])
+	}
+	if detail, ok := first["issue_detail"].(gin.H); !ok || detail["id"] != issueID {
+		t.Fatalf("issue_detail = %v", first["issue_detail"])
+	}
+	if detail, ok := first["project_detail"].(gin.H); !ok || detail["identifier"] != project.Identifier {
+		t.Fatalf("project_detail = %v", first["project_detail"])
+	}
+	if detail, ok := first["workspace_detail"].(gin.H); !ok || detail["slug"] != slug {
+		t.Fatalf("workspace_detail = %v", first["workspace_detail"])
+	}
+	// The issue never came through intake, so there is nothing to attach.
+	if first["source_data"] != nil {
+		t.Fatalf("source_data = %v, want null", first["source_data"])
+	}
+
+	// A caller who is not an active member of the project sees nothing at all.
+	strangerID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	empty, err := handler.issueActivityRows(ctx, slug, project.ID, issueID, strangerID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(empty) != 0 {
+		t.Fatalf("a non-member read %d activities", len(empty))
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.
