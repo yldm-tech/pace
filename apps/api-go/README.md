@@ -111,6 +111,16 @@ Its `sanitize_order_by` call omits the allowlist argument, so the **empty** defa
 
 The lite serializer carries **no counts at all**; the full one carries nine.
 
+## Migrated external module: user assets
+
+`POST` on `assets/user-assets/`, `PATCH` and `DELETE` on `<uuid>/`, and the same three under `server/`, are implemented and cut over.
+
+A profile image belongs to a **person** rather than to a workspace, so nothing here is scoped to one and the asset key has no workspace in front of it — the only asset key in this API that does not. The type list is narrower than a work item attachment's: five image types and nothing else. A name that sanitizes away to nothing is stored as `unnamed` rather than refused, and the entity has to be `USER_AVATAR` or `USER_COVER`.
+
+The `PATCH` rewrites the attributes from the payload, which the workspace asset route does not. The `DELETE` takes the image off the person as well as marking it deleted, and it marks it with **both** `is_deleted` and `deleted_at` — so a query that filters only on `deleted_at` still sees it.
+
+`POST assets/user-assets/server/` has never worked. It asks the storage class for server credentials by passing an argument that class does not take, which is a `TypeError` and therefore a `500`. The Go port answers the same `500` rather than quietly fixing it: a route that starts working is a change no caller asked for, and the error it raises is the only behaviour it has ever had. The `PATCH` and `DELETE` under `server/` do work, because neither touches the storage, and they are the same two handlers as the plain pair.
+
 ## Migrated external module: generic assets
 
 The three routes under `/api/v1/workspaces/<slug>/assets/`: reserve, download, and mark uploaded.
