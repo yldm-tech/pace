@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	"github.com/yldm-tech/pace/apps/api-go/internal/pagination"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -840,6 +841,98 @@ func TestProjectModelsAgainstDjangoSchema(t *testing.T) {
 	}
 	if unarchivedReported {
 		t.Fatal("an unarchived issue must not be reported as deleted")
+	}
+
+	// Versions: the paginator's slice against a real count, and the two detail shapes.
+	writeVersion := func(createdAt time.Time) string {
+		versionID, err := newUUID()
+		if err != nil {
+			t.Fatal(err)
+		}
+		row := IssueVersion{
+			ID: versionID, CreatedAt: createdAt, UpdatedAt: createdAt, CreatedByID: &user.ID,
+			ProjectID: project.ID, WorkspaceID: workspaceID, IssueID: issueID, OwnedByID: user.ID,
+			Name: "Snapshot " + suffix, Priority: "none", SequenceID: 1, SortOrder: 65535,
+			Assignees: pq.StringArray{}, Labels: pq.StringArray{}, Modules: pq.StringArray{},
+			Properties: auth.JSONValue("{}"), Meta: auth.JSONValue("{}"), LastSavedAt: createdAt,
+		}
+		if err := transaction.Create(&row).Error; err != nil {
+			t.Fatalf("create issue version through Django schema: %v", err)
+		}
+		return versionID
+	}
+	newestVersion := writeVersion(now)
+	middleVersion := writeVersion(now.Add(-time.Hour))
+	writeVersion(now.Add(-2 * time.Hour))
+
+	var versionCount int64
+	err = transaction.Session(&gorm.Session{}).Model(&IssueVersion{}).
+		Where("issue_id = ? AND deleted_at IS NULL", issueID).Count(&versionCount).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if versionCount != 3 {
+		t.Fatalf("wrote %d versions", versionCount)
+	}
+
+	// Page two of a two-per-page listing is the third row, and there is no page after it.
+	plan, err := pagination.Plan(pagination.Cursor{PageSize: 2, Page: 1}, int(versionCount))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Start != 2 || plan.End != 3 || plan.NextCursor != "" || !plan.PrevPageResults {
+		t.Fatalf("plan = %#v", plan)
+	}
+	var pagedVersions []IssueVersion
+	err = transaction.Session(&gorm.Session{}).Table("issue_versions v").
+		Where("v.issue_id = ? AND v.deleted_at IS NULL", issueID).
+		Order("v.created_at DESC").Offset(plan.Start).Limit(plan.End - plan.Start).
+		Find(&pagedVersions).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(pagedVersions) != 1 {
+		t.Fatalf("page two has %d rows, want 1", len(pagedVersions))
+	}
+	// Newest first, so page one holds the newest two and page two the oldest.
+	var firstPage []IssueVersion
+	err = transaction.Session(&gorm.Session{}).Table("issue_versions v").
+		Where("v.issue_id = ? AND v.deleted_at IS NULL", issueID).
+		Order("v.created_at DESC").Limit(2).Find(&firstPage).Error
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(firstPage) != 2 || firstPage[0].ID != newestVersion || firstPage[1].ID != middleVersion {
+		t.Fatal("the versions must come back newest first")
+	}
+	serializedVersion := issueVersionJSON(firstPage[0])
+	if len(serializedVersion) != 30 {
+		t.Fatalf("serialized version has %d fields, want 30", len(serializedVersion))
+	}
+	if serializedVersion["owned_by"] != user.ID {
+		t.Fatalf("owned_by = %v", serializedVersion["owned_by"])
+	}
+
+	// A description version round-trips its binary column.
+	descriptionVersionID, err := newUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = transaction.Create(&IssueDescriptionVersion{
+		ID: descriptionVersionID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID,
+		ProjectID: project.ID, WorkspaceID: workspaceID, IssueID: issueID, OwnedByID: user.ID,
+		DescriptionBinary: []byte{1, 2, 3}, DescriptionHTML: "<p>body</p>",
+		DescriptionJSON: auth.JSONValue("{}"), LastSavedAt: now,
+	}).Error
+	if err != nil {
+		t.Fatalf("create description version through Django schema: %v", err)
+	}
+	var storedDescription IssueDescriptionVersion
+	if err := transaction.Where("id = ?", descriptionVersionID).Take(&storedDescription).Error; err != nil {
+		t.Fatal(err)
+	}
+	if base64OrNil(storedDescription.DescriptionBinary) != "AQID" {
+		t.Fatalf("description_binary = %v", base64OrNil(storedDescription.DescriptionBinary))
 	}
 
 	// The unique constraints Django relies on must reject a duplicate name.

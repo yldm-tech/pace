@@ -293,6 +293,29 @@ func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheDescriptionVersionRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_work_item_description_versions")
+	versions := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/work-items/11111111-2222-3333-4444-555555555555/description-versions/"
+	for _, route := range []string{versions, versions + "66666666-7777-8888-9999-000000000000/"} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Description version route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The identifier lookup under work-items is a different route and stays on Django.
+		"/api/workspaces/acme/work-items/PROJ-12/",
+		versions + "66666666-7777-8888-9999-000000000000/extra/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_work_item_description_versions api-go:8000") {
+		t.Error("community proxy is missing the Description versions reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_project_issue_operations")
@@ -344,6 +367,8 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "archive/",
 		issue + "history/",
 		issue + "meta/",
+		issue + "versions/",
+		issue + "versions/66666666-7777-8888-9999-000000000000/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
