@@ -1413,6 +1413,22 @@ differently. Those elements are in no allowlist and are unwrapped either way,
 and `TestCleanNeverEscapesThePolicy` reparses generated markup to assert that
 nothing outside the allowlisted tags, attributes, and URL schemes ever survives.
 
+## Migrated module: the advance analytics
+
+The three workspace-level routes are implemented and cut over: the totals across the top of the page, the per-project split, and the three charts. The project-scoped copies of all three are a separate set of views and are not migrated yet.
+
+**Two date shapes, and they do not overlap.** The totals route asks for a pair of timestamps compared against `created_at`; the chart routes ask for a pair of dates compared against `created_at`'s date. A route asks for one and gets nothing for the other, and a `date_filter` neither of them recognises is not an error — it simply leaves the numbers unnarrowed.
+
+**Naming projects changes what "users" means.** Without `project_ids` the overview counts the people in the workspace; with them it counts the *memberships* of those projects, so somebody in two of the named projects is counted twice. The projects chart's member total is a third thing again: it counts every active workspace member including the bots, and ignores `project_ids` entirely.
+
+**The per-project split ignores the dates.** It asks for the chart range and then calls the method that does not use it; the one that does is unreachable. So those rows are the whole history however the caller narrows the dates.
+
+**The intake total reads through the plain manager** rather than `issue_objects`, so unlike every other number on the page it includes the archived work items, the drafts and the ones still in triage. The five statuses it accepts are every status there is, which makes it "work items that arrived through an intake" rather than anything narrower.
+
+The **completion chart** draws one point per month from the workspace's first month to this one. Narrowing the dates moves the first month but not the last: the loop always runs to the current month, so a range ending last year still draws every month since as an empty one.
+
+The **custom chart** counts *distinct* work items, so a work item with three labels adds one to each of three bars rather than three to any of them. The SQL for all thirteen axes was taken from the real ORM rather than written from the field names, which settled the question the field map raises — whether the soft-delete rule on a relation gets its own join or shares the one the key is read from. It shares it.
+
 ## Migrated module: the intake cutover and the intake's description versions
 
 The work items inside an intake were implemented some time ago but the proxy never reached them: the matcher covered `intakes/` and `inboxes/` and stopped there, so all ten routes — five methods under each of the two names the viewset is mounted with — were still being answered by Django. They are cut over now, with no code change behind them.
