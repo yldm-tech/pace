@@ -216,10 +216,10 @@ jobs:
         working-directory: apps/api
         run: |
           python ../api-go/tools/generate_issue_filters_fixture.py > /tmp/issue_filters.tsv
-          if ! diff -u ../api-go/internal/project/testdata/issue_filters.tsv /tmp/issue_filters.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/issue_filters.tsv is stale."
+          if ! diff -u ../api-go/internal/issuefilters/testdata/issue_filters.tsv /tmp/issue_filters.tsv; then
+            echo "::error::apps/api-go/internal/issuefilters/testdata/issue_filters.tsv is stale."
             echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_issue_filters_fixture.py > ../api-go/internal/project/testdata/issue_filters.tsv"
+            echo "  python ../api-go/tools/generate_issue_filters_fixture.py > ../api-go/internal/issuefilters/testdata/issue_filters.tsv"
             exit 1
           fi
 

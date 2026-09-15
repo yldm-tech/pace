@@ -123,13 +123,13 @@ func applyJSONDateQueries(query map[string]any, term string, value any, today ti
 	parsed := map[string]filterValue{}
 	applyDateQueries(parsed, term, queries, today)
 	for lookup, result := range parsed {
-		switch result.kind {
+		switch result.Kind() {
 		case 'b':
-			query[lookup] = result.flag
+			query[lookup] = result.Flag()
 		case 'l':
-			query[lookup] = result.list
+			query[lookup] = result.List()
 		default:
-			query[lookup] = result.text
+			query[lookup] = result.Text()
 		}
 	}
 	return nil
