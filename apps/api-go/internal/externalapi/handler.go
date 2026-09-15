@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
 
@@ -41,6 +42,7 @@ func (handler *Handler) clock() time.Time {
 func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/v1/users/me/", handler.authenticated(handler.currentUser))
 	handler.registerStateRoutes(router)
+	handler.registerProjectRoutes(router)
 }
 
 // serverError is the catch-all the base view maps an unrecognised failure to. Every message the external API answers with is its own: the session API's wording appears nowhere here.
@@ -163,4 +165,9 @@ func narrow(data gin.H, fields []string) gin.H {
 		}
 	}
 	return narrowed
+}
+
+// decodeJSON reads a jsonb column into the shape a response should carry, keeping a blob's own numbers.
+func decodeJSON(value []byte) any {
+	return drf.DecodeJSON(value)
 }
