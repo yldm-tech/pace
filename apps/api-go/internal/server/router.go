@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
+	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
 	"gorm.io/gorm"
 )
 
@@ -75,6 +76,14 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			options = append(options, auth.WithCacheInvalidator(auth.NewRedisCacheInvalidator(dependencies.AuthRedis)))
 		}
 		auth.NewHandler(repository, sessions, *dependencies.AuthSettings, options...).Register(router)
+		userHandler := userapi.NewHandler(dependencies.Database, sessions, repository, userapi.Settings{AppBaseURL: dependencies.AuthSettings.AppBaseURL})
+		if dependencies.AuthRedis != nil {
+			userHandler.SetRedis(dependencies.AuthRedis)
+		}
+		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
+			userHandler.SetTasks(publisher)
+		}
+		userHandler.Register(router)
 	}
 	return router
 }
