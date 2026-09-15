@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -25,10 +26,50 @@ const webhookActivityTaskName = "plane.bgtasks.webhook_task.webhook_activity"
 const recentVisitedTaskName = "plane.bgtasks.recent_visited_task.recent_visited_task"
 const projectAddUserEmailTaskName = "plane.bgtasks.project_add_user_email_task.project_add_user_email"
 
-type CeleryPublisher struct{ brokerURL string }
+// defaultCeleryQueue is the queue the Python worker consumes.
+const defaultCeleryQueue = "celery"
+
+type CeleryPublisher struct {
+	brokerURL string
+	// goQueue receives the tasks the Go worker has taken over. Everything else
+	// keeps going to the Python worker's queue, so the two never compete for a
+	// task only one of them can run.
+	goQueue    string
+	goTasks    map[string]struct{}
+	queueMutex sync.RWMutex
+}
 
 func NewCeleryPublisher(brokerURL string) *CeleryPublisher {
 	return &CeleryPublisher{brokerURL: brokerURL}
+}
+
+// RouteToGoWorker sends the named tasks to queue instead of the Celery default.
+// Passing an empty queue restores the default for every task, which is the
+// rollback switch if the Go worker has to be taken out of the path.
+func (publisher *CeleryPublisher) RouteToGoWorker(queue string, taskNames []string) {
+	publisher.queueMutex.Lock()
+	defer publisher.queueMutex.Unlock()
+	publisher.goQueue = queue
+	if queue == "" {
+		publisher.goTasks = nil
+		return
+	}
+	publisher.goTasks = make(map[string]struct{}, len(taskNames))
+	for _, name := range taskNames {
+		publisher.goTasks[name] = struct{}{}
+	}
+}
+
+func (publisher *CeleryPublisher) queueFor(taskName string) string {
+	publisher.queueMutex.RLock()
+	defer publisher.queueMutex.RUnlock()
+	if publisher.goQueue == "" {
+		return defaultCeleryQueue
+	}
+	if _, migrated := publisher.goTasks[taskName]; migrated {
+		return publisher.goQueue
+	}
+	return defaultCeleryQueue
 }
 
 func (publisher *CeleryPublisher) PublishMagicLink(ctx context.Context, email, key, token string) error {
@@ -127,7 +168,13 @@ func (publisher *CeleryPublisher) send(ctx context.Context, taskName string, arg
 		return fmt.Errorf("open Celery broker channel: %w", err)
 	}
 	defer channel.Close()
-	if err := channel.PublishWithContext(ctx, "", "celery", false, false, message); err != nil {
+	queue := publisher.queueFor(taskName)
+	// Declaring is idempotent and matches how Celery creates its queues, so the
+	// first publish works even before the Go worker has started.
+	if _, err := channel.QueueDeclare(queue, true, false, false, false, nil); err != nil {
+		return fmt.Errorf("declare Celery queue %s: %w", queue, err)
+	}
+	if err := channel.PublishWithContext(ctx, "", queue, false, false, message); err != nil {
 		return fmt.Errorf("publish Celery task: %w", err)
 	}
 	return nil

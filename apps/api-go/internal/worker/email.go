@@ -1,0 +1,203 @@
+package worker
+
+import (
+	"context"
+	"crypto/tls"
+	"embed"
+	"fmt"
+	"html/template"
+	"net"
+	"net/smtp"
+	"regexp"
+	"strconv"
+	"strings"
+)
+
+//go:embed templates/emails
+var emailTemplates embed.FS
+
+// EmailSettings mirrors get_email_configuration, which reads the instance
+// configuration rows and falls back to the environment.
+type EmailSettings struct {
+	Host     string
+	User     string
+	Password string
+	Port     string
+	UseTLS   string
+	UseSSL   string
+	From     string
+}
+
+// ConfigurationReader resolves an instance configuration value, decrypting it
+// the way Django does when the value is stored encrypted.
+type ConfigurationReader interface {
+	ConfigurationValue(ctx context.Context, key, fallback string) (string, error)
+}
+
+// Mailer sends one message. It is an interface so tests can capture instead of
+// dialing a server.
+type Mailer interface {
+	Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error
+}
+
+type SMTPMailer struct{}
+
+// Send reproduces Django's get_connection plus EmailMultiAlternatives: a plain
+// text body with an HTML alternative, over TLS, SSL, or neither.
+func (SMTPMailer) Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error {
+	port := settings.Port
+	if port == "" {
+		port = "587"
+	}
+	address := net.JoinHostPort(settings.Host, port)
+	message := buildMultipartMessage(settings.From, to, subject, text, html)
+
+	dialer := &net.Dialer{}
+	var connection net.Conn
+	var err error
+	if settings.UseSSL == "1" {
+		connection, err = tls.DialWithDialer(dialer, "tcp", address, &tls.Config{ServerName: settings.Host})
+	} else {
+		connection, err = dialer.DialContext(ctx, "tcp", address)
+	}
+	if err != nil {
+		return fmt.Errorf("dial smtp %s: %w", address, err)
+	}
+	client, err := smtp.NewClient(connection, settings.Host)
+	if err != nil {
+		connection.Close()
+		return fmt.Errorf("start smtp session: %w", err)
+	}
+	defer client.Close()
+
+	if settings.UseTLS == "1" && settings.UseSSL != "1" {
+		if err := client.StartTLS(&tls.Config{ServerName: settings.Host}); err != nil {
+			return fmt.Errorf("start tls: %w", err)
+		}
+	}
+	if settings.User != "" {
+		auth := smtp.PlainAuth("", settings.User, settings.Password, settings.Host)
+		if err := client.Auth(auth); err != nil {
+			return fmt.Errorf("smtp auth: %w", err)
+		}
+	}
+	if err := client.Mail(envelopeAddress(settings.From)); err != nil {
+		return fmt.Errorf("smtp from: %w", err)
+	}
+	if err := client.Rcpt(to); err != nil {
+		return fmt.Errorf("smtp rcpt: %w", err)
+	}
+	writer, err := client.Data()
+	if err != nil {
+		return fmt.Errorf("smtp data: %w", err)
+	}
+	if _, err := writer.Write([]byte(message)); err != nil {
+		writer.Close()
+		return fmt.Errorf("write message: %w", err)
+	}
+	if err := writer.Close(); err != nil {
+		return fmt.Errorf("close message: %w", err)
+	}
+	return client.Quit()
+}
+
+// envelopeAddress strips the display name from a "Name <addr>" from header.
+func envelopeAddress(from string) string {
+	start := strings.LastIndex(from, "<")
+	end := strings.LastIndex(from, ">")
+	if start >= 0 && end > start {
+		return from[start+1 : end]
+	}
+	return strings.TrimSpace(from)
+}
+
+func buildMultipartMessage(from, to, subject, text, html string) string {
+	boundary := "pace-go-boundary-0f2a1c"
+	var builder strings.Builder
+	builder.WriteString("From: " + from + "\r\n")
+	builder.WriteString("To: " + to + "\r\n")
+	builder.WriteString("Subject: " + encodeHeader(subject) + "\r\n")
+	builder.WriteString("MIME-Version: 1.0\r\n")
+	builder.WriteString("Content-Type: multipart/alternative; boundary=\"" + boundary + "\"\r\n\r\n")
+	builder.WriteString("--" + boundary + "\r\n")
+	builder.WriteString("Content-Type: text/plain; charset=\"utf-8\"\r\n\r\n")
+	builder.WriteString(text + "\r\n")
+	builder.WriteString("--" + boundary + "\r\n")
+	builder.WriteString("Content-Type: text/html; charset=\"utf-8\"\r\n\r\n")
+	builder.WriteString(html + "\r\n")
+	builder.WriteString("--" + boundary + "--\r\n")
+	return builder.String()
+}
+
+// encodeHeader applies RFC 2047 encoding when the subject is not plain ASCII,
+// which is what Django's message builder does.
+func encodeHeader(value string) string {
+	for _, character := range value {
+		if character > 127 {
+			return mimeEncode(value)
+		}
+	}
+	return value
+}
+
+func mimeEncode(value string) string {
+	return "=?utf-8?b?" + base64Encode(value) + "?="
+}
+
+// renderEmail renders one of the embedded templates with the Django context.
+func renderEmail(name string, context map[string]any) (string, error) {
+	parsed, err := template.ParseFS(emailTemplates, "templates/"+name)
+	if err != nil {
+		return "", fmt.Errorf("parse email template %s: %w", name, err)
+	}
+	var builder strings.Builder
+	if err := parsed.Execute(&builder, context); err != nil {
+		return "", fmt.Errorf("render email template %s: %w", name, err)
+	}
+	return builder.String(), nil
+}
+
+var stylePattern = regexp.MustCompile(`(?is)<style[^>]*>.*?</style>`)
+var tagPattern = regexp.MustCompile(`(?s)<[^>]*>`)
+var blankLinePattern = regexp.MustCompile(`\n\s*\n\s*\n+`)
+
+// plainTextFromHTML reproduces generate_plain_text_from_html: drop style
+// blocks, strip tags, collapse runs of blank lines, and pad with one blank line
+// on each side. Django's strip_tags leaves entities alone, so &amp; stays
+// escaped in the plain text part; that is reproduced rather than unescaped.
+func plainTextFromHTML(html string) string {
+	stripped := stylePattern.ReplaceAllString(html, "")
+	stripped = tagPattern.ReplaceAllString(stripped, "")
+	stripped = blankLinePattern.ReplaceAllString(stripped, "\n\n")
+	return "\n\n" + strings.TrimSpace(stripped) + "\n\n"
+}
+
+// emailSettings reads the same seven keys get_email_configuration reads.
+func emailSettings(ctx context.Context, reader ConfigurationReader, defaults EmailSettings) (EmailSettings, error) {
+	if reader == nil {
+		return defaults, nil
+	}
+	resolved := defaults
+	for _, field := range []struct {
+		key   string
+		value *string
+	}{
+		{key: "EMAIL_HOST", value: &resolved.Host},
+		{key: "EMAIL_HOST_USER", value: &resolved.User},
+		{key: "EMAIL_HOST_PASSWORD", value: &resolved.Password},
+		{key: "EMAIL_PORT", value: &resolved.Port},
+		{key: "EMAIL_USE_TLS", value: &resolved.UseTLS},
+		{key: "EMAIL_USE_SSL", value: &resolved.UseSSL},
+		{key: "EMAIL_FROM", value: &resolved.From},
+	} {
+		value, err := reader.ConfigurationValue(ctx, field.key, *field.value)
+		if err != nil {
+			return EmailSettings{}, err
+		}
+		*field.value = value
+	}
+	if _, err := strconv.Atoi(resolved.Port); err != nil && resolved.Port != "" {
+		return EmailSettings{}, fmt.Errorf("EMAIL_PORT %q is not a number", resolved.Port)
+	}
+	return resolved, nil
+}

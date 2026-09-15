@@ -14,6 +14,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/config"
 	"github.com/yldm-tech/pace/apps/api-go/internal/database"
 	"github.com/yldm-tech/pace/apps/api-go/internal/server"
+	"github.com/yldm-tech/pace/apps/api-go/internal/worker"
 )
 
 func main() {
@@ -62,6 +63,12 @@ func main() {
 		AWSRegion: cfg.Auth.AWSRegion, AWSBucketName: cfg.Auth.AWSBucketName, AWSEndpointURL: cfg.Auth.AWSEndpointURL,
 		UseMinio: cfg.Auth.UseMinio, MinioEndpointSSL: cfg.Auth.MinioEndpointSSL, FileSizeLimit: cfg.Auth.FileSizeLimit,
 	}
+	// Tasks the Go worker implements go to its own queue; everything else keeps
+	// going to the queue the Python worker consumes. Leaving PACE_WORKER_QUEUE
+	// unset routes everything to Python, which is the rollback path.
+	taskPublisher := auth.NewCeleryPublisher(cfg.Auth.AMQPURL)
+	taskPublisher.RouteToGoWorker(os.Getenv("PACE_WORKER_QUEUE"), worker.MigratedTaskNames())
+
 	httpServer := &http.Server{
 		Addr: cfg.Address,
 		Handler: server.NewRouter(server.Dependencies{
@@ -69,7 +76,7 @@ func main() {
 			AuthSkipEnvironmentConfig: cfg.Auth.SkipEnvironmentConfig,
 			AuthRedis:                 redisClient,
 			AuthAvatarStore:           avatarStore,
-			AuthMagicStore:            auth.NewRedisMagicStore(redisClient), AuthTaskPublisher: auth.NewCeleryPublisher(cfg.Auth.AMQPURL),
+			AuthMagicStore:            auth.NewRedisMagicStore(redisClient), AuthTaskPublisher: taskPublisher,
 			AuthRateLimiter: authLimiter,
 		}),
 		ReadHeaderTimeout: 10 * time.Second,

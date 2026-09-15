@@ -64,6 +64,24 @@ services:
       - plane-redis
       - plane-mq
 
+  worker-go:
+    container_name: pace-worker-go
+    build:
+      context: ./apps/api-go
+      dockerfile: Dockerfile
+    entrypoint: ["pace-worker"]
+    restart: always
+    env_file:
+      - ./apps/api/.env
+    environment:
+      # Consumes only its own queue, so the Python worker below keeps receiving
+      # every task that has not been migrated yet.
+      PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
+    depends_on:
+      - plane-db
+      - plane-redis
+      - plane-mq
+
   worker:
     container_name: bgworker
     build:
