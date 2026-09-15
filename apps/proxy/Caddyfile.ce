@@ -11,6 +11,19 @@
 	
 	reverse_proxy /live/* live:3000
 
+	reverse_proxy /api/users/me/ api-go:8000
+	reverse_proxy /api/users/session/ api-go:8000
+	reverse_proxy /api/users/me/settings/ api-go:8000
+	reverse_proxy /api/users/me/email/generate-code/ api-go:8000
+	reverse_proxy /api/users/me/email/ api-go:8000
+	reverse_proxy /api/users/me/profile/ api-go:8000
+	reverse_proxy /api/users/me/accounts/ api-go:8000
+	reverse_proxy /api/users/me/accounts/* api-go:8000
+	reverse_proxy /api/users/me/instance-admin/ api-go:8000
+	reverse_proxy /api/users/me/onboard/ api-go:8000
+	reverse_proxy /api/users/me/tour-completed/ api-go:8000
+	reverse_proxy /api/v1/users/me/ api-go:8000
+
 	reverse_proxy /api/* api:8000
 
 	reverse_proxy /auth/* api-go:8000
