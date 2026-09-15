@@ -659,6 +659,36 @@ func TestCommunityProxyCutsOverTheWorkspaceAssets(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheProjectInvitations(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_project_invites")
+	project := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	invite := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		project + "invitations/",
+		project + "invitations/" + invite,
+		project + "join/" + invite,
+		"/api/users/me/workspaces/acme/projects/invitations/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Project invitation route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The workspace's own invitations are a different route and were cut over separately.
+		"/api/workspaces/acme/invitations/",
+		// And the project roles beside this one are still Django's.
+		"/api/users/me/workspaces/acme/project-roles/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("route %q would be cut over by the project invitation matcher", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_project_invites api-go:8000") {
+		t.Error("community proxy is missing the project invitation reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")
