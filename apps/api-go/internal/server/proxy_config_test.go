@@ -306,6 +306,8 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 		issue + "subscribe/",
 		issue + "issue-links/",
 		issue + "issue-links/77777777-8888-9999-0000-111111111111/",
+		issue + "comments/",
+		issue + "comments/88888888-9999-0000-1111-222222222222/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Issue interaction route %q is not cut over to Go", route)
@@ -313,7 +315,6 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 	}
 	for _, route := range []string{
 		issue,
-		issue + "comments/",
 		issue + "issue-attachments/",
 		issue + "reactions/thumbsup/extra/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/comments/11111111-2222-3333-4444-555555555555/reactions/",
@@ -324,6 +325,25 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 	}
 	if !strings.Contains(config, "reverse_proxy @go_issue_interactions api-go:8000") {
 		t.Error("community proxy is missing the Issue interactions reverse proxy")
+	}
+}
+
+func TestCommunityProxyCutsOverOnlyCommentReactionRoutes(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_comment_reactions")
+	comment := "/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/comments/11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{comment + "reactions/", comment + "reactions/thumbsup/"} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Comment reaction route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{comment, comment + "reactions/thumbsup/extra/"} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_comment_reactions api-go:8000") {
+		t.Error("community proxy is missing the Comment reactions reverse proxy")
 	}
 }
 
