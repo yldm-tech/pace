@@ -129,6 +129,8 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/entity-search/":                                                true,
 		"GET /api/workspaces/:slug/webhooks/":                                                     true,
 		"GET /api/workspaces/:slug/analytic-view/":                                                true,
+		"GET /api/workspaces/:slug/analytics/":                                                    true,
+		"GET /api/workspaces/:slug/saved-analytic-view/:view/":                                    true,
 		"POST /api/workspaces/:slug/analytic-view/":                                               true,
 		"GET /api/workspaces/:slug/analytic-view/:view/":                                          true,
 		"PATCH /api/workspaces/:slug/analytic-view/:view/":                                        true,

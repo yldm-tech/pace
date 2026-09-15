@@ -242,6 +242,36 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: the analytics charts
+
+`GET` on `analytics/` and on `saved-analytic-view/<uuid>/`, and with them `build_graph_plot`.
+
+### A date axis becomes a month, and it is not padded
+
+The four date axes are grouped by a year-and-month **string** built by concatenating two extracted numbers. March 2026 is `2026-3`, not `2026-03`, which matters to anything sorting the keys as text.
+
+Each half is wrapped so a null becomes the empty string rather than a null — so an issue with **no** date does not get dropped by the null filter that follows. It lands under the key `"-"`.
+
+### sort_data loses data on one axis
+
+A **priority** axis is reported in a fixed order — low, medium, high, urgent, none — and every key that order does not name is **dropped**, not appended. Every other axis is sorted with the literal key `"none"` last and the rest in ordinary order.
+
+The fixture is `sort_data`'s own output over ninety-two cases, including ones where the priority path drops a bucket. CI regenerates it.
+
+### The grouping walks runs
+
+`itertools.groupby` groups **consecutive** rows, and the dict comprehension around it keeps the **last** run when a key appears twice. The query orders by the dimension, so in practice a run is a whole group — but the Go port walks runs rather than collecting values, because collecting would quietly differ the day the ordering changed.
+
+### The extras are not all filtered the same way
+
+Each lookup table is filled only when the axis or the segment names what it describes. The **label** one goes through the plain manager rather than `issue_objects`, so a label is listed even when every issue carrying it is archived or a draft. The **assignee** one lists only people who have a picture at all — a filter the endpoint carries and not an obvious one.
+
+### A saved view draws a different chart depending on the request
+
+Its axes come from the saved view and its **segment comes from the request**, so the same saved view segments differently depending on what is asked alongside it. And its stored query is applied as it stands rather than reparsed, so a view saved before the filter grammar changed keeps whatever it stored.
+
+The summary endpoints — `default-analytics/`, `project-stats/` and the three advance-analytics ones — stay on Django.
+
 ## Migrated module: saved analytics views and the export
 
 The six routes under `analytic-view/` and `export-analytics/`.
