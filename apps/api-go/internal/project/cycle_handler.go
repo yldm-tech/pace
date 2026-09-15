@@ -142,7 +142,6 @@ func (handler *Handler) cycleFavoriteCreate(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectRole(c, user, roleAdmin, roleMember) {
 		return
 	}
-	slug, projectID := c.Param("slug"), c.Param("id")
 	var request struct {
 		Cycle *string `json:"cycle"`
 	}
@@ -150,45 +149,57 @@ func (handler *Handler) cycleFavoriteCreate(c *gin.Context, user *auth.User) {
 		handler.invalidDetail(c)
 		return
 	}
-	var workspaceIDs []string
-	err := handler.db.WithContext(c.Request.Context()).Table("workspaces").
-		Where("slug = ?", slug).Limit(1).Pluck("id", &workspaceIDs).Error
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	if len(workspaceIDs) == 0 {
-		handler.notFound(c)
-		return
-	}
-	favoriteID, err := newUUID()
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	now := handler.clock().UTC()
-	err = handler.db.WithContext(c.Request.Context()).Create(&UserFavorite{
-		ID: favoriteID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID, UpdatedByID: &user.ID,
-		ProjectID: &projectID, WorkspaceID: workspaceIDs[0], UserID: user.ID,
-		EntityType: "cycle", EntityIdentifier: request.Cycle, Sequence: 65535,
-	}).Error
-	if err != nil {
-		// The partial unique index rejects a second favourite for the same entity, which Django answers as a 400.
-		c.JSON(http.StatusBadRequest, gin.H{"error": "The payload is not valid"})
+	if !handler.createFavorite(c, user, "cycle", request.Cycle) {
 		return
 	}
 	c.Status(http.StatusNoContent)
 }
 
-// cycleFavoriteDestroy removes the row outright rather than soft deleting it, which is what delete(soft=False) does.
 func (handler *Handler) cycleFavoriteDestroy(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectRole(c, user, roleAdmin, roleMember) {
 		return
 	}
+	handler.destroyFavorite(c, user, "cycle", c.Param("cycle"))
+}
+
+// createFavorite writes a favourite of any entity type. It writes unconditionally, so favouriting twice hits the partial unique index and is answered as a bad payload.
+func (handler *Handler) createFavorite(c *gin.Context, user *auth.User, entityType string, entityID *string) bool {
+	slug, projectID := c.Param("slug"), c.Param("id")
+	var workspaceIDs []string
+	err := handler.db.WithContext(c.Request.Context()).Table("workspaces").
+		Where("slug = ?", slug).Limit(1).Pluck("id", &workspaceIDs).Error
+	if err != nil {
+		handler.internalError(c, err)
+		return false
+	}
+	if len(workspaceIDs) == 0 {
+		handler.notFound(c)
+		return false
+	}
+	favoriteID, err := newUUID()
+	if err != nil {
+		handler.internalError(c, err)
+		return false
+	}
+	now := handler.clock().UTC()
+	err = handler.db.WithContext(c.Request.Context()).Create(&UserFavorite{
+		ID: favoriteID, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID, UpdatedByID: &user.ID,
+		ProjectID: &projectID, WorkspaceID: workspaceIDs[0], UserID: user.ID,
+		EntityType: entityType, EntityIdentifier: entityID, Sequence: 65535,
+	}).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The payload is not valid"})
+		return false
+	}
+	return true
+}
+
+// destroyFavorite removes the row outright rather than soft deleting it, which is what delete(soft=False) does.
+func (handler *Handler) destroyFavorite(c *gin.Context, user *auth.User, entityType, entityID string) {
 	result := handler.db.WithContext(c.Request.Context()).
-		Where(`project_id = ? AND entity_type = 'cycle' AND user_id = ? AND entity_identifier = ?
+		Where(`project_id = ? AND entity_type = ? AND user_id = ? AND entity_identifier = ?
 			AND workspace_id = (SELECT id FROM workspaces WHERE slug = ?) AND deleted_at IS NULL`,
-			c.Param("id"), user.ID, c.Param("cycle"), c.Param("slug")).
+			c.Param("id"), entityType, user.ID, entityID, c.Param("slug")).
 		Delete(&UserFavorite{})
 	if result.Error != nil {
 		handler.internalError(c, result.Error)
