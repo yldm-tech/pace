@@ -188,6 +188,20 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated cycle: the progress endpoint
+
+`GET` on `cycles/<uuid>/progress/`.
+
+The two halves of the body do not come from the same place. The **point sums are always live**; the **issue counts are read from the cycle's progress snapshot** whenever it has one. A cycle whose issues were transferred away keeps the numbers it had at the moment of transfer, because the live count would report the empty cycle it has become. A missing key in the snapshot defaults to zero rather than falling back to counting.
+
+### Zero is spelled two ways in the same body
+
+Five of the six point sums go through Python's `or 0`, so an absent sum **and a sum that is exactly zero** both come back as the integer `0`. The sixth, `total_estimate_points`, carries a Django `default=` instead, which becomes `Coalesce(..., 0)` over a float column — so it is `0.0`. Two fields, four characters apart, in the same response.
+
+The fixture walks every shape the aggregate can produce, including `-0.0`, where the two rules diverge most clearly: `or 0` gives `0` and the coalesced total gives `-0.0`. It renders through the real response path rather than through a stand-in, so it covers the float rewriting too.
+
+The five grouped sums count a non-matching issue as **zero rather than skipping it** — the `Case` has an `ELSE 0` — so they are non-null as soon as the cycle holds a single estimated issue, whatever state it is in. Only a cycle with no estimated issues at all produces the null.
+
 ## Migrated cycle: the archived cycle list
 
 `GET` on `archived-cycles/`.
