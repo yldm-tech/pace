@@ -576,16 +576,20 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
-func TestCommunityProxyCutsOverOnlyTheGlobalSearch(t *testing.T) {
+func TestCommunityProxyCutsOverOnlyTheWorkspaceSearches(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_global_search")
-	if !matcher.MatchString("/api/workspaces/acme/search/") {
-		t.Error("the global search is not cut over to Go")
+	for _, route := range []string{
+		"/api/workspaces/acme/search/",
+		"/api/workspaces/acme/entity-search/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("workspace search route %q is not cut over to Go", route)
+		}
 	}
 	for _, route := range []string{
-		// The entity search is a separate endpoint and is not migrated.
-		"/api/workspaces/acme/entity-search/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/search-issues/",
+		"/api/workspaces/acme/search/something/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

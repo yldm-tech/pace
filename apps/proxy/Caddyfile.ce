@@ -54,7 +54,7 @@
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
 	reverse_proxy @go_work_item_identifier api-go:8000
-	@go_global_search path_regexp go_global_search ^/api/workspaces/[^/]+/search/$
+	@go_global_search path_regexp go_global_search ^/api/workspaces/[^/]+/(search|entity-search)/$
 	reverse_proxy @go_global_search api-go:8000
 
 	@go_issue_search path_regexp go_issue_search ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/search-issues/$
