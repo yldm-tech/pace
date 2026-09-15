@@ -172,6 +172,26 @@ Removing switches the membership **off** rather than deleting it — `is_active`
 
 The three write routes swap `ProjectAdminPermission` in for the read one's `ProjectMemberPermission`.
 
+## Migrated external module: work item comments
+
+Ten routes, mounted under both `issues/` and `work-items/`.
+
+### A comment can be imported with somebody else's name and yesterday's date
+
+An integration may name both the **author** and the **creation time**, which is what lets it import a conversation with its original timestamps. Neither is checked.
+
+The two activities that follow are attributed differently: the **model** activity to the caller, the **issue** activity to the named author. So an imported comment is announced by one and recorded by the other.
+
+### The serializer excludes rather than lists
+
+It names `exclude` instead of `fields`, so the stripped text and the document tree are the **only** things held back — everything else the model grows arrives in the body automatically. Nineteen fields today.
+
+The external-id check on update compares against the comment's **own** id, so rewriting a comment with the id it already has is not a conflict; and the source it compares against falls back to the comment's when the request does not name one.
+
+A rejected description is answered with the sanitizer's own wording under `comment_html`, where the sticky route answers with a message of its own under `error`. Two routes, one sanitizer, two shapes.
+
+A comment defaults to **internal**, so one an integration creates is not public unless it says so.
+
 ## Migrated external module: work item links
 
 Ten routes — five under `issues/` and the same five under `work-items/`, which is how **every** work item route in this API is mounted: under the current name and the one it had before an issue was called a work item.

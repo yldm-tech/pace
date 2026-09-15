@@ -576,6 +576,35 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheExternalIssueComments(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_external_comments")
+	project := "/api/v1/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/"
+	issue := "11111111-2222-3333-4444-555555555555/"
+	comment := "66666666-7777-8888-9999-000000000000/"
+	for _, name := range []string{"issues", "work-items"} {
+		for _, route := range []string{
+			project + name + "/" + issue + "comments/",
+			project + name + "/" + issue + "comments/" + comment,
+		} {
+			if !matcher.MatchString(route) {
+				t.Errorf("External comment route %q is not cut over to Go", route)
+			}
+		}
+	}
+	for _, route := range []string{
+		project + "issues/" + issue + "activities/",
+		project + "work-items/" + issue + "attachments/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_external_comments api-go:8000") {
+		t.Error("community proxy is missing the external comments reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheExternalIssueLinks(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_external_links")
