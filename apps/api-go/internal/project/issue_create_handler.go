@@ -2,8 +2,6 @@ package project
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -12,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/issues"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -129,77 +128,19 @@ func (handler *Handler) issueCreate(c *gin.Context, user *auth.User) {
 
 // writeNewIssue is Issue.save's adding path, plus the related sets the serializer writes after it.
 //
-// The project is locked first. The sequence number and the sort order are both derived from rows that another request could be writing at the same moment, so without the lock two issues created together could claim the same number.
+// The save path itself lives in internal/issues, because the external API creates work items through the same model and the two have to hand out the same sequence numbers while they run together.
 func (handler *Handler) writeNewIssue(tx *gorm.DB, issueID, projectID string, project Project, actorID string, now time.Time, fields issueInput, assignees []string) error {
-	if err := tx.Exec("SELECT pg_advisory_xact_lock(?)", advisoryLockKey(projectID)).Error; err != nil {
-		return err
-	}
-
-	stateID, ok := fields.values["state_id"].(string)
-	if !ok || stateID == "" {
-		// An issue with no state of its own takes the project's default, and failing that whatever state comes first.
-		resolved, err := defaultStateFor(tx, projectID)
-		if err != nil {
-			return err
-		}
-		stateID = resolved
-	}
-
-	var largest []int64
-	err := tx.Table("issue_sequences").Where("project_id = ?", projectID).
-		Select("COALESCE(MAX(sequence), 0)").Scan(&largest).Error
-	if err != nil {
-		return err
-	}
-	sequence := int64(1)
-	if len(largest) > 0 && largest[0] > 0 {
-		sequence = largest[0] + 1
-	}
-
-	// The sort order puts a new issue after everything already in its state, and leaves it at the default when the state is empty.
-	sortOrder := 65535.0
-	var largestSort []float64
-	err = tx.Table("issues").Where("project_id = ? AND state_id = ? AND deleted_at IS NULL", projectID, stateID).
-		Select("COALESCE(MAX(sort_order), -1)").Scan(&largestSort).Error
-	if err != nil {
-		return err
-	}
-	if len(largestSort) > 0 && largestSort[0] >= 0 {
-		sortOrder = largestSort[0] + 10000
-	}
-
 	values := map[string]any{}
 	for key, value := range fields.values {
 		values[key] = value
 	}
 	values["id"] = issueID
-	values["created_at"] = now
-	values["updated_at"] = now
-	values["created_by_id"] = actorID
-	values["updated_by_id"] = actorID
-	values["project_id"] = projectID
-	// ProjectBaseModel.save reads the workspace off the project rather than taking it from the request.
-	values["workspace_id"] = project.WorkspaceID
-	values["state_id"] = stateID
-	values["sequence_id"] = sequence
-	if _, given := values["sort_order"]; !given {
-		values["sort_order"] = sortOrder
-	}
-	if _, given := values["description_html"]; !given {
-		values["description_html"] = "<p></p>"
-	}
 	if _, given := values["description_json"]; !given {
 		values["description_json"] = auth.JSONValue("{}")
 	}
-	values["description_stripped"] = strippedIssueDescription(stringOrEmpty(values["description_html"]))
-
-	// completed_at is set on creation when the chosen state is a completed one, which is what _sync_completed_at does while adding.
-	group, err := stateGroupOf(tx, stateID)
+	sequence, err := issues.PrepareCreate(tx, values, projectID, project.WorkspaceID, actorID, now)
 	if err != nil {
 		return err
-	}
-	if group == "completed" {
-		values["completed_at"] = now
 	}
 
 	if err := tx.Table("issues").Create(values).Error; err != nil {
@@ -280,35 +221,6 @@ func (handler *Handler) defaultAssignee(ctx context.Context, project Project, pr
 	return []string{*project.DefaultAssigneeID}, nil
 }
 
-// defaultStateFor is _ensure_default_state: the project's default state, and failing that whatever non-triage state comes first.
-func defaultStateFor(tx *gorm.DB, projectID string) (string, error) {
-	var identifiers []string
-	err := tx.Table("states").
-		Where(`project_id = ? AND deleted_at IS NULL AND is_triage = FALSE`, projectID).
-		Order(`"default" DESC, sequence ASC`).Limit(1).Pluck("id", &identifiers).Error
-	if err != nil {
-		return "", err
-	}
-	if len(identifiers) == 0 {
-		return "", nil
-	}
-	return identifiers[0], nil
-}
-
-func stateGroupOf(tx *gorm.DB, stateID string) (string, error) {
-	if stateID == "" {
-		return "", nil
-	}
-	var groups []string
-	if err := tx.Table("states").Where("id = ?", stateID).Pluck(`"group"`, &groups).Error; err != nil {
-		return "", err
-	}
-	if len(groups) == 0 {
-		return "", nil
-	}
-	return groups[0], nil
-}
-
 // issueCreateResponseRow reads the issue back through the annotated queryset the response uses.
 func (handler *Handler) issueCreateResponseRow(c *gin.Context, slug, projectID, issueID string) ([]issueListRow, error) {
 	var rows []issueListRow
@@ -336,12 +248,4 @@ func stringOrEmpty(value any) string {
 		return text
 	}
 	return ""
-}
-
-// advisoryLockKey is convert_uuid_to_integer: the first eight bytes of the project id's SHA-256, read as a signed big-endian integer.
-//
-// Both implementations have to agree on it exactly. During the transition a create can arrive at either side, and a lock they compute differently is no lock at all — two issues would take the same sequence number.
-func advisoryLockKey(projectID string) int64 {
-	digest := sha256.Sum256([]byte(projectID))
-	return int64(binary.BigEndian.Uint64(digest[:8]))
 }

@@ -1271,6 +1271,12 @@ A value Python would write as `NaN` or `Infinity` is not JSON, and nothing in th
 
 `drf.DecodeJSON` reads blob columns with `UseNumber`, so a number inside `view_props` or `progress_snapshot` keeps the literal text it was stored with. psycopg hands Django the blob's own parse, so an integer stored there comes back an integer; Go's plain decoder turns every blob number into a `float64`, and after this change `Respond` would have rewritten all of them as floats. The three package-local `decodeJSON` helpers now call it.
 
+## Shared: the work item save path
+
+`internal/issues` holds what `Issue.save` does, which is the part of a work item neither API writes for itself. Both APIs create and update work items through a serializer, and a serializer's `save()` ends in the model's: that is where the sequence number is handed out under an advisory lock, where the sort order is derived from the work items already in the chosen state, where a missing state is filled in, where `completed_at` follows the state, and where the plain-text copy of the description is made.
+
+None of it is reachable through a serializer field, and all of it has to happen the same way on both sides while the two run together — a sequence number the two halves disagree about is two work items with the same key. `AdvisoryLockKey` is `convert_uuid_to_integer`, the first eight bytes of the project id's SHA-256 read as a **signed** integer; `testdata/advisory_lock_keys.tsv` is ten of Django's own keys, half of them negative, because reading the digest unsigned would lock on a different number and lock nothing at all against the other half of the deployment.
+
 ## Shared: the lxml round-trip
 
 The external API's work item serializer parses `description_html` with `lxml.html.fromstring` and writes it back with `tostring` before the sanitizer ever sees it, so what gets stored is libxml2's reading of the markup rather than the markup the caller sent. `internal/htmlsanitizer.RoundTrip` is that pass, and `testdata/lxml_fragment.tsv` is what lxml really writes for sixty-five fragments, generated rather than written by hand.
