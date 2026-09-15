@@ -54,6 +54,9 @@
 	reverse_proxy @go_issue_interactions api-go:8000
 	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
 	reverse_proxy @go_work_item_identifier api-go:8000
+	@go_analytic_views path_regexp go_analytic_views ^/api/workspaces/[^/]+/(analytic-view/([0-9A-Fa-f-]+/)?|export-analytics/)$
+	reverse_proxy @go_analytic_views api-go:8000
+
 	@go_webhooks path_regexp go_webhooks ^/api/workspaces/[^/]+/(webhooks/([0-9A-Fa-f-]+/(regenerate/)?)?|webhook-logs/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_webhooks api-go:8000
 

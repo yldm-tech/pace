@@ -57,6 +57,7 @@ type TaskPublisher interface {
 	PublishPageTransaction(ctx context.Context, newDescriptionHTML string, oldDescriptionHTML *string, pageID string) error
 	PublishTrackPageVersion(ctx context.Context, pageID, existingInstance, userID string) error
 	PublishCopyDescriptionAssets(ctx context.Context, entityName, entityIdentifier, projectID, slug, userID string) error
+	PublishAnalyticExport(ctx context.Context, email string, data map[string]any, slug string) error
 	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 	PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error
 }
@@ -139,6 +140,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerGlobalSearchRoutes(router)
 	handler.registerEntitySearchRoutes(router)
 	handler.registerWebhookRoutes(router)
+	handler.registerAnalyticViewRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

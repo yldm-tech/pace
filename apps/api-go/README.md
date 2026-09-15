@@ -242,6 +242,30 @@ The version task is handed the **previous** state on an update and the **request
 
 The description-versions routes under `intake-work-items/` and the public anchor routes stay on Django.
 
+## Migrated module: saved analytics views and the export
+
+The six routes under `analytic-view/` and `export-analytics/`.
+
+### Every update clears the stored query
+
+The serializer reads `query_data` on the update path — a key the model does not have and no caller sends — so the filters it derives from are always empty. It then derives them a second time with a method the parser does not know, which changes nothing since they were empty already. **The column comes back as the empty object whatever the request said.** The create path reads `query_dict` and works.
+
+This is the `IssueView` serializer's quirk again, one table over, and worse: `IssueView` has a `save()` that recomputes the query correctly and papers over it, and `AnalyticView` has none.
+
+The query itself is read-only and is derived from `query_dict` through the same **JSON-shaped** filter parser the project views use.
+
+### The export validates and then forgets
+
+`export-analytics/` checks the axes and does nothing with them itself — the task reads the body again. So the validation is about refusing a request early, not about what gets exported.
+
+A segment is optional and an **empty** one is not a segment at all, so it skips the second check rather than failing it. The two allowlists are disjoint: nothing that can be grouped by can also be measured.
+
+### No PUT
+
+Django binds only `PATCH` on the detail path, so a `PUT` there is a `405`. Registering one in Go would be a new route rather than a port, and it is left off.
+
+The chart endpoints — `analytics/`, `saved-analytic-view/`, `default-analytics/`, `project-stats/` and the three advance-analytics ones — all need the graph plot and stay on Django.
+
 ## Migrated module: webhooks
 
 The seven routes under `webhooks/` and `webhook-logs/`. Admin only, at the workspace level.
