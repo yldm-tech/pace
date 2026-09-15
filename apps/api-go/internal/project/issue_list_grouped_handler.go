@@ -18,7 +18,8 @@ type groupedIssueRow struct {
 }
 
 // issueListGrouped is the group_by half of the list route. The rows come out of a window partitioned by the group, so one query returns a page of every group at once rather than a page of the whole set.
-func (handler *Handler) issueListGrouped(c *gin.Context, user *auth.User, request issueListRequest) {
+// The caller is not read here — the grouping is the same for everybody, and the space app passes none.
+func (handler *Handler) issueListGrouped(c *gin.Context, _ *auth.User, request issueListRequest) {
 	groupBy := c.Query("group_by")
 	subGroupBy := c.Query("sub_group_by")
 	if !issueGroupByAllowlist[groupBy] {

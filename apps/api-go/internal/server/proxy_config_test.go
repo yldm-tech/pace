@@ -768,17 +768,18 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/intake-issues/66666666-7777-8888-9999-000000000000/",
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/inbox-issues/",
 		anchor + "issues/11111111-2222-3333-4444-555555555555/",
+		anchor + "issues/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Space route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The work item list needs the grouped paginator and is the last route here still on Django.
-		anchor + "issues/",
+		// The space app is complete; what is left under this prefix belongs to other matchers.
+		"/api/public/assets/v2/anchor/0123456789abcdef0123456789abcdef/",
 	} {
 		if matcher.MatchString(route) {
-			t.Errorf("unmigrated route %q would be cut over to Go", route)
+			t.Errorf("route %q would be cut over by the space read matcher", route)
 		}
 	}
 	if !strings.Contains(config, "reverse_proxy @go_space_read api-go:8000") {

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
@@ -235,4 +236,62 @@ func queryParams(c *gin.Context) map[string]string {
 // countPlaceholders says how many arguments a condition consumes, so the flat argument list can be handed out condition by condition.
 func countPlaceholders(condition string) int {
 	return strings.Count(condition, "?")
+}
+
+// ServePublicIssueList is the work item list a published board shows.
+//
+// It is the session list without the parts that need an account: no project lookup of its own, no guest rule, no recorded visit. Everything else — the filters, the ordering, the annotations, the grouped and sub-grouped paginators — is the same code, because the board's list is the same list read by somebody who is not signed in.
+func ServePublicIssueList(c *gin.Context, database *gorm.DB, now time.Time, slug, projectID string) {
+	runner := &Handler{db: database, clock: func() time.Time { return now }}
+
+	perPage, err := pagination.PerPage(c.Query("per_page"), pagination.DefaultPerPage, pagination.DefaultPerPage)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
+		return
+	}
+	cursor := pagination.OffsetCursor{Value: perPage}
+	if raw := c.Query("cursor"); raw != "" {
+		parsed, err := pagination.ParseOffsetCursor(raw)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"detail": "Invalid cursor parameter."})
+			return
+		}
+		cursor = parsed
+	}
+
+	filters := issueFilters(queryParams(c), "GET", "", now)
+	joins, conditions, arguments, translatable := issueFilterSQL(filters)
+	if !translatable {
+		runner.internalError(c, errors.New("issue list: a filter names a field the schema does not have"))
+		return
+	}
+	request := issueListRequest{
+		slug: slug, projectID: projectID, perPage: perPage, cursor: cursor,
+		joins: joins, conditions: conditions, arguments: arguments,
+	}
+	var total int64
+	if err := runner.issueListScope(c.Request.Context(), request).Distinct("i.id").Count(&total).Error; err != nil {
+		runner.internalError(c, err)
+		return
+	}
+	request.total = int(total)
+
+	if c.Query("group_by") != "" {
+		runner.issueListGrouped(c, nil, request)
+		return
+	}
+	rows, err := runner.issueListPage(c, request)
+	if err != nil {
+		runner.internalError(c, err)
+		return
+	}
+	page := pagination.PlanOffsetPage(perPage, cursor, request.total, len(rows), pagination.DefaultPerPage)
+	if len(rows) > page.Limit {
+		rows = rows[:page.Limit]
+	}
+	results := make([]gin.H, 0, len(rows))
+	for _, row := range rows {
+		results = append(results, issueListRowJSON(row))
+	}
+	drf.Respond(c, http.StatusOK, page.Envelope(results, len(results), nil, nil, nil))
 }

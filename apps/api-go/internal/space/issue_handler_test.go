@@ -7,23 +7,26 @@ import (
 	"github.com/lib/pq"
 )
 
-// The detail is served and the list is not, which is the one route of this app still on Django.
-func TestOnlyTheIssueDetailIsServed(t *testing.T) {
+// Both work item routes are served, which completes the app.
+func TestTheIssueRoutesAreServed(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 	NewHandler(nil).Register(router)
 
-	detail := false
+	wanted := map[string]bool{
+		"GET /api/public/anchor/:anchor/issues/":        false,
+		"GET /api/public/anchor/:anchor/issues/:issue/": false,
+	}
 	for _, route := range router.Routes() {
-		if route.Method == "GET" && route.Path == "/api/public/anchor/:anchor/issues/:issue/" {
-			detail = true
-		}
-		if route.Method == "GET" && route.Path == "/api/public/anchor/:anchor/issues/" {
-			t.Error("the work item list is served, and it needs the grouped paginator first")
+		key := route.Method + " " + route.Path
+		if _, listed := wanted[key]; listed {
+			wanted[key] = true
 		}
 	}
-	if !detail {
-		t.Error("the work item detail is not served")
+	for route, found := range wanted {
+		if !found {
+			t.Errorf("%s is not served", route)
+		}
 	}
 }
 
