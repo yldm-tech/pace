@@ -121,6 +121,12 @@ func (handler *Handler) Register(router gin.IRouter) {
 	// Invitation GET is deliberately public and never includes the acceptance token.
 	router.GET("/api/workspaces/:slug/invitations/:id/join/", handler.uuidPath(handler.invitationPublic))
 	router.POST("/api/workspaces/:slug/invitations/:id/join/", handler.uuidPath(handler.invitationJoin))
+
+	router.GET("/api/workspaces/:slug/workspace-themes/", handler.authenticated(handler.themeList))
+	router.POST("/api/workspaces/:slug/workspace-themes/", handler.authenticated(handler.themeCreate))
+	router.GET("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themeRetrieve))
+	router.PATCH("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themePatch))
+	router.DELETE("/api/workspaces/:slug/workspace-themes/:id/", handler.authenticatedUUID(handler.themeDelete))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
