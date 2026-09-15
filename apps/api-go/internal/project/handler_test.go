@@ -67,6 +67,8 @@ func TestProjectRouteInventory(t *testing.T) {
 		"GET /api/workspaces/:slug/projects/:id/issues/:issue/":                                  true,
 		"PATCH /api/workspaces/:slug/projects/:id/issues/:issue/":                                true,
 		"DELETE /api/workspaces/:slug/projects/:id/issues/:issue/":                               true,
+		"GET /api/workspaces/:slug/projects/:id/issues/:issue/sub-issues/":                       true,
+		"POST /api/workspaces/:slug/projects/:id/issues/:issue/sub-issues/":                      true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path

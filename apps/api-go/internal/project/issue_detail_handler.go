@@ -36,6 +36,8 @@ type issueRow struct {
 	AssigneeIDs     pq.StringArray `gorm:"column:assignee_ids;type:uuid[]"`
 	ModuleIDs       pq.StringArray `gorm:"column:module_ids;type:uuid[]"`
 	IsSubscribed    bool           `gorm:"column:is_subscribed"`
+	// StateGroup is annotated only by the sub-issue read, the same way is_subscribed is annotated only by retrieve. GORM leaves it nil on the querysets that do not select it.
+	StateGroup *string `gorm:"column:state_group"`
 }
 
 func (handler *Handler) issueRetrieve(c *gin.Context, user *auth.User) {
@@ -242,13 +244,13 @@ func (handler *Handler) issueDetailRow(ctx context.Context, slug, projectID, iss
 			(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 			(SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL) AS link_count,
 			(SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL) AS attachment_count,
-			(SELECT COUNT(*) FROM issues sub WHERE sub.parent_id = i.id AND sub.deleted_at IS NULL AND sub.archived_at IS NULL AND sub.is_draft = FALSE) AS sub_issues_count,
+			(SELECT COUNT(*) FROM issues sub WHERE sub.parent_id = i.id AND `+issueObjectsPredicate("sub")+`) AS sub_issues_count,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT il2.label_id) FROM issue_labels il2 WHERE il2.issue_id = i.id AND il2.deleted_at IS NULL), '{}') AS label_ids,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT ia.assignee_id) FROM issue_assignees ia
-				JOIN project_members pm2 ON pm2.member_id = ia.assignee_id AND pm2.is_active = TRUE AND pm2.deleted_at IS NULL
+				JOIN project_members pm2 ON pm2.member_id = ia.assignee_id AND pm2.is_active = TRUE
 				WHERE ia.issue_id = i.id AND ia.deleted_at IS NULL), '{}') AS assignee_ids,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT mi.module_id) FROM module_issues mi
-				JOIN modules m ON m.id = mi.module_id AND m.archived_at IS NULL AND m.deleted_at IS NULL
+				JOIN modules m ON m.id = mi.module_id AND m.archived_at IS NULL
 				WHERE mi.issue_id = i.id AND mi.deleted_at IS NULL), '{}') AS module_ids,
 			EXISTS (SELECT 1 FROM issue_subscribers isub WHERE isub.issue_id = i.id AND isub.subscriber_id = ?
 				AND isub.project_id = i.project_id AND isub.deleted_at IS NULL) AS is_subscribed`, userID).
