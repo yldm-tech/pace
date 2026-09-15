@@ -590,6 +590,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 		module,
 		module + "archive/",
 		module + "issues/",
+		project + "archived-modules/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Module route %q is not cut over to Go", route)
@@ -598,7 +599,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 	for _, route := range []string{
 		// The rest of the module app is not migrated, and the issue detail path stays on Django whole.
 		module + "issues/66666666-7777-8888-9999-000000000000/",
-		project + "archived-modules/",
+		project + "archived-modules/11111111-2222-3333-4444-555555555555/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

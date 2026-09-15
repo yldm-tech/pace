@@ -187,6 +187,20 @@ The three counts each carry the same four exclusions — the cycle link and the 
 
 `cycle_view=current` narrows the list to what is running, and falls back to the whole list when nothing is. The list orders favourites first and then newest, overriding the queryset's own ordering by name.
 
+## Migrated module: the archived module list
+
+`GET` on `archived-modules/`.
+
+It is the live list's twin and carries the same annotations, but the two querysets are not built the same way, and neither is their projection.
+
+The live list goes through the viewset's base queryset, which narrows the modules to projects the caller is an active member of and drops archived projects. The archived endpoint is a plain `APIView` that builds from the manager directly, so it does neither: an archived project's archived modules still appear, and membership is left entirely to the permission class. Reproduced, not tidied.
+
+The projection is twenty-six fields where the live one is twenty-eight. This one has no `logo_props` and neither estimate sum, and it carries `archived_at`. A test pins the difference from both sides, because it is the kind of thing that quietly converges when one list is edited.
+
+Only `created_at` and `updated_at` are handed to the timezone converter. `archived_at` goes to the JSON encoder untouched, so it stays in UTC while its two neighbours move to the caller's zone.
+
+The detail route `archived-modules/<uuid>/` stays on Django: it carries the estimate and issue distributions and the burndown chart, which the cycle app has not been through yet either.
+
 ## Migrated module: the module issue list and the two ways to link
 
 `GET` and `POST` on `modules/<uuid>/issues/`, and `POST` on `issues/<uuid>/modules/`.
