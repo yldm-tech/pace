@@ -214,6 +214,20 @@ The duplicate's response is read back through a queryset that annotates only the
 
 The list omits the documents; the detail carries all five of them. Both are scoped to a page with a **live** link to the project in the URL, which is what stops a version being read through a project the page was taken out of — GHSA-g49r and GHSA-ghcr.
 
+## Migrated module: the intake itself
+
+The ten routes under `intakes/` and `inboxes/`: the queue a project's untriaged work lands in.
+
+**The same viewset is mounted twice**, under its current name and the one it had before intake was called inbox. Both are live, both are served, and a test counts the routes on each so renaming the feature in one place does not quietly drop the other.
+
+The list route is not a list. It serializes `.first()`, so the body is one object rather than an array — and a project with no intake gets the **empty object**, because a serializer handed nothing renders nothing rather than failing.
+
+Deleting the intake a project falls back to is refused. An intake that is not there at all answers `500` rather than `404`: Django reads `is_default` off the result of `.first()` with no guard.
+
+The pending count is the one status the triage board treats as waiting, and the project and workspace are read-only, so an intake cannot be moved between projects.
+
+The issues inside an intake are a separate viewset and stay on Django for now, along with the public anchor routes that reach them.
+
 ## Migrated module: pages
 
 Thirteen routes: the list, the summary, create, retrieve, update, delete, lock and unlock, access, archive and unarchive, and the two favourite ones.
