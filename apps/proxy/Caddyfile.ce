@@ -52,6 +52,8 @@
 	reverse_proxy @go_work_item_description_versions api-go:8000
 	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/|issue-relation/|remove-relation/|archive/|history/|meta/|versions/([0-9A-Fa-f-]+/)?)$
 	reverse_proxy @go_issue_interactions api-go:8000
+	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
+	reverse_proxy @go_work_item_identifier api-go:8000
 	@go_issue_list path_regexp go_issue_list ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/(list/)?$
 	reverse_proxy @go_issue_list api-go:8000
 	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$

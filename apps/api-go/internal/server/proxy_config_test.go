@@ -413,6 +413,32 @@ func TestCommunityProxyCutsOverOnlyCommentReactionRoutes(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverOnlyTheWorkItemIdentifierRoute(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_work_item_identifier")
+	for _, route := range []string{
+		"/api/workspaces/acme/work-items/PROJ-42/",
+		// A project identifier may itself contain a dash.
+		"/api/workspaces/acme/work-items/MY-PROJ-7/",
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("the work item identifier route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The description versions live under a project and have their own matcher.
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/work-items/11111111-2222-3333-4444-555555555555/description-versions/",
+		"/api/workspaces/acme/work-items/PROJ-42/extra/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_work_item_identifier api-go:8000") {
+		t.Error("community proxy is missing the work item identifier reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_issue_list")
