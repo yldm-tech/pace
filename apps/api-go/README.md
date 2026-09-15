@@ -188,6 +188,24 @@ The view annotates a cycle id, a link count, an attachment count and a sub-issue
 
 Three renderings are corrected here for the whole external work item shape, which the reference lookup migrated earlier shares. `start_date`, `target_date` and `archived_at` are `DateField`s and render as the day alone rather than as a midnight instant, and `point` is an `IntegerField` and must not be read as a float — every float this API renders carries a decimal point, so a point read as one would come back as `3.0`.
 
+## Migrated external module: the work item create, update and delete
+
+`POST` on `issues/` and `work-items/`, and `PATCH` and `DELETE` on `<uuid>/` under either name, are implemented, and both paths are now cut over. Django binds no `PUT` on either of them: the serializer has a `put` method for upserting by external id, but the URLconf never routes to it, so it is dead and is not ported.
+
+`testdata/issue_validation.tsv` is the body DRF answers with for sixty payloads, generated rather than written by hand and diffed in CI. An integration reads these messages, so a message that differs is one it cannot match. It is what pins the details: every field is checked before any of them is rejected, so two bad fields answer with both, and `validate()` runs only when none of them failed — which is why a bad date never reports the date comparison as well. It also pins the coercions, which are not obvious from the field types: `name: 5` is the string `"5"` while `name: true` is `Not a valid string.`, `point: "12"` is twelve while `point: 1.5` is not an integer, and `deleted_at` takes a day on its own where `start_date` refuses a datetime.
+
+`description_html` is the field that changes on its way in. It goes through libxml2 and then the sanitizer, so `<p>a</p><p>b</p>` is stored wrapped in a `div` — see the lxml round-trip above — and `description_html: ""` is **refused** with `Invalid HTML passed` rather than stored, because markup that parses to nothing is a parser error.
+
+Three behaviours are reproduced rather than tidied:
+
+- The create answers with the work item as it stood **before** its audit columns were rewritten. Django reads `serializer.data` once to find the id it just wrote, which fixes the body then and there, and the `created_at` and `created_by` the caller asked for are written after that. So an import that carries its own dates is answered with today's, even though the row holds the dates it asked for.
+- The delete names no notification and no origin on the activity it queues, unlike the create and the update, so the task falls back to its own defaults.
+- `webhook_event = "issue"` is declared on all three endpoints and read by nothing; the webhook goes out through `model_activity`.
+
+Where this API and the session API part company: an assignee who is not an active member at member level or above is a **refusal** here, naming the identifiers it turned down, where the session API drops them silently. The same goes for a label outside the project. Deleting is narrower than the permission class the route carries — only an admin or the person who raised the work item may, whatever the route allows — and it answers `Only admin or creator can delete the work item`.
+
+The update reads through the plain manager rather than the issue manager the list uses, so an archived, draft or triage work item can be edited and deleted here even though the list will not show it.
+
 ## Migrated external module: work item attachments
 
 `GET`, `POST`, `PATCH` and `DELETE` on `issues/<uuid>/issue-attachments/` and on `work-items/<uuid>/attachments/` are implemented. The two spellings are two different paths here rather than the same word in two places: the older one reads `issue-attachments` under `issues`, the newer one reads `attachments` under `work-items`, and neither serves the other's shape — so the proxy matcher names both explicitly rather than accepting a wildcard between them.

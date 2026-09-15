@@ -18,6 +18,11 @@ func Respond(c *gin.Context, status int, payload any) {
 	c.JSON(status, convert(payload))
 }
 
+// Rendered is what Respond would write, for a caller that needs the body as bytes rather than as a response — the activity tasks carry a serializer's output as a string.
+func Rendered(payload any) any {
+	return convert(payload)
+}
+
 // convert walks maps and slices, replacing datetimes and floats. It copies rather than mutating in place, so a caller that keeps serializing the same map — the sub-issue grouping files one issue under several assignees — is not left holding rewritten values.
 func convert(value any) any {
 	switch typed := value.(type) {

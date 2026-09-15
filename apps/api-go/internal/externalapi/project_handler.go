@@ -36,6 +36,8 @@ type Project struct {
 	Emoji       *string    `gorm:"column:emoji"`
 	ArchivedAt  *time.Time `gorm:"column:archived_at"`
 	IntakeView  bool       `gorm:"column:intake_view"`
+	// DefaultAssigneeID is who a work item goes to when its creator names nobody.
+	DefaultAssigneeID *string `gorm:"column:default_assignee_id;type:uuid"`
 }
 
 func (Project) TableName() string { return "projects" }
