@@ -28,6 +28,13 @@ the Django schema, run the rollback-only integration test:
 AUTH_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/auth -run TestGORMRepositoryAgainstDjangoSchema
 ```
 
+The user/profile/account module uses the same rollback-only shared-schema
+verification:
+
+```bash
+USER_TEST_DATABASE_URL=postgres://... go test -count=1 ./internal/user -run TestUserModelsAgainstDjangoSchema
+```
+
 Health endpoints are `/api/health`, `/api/health/db`, and `/ready`.
 
 ## Migrated module: authentication
@@ -40,3 +47,10 @@ The `/auth/` module preserves all 37 Django routes for app and Space authenticat
 - shared rate limiting, accepted-invitation processing, and existing Celery email side effects.
 
 Sessions are stored in the existing `sessions` table and encoded with Django's signing format. Passwords, password-reset tokens, CSRF masks, cookies, error codes, and redirects remain compatible during gradual traffic cutover. The Go service does not run schema migrations; Django migrations remain authoritative until the database module is migrated.
+
+## Migrated module: user/profile/account
+
+Core `/api/users/me/` profile, session, settings, profile, OAuth accounts, email
+verification, instance-admin, onboarding, deactivation, and `/api/v1/users/me/`
+routes are implemented in `internal/user`; the proxy cuts over only these paths
+while workspace activity and other API modules remain on Django.
