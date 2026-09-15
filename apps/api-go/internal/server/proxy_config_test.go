@@ -548,6 +548,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		project + "user-favorite-cycles/",
 		project + "user-favorite-cycles/11111111-2222-3333-4444-555555555555/",
 		cycle + "user-properties/",
+		project + "cycles/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Cycle route %q is not cut over to Go", route)
@@ -555,7 +556,6 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 	}
 	for _, route := range []string{
 		// The rest of the cycle module is not migrated.
-		project + "cycles/",
 		cycle,
 		cycle + "cycle-issues/",
 		cycle + "analytics/",
