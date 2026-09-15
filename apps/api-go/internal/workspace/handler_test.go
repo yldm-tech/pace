@@ -28,8 +28,17 @@ func TestWorkspaceRouteInventory(t *testing.T) {
 	router := gin.New()
 	NewHandler(nil, nil, nil, Settings{}).Register(router)
 	expected := map[string]bool{
-		"GET /api/workspace-slug-check/": true,
-		"GET /api/workspaces/":           true, "POST /api/workspaces/": true,
+		"GET /api/workspace-slug-check/":                       true,
+		"POST /api/assets/v2/workspaces/:slug/":                true,
+		"GET /api/assets/v2/workspaces/:slug/:asset/":          true,
+		"PATCH /api/assets/v2/workspaces/:slug/:asset/":        true,
+		"DELETE /api/assets/v2/workspaces/:slug/:asset/":       true,
+		"GET /api/assets/v2/workspaces/:slug/check/:asset/":    true,
+		"GET /api/assets/v2/workspaces/:slug/download/:asset/": true,
+		"POST /api/assets/v2/workspaces/:slug/restore/:asset/": true,
+		"GET /api/assets/v2/static/:asset/":                    true,
+
+		"GET /api/workspaces/": true, "POST /api/workspaces/": true,
 		"GET /api/workspaces/:slug/": true, "PUT /api/workspaces/:slug/": true,
 		"PATCH /api/workspaces/:slug/": true, "DELETE /api/workspaces/:slug/": true,
 		"GET /api/users/me/workspaces/":                      true,

@@ -89,11 +89,26 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			userHandler.SetTasks(publisher)
 		}
 		userHandler.Register(router)
+		// A misconfigured bucket leaves the store nil, and every route that signs against it answers 500 rather than reserving a row nothing can upload against.
+		attachmentStore, err := storage.New(storage.Settings{
+			AccessKey:        dependencies.AuthSettings.AWSAccessKeyID,
+			SecretKey:        dependencies.AuthSettings.AWSSecretAccessKey,
+			Region:           dependencies.AuthSettings.AWSRegion,
+			Bucket:           dependencies.AuthSettings.AWSBucketName,
+			Endpoint:         dependencies.AuthSettings.AWSEndpointURL,
+			UseMinio:         dependencies.AuthSettings.UseMinio,
+			MinioEndpointSSL: dependencies.AuthSettings.MinioEndpointSSL,
+			SignedURLExpiry:  dependencies.AuthSettings.SignedURLExpiration,
+		})
 		workspaceHandler := workspaceapi.NewHandler(dependencies.Database, sessions, repository, workspaceapi.Settings{
 			SecretKey:             dependencies.AuthSettings.SecretKey,
 			AppBaseURL:            dependencies.AuthSettings.AppBaseURL,
 			SkipEnvironmentConfig: dependencies.AuthSkipEnvironmentConfig,
+			FileSizeLimit:         dependencies.AuthSettings.FileSizeLimit,
 		})
+		if err == nil {
+			workspaceHandler.SetStorage(attachmentStore)
+		}
 		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
 			workspaceHandler.SetTasks(publisher)
 		}
@@ -108,17 +123,6 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			WebhookAllowedIPs:        dependencies.AuthSettings.WebhookAllowedIPs,
 			WebhookAllowedHosts:      dependencies.AuthSettings.WebhookAllowedHosts,
 			WebhookDisallowedDomains: dependencies.AuthSettings.WebhookDisallowedDomains,
-		})
-		// A misconfigured bucket leaves the store nil, and the attachment routes answer 500 rather than reserving a row nothing can upload against.
-		attachmentStore, err := storage.New(storage.Settings{
-			AccessKey:        dependencies.AuthSettings.AWSAccessKeyID,
-			SecretKey:        dependencies.AuthSettings.AWSSecretAccessKey,
-			Region:           dependencies.AuthSettings.AWSRegion,
-			Bucket:           dependencies.AuthSettings.AWSBucketName,
-			Endpoint:         dependencies.AuthSettings.AWSEndpointURL,
-			UseMinio:         dependencies.AuthSettings.UseMinio,
-			MinioEndpointSSL: dependencies.AuthSettings.MinioEndpointSSL,
-			SignedURLExpiry:  dependencies.AuthSettings.SignedURLExpiration,
 		})
 		if err == nil {
 			projectHandler.SetStorage(attachmentStore)

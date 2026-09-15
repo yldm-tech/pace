@@ -22,6 +22,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -56,12 +57,15 @@ type Settings struct {
 	AppBaseURL               string
 	SkipEnvironmentConfig    bool
 	DisableWorkspaceCreation string
+	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every reserved upload is clamped to.
+	FileSizeLimit int64
 }
 
 type TaskPublisher interface {
 	PublishWorkspaceSeed(ctx context.Context, workspaceID string) error
 	PublishWorkspaceInvitation(ctx context.Context, email, workspaceID, token, currentSite, inviter string) error
 	PublishSoftDeleteRelatedObjects(ctx context.Context, appLabel, modelName, instanceID string) error
+	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 }
 
 type invitationCandidate struct {
@@ -78,6 +82,7 @@ func (candidate invitationCandidate) role() (int, error) {
 
 type Handler struct {
 	db       *gorm.DB
+	storage  *storage.Store
 	sessions *auth.SessionManager
 	users    auth.Repository
 	settings Settings
@@ -94,6 +99,7 @@ func (handler *Handler) SetTasks(publisher TaskPublisher)           { handler.ta
 func (handler *Handler) SetCache(invalidator auth.CacheInvalidator) { handler.cache = invalidator }
 
 func (handler *Handler) Register(router gin.IRouter) {
+	handler.registerAssetRoutes(router)
 	router.GET("/api/workspace-slug-check/", handler.authenticated(handler.slugCheck))
 	router.GET("/api/workspaces/", handler.authenticated(handler.workspaceList))
 	router.POST("/api/workspaces/", handler.authenticated(handler.workspaceCreate))

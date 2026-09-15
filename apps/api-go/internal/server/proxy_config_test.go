@@ -608,6 +608,37 @@ func TestCommunityProxyCutsOverTheSessionEstimates(t *testing.T) {
 	}
 }
 
+func TestCommunityProxyCutsOverTheWorkspaceAssets(t *testing.T) {
+	config := communityProxyConfig(t)
+	matcher := communityProxyMatcher(t, config, "go_workspace_assets")
+	asset := "11111111-2222-3333-4444-555555555555/"
+	for _, route := range []string{
+		"/api/assets/v2/workspaces/acme/",
+		"/api/assets/v2/workspaces/acme/" + asset,
+		"/api/assets/v2/workspaces/acme/check/" + asset,
+		"/api/assets/v2/workspaces/acme/download/" + asset,
+		"/api/assets/v2/workspaces/acme/restore/" + asset,
+		"/api/assets/v2/static/" + asset,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("Workspace asset route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The project's own assets and the duplicate are not migrated, and neither is the user's.
+		"/api/assets/v2/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/",
+		"/api/assets/v2/workspaces/acme/duplicate-assets/" + asset,
+		"/api/assets/v2/user-assets/",
+	} {
+		if matcher.MatchString(route) {
+			t.Errorf("unmigrated route %q would be cut over to Go", route)
+		}
+	}
+	if !strings.Contains(config, "reverse_proxy @go_workspace_assets api-go:8000") {
+		t.Error("community proxy is missing the workspace asset reverse proxy")
+	}
+}
+
 func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 	config := communityProxyConfig(t)
 	matcher := communityProxyMatcher(t, config, "go_states")
