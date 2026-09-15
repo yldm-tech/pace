@@ -154,3 +154,11 @@ func quote(value string) string {
 	}
 	return builder.String()
 }
+
+// CopyObject is copy_object: the bucket copies the bytes from one key to another without them passing through here.
+func (store *Store) CopyObject(ctx context.Context, sourceKey, destinationKey string) error {
+	_, err := store.client.CopyObject(ctx,
+		minio.CopyDestOptions{Bucket: store.bucket, Object: destinationKey},
+		minio.CopySrcOptions{Bucket: store.bucket, Object: sourceKey})
+	return err
+}
