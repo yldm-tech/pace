@@ -1489,6 +1489,20 @@ Four behaviours are reproduced rather than tidied:
 
 The scale and the points written with it are authored differently: a scale records nobody, while the points the create writes record the caller. `project-estimates/` answers an **empty list** when the project uses no scale — not a null and not a 404.
 
+## Migrated space module: the intake queue
+
+The seven intake routes are implemented and cut over. The queue is mounted **twice** under two names — `intake-issues/` and the older `inbox-issues/` — and the older one serves only the list and the create.
+
+Filtering the queue reads the same parameters every other list does, so the filter machinery moved out of the session package into `internal/issuefilters`, which is now where `issue_filters` and the SQL it becomes live for all three applications.
+
+Three behaviours are reproduced rather than tidied:
+
+- The create writes the work item **directly** rather than through the serializer, so it takes no sequence number, no sort order and no default assignee — the same shortcut the external API's intake create takes.
+- The priority that is **checked** and the priority that is **written** are not the same: an absent one passes the check as `none` and is then written as `low`.
+- Editing or removing somebody else's entry is a **400** rather than a `403`, and an edit takes only three fields — the name, the html and the json — whatever else the payload carries.
+
+The list reads through the plain manager rather than the work item one, so a draft or an archived work item in the queue is reported, ordered by when each is snoozed until and then by its status. A board with no intake refuses every one of these routes with the same `400`, and the create additionally refuses an intake that is not the board's own.
+
 ## Migrated space module: comments
 
 The five comment routes are implemented and cut over. This is the one module in the app where the line between reading and writing runs through a single viewset: the list and the retrieve carry **no session** and the create, the update and the delete carry one.

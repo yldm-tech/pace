@@ -1,4 +1,4 @@
-package project
+package issuefilters
 
 import (
 	"sort"
@@ -106,7 +106,8 @@ var issueFilterSQLMap = map[string]issueFilterLookup{
 // A family whose lookups include an isnull is joined with a LEFT OUTER rather than an INNER, because an inner join can never produce the null row that lookup is looking for. That is what Django does, and it is why asking for "issues with no label" works at all.
 //
 // A caller who asks for both — the literal None and a specific label — gets a condition that matches nothing, since both sit on the same join and a column cannot be null and in a list at once. Reproduced rather than corrected: it is what the endpoint does today.
-func issueFilterSQL(filters map[string]filterValue) (joins []string, conditions []string, arguments []any, ok bool) {
+// SQL turns parsed filters into the joins, the conditions and the arguments a query needs, and reports false for a lookup the ORM itself cannot resolve.
+func SQL(filters map[string]Value) (joins []string, conditions []string, arguments []any, ok bool) {
 	// Sorted so the SQL is stable, which matters for both testing and query plan caching.
 	lookups := make([]string, 0, len(filters))
 	for lookup := range filters {
@@ -158,7 +159,7 @@ func issueFilterSQL(filters map[string]filterValue) (joins []string, conditions 
 }
 
 // filterCondition renders one lookup. A list value that arrived from a POST is a single string rather than a list, which Django passes to the ORM whole; here it becomes a one-element list, since that is what the __in lookup does with it.
-func filterCondition(mapped issueFilterLookup, value filterValue) (string, []any) {
+func filterCondition(mapped issueFilterLookup, value Value) (string, []any) {
 	switch mapped.operator {
 	case "ISNULL":
 		if value.flag {
@@ -188,7 +189,7 @@ func filterCondition(mapped issueFilterLookup, value filterValue) (string, []any
 	return "", nil
 }
 
-func filterListValues(value filterValue) []string {
+func filterListValues(value Value) []string {
 	if value.kind == 'l' {
 		return value.list
 	}

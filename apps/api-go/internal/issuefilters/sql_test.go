@@ -1,4 +1,4 @@
-package project
+package issuefilters
 
 import (
 	"strings"
@@ -8,8 +8,8 @@ import (
 
 func sqlFor(t *testing.T, params map[string]string, method string) (joins, conditions []string, arguments []any) {
 	t.Helper()
-	filters := issueFilters(params, method, "", time.Date(2026, 6, 15, 0, 0, 0, 0, time.UTC))
-	joins, conditions, arguments, ok := issueFilterSQL(filters)
+	filters := Parse(params, method, "", time.Date(2026, 6, 15, 0, 0, 0, 0, time.UTC))
+	joins, conditions, arguments, ok := SQL(filters)
 	if !ok {
 		t.Fatalf("issueFilterSQL refused %v", params)
 	}
@@ -131,8 +131,8 @@ func TestDateLookupsUseTheRightCast(t *testing.T) {
 
 // logged_by exists nowhere but in issue_filters itself, so Django cannot resolve it and answers 500. The translation refuses rather than inventing a column.
 func TestLoggedByIsRefused(t *testing.T) {
-	filters := issueFilters(map[string]string{"logged_by": "00000000-0000-0000-0000-000000000001"}, "GET", "", time.Now())
-	if _, _, _, ok := issueFilterSQL(filters); ok {
+	filters := Parse(map[string]string{"logged_by": "00000000-0000-0000-0000-000000000001"}, "GET", "", time.Now())
+	if _, _, _, ok := SQL(filters); ok {
 		t.Fatal("logged_by should be refused, since the ORM cannot resolve it either")
 	}
 }
@@ -150,7 +150,7 @@ func TestPostValuesBecomeSingleElementLists(t *testing.T) {
 
 // An empty list matches nothing rather than everything.
 func TestAnEmptyListMatchesNothing(t *testing.T) {
-	condition, _ := filterCondition(issueFilterSQLMap["priority__in"], listValue(nil))
+	condition, _ := filterCondition(issueFilterSQLMap["priority__in"], ListValue(nil))
 	if condition != "FALSE" {
 		t.Fatalf("an empty IN rendered as %q", condition)
 	}
@@ -184,7 +184,7 @@ func TestEveryProducibleLookupIsMapped(t *testing.T) {
 	for name, candidates := range values {
 		for _, candidate := range candidates {
 			for _, method := range []string{"GET", "POST"} {
-				filters := issueFilters(map[string]string{name: candidate}, method, "", time.Now())
+				filters := Parse(map[string]string{name: candidate}, method, "", time.Now())
 				for lookup := range filters {
 					mapped, known := issueFilterSQLMap[lookup]
 					if !known {

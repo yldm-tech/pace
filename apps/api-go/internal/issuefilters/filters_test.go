@@ -1,4 +1,4 @@
-package project
+package issuefilters
 
 import (
 	"encoding/json"
@@ -37,7 +37,7 @@ func TestIssueFiltersMatchDjango(t *testing.T) {
 		}
 		rows++
 		got := map[string]string{}
-		for lookup, value := range issueFilters(params, method, prefix, frozenFilterToday) {
+		for lookup, value := range Parse(params, method, prefix, frozenFilterToday) {
 			got[lookup] = value.String()
 		}
 		if len(got) != len(want) {
@@ -57,7 +57,7 @@ func TestIssueFiltersMatchDjango(t *testing.T) {
 
 // The POST date branch hands date_filter a string rather than a list, and the loop iterates it one character at a time. Named here because it is the kind of thing a reader would otherwise take for a porting mistake.
 func TestPostDateFiltersIterateTheStringByCharacter(t *testing.T) {
-	result := issueFilters(map[string]string{"updated_at": "2026-01-02;before"}, "POST", "", frozenFilterToday)
+	result := Parse(map[string]string{"updated_at": "2026-01-02;before"}, "POST", "", frozenFilterToday)
 	lte, present := result["updated_at__date__lte"]
 	if !present || lte.String() != "" {
 		t.Fatalf("updated_at__date__lte = %v, want the empty string the lone semicolon produces", result)
@@ -67,7 +67,7 @@ func TestPostDateFiltersIterateTheStringByCharacter(t *testing.T) {
 		t.Fatalf("updated_at__date__contains = %v, want the last character", result)
 	}
 	// The same value on GET is parsed properly.
-	onGet := issueFilters(map[string]string{"updated_at": "2026-01-02;before"}, "GET", "", frozenFilterToday)
+	onGet := Parse(map[string]string{"updated_at": "2026-01-02;before"}, "GET", "", frozenFilterToday)
 	if onGet["updated_at__date__lte"].String() != "2026-01-02" {
 		t.Fatalf("on GET the same value gave %v", onGet)
 	}
@@ -75,11 +75,11 @@ func TestPostDateFiltersIterateTheStringByCharacter(t *testing.T) {
 
 // filter_intake_status guards on intake_status but stores the value of inbox_status, which is the Python None when that parameter is absent.
 func TestPostIntakeStatusReadsTheOtherParameter(t *testing.T) {
-	alone := issueFilters(map[string]string{"intake_status": "1"}, "POST", "", frozenFilterToday)
+	alone := Parse(map[string]string{"intake_status": "1"}, "POST", "", frozenFilterToday)
 	if alone["issue_intake__status__in"].String() != "None" {
 		t.Fatalf("intake_status alone gave %v, want the absent inbox_status", alone)
 	}
-	together := issueFilters(map[string]string{"intake_status": "1", "inbox_status": "2"}, "POST", "", frozenFilterToday)
+	together := Parse(map[string]string{"intake_status": "1", "inbox_status": "2"}, "POST", "", frozenFilterToday)
 	if together["issue_intake__status__in"].String() != "2" {
 		t.Fatalf("together gave %v, want inbox_status to win", together)
 	}
@@ -98,13 +98,13 @@ func TestRelativeDateTerms(t *testing.T) {
 		{value: "3_months;after;fromnow", lookup: "target_date__gte", want: "2026-09-13"},
 		{value: "1_months;before;past", lookup: "target_date__lte", want: "2026-05-16"},
 	} {
-		result := issueFilters(map[string]string{"target_date": test.value}, "GET", "", frozenFilterToday)
+		result := Parse(map[string]string{"target_date": test.value}, "GET", "", frozenFilterToday)
 		if result[test.lookup].String() != test.want {
 			t.Errorf("%s: %s = %q, want %q", test.value, test.lookup, result[test.lookup].String(), test.want)
 		}
 	}
 	// A relative term missing its offset is dropped rather than defaulting.
-	if result := issueFilters(map[string]string{"target_date": "2_weeks;after"}, "GET", "", frozenFilterToday); len(result) != 0 {
+	if result := Parse(map[string]string{"target_date": "2_weeks;after"}, "GET", "", frozenFilterToday); len(result) != 0 {
 		t.Fatalf("a two-part relative term produced %v", result)
 	}
 }
@@ -118,7 +118,7 @@ func TestJoinFiltersAreWrittenUnconditionally(t *testing.T) {
 		"module":     "issue_module__deleted_at__isnull",
 		"subscriber": "issue_subscribers__deleted_at__isnull",
 	} {
-		result := issueFilters(map[string]string{name: ""}, "GET", "", frozenFilterToday)
+		result := Parse(map[string]string{name: ""}, "GET", "", frozenFilterToday)
 		if value, present := result[lookup]; !present || value.String() != "true" {
 			t.Errorf("%s with an empty value should still write %s, got %v", name, lookup, result)
 		}
@@ -127,11 +127,11 @@ func TestJoinFiltersAreWrittenUnconditionally(t *testing.T) {
 
 // A filter runs when its parameter is present at all, even empty, and does not when it is absent.
 func TestAbsentParametersRunNothing(t *testing.T) {
-	if result := issueFilters(map[string]string{}, "GET", "", frozenFilterToday); len(result) != 0 {
+	if result := Parse(map[string]string{}, "GET", "", frozenFilterToday); len(result) != 0 {
 		t.Fatalf("no parameters produced %v", result)
 	}
 	// type defaults to every group when present, which is why its absence matters.
-	present := issueFilters(map[string]string{"type": ""}, "GET", "", frozenFilterToday)
+	present := Parse(map[string]string{"type": ""}, "GET", "", frozenFilterToday)
 	if present["state__group__in"].String() != "[backlog,unstarted,started,completed,cancelled]" {
 		t.Fatalf("type = %v", present)
 	}
