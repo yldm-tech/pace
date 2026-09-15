@@ -65,6 +65,7 @@ func main() {
 		SignedURLExpiration: cfg.Auth.SignedURLExpiration,
 		WebhookAllowedIPs:   cfg.Auth.WebhookAllowedIPs, WebhookAllowedHosts: cfg.Auth.WebhookAllowedHosts,
 		WebhookDisallowedDomains: cfg.Auth.WebhookDisallowedDomains,
+		APIKeyRateLimit:          cfg.Auth.APIKeyRateLimit,
 	}
 	// Tasks the Go worker implements go to its own queue; everything else keeps
 	// going to the queue the Python worker consumes. Leaving PACE_WORKER_QUEUE

@@ -54,7 +54,6 @@ func (handler *Handler) Register(router gin.IRouter) {
 	router.GET("/api/users/me/instance-admin/", handler.authenticated(handler.instanceAdmin))
 	router.PATCH("/api/users/me/onboard/", handler.authenticated(handler.onboard))
 	router.PATCH("/api/users/me/tour-completed/", handler.authenticated(handler.tourCompleted))
-	router.GET("/api/v1/users/me/", handler.authenticated(handler.liteMe))
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {
@@ -83,6 +82,7 @@ func (handler *Handler) me(c *gin.Context, user *auth.User) {
 	drf.Respond(c, http.StatusOK, userMe(user))
 }
 
+// liteMe is the external API's view of the caller. It is served by internal/externalapi rather than here, because that path authenticates with a key rather than a session — routing it through this package refused every integration that called it. The function stays because the shape is this package's to own.
 func (handler *Handler) liteMe(c *gin.Context, user *auth.User) {
 	drf.Respond(c, http.StatusOK, gin.H{
 		"id": user.ID, "first_name": user.FirstName, "last_name": user.LastName, "email": user.Email,

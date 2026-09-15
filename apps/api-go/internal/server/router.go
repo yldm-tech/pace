@@ -8,6 +8,7 @@ import (
 	redis "github.com/redis/go-redis/v9"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
+	"github.com/yldm-tech/pace/apps/api-go/internal/externalapi"
 	projectapi "github.com/yldm-tech/pace/apps/api-go/internal/project"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
 	userapi "github.com/yldm-tech/pace/apps/api-go/internal/user"
@@ -129,6 +130,10 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			projectHandler.SetCache(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
 		}
 		projectHandler.Register(router)
+		externalHandler := externalapi.NewHandler(dependencies.Database, externalapi.Settings{
+			RateLimit: dependencies.AuthSettings.APIKeyRateLimit,
+		})
+		externalHandler.Register(router)
 	}
 	return router
 }

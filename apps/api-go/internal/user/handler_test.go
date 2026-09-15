@@ -148,7 +148,13 @@ func TestUserRouteInventory(t *testing.T) {
 	}
 	router := gin.New()
 	NewHandler(nil, sessions, fakeUsers{}, Settings{}).Register(router)
-	if got := len(router.Routes()); got != 16 {
-		t.Fatalf("user routes = %d, want 16", got)
+	// Fifteen, not sixteen: the external API's /api/v1/users/me/ is served by internal/externalapi, because it authenticates with a key rather than a session.
+	if got := len(router.Routes()); got != 15 {
+		t.Fatalf("user routes = %d, want 15", got)
+	}
+	for _, route := range router.Routes() {
+		if strings.HasPrefix(route.Path, "/api/v1/") {
+			t.Errorf("%s belongs to the external API and must not be registered here", route.Path)
+		}
 	}
 }
