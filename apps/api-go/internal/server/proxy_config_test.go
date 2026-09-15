@@ -872,11 +872,19 @@ func TestCommunityProxyCutsOverTheAdvanceAnalytics(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The project-scoped copies of all three are a separate set of views and are not migrated.
+		// The project-scoped copies of all three, which are a separate set of views over the same filters.
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/advance-analytics/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/advance-analytics-stats/",
 		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/advance-analytics-charts/",
-		// So is the older analytics page, which is already served elsewhere.
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("analytics route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// The older analytics page is a different view and is already served elsewhere.
 		"/api/workspaces/acme/analytics/",
+		"/api/workspaces/acme/projects/01234567-89ab-cdef-0123-456789abcdef/analytics/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
