@@ -733,15 +733,16 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 		anchor + "issues/11111111-2222-3333-4444-555555555555/reactions/smile/",
 		anchor + "comments/11111111-2222-3333-4444-555555555555/reactions/",
 		anchor + "comments/11111111-2222-3333-4444-555555555555/reactions/smile/",
+		anchor + "issues/11111111-2222-3333-4444-555555555555/comments/",
+		anchor + "issues/11111111-2222-3333-4444-555555555555/comments/66666666-7777-8888-9999-000000000000/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Space route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The work items, the comments and the intake under an anchor are not migrated.
+		// The work item list and detail, the intake and the public assets are not migrated.
 		anchor + "issues/",
-		anchor + "issues/11111111-2222-3333-4444-555555555555/comments/",
 		anchor + "intakes/11111111-2222-3333-4444-555555555555/intake-issues/",
 		"/api/public/assets/v2/anchor/0123456789abcdef0123456789abcdef/",
 	} {
