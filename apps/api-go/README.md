@@ -308,3 +308,18 @@ to get wrong by hand: an earlier draft used a narrower IPv6 reserved list and
 would have allowed 791 of the 3298 addresses in the first cross-check corpus
 that Python blocks. The port now matches `is_blocked_ip` on all 67288 addresses
 checked, including dense sweeps either side of every boundary.
+
+## Migrated module: issue reactions and subscribers
+
+The issue reaction list, create and delete routes, the issue subscriber routes,
+and the `subscribe/` endpoint are implemented. They queue `issue_activity` the
+way Django does; that task still runs on the Python worker, and the publisher
+routes anything unmigrated to the Celery queue, so no cutover is needed for it.
+
+Two Django behaviors are reproduced rather than corrected. The subscriber list
+route does not list subscribers: it returns the project's members through
+`ProjectMemberLiteSerializer`, whose `is_subscribed` comes back null because the
+annotation feeding it is never added on that route. And `subscribe/` uses
+`ProjectLitePermission`, so any active project member may subscribe themselves
+whatever their role, while the `issue-subscribers/` routes use
+`ProjectEntityPermission` and require admin or member for writes.
