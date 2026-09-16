@@ -149,14 +149,35 @@ services:
       - plane-db
       - plane-redis
 
+  # The collaborative editor, now the Go one. It replaces the Node service rather
+  # than running beside it: the proxy sends /live/* to one host, and two servers
+  # holding the same page without a relay between them would not converge.
+  #
+  # The service keeps the name live so that the proxy and LIVE_URL are unchanged.
+  # Reverting is switching the build back to ./apps/live/Dockerfile.live, which
+  # is still in the tree.
   live:
     container_name: plane-live
     build:
-      context: .
-      dockerfile: ./apps/live/Dockerfile.live
+      context: ./apps/api-go
+      dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
+    entrypoint: ["pace-live"]
     restart: always
+    env_file:
+      - ./apps/api/.env
+    environment:
+      # The API it reads and writes pages through, as the editing user.
+      API_BASE_URL: ${API_BASE_URL:-http://api-go:8000}
+      LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY:-}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
+      # With no Redis it runs as a single node, and two people on one page have
+      # to reach the same server for it to converge.
+      REDIS_URL: ${REDIS_URL:-redis://plane-redis:6379/}
+    depends_on:
+      - api-go
+      - plane-redis
 
   plane-db:
     container_name: plane-db
