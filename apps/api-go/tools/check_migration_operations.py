@@ -89,14 +89,32 @@ def migrate_with_go(database, app, name):
         raise SystemExit(f"the Go engine refused {app}.{name}:\n{result.stdout}{result.stderr}")
 
 
-def random_columns(seed):
-    """Columns the operation fills with random values, named in the seed file as `-- RANDOM: table.column`.
+def unstable_columns(seed):
+    """Columns whose values differ between two runs of the same code, named in the seed file as `-- UNSTABLE: table.column`.
 
-    Four of these operations exist to scatter rows into an arbitrary order — sort_order, the cycle and module orderings — and call random.randint to do it. Two runs of the same Python disagree with each other, so comparing the values would only ever prove that random is random. What is compared instead is everything else, and the column itself is checked for being filled in at all.
+    There are two kinds. Several operations exist to scatter rows into an arbitrary order and call random.randint to do it, so two runs of the same Python disagree with each other. And an operation that creates rows gets a fresh uuid and the current time for each, which disagree for the same reason.
+
+    Comparing those values would only prove that random is random. What is compared instead is everything else, and the column itself is checked for having been filled in at all.
     """
     found = []
     for line in open(seed):
-        marker = "-- RANDOM:"
+        marker = "-- UNSTABLE:"
+        if line.startswith(marker):
+            for entry in line[len(marker):].split(","):
+                table, _, column = entry.strip().partition(".")
+                if table and column:
+                    found.append((table, column))
+    return found
+
+
+def masked_columns(seed):
+    """Text columns holding an identifier the two runs disagree about, named in the seed file as `-- MASK-HEX32: table.column`.
+
+    db.0049 writes a fresh uuid into the middle of a page's HTML as well as into a column of its own. Excluding the whole column would leave the operation's real output — which blocks were embedded, in what order, with what titles — unchecked. Blanking just the thirty-two hex characters keeps the rest of the string in the comparison.
+    """
+    found = []
+    for line in open(seed):
+        marker = "-- MASK-HEX32:"
         if line.startswith(marker):
             for entry in line[len(marker):].split(","):
                 table, _, column = entry.strip().partition(".")
@@ -116,7 +134,7 @@ def assert_filled(database, columns):
             raise SystemExit(f"{database}: {missing} row(s) of {table}.{column} were left null by an operation that should have filled every one")
 
 
-def dump_rows(database, skip):
+def dump_rows(database, skip, mask):
     """Every row of every table, as text, sorted.
 
     The sort is done here rather than in SQL because most of these tables begin with created_at and no single column orders them, and what is being compared is the set of rows rather than the order the planner happened to return them in.
@@ -132,14 +150,17 @@ def dump_rows(database, skip):
     dumped = {}
     for table in listing:
         skipped = {column for skipped_table, column in skip if skipped_table == table}
-        if skipped:
+        masked = {column for masked_table, column in mask if masked_table == table}
+        if skipped or masked:
             # Named columns rather than *, so a random value can be left out of the comparison. Dropping it here rather than nulling it in the table matters: several of these columns are NOT NULL by the time the migration finishes.
             columns = psql(database, "-qtA", "-c", f"""
                 SELECT column_name FROM information_schema.columns
                  WHERE table_schema = 'public' AND table_name = '{table}'
                  ORDER BY ordinal_position
             """).stdout.split()
-            kept = ", ".join(f'"{column}"' for column in columns if column not in skipped)
+            kept = ", ".join(
+                f"""regexp_replace("{column}", '[0-9a-f]{{32}}', 'MASKED', 'g')""" if column in masked else f'"{column}"'
+                for column in columns if column not in skipped)
             selection = f'SELECT {kept} FROM "{table}"'
         else:
             selection = f'SELECT * FROM "{table}"'
@@ -162,12 +183,13 @@ def check(app, name):
     migrate_with_django(DJANGO_DB, app, name)
     migrate_with_go(GO_DB, app, name)
 
-    scattered = random_columns(seed)
+    scattered = unstable_columns(seed)
+    masked = masked_columns(seed)
     for database in (DJANGO_DB, GO_DB):
         assert_filled(database, scattered)
 
-    django_rows = dump_rows(DJANGO_DB, scattered)
-    go_rows = dump_rows(GO_DB, scattered)
+    django_rows = dump_rows(DJANGO_DB, scattered, masked)
+    go_rows = dump_rows(GO_DB, scattered, masked)
 
     differences = []
     for table in sorted(set(django_rows) | set(go_rows)):
