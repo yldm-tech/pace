@@ -2225,3 +2225,34 @@ The segment columns are the one place this deliberately differs. Upstream builds
 The email itself has no html part. Django renders `emails/exports/analytics.html` only to turn it into plain text and never attaches it, so what arrives is a text body with a spreadsheet beside it. The template is a copy of the one `apps/api` ships and CI diffs the two, the same way it does for the notification email.
 
 `export_analytics_to_csv_email` is ported alongside it. Nothing in this edition queues it; it is handled so that a message carrying its name does not sit unconsumed.
+
+## Shared: BeautifulSoup's reading of html
+
+`internal/soup` reads and writes html the way `BeautifulSoup(content, "html.parser")` does. It exists because the asset copier stores what bs4 made of a description, so whatever it stores has to be bs4's reading of it and not somebody else's.
+
+It is deliberately a second html round trip rather than a reuse of `internal/htmlsanitizer`. That one is libxml2's, reached through lxml, and it corrects markup the way a browser would: a paragraph is closed before a block element opens, a table's rows are moved inside the table. Python's own `html.parser` corrects almost nothing — it keeps a stack, pushes on a start tag and pops to the most recent matching name on an end tag. So `<p>a<div>b</div></p>` keeps the div inside the paragraph, `<p>a<p>b</p>` nests one paragraph inside the other, `<ul><li>a<li>b</ul>` nests the second item inside the first, and `<b>x<i>y</b>z</i>` closes both on the `</b>` and then drops the `</i>`. Running a description through the wrong one of these would quietly rewrite the document.
+
+The tokens come from `x/net/html`'s tokenizer, which agrees with python's on everything a description carries; the tree above them is bs4's, which is where the two really part company.
+
+`testdata/round_trip.json` is what bs4 produces for fifty descriptions — what the editor really writes, followed by the markup that breaks a serialiser — and CI regenerates it. It is what pinned down the parts nobody would have guessed:
+
+- **Attributes come out in name order**, not the order they were written. bs4's formatter sorts them, so `<img src="x" alt="a">` is written back as `<img alt="a" src="x"/>`.
+- A `class` written with two spaces in it comes back with one, because bs4 splits the handful of attributes in `DEFAULT_CDATA_LIST_ATTRIBUTES` on whitespace and joins them with a single space.
+- Void elements are bs4's list, not the html5 one, so `image`, `isindex`, `nextid` and `spacer` self-close along with `br` and `img`.
+- A custom tag written `<x/>` is written back as `<x></x>`; only the tags on that list ever self-close.
+- Only `&`, `<` and `>` are escaped in text; a quote is left alone. An attribute carrying a double quote and no single one is wrapped in single quotes rather than escaped.
+- `script` and `style` contents are written back exactly as they were read.
+
+## Migrated service: copying a description's pictures
+
+`copy_s3_objects_of_description_and_assets` runs when a page or a work item is duplicated, so the copy points at its own files rather than at the original's. `internal/worker/copy_assets.go` is the port.
+
+Four steps: read the asset ids out of the description, duplicate each asset in the bucket and in the table, rewrite the description to point at the copies, and ask the live server to turn the new html into the two representations the editor reads. The whole thing sits in one `try` upstream whose `except` logs and returns, so a copy whose pictures could not be duplicated simply keeps pointing at the original's — reproduced rather than corrected, which is why every failure here is logged and swallowed.
+
+**The user who asked for the copy is thrown away.** `user_id` is handed to `FileAsset.objects.create(created_by_id=...)` and then discarded, because `BaseModel.save` reads the current user out of crum rather than off the instance and a worker has no current user. The same blanking hits the page or work item itself: duplicating a page forgets who made it. Both are reproduced, and the second is the same rule already documented for the link crawler.
+
+The originals are looked up by workspace and project as well as by id, so a description naming a picture from another project copies nothing for it and keeps pointing at the original. Only three of an asset's attributes are carried over — name, type and size — and anything else the original held is dropped. The copies are marked uploaded in one statement after the fact, which is what keeps a half-finished copy out of the sweep that deletes unuploaded assets.
+
+`get_entity_id_field` does not name every entity type. `DRAFT_ISSUE_ATTACHMENT` is missing from it, so a copy of one is owned by nothing at all — none of the owner columns is written.
+
+The live server is the one piece of this that reaches outside the installation, and it is still the Node service. With no `LIVE_BASE_URL` configured the call is skipped and the copy keeps whatever json and binary it already had, which is what upstream does too — the copy then opens with the original's content until somebody edits it. Any status other than 200 is treated the same way, since `requests` only raises when the call itself fails.
