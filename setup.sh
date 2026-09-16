@@ -77,8 +77,10 @@ else
     success=false
 fi
 
-# Activate pnpm (version set in package.json)
-corepack enable pnpm || success=false
+# Activate pnpm (version set in package.json). corepack is only needed when pnpm is not already on PATH -- it ships with some Node distributions and not others, and a pnpm installed by Homebrew or a version manager works just as well. Calling it unconditionally made this script report failure and exit 1 on machines where everything had in fact succeeded.
+if ! command -v pnpm >/dev/null 2>&1; then
+    corepack enable pnpm || success=false
+fi
 # Install Node dependencies
 pnpm install || success=false
 
