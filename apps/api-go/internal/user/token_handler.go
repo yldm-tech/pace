@@ -22,6 +22,9 @@ func (handler *Handler) registerTokenRoutes(router gin.IRouter) {
 }
 
 // APIToken is a key somebody made for the external API.
+// defaultAllowedRateLimit is the model's default for api_tokens.allowed_rate_limit.
+var defaultAllowedRateLimit = "60/min"
+
 type APIToken struct {
 	ID               string     `gorm:"column:id;type:uuid;primaryKey"`
 	CreatedAt        time.Time  `gorm:"column:created_at"`
@@ -89,6 +92,8 @@ func (handler *Handler) tokenCreate(c *gin.Context, user *auth.User) {
 		// The key is a fixed prefix and thirty-two hexadecimal characters, which is what makes one recognisable in a log.
 		Token:  "plane_api_" + hexIdentifier(),
 		UserID: user.ID, ExpiredAt: expiry,
+		// NOT NULL with no database default, and the field is a pointer, so leaving it out writes a null. Django's default is what the recorded migration set the column to when it added it.
+		AllowedRateLimit: &defaultAllowedRateLimit,
 	}
 	// A bot's key is marked as one, which is what tells the external API it is not a person.
 	if user.IsBot {

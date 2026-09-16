@@ -171,11 +171,23 @@ func (handler *Handler) intakeCreate(c *gin.Context, user *auth.User) {
 		return
 	}
 	err = handler.db.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		// The number a work item is known by inside its project. It is NOT NULL and nothing hands one out, so it is taken the way every other issue takes it: one past the largest the project has issued.
+		var largestSequence *int
+		if err := tx.Table("issue_sequences").
+			Where("project_id = ? AND deleted_at IS NULL", *board.ProjectID).
+			Select("MAX(sequence)").Scan(&largestSequence).Error; err != nil {
+			return err
+		}
+		sequence := 1
+		if largestSequence != nil {
+			sequence = *largestSequence + 1
+		}
 		err := tx.Table("issues").Create(map[string]any{
 			"id": issueID, "created_at": now, "updated_at": now,
 			"name": name, "description_json": auth.JSONValue(descriptionJSON), "description_html": html,
 			"priority": written, "project_id": *board.ProjectID, "workspace_id": board.WorkspaceID,
 			"state_id": triageID, "sort_order": 65535, "is_draft": false,
+			"sequence_id": sequence,
 		}).Error
 		if err != nil {
 			return err
@@ -351,6 +363,8 @@ func (handler *Handler) ensureTriageState(c *gin.Context, board DeployBoard, now
 		"name": "Triage", "group": "triage", "project_id": *board.ProjectID,
 		"workspace_id": board.WorkspaceID, "color": "#4E5355", "sequence": 65000,
 		"default": false, "is_triage": true,
+		// Both NOT NULL, and both an empty string when Django is not given one.
+		"description": "", "slug": "",
 	}).Error
 	if err != nil {
 		return "", err

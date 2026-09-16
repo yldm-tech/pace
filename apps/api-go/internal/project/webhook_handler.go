@@ -43,6 +43,9 @@ type Webhook struct {
 	Module       bool       `gorm:"column:module"`
 	Cycle        bool       `gorm:"column:cycle"`
 	IssueComment bool       `gorm:"column:issue_comment"`
+	// Both NOT NULL with no database default. A column the struct has no field for is one GORM does not write, which is a null rather than the value Django would have put there — "v1" and false.
+	Version    string `gorm:"column:version"`
+	IsInternal bool   `gorm:"column:is_internal"`
 }
 
 func (Webhook) TableName() string { return "webhooks" }
@@ -155,6 +158,8 @@ func (handler *Handler) webhookCreate(c *gin.Context, user *auth.User) {
 	webhook := Webhook{
 		ID: identifier, CreatedAt: now, UpdatedAt: now, CreatedByID: &user.ID, UpdatedByID: &user.ID,
 		WorkspaceID: workspaceIDs[0], URL: target, IsActive: true, SecretKey: secret,
+		// Django's defaults for the two columns, which Go zero values would have made "" and false.
+		Version: "v1", IsInternal: false,
 	}
 	applyWebhookPayload(&webhook, payload)
 

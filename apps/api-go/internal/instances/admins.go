@@ -379,34 +379,23 @@ func (handler *Handler) adminSignUp(c *gin.Context) {
 		}
 
 		now := handler.clock().UTC()
-		user = auth.User{
-			ID: uuid.NewString(), FirstName: firstName, LastName: lastName, Email: email,
-			Username: strings.ReplaceAll(uuid.NewString(), "-", ""), Password: hashed,
-		}
-		err := tx.Table("users").Create(map[string]any{
-			"id": user.ID, "created_at": now, "updated_at": now,
-			"first_name": firstName, "last_name": lastName, "email": email,
-			"username": user.Username, "password": hashed, "is_password_autoset": false,
-			"is_active": true, "is_staff": false, "is_superuser": false, "is_bot": false,
-			"is_managed": false, "is_onboarded": false, "is_tour_completed": false,
-			"is_email_verified": false, "is_password_expired": false,
-			"date_joined": now, "user_timezone": "UTC",
-			"last_active": now, "last_login_time": now,
-			"last_login_ip": requestIP(c), "last_login_uagent": c.Request.UserAgent(),
-			"token_updated_at": now,
-		}).Error
+		// The same three rows the ordinary sign-up writes, built by the same function. Writing them here by hand is what left god-mode unable to create its first admin at all: the insert named columns that had moved to the profile, named audit columns the profile does not have, and left out nineteen NOT NULL columns between the two tables.
+		created, profile, preference, err := auth.NewUserRecords(email, hashed, firstName, lastName, "", false, false, now)
 		if err != nil {
 			return err
 		}
-		err = tx.Table("profiles").Create(map[string]any{
-			"id": uuid.NewString(), "created_at": now, "updated_at": now,
-			"created_by_id": nil, "updated_by_id": nil,
-			"user_id": user.ID, "company_name": companyName,
-			"theme": "{}", "onboarding_step": "{}", "use_case": nil,
-			"role": nil, "is_tour_completed": false, "is_onboarded": false,
-			"billing_address_country": "INDIA", "has_billing_address": false,
-		}).Error
-		if err != nil {
+		created.LastLoginIP = requestIP(c)
+		created.LastLoginUserAgent = c.Request.UserAgent()
+		created.TokenUpdatedAt = &now
+		profile.CompanyName = companyName
+		user = *created
+		if err := tx.Create(created).Error; err != nil {
+			return err
+		}
+		if err := tx.Create(profile).Error; err != nil {
+			return err
+		}
+		if err := tx.Create(preference).Error; err != nil {
 			return err
 		}
 		err = tx.Table("instance_admins").Create(map[string]any{

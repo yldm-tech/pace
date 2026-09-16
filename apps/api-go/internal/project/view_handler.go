@@ -1,6 +1,7 @@
 package project
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -12,6 +13,19 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"gorm.io/gorm"
 )
+
+
+// newIssueView is a view with every NOT NULL column already holding what Django's model default would have put there.
+//
+// The six jsonb columns are backed by []byte fields, and a nil one is written as null rather than as an empty object — which is why creating any view at all failed on filters. The two display objects are not empty: their defaults are the whole shape the editor expects.
+func newIssueView() IssueView {
+	const displayFilters = `{"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}`
+	const displayProperties = `{"assignee": true, "attachment_count": true, "created_on": true, "due_date": true, "estimate": true, "key": true, "labels": true, "link": true, "priority": true, "start_date": true, "state": true, "sub_issue_count": true, "updated_on": true}`
+	return IssueView{
+		Query: []byte("{}"), Filters: []byte("{}"), RichFilters: []byte("{}"), LogoProps: []byte("{}"),
+		DisplayFilters: []byte(displayFilters), DisplayProperties: []byte(displayProperties),
+	}
+}
 
 func (handler *Handler) registerViewRoutes(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/:id/views/", handler.authenticated(handler.viewList))
@@ -191,10 +205,12 @@ func (handler *Handler) viewCreate(c *gin.Context, user *auth.User) {
 		return
 	}
 
-	view := IssueView{
-		ProjectID: &projectID, WorkspaceID: project.WorkspaceID, OwnedByID: user.ID,
-		CreatedByID: &user.ID, UpdatedByID: &user.ID,
-	}
+	view := newIssueView()
+	view.ProjectID = &projectID
+	view.WorkspaceID = project.WorkspaceID
+	view.OwnedByID = user.ID
+	view.CreatedByID = &user.ID
+	view.UpdatedByID = &user.ID
 	applyViewPayload(&view, payload)
 
 	identifier, err := newUUID()
@@ -401,17 +417,18 @@ func applyViewPayload(view *IssueView, payload map[string]any) {
 
 // nextViewSortOrder places a new view after every other view in the project. A project with none leaves the model default alone.
 func (handler *Handler) nextViewSortOrder(c *gin.Context, projectID string) (float64, error) {
-	var largest []float64
+	// MAX over no rows is one row holding null rather than no rows at all, and neither a float64 nor a *float64 survives Pluck scanning that. A nullable scan target is what does.
+	var largest sql.NullFloat64
 	err := handler.db.WithContext(c.Request.Context()).Table("issue_views").
 		Where("project_id = ? AND deleted_at IS NULL", projectID).
-		Pluck("MAX(sort_order)", &largest).Error
+		Select("MAX(sort_order)").Row().Scan(&largest)
 	if err != nil {
 		return 0, err
 	}
-	if len(largest) == 0 {
+	if !largest.Valid {
 		return defaultViewSortOrder, nil
 	}
-	return largest[0] + 10000, nil
+	return largest.Float64 + 10000, nil
 }
 
 const defaultViewSortOrder = 65535

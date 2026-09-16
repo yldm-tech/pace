@@ -1,6 +1,7 @@
 package project
 
 import (
+	"database/sql"
 	"errors"
 	"net/http"
 	"strings"
@@ -140,7 +141,11 @@ func (handler *Handler) workspaceViewCreate(c *gin.Context, user *auth.User) {
 		return
 	}
 
-	view := IssueView{WorkspaceID: workspaceIDs[0], OwnedByID: user.ID, CreatedByID: &user.ID, UpdatedByID: &user.ID}
+	view := newIssueView()
+	view.WorkspaceID = workspaceIDs[0]
+	view.OwnedByID = user.ID
+	view.CreatedByID = &user.ID
+	view.UpdatedByID = &user.ID
 	applyViewPayload(&view, payload)
 
 	identifier, err := newUUID()
@@ -286,17 +291,18 @@ func (handler *Handler) workspaceViewByID(c *gin.Context, slug, viewID string) (
 
 // nextWorkspaceViewSortOrder places a new view after every other project-less view in the workspace.
 func (handler *Handler) nextWorkspaceViewSortOrder(c *gin.Context, workspaceID string) (float64, error) {
-	var largest []float64
+	// MAX over no rows is one row holding null rather than no rows at all, and neither a float64 nor a *float64 survives Pluck scanning that. A nullable scan target is what does.
+	var largest sql.NullFloat64
 	err := handler.db.WithContext(c.Request.Context()).Table("issue_views").
 		Where("workspace_id = ? AND project_id IS NULL AND deleted_at IS NULL", workspaceID).
-		Pluck("MAX(sort_order)", &largest).Error
+		Select("MAX(sort_order)").Row().Scan(&largest)
 	if err != nil {
 		return 0, err
 	}
-	if len(largest) == 0 {
+	if !largest.Valid {
 		return defaultViewSortOrder, nil
 	}
-	return largest[0] + 10000, nil
+	return largest.Float64 + 10000, nil
 }
 
 // requireWorkspaceViewCreatorOrRoles is allow_permission at the workspace level with creator=True: the caller must be in the workspace at all, and then passes as the object's creator or as the holder of one of the named workspace roles.

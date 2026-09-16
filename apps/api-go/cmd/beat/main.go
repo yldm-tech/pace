@@ -51,7 +51,7 @@ func main() {
 	logger.Info("static schedule synced", "entries", len(staticSchedule))
 
 	publisher := auth.NewCeleryPublisher(settings.Auth.AMQPURL)
-	publisher.RouteToGoWorker(os.Getenv("PACE_WORKER_QUEUE"), worker.MigratedTaskNames())
+	publisher.RouteToGoWorker(workerQueue(), worker.MigratedTaskNames())
 
 	scheduler := beat.NewScheduler(store, publisher, logger)
 	logger.Info("beat starting")
@@ -70,3 +70,6 @@ func metricsPushInterval() int {
 	}
 	return value
 }
+
+// workerQueue is worker.Queue, named locally so the three commands read the same.
+func workerQueue() string { return worker.Queue() }

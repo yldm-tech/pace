@@ -38,6 +38,8 @@ type FileAsset struct {
 	Size            float64    `gorm:"column:size"`
 	IsUploaded      bool       `gorm:"column:is_uploaded"`
 	StorageMetadata []byte     `gorm:"column:storage_metadata;type:jsonb"`
+	// NOT NULL with no database default. A column the struct has no field for is one GORM does not write, which is a null rather than the false Django would have put there.
+	IsArchived bool `gorm:"column:is_archived"`
 }
 
 func (FileAsset) TableName() string { return "file_assets" }

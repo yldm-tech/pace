@@ -11,6 +11,8 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/lib/pq"
+
 	"github.com/google/uuid"
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"gorm.io/gorm"
@@ -123,15 +125,21 @@ func (tasks *WorkspaceSeedTasks) createBotUser(ctx context.Context, workspaceID 
 	botID := uuid.NewString()
 	err = tasks.db.WithContext(ctx).Table("users").Create(map[string]any{
 		"id": botID, "created_at": now, "updated_at": now,
-		"username": "bot_user_" + workspaceID, "display_name": "Plane",
+		"username":   "bot_user_" + workspaceID,
 		"first_name": "Plane", "last_name": "",
 		"is_bot": true, "bot_type": "WORKSPACE_SEED",
 		"email":    "bot_user_" + workspaceID + "@" + hostname,
 		"password": password, "is_password_autoset": true,
 		"is_active": true, "is_staff": false, "is_superuser": false,
-		"is_managed": false, "is_onboarded": false, "is_tour_completed": false,
+		// is_onboarded and is_tour_completed live on the profile since db.0065, not on the user. A bot has no profile and needs neither.
+		"is_managed":        false,
 		"is_email_verified": false, "is_password_expired": false,
 		"date_joined": now, "user_timezone": "UTC",
+		// The rest of the user's NOT NULL columns. Django fills each from its field's default, and for a CharField that allows empty strings with no explicit default that is "" rather than null.
+		"avatar": "", "display_name": "Plane", "token": "",
+		"last_location": "", "created_location": "",
+		"last_login_ip": "", "last_logout_ip": "", "last_login_medium": "", "last_login_uagent": "",
+		"is_email_valid": false, "is_password_reset_required": false,
 	}).Error
 	if err != nil {
 		return "", err
@@ -565,6 +573,8 @@ func (tasks *WorkspaceSeedTasks) seedIssues(ctx context.Context, workspaceID str
 			"created_by_id": nil, "updated_by_id": nil,
 			"issue_id": issueID, "project_id": projectID, "workspace_id": workspaceID,
 			"comment": "created the issue", "verb": "created", "actor_id": botID,
+			// An activity carries no attachments, and the column is a NOT NULL array rather than a nullable one.
+			"attachments": pq.Array([]string{}),
 			// The only place in this task that stamps an epoch, and it is the moment the row is written rather than anything to do with the work item.
 			"epoch": float64(now.UnixNano()) / float64(time.Second),
 		}).Error

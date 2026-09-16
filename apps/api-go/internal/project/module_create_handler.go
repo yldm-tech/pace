@@ -73,6 +73,15 @@ func (handler *Handler) moduleCreate(c *gin.Context, user *auth.User) {
 	values["workspace_id"] = project.WorkspaceID
 
 	err = handler.db.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		// The NOT NULL columns a request does not have to send. Django fills each from its field's default, and a map that does not name one leaves a null behind.
+		for column, fallback := range map[string]any{
+			"description": "", "status": "planned", "view_props": []byte("{}"),
+			"sort_order": 65535.0, "logo_props": []byte("{}"),
+		} {
+			if _, given := values[column]; !given {
+				values[column] = fallback
+			}
+		}
 		if err := tx.Table("modules").Create(values).Error; err != nil {
 			return err
 		}
