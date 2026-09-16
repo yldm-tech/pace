@@ -1,1 +1,1 @@
--- django_celery_beat.0018_improve_crontab_helptext, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- django_celery_beat.0018_improve_crontab_helptext, recorded from the Django app this replaced.

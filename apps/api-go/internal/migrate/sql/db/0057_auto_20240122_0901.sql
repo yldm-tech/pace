@@ -1,2 +1,2 @@
--- db.0057_auto_20240122_0901, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0057_auto_20240122_0901, recorded from the Django app this replaced.
 -- RUN db.0057_auto_20240122_0901.create_notification_preferences

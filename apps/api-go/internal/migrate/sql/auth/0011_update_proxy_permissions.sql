@@ -1,2 +1,2 @@
--- auth.0011_update_proxy_permissions, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- auth.0011_update_proxy_permissions, recorded from the Django app this replaced.
 -- RUN auth.0011_update_proxy_permissions.update_proxy_model_permissions

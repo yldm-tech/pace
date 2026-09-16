@@ -1,1 +1,1 @@
--- django_celery_beat.0006_auto_20180210_1226, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- django_celery_beat.0006_auto_20180210_1226, recorded from the Django app this replaced.

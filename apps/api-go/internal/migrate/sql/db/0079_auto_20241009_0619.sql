@@ -1,3 +1,3 @@
--- db.0079_auto_20241009_0619, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0079_auto_20241009_0619, recorded from the Django app this replaced.
 -- RUN db.0079_auto_20241009_0619.move_attachment_to_fileasset
 -- RUN db.0079_auto_20241009_0619.mark_existing_file_uploads

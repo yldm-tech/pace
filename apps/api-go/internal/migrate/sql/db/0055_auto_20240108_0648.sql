@@ -1,4 +1,4 @@
--- db.0055_auto_20240108_0648, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0055_auto_20240108_0648, recorded from the Django app this replaced.
 -- RUN db.0055_auto_20240108_0648.create_widgets
 -- RUN db.0055_auto_20240108_0648.create_dashboards
 -- RUN db.0055_auto_20240108_0648.create_dashboard_widgets

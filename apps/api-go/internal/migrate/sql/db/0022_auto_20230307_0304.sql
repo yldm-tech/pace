@@ -1,4 +1,4 @@
--- db.0022_auto_20230307_0304, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0022_auto_20230307_0304, recorded from the Django app this replaced.
 ALTER TABLE "cycles" DROP COLUMN "status" CASCADE;
 ALTER TABLE "projects" DROP COLUMN "slug" CASCADE;
 ALTER TABLE "issue_links" ADD COLUMN "metadata" jsonb DEFAULT '{}'::jsonb NOT NULL;

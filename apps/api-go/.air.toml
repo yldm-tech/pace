@@ -1,0 +1,25 @@
+# What air rebuilds and what it ignores.
+#
+# The binary it builds is chosen by AIR_TARGET, so one config serves the api, the worker, the beat and the live server rather than there being four nearly identical files. The compose file sets it per service.
+
+root = "."
+tmp_dir = ".air-tmp"
+
+[build]
+  cmd = "go build -o ./.air-tmp/service ./cmd/${AIR_TARGET}"
+  bin = "./.air-tmp/service"
+  include_ext = ["go", "tsv", "json", "sql", "tmpl"]
+  # testdata and tools hold the recorded fixtures and the generators that write them. Neither is compiled into the service, and a regenerated fixture rebuilding every process is noise.
+  exclude_dir = [".air-tmp", "testdata", "tools"]
+  exclude_regex = ["_test\\.go$"]
+  # Long enough that saving several files at once is one rebuild rather than several.
+  delay = 500
+  stop_on_error = false
+  send_interrupt = true
+  kill_delay = "2s"
+
+[log]
+  time = true
+
+[misc]
+  clean_on_exit = true

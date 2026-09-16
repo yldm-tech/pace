@@ -1,4 +1,4 @@
--- db.0092_alter_deprecateddashboardwidget_unique_together_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0092_alter_deprecateddashboardwidget_unique_together_and_more, recorded from the Django app this replaced.
 ALTER TABLE "deprecated_dashboard_widgets" DROP CONSTRAINT "dashboard_widgets_widget_id_dashboard_id_d_190c068f_uniq";
 SET CONSTRAINTS "dashboard_widgets_created_by_id_b5b3ea75_fk_users_id" IMMEDIATE; ALTER TABLE "deprecated_dashboard_widgets" DROP CONSTRAINT "dashboard_widgets_created_by_id_b5b3ea75_fk_users_id";
 ALTER TABLE "deprecated_dashboard_widgets" DROP COLUMN "created_by_id" CASCADE;

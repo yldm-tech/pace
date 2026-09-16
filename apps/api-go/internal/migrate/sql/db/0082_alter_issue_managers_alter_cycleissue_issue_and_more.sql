@@ -1,4 +1,4 @@
--- db.0082_alter_issue_managers_alter_cycleissue_issue_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0082_alter_issue_managers_alter_cycleissue_issue_and_more, recorded from the Django app this replaced.
 SET CONSTRAINTS "cycle_issue_issue_id_fd06e284_fk_issue_id" IMMEDIATE; ALTER TABLE "cycle_issues" DROP CONSTRAINT "cycle_issue_issue_id_fd06e284_fk_issue_id";
 ALTER TABLE "cycle_issues" DROP CONSTRAINT "cycle_issue_issue_id_fd06e284_uniq";
 CREATE INDEX "cycle_issues_issue_id_2d5ac97f" ON "cycle_issues" ("issue_id");

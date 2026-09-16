@@ -1,4 +1,4 @@
--- db.0065_auto_20240415_0937, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0065_auto_20240415_0937, recorded from the Django app this replaced.
 ALTER TABLE "users" ALTER COLUMN "avatar" TYPE text USING "avatar"::text;
 CREATE TABLE "sessions" ("session_data" text NOT NULL, "expire_date" timestamp with time zone NOT NULL, "device_info" jsonb NULL, "session_key" varchar(128) NOT NULL PRIMARY KEY, "user_id" varchar(50) NULL);
 CREATE TABLE "profiles" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "theme" jsonb NOT NULL, "is_tour_completed" boolean NOT NULL, "onboarding_step" jsonb NOT NULL, "use_case" text NULL, "role" varchar(300) NULL, "is_onboarded" boolean NOT NULL, "last_workspace_id" uuid NULL, "billing_address_country" varchar(255) NOT NULL, "billing_address" jsonb NULL, "has_billing_address" boolean NOT NULL, "company_name" varchar(255) NOT NULL, "user_id" uuid NOT NULL UNIQUE);

@@ -1,4 +1,4 @@
--- db.0040_projectmember_preferences_user_cover_image_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0040_projectmember_preferences_user_cover_image_and_more, recorded from the Django app this replaced.
 ALTER TABLE "project_members" ADD COLUMN "preferences" jsonb DEFAULT '{"pages": {"block_display": true}, "navigation": {"default_tab": "work_items", "hide_in_more_menu": []}}'::jsonb NOT NULL;
 ALTER TABLE "project_members" ALTER COLUMN "preferences" DROP DEFAULT;
 ALTER TABLE "users" ADD COLUMN "cover_image" varchar(800) NULL;

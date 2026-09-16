@@ -1,4 +1,4 @@
--- db.0081_remove_globalview_created_by_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0081_remove_globalview_created_by_and_more, recorded from the Django app this replaced.
 SET CONSTRAINTS "global_views_created_by_id_14b7d95c_fk_users_id" IMMEDIATE; ALTER TABLE "global_views" DROP CONSTRAINT "global_views_created_by_id_14b7d95c_fk_users_id";
 ALTER TABLE "global_views" DROP COLUMN "created_by_id" CASCADE;
 SET CONSTRAINTS "global_views_updated_by_id_112e0281_fk_users_id" IMMEDIATE; ALTER TABLE "global_views" DROP CONSTRAINT "global_views_updated_by_id_112e0281_fk_users_id";

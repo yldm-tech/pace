@@ -1,4 +1,4 @@
--- license.0002_rename_version_instance_current_version_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- license.0002_rename_version_instance_current_version_and_more, recorded from the Django app this replaced.
 ALTER TABLE "instances" ALTER COLUMN "instance_id" TYPE varchar(255);
 ALTER TABLE "instances" RENAME COLUMN "version" TO "current_version";
 ALTER TABLE "instances" DROP COLUMN "api_key" CASCADE;

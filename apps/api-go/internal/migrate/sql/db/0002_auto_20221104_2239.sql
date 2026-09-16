@@ -1,4 +1,4 @@
--- db.0002_auto_20221104_2239, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0002_auto_20221104_2239, recorded from the Django app this replaced.
 ALTER TABLE "project" RENAME COLUMN "description_rt" TO "description_text";
 ALTER TABLE "issue_activity" ADD COLUMN "actor_id" uuid NULL CONSTRAINT "issue_activity_actor_id_52fdd42d_fk_user_id" REFERENCES "user"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "issue_activity_actor_id_52fdd42d_fk_user_id" IMMEDIATE;
 ALTER TABLE "issue_comment" ADD COLUMN "actor_id" uuid NULL CONSTRAINT "issue_comment_actor_id_d312315b_fk_user_id" REFERENCES "user"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "issue_comment_actor_id_d312315b_fk_user_id" IMMEDIATE;

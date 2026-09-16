@@ -1,4 +1,4 @@
--- db.0085_intake_intakeissue_remove_inboxissue_created_by_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0085_intake_intakeissue_remove_inboxissue_created_by_and_more, recorded from the Django app this replaced.
 ALTER TABLE "inboxes" RENAME TO "intakes";
 SET CONSTRAINTS "inbox_issues_inbox_id_444b05b9_fk_inboxes_id" IMMEDIATE; ALTER TABLE "inbox_issues" DROP CONSTRAINT "inbox_issues_inbox_id_444b05b9_fk_inboxes_id";
 ALTER TABLE "inbox_issues" RENAME COLUMN "inbox_id" TO "intake_id";

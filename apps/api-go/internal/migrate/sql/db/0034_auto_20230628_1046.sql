@@ -1,4 +1,4 @@
--- db.0034_auto_20230628_1046, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0034_auto_20230628_1046, recorded from the Django app this replaced.
 SET CONSTRAINTS "issue_timeline_created_by_id_0cff104c_fk_user_id" IMMEDIATE; ALTER TABLE "issue_timelines" DROP CONSTRAINT "issue_timeline_created_by_id_0cff104c_fk_user_id";
 ALTER TABLE "issue_timelines" DROP COLUMN "created_by_id" CASCADE;
 SET CONSTRAINTS "issue_timeline_issue_id_0e4dc65a_fk_issue_id" IMMEDIATE; ALTER TABLE "issue_timelines" DROP CONSTRAINT "issue_timeline_issue_id_0e4dc65a_fk_issue_id";

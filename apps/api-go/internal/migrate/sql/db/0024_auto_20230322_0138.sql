@@ -1,4 +1,4 @@
--- db.0024_auto_20230322_0138, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0024_auto_20230322_0138, recorded from the Django app this replaced.
 CREATE TABLE "pages" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" jsonb NOT NULL, "description_html" text NOT NULL, "description_stripped" text NULL, "access" smallint NOT NULL CHECK ("access" >= 0), "created_by_id" uuid NULL, "owned_by_id" uuid NOT NULL);
 ALTER TABLE "projects" ADD COLUMN "issue_views_view" boolean DEFAULT true NOT NULL;
 ALTER TABLE "projects" ALTER COLUMN "issue_views_view" DROP DEFAULT;

@@ -1,4 +1,4 @@
--- db.0042_alter_analyticview_created_by_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0042_alter_analyticview_created_by_and_more, recorded from the Django app this replaced.
 -- RUN db.0042_alter_analyticview_created_by_and_more.update_user_timezones
 CREATE TABLE "project_public_members" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "member_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "project_public_members" ADD CONSTRAINT "project_public_members_project_id_member_id_51cd09a4_uniq" UNIQUE ("project_id", "member_id");

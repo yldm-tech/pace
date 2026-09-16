@@ -1,4 +1,4 @@
--- db.0090_rename_dashboard_deprecateddashboard_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0090_rename_dashboard_deprecateddashboard_and_more, recorded from the Django app this replaced.
 ALTER TABLE "workspace_home_preferences" DROP CONSTRAINT "workspace_home_preferences_sort_order_check";
 ALTER TABLE "workspace_home_preferences" ALTER COLUMN "sort_order" TYPE double precision USING "sort_order"::double precision;
 ALTER TABLE "dashboards" RENAME TO "deprecated_dashboards";

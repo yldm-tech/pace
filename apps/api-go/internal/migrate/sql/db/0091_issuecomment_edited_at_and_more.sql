@@ -1,4 +1,4 @@
--- db.0091_issuecomment_edited_at_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0091_issuecomment_edited_at_and_more, recorded from the Django app this replaced.
 ALTER TABLE "issue_comments" ADD COLUMN "edited_at" timestamp with time zone NULL;
 ALTER TABLE "profiles" ADD COLUMN "is_smooth_cursor_enabled" boolean DEFAULT false NOT NULL;
 ALTER TABLE "profiles" ALTER COLUMN "is_smooth_cursor_enabled" DROP DEFAULT;

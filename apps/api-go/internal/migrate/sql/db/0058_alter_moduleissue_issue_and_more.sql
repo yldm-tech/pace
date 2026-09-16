@@ -1,4 +1,4 @@
--- db.0058_alter_moduleissue_issue_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0058_alter_moduleissue_issue_and_more, recorded from the Django app this replaced.
 SET CONSTRAINTS "module_issues_issue_id_7caa908b_fk_issue_id" IMMEDIATE; ALTER TABLE "module_issues" DROP CONSTRAINT "module_issues_issue_id_7caa908b_fk_issue_id";
 ALTER TABLE "module_issues" DROP CONSTRAINT "module_issues_issue_id_7caa908b_uniq";
 CREATE INDEX "module_issues_issue_id_7caa908b" ON "module_issues" ("issue_id");

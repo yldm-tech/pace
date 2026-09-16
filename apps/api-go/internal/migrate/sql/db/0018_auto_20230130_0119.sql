@@ -1,4 +1,4 @@
--- db.0018_auto_20230130_0119, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0018_auto_20230130_0119, recorded from the Django app this replaced.
 ALTER TABLE "users" ADD COLUMN "is_bot" boolean DEFAULT false NOT NULL;
 ALTER TABLE "users" ALTER COLUMN "is_bot" DROP DEFAULT;
 ALTER TABLE "issues" ALTER COLUMN "description" DROP NOT NULL;

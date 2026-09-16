@@ -1,4 +1,4 @@
--- db.0087_remove_issueversion_description_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0087_remove_issueversion_description_and_more, recorded from the Django app this replaced.
 ALTER TABLE "issue_versions" DROP COLUMN "description" CASCADE;
 ALTER TABLE "issue_versions" DROP COLUMN "description_binary" CASCADE;
 ALTER TABLE "issue_versions" DROP COLUMN "description_html" CASCADE;

@@ -1,4 +1,4 @@
--- db.0043_alter_analyticview_created_by_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0043_alter_analyticview_created_by_and_more, recorded from the Django app this replaced.
 CREATE TABLE "issue_relations" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "relation_type" varchar(20) NOT NULL, "created_by_id" uuid NULL, "issue_id" uuid NOT NULL, "project_id" uuid NOT NULL, "related_issue_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "issues" ADD COLUMN "is_draft" boolean DEFAULT false NOT NULL;
 ALTER TABLE "issues" ALTER COLUMN "is_draft" DROP DEFAULT;

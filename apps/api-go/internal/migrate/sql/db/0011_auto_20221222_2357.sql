@@ -1,4 +1,4 @@
--- db.0011_auto_20221222_2357, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0011_auto_20221222_2357, recorded from the Django app this replaced.
 CREATE TABLE "module" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" text NOT NULL, "description_text" jsonb NULL, "description_html" jsonb NULL, "start_date" date NULL, "target_date" date NULL, "status" varchar(20) NOT NULL);
 ALTER TABLE "project" ADD COLUMN "icon" varchar(255) NULL;
 ALTER TABLE "project_member" ADD COLUMN "default_props" jsonb DEFAULT '{"filters": {"priority": null, "state": null, "state_group": null, "assignees": null, "created_by": null, "labels": null, "start_date": null, "target_date": null, "subscriber": null}, "display_filters": {"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}}'::jsonb NOT NULL;

@@ -1,4 +1,4 @@
--- db.0074_deploy_board_and_project_issues, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0074_deploy_board_and_project_issues, recorded from the Django app this replaced.
 ALTER TABLE "deploy_boards" ADD COLUMN "is_activity_enabled" boolean DEFAULT true NOT NULL;
 ALTER TABLE "deploy_boards" ALTER COLUMN "is_activity_enabled" DROP DEFAULT;
 ALTER TABLE "file_assets" ADD COLUMN "is_archived" boolean DEFAULT false NOT NULL;

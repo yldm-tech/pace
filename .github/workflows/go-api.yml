@@ -7,9 +7,6 @@ on:
       - ".github/workflows/go-api.yml"
       - "apps/api-go/**"
       - "packages/editor/**"
-      - "apps/live/**"
-      - "apps/api/plane/db/migrations/**"
-      - "apps/api/plane/license/migrations/**"
       - "apps/proxy/Caddyfile.ce"
 
 concurrency:
@@ -18,7 +15,7 @@ concurrency:
 
 jobs:
   test:
-    name: Test against Django PostgreSQL schema
+    name: Test against the PostgreSQL schema the migrator builds
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -45,7 +42,7 @@ jobs:
       PROJECT_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace
       WORKER_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace
       BEAT_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace
-      DJANGO_SETTINGS_MODULE: plane.settings.test
+      MIGRATE_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace_migration_replay?sslmode=disable
       SECRET_KEY: pace-ci-schema-compatibility-key
       REDIS_URL: redis://localhost:6379/0
       WEB_URL: http://localhost:8000
@@ -56,364 +53,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: apps/api/requirements/base.txt
-
-      - name: Install Django dependencies
-        run: python -m pip install --disable-pip-version-check -r apps/api/requirements/base.txt
-
-      - name: Apply authoritative Django schema
-        working-directory: apps/api
-        run: |
-          mkdir -p plane/static-assets/collected-static
-          python manage.py migrate --noinput
-
-      - name: Verify the relation graph matches the Django models
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_relation_graph.py > /tmp/relation_graph.json
-          if ! diff -u ../api-go/internal/worker/relation_graph.json /tmp/relation_graph.json; then
-            echo "::error::apps/api-go/internal/worker/relation_graph.json is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_relation_graph.py > ../api-go/internal/worker/relation_graph.json"
-            exit 1
-          fi
-
-      - name: Verify the issue ordering fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_issue_order_fixture.py > /tmp/issue_order_by.tsv
-          if ! diff -u ../api-go/internal/project/testdata/issue_order_by.tsv /tmp/issue_order_by.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/issue_order_by.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_issue_order_fixture.py > ../api-go/internal/project/testdata/issue_order_by.tsv"
-            exit 1
-          fi
-
-      - name: Verify the external work item ordering fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_external_issue_order_fixture.py > /tmp/external_issue_order_by.tsv
-          if ! diff -u ../api-go/internal/externalapi/testdata/issue_order_by.tsv /tmp/external_issue_order_by.tsv; then
-            echo "::error::apps/api-go/internal/externalapi/testdata/issue_order_by.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_external_issue_order_fixture.py > ../api-go/internal/externalapi/testdata/issue_order_by.tsv"
-            exit 1
-          fi
-
-      - name: Verify the lxml fragment fixture matches lxml
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_lxml_fragment_fixture.py > /tmp/lxml_fragment.tsv
-          if ! diff -u ../api-go/internal/htmlsanitizer/testdata/lxml_fragment.tsv /tmp/lxml_fragment.tsv; then
-            echo "::error::apps/api-go/internal/htmlsanitizer/testdata/lxml_fragment.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_lxml_fragment_fixture.py > ../api-go/internal/htmlsanitizer/testdata/lxml_fragment.tsv"
-            exit 1
-          fi
-
-      - name: Verify the external work item validation fixture matches DRF
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_external_issue_validation_fixture.py > /tmp/issue_validation.tsv
-          if ! diff -u ../api-go/internal/externalapi/testdata/issue_validation.tsv /tmp/issue_validation.tsv; then
-            echo "::error::apps/api-go/internal/externalapi/testdata/issue_validation.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_external_issue_validation_fixture.py > ../api-go/internal/externalapi/testdata/issue_validation.tsv"
-            exit 1
-          fi
-
-      - name: Verify the plain work item ordering fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_plain_issue_order_fixture.py > /tmp/plain_issue_order_by.tsv
-          if ! diff -u ../api-go/internal/externalapi/testdata/plain_issue_order_by.tsv /tmp/plain_issue_order_by.tsv; then
-            echo "::error::apps/api-go/internal/externalapi/testdata/plain_issue_order_by.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_plain_issue_order_fixture.py > ../api-go/internal/externalapi/testdata/plain_issue_order_by.tsv"
-            exit 1
-          fi
-
-      - name: Verify the view query fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_view_query_fixture.py > /tmp/view_query.tsv
-          if ! diff -u ../api-go/internal/project/testdata/view_query.tsv /tmp/view_query.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/view_query.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_view_query_fixture.py > ../api-go/internal/project/testdata/view_query.tsv"
-            exit 1
-          fi
-
-      - name: Verify the notification email rendering matches Django
-        working-directory: apps/api
-        run: |
-          for copy in ../api-go/internal/djangotemplate/testdata ../api-go/internal/worker/templates/emails/notifications; do
-            target="$copy/issue-updates.html"
-            if ! diff -u "$target" templates/emails/notifications/issue-updates.html; then
-              echo "::error::$target is not the template apps/api ships."
-              echo "Copy it across with:"
-              echo "  cp templates/emails/notifications/issue-updates.html $target"
-              exit 1
-            fi
-          done
-          analytics=../api-go/internal/worker/templates/emails/exports/analytics.html
-          if ! diff -u "$analytics" templates/emails/exports/analytics.html; then
-            echo "::error::$analytics is not the template apps/api ships."
-            echo "Copy it across with:"
-            echo "  cp templates/emails/exports/analytics.html $analytics"
-            exit 1
-          fi
-          python ../api-go/tools/generate_django_template_fixture.py > /tmp/issue_updates.txt
-          if ! diff -u ../api-go/internal/djangotemplate/testdata/issue_updates.txt /tmp/issue_updates.txt; then
-            echo "::error::apps/api-go/internal/djangotemplate/testdata/issue_updates.txt is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_django_template_fixture.py > ../api-go/internal/djangotemplate/testdata/issue_updates.txt"
-            exit 1
-          fi
-
-      - name: Verify the work item activity fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_issue_activity_fixture.py > /tmp/issue_activity.tsv
-          if ! diff -u ../api-go/internal/worker/testdata/issue_activity.tsv /tmp/issue_activity.tsv; then
-            echo "::error::apps/api-go/internal/worker/testdata/issue_activity.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_issue_activity_fixture.py > ../api-go/internal/worker/testdata/issue_activity.tsv"
-            exit 1
-          fi
-
-      - name: Verify the timezone list matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_timezone_list.py > /tmp/timezones.tsv
-          if ! diff -u ../api-go/internal/project/timezones.tsv /tmp/timezones.tsv; then
-            echo "::error::apps/api-go/internal/project/timezones.tsv is stale, so the picker would offer a different list."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_timezone_list.py > ../api-go/internal/project/timezones.tsv"
-            exit 1
-          fi
-
-      - name: Verify the instance configuration list matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_instance_config_variables.py > /tmp/instance_config.tsv
-          if ! diff -u ../api-go/internal/manage/instance_config.tsv /tmp/instance_config.tsv; then
-            echo "::error::apps/api-go/internal/manage/instance_config.tsv is stale, so configure_instance would miss a variable."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_instance_config_variables.py > ../api-go/internal/manage/instance_config.tsv"
-            exit 1
-          fi
-
-      - name: Verify the seed data matches the one apps/api ships
-        working-directory: apps/api
-        run: |
-          for seed in cycles issues labels modules pages projects states views; do
-            target=../api-go/internal/worker/seeds/$seed.json
-            if ! diff -u "$target" plane/seeds/data/$seed.json; then
-              echo "::error::$target is not the seed apps/api ships, so a new workspace would be seeded differently."
-              echo "Copy it across with:"
-              echo "  cp plane/seeds/data/$seed.json $target"
-              exit 1
-            fi
-          done
-
-      - name: Verify the project invitation template matches the one apps/api ships
-        working-directory: apps/api
-        run: |
-          target=../api-go/internal/worker/templates/emails/invitations/project_invitation.html
-          if ! diff -u "$target" templates/emails/invitations/project_invitation.html; then
-            echo "::error::$target is not the template apps/api ships."
-            echo "Copy it across with:"
-            echo "  cp templates/emails/invitations/project_invitation.html $target"
-            exit 1
-          fi
-
-      - name: Verify the migration list matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_migration_list.py > /tmp/migrations.tsv
-          if ! diff -u ../api-go/internal/manage/migrations.tsv /tmp/migrations.tsv; then
-            echo "::error::apps/api-go/internal/manage/migrations.tsv is stale, so wait_for_migrations would let a deploy through early."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_migration_list.py > ../api-go/internal/manage/migrations.tsv"
-            exit 1
-          fi
-
-      - name: Verify the test email template matches the one apps/api ships
-        working-directory: apps/api
-        run: |
-          target=../api-go/internal/worker/templates/emails/test_email.html
-          if ! diff -u "$target" templates/emails/test_email.html; then
-            echo "::error::$target is not the template apps/api ships."
-            echo "Copy it across with:"
-            echo "  cp templates/emails/test_email.html $target"
-            exit 1
-          fi
-
-      - name: Verify the BeautifulSoup fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_soup_fixture.py > /tmp/soup_round_trip.json
-          if ! diff -u ../api-go/internal/soup/testdata/round_trip.json /tmp/soup_round_trip.json; then
-            echo "::error::apps/api-go/internal/soup/testdata/round_trip.json is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_soup_fixture.py > ../api-go/internal/soup/testdata/round_trip.json"
-            exit 1
-          fi
-
-      - name: Verify the export format fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_export_format_fixture.py > /tmp/export_format.json
-          if ! diff -u ../api-go/internal/worker/testdata/export_format.json /tmp/export_format.json; then
-            echo "::error::apps/api-go/internal/worker/testdata/export_format.json is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_export_format_fixture.py > ../api-go/internal/worker/testdata/export_format.json"
-            exit 1
-          fi
-
-      - name: Verify the complex filter fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_complex_filter_fixture.py > /tmp/complex_filters.tsv
-          if ! diff -u ../api-go/internal/complexfilters/testdata/filters.tsv /tmp/complex_filters.tsv; then
-            echo "::error::apps/api-go/internal/complexfilters/testdata/filters.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_complex_filter_fixture.py > ../api-go/internal/complexfilters/testdata/filters.tsv"
-            exit 1
-          fi
-
-      - name: Verify the sort data fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_sort_data_fixture.py > /tmp/sort_data.tsv
-          if ! diff -u ../api-go/internal/project/testdata/sort_data.tsv /tmp/sort_data.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/sort_data.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_sort_data_fixture.py > ../api-go/internal/project/testdata/sort_data.tsv"
-            exit 1
-          fi
-
-      - name: Verify the burndown fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_burndown_fixture.py > /tmp/burndown.tsv
-          if ! diff -u ../api-go/internal/project/testdata/burndown.tsv /tmp/burndown.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/burndown.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_burndown_fixture.py > ../api-go/internal/project/testdata/burndown.tsv"
-            exit 1
-          fi
-
-      - name: Verify the cycle progress fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_cycle_progress_fixture.py > /tmp/cycle_progress.tsv
-          if ! diff -u ../api-go/internal/project/testdata/cycle_progress.tsv /tmp/cycle_progress.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/cycle_progress.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_cycle_progress_fixture.py > ../api-go/internal/project/testdata/cycle_progress.tsv"
-            exit 1
-          fi
-
-      - name: Verify the DRF float fixture matches Python
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_drf_float_fixture.py > /tmp/float_rendering.tsv
-          if ! diff -u ../api-go/internal/drf/testdata/float_rendering.tsv /tmp/float_rendering.tsv; then
-            echo "::error::apps/api-go/internal/drf/testdata/float_rendering.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_drf_float_fixture.py > ../api-go/internal/drf/testdata/float_rendering.tsv"
-            exit 1
-          fi
-
-      - name: Verify the DRF datetime fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_drf_time_fixture.py > /tmp/iso8601.tsv
-          if ! diff -u ../api-go/internal/drf/testdata/iso8601.tsv /tmp/iso8601.tsv; then
-            echo "::error::apps/api-go/internal/drf/testdata/iso8601.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_drf_time_fixture.py > ../api-go/internal/drf/testdata/iso8601.tsv"
-            exit 1
-          fi
-
-      - name: Verify the filename sanitizer fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_sanitize_filename_fixture.py > /tmp/sanitize_filename.tsv
-          if ! diff -u ../api-go/internal/uploads/testdata/sanitize_filename.tsv /tmp/sanitize_filename.tsv; then
-            echo "::error::apps/api-go/internal/project/testdata/sanitize_filename.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_sanitize_filename_fixture.py > ../api-go/internal/uploads/testdata/sanitize_filename.tsv"
-            exit 1
-          fi
-
-      - name: Verify the issue filter fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_issue_filters_fixture.py > /tmp/issue_filters.tsv
-          if ! diff -u ../api-go/internal/issuefilters/testdata/issue_filters.tsv /tmp/issue_filters.tsv; then
-            echo "::error::apps/api-go/internal/issuefilters/testdata/issue_filters.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_issue_filters_fixture.py > ../api-go/internal/issuefilters/testdata/issue_filters.tsv"
-            exit 1
-          fi
-
-      - name: Verify the grouped paginator fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_grouped_paginator_fixture.py > /tmp/grouped.tsv
-          if ! diff -u ../api-go/internal/pagination/testdata/grouped.tsv /tmp/grouped.tsv; then
-            echo "::error::apps/api-go/internal/pagination/testdata/grouped.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_grouped_paginator_fixture.py > ../api-go/internal/pagination/testdata/grouped.tsv"
-            exit 1
-          fi
-
-      - name: Verify the offset paginator fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_offset_paginator_fixture.py > /tmp/offset.tsv
-          if ! diff -u ../api-go/internal/pagination/testdata/offset.tsv /tmp/offset.tsv; then
-            echo "::error::apps/api-go/internal/pagination/testdata/offset.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_offset_paginator_fixture.py > ../api-go/internal/pagination/testdata/offset.tsv"
-            exit 1
-          fi
-
-      - name: Verify the sub-grouped paginator fixture matches Django
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_subgrouped_fixture.py > /tmp/subgrouped.tsv
-          if ! diff -u ../api-go/internal/pagination/testdata/subgrouped.tsv /tmp/subgrouped.tsv; then
-            echo "::error::apps/api-go/internal/pagination/testdata/subgrouped.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_subgrouped_fixture.py > ../api-go/internal/pagination/testdata/subgrouped.tsv"
-            exit 1
-          fi
-
-      - name: Verify the Django route inventory is current
-        working-directory: apps/api
-        run: |
-          python ../api-go/tools/generate_django_routes.py > /tmp/django_routes.tsv
-          if ! diff -u ../api-go/internal/server/testdata/django_routes.tsv /tmp/django_routes.tsv; then
-            echo "::error::apps/api-go/internal/server/testdata/django_routes.tsv is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_django_routes.py > ../api-go/internal/server/testdata/django_routes.tsv"
-            exit 1
-          fi
-
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
           go-version-file: apps/api-go/go.mod
           cache-dependency-path: apps/api-go/go.sum
+
+      # The schema every other step runs against, built the way production builds it. It used to be laid down by manage.py migrate; the recorded statements the Go engine replays were taken from that, and testdata/schema.tsv is what they have to produce.
+      - name: Apply the schema
+        working-directory: apps/api-go
+        run: go run ./cmd/manage migrate
+
+      - name: Verify the schema matches the recorded one
+        working-directory: apps/api-go
+        run: |
+          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
+          go test -count=1 ./internal/migrate/ -run TestGoBuildsTheSameSchemaAsDjango -v
 
       - name: Test Go API
         working-directory: apps/api-go
@@ -456,8 +111,8 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Install editor and live dependencies
-        run: pnpm install --frozen-lockfile --filter @plane/editor... --filter live...
+      - name: Install editor dependencies
+        run: pnpm install --frozen-lockfile --filter @plane/editor...
 
       - name: Verify the document editor schema matches the editor
         run: |
@@ -519,26 +174,6 @@ jobs:
             exit 1
           fi
 
-      - name: Verify the pdf stylesheet matches the exporter
-        run: |
-          node apps/api-go/tools/generate_pdf_styles.mjs > /tmp/pdf_styles.json
-          if ! diff -u apps/api-go/internal/pdfdoc/styles.json /tmp/pdf_styles.json; then
-            echo "::error::apps/api-go/internal/pdfdoc/styles.json is stale."
-            echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_pdf_styles.mjs > apps/api-go/internal/pdfdoc/styles.json"
-            exit 1
-          fi
-
-      - name: Verify the pdf fonts match the ones the exporter registers
-        run: |
-          node apps/api-go/tools/generate_pdf_fonts.mjs
-          if ! git diff --exit-code --stat -- apps/api-go/internal/pdfdoc/fonts; then
-            echo "::error::apps/api-go/internal/pdfdoc/fonts is stale."
-            echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_pdf_fonts.mjs"
-            exit 1
-          fi
-
       - name: Verify the parse rules match the schema
         run: |
           node apps/api-go/tools/generate_parse_rules.mjs > /tmp/parse_rules.json
@@ -579,16 +214,6 @@ jobs:
             exit 1
           fi
 
-      - name: Verify the collaboration frames match Hocuspocus
-        run: |
-          node apps/api-go/tools/generate_hocuspocus_frames.mjs > /tmp/frames.json
-          if ! diff -u apps/api-go/internal/live/hocuspocus/testdata/frames.json /tmp/frames.json; then
-            echo "::error::apps/api-go/internal/live/hocuspocus/testdata/frames.json is stale."
-            echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_hocuspocus_frames.mjs > apps/api-go/internal/live/hocuspocus/testdata/frames.json"
-            exit 1
-          fi
-
       - name: Verify the document corpus matches the editor
         run: |
           node apps/api-go/tools/generate_ydoc_fixture.mjs > /tmp/documents.json
@@ -599,51 +224,3 @@ jobs:
             exit 1
           fi
 
-      - name: Verify the recorded migrations match Django
-        working-directory: apps/api
-        env:
-          # The generator has to start from nothing: it records what each migration does to the state the one before it left behind. The job's own database has already been migrated, so it gets one of its own.
-          DATABASE_URL: postgresql://pace:pace@localhost:5432/pace_migration_record
-        run: |
-          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_record OWNER pace'
-          python ../api-go/tools/generate_migration_sql.py /tmp/migrate
-          if ! diff -ur ../api-go/internal/migrate/sql /tmp/migrate/sql; then
-            echo "::error::apps/api-go/internal/migrate/sql is stale."
-            echo "Regenerate it from apps/api with:"
-            echo "  python ../api-go/tools/generate_migration_sql.py ../api-go/internal/migrate"
-            exit 1
-          fi
-          for file in plan.tsv ledger.sql signal_rows.sql; do
-            if ! diff -u "../api-go/internal/migrate/$file" "/tmp/migrate/$file"; then
-              echo "::error::apps/api-go/internal/migrate/$file is stale."
-              echo "Regenerate it from apps/api with:"
-              echo "  python ../api-go/tools/generate_migration_sql.py ../api-go/internal/migrate"
-              exit 1
-            fi
-          done
-
-      - name: Verify the recorded schema fixture matches Django
-        run: |
-          psql "postgresql://pace:pace@localhost:5432/pace_migration_record" -qtAF$'\t' \
-            -f apps/api-go/internal/migrate/testdata/schema_query.sql > /tmp/schema.tsv
-          if ! diff -u apps/api-go/internal/migrate/testdata/schema.tsv /tmp/schema.tsv; then
-            echo "::error::apps/api-go/internal/migrate/testdata/schema.tsv is stale."
-            echo "Regenerate it against a Django-migrated database with:"
-            echo "  psql \"\$DATABASE_URL\" -qtAF'\t' -f apps/api-go/internal/migrate/testdata/schema_query.sql > apps/api-go/internal/migrate/testdata/schema.tsv"
-            exit 1
-          fi
-
-      - name: Verify Go builds the same schema as Django
-        working-directory: apps/api-go
-        env:
-          MIGRATE_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace_migration_replay?sslmode=disable
-        run: |
-          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
-          go test ./internal/migrate/ -run TestGoBuildsTheSameSchemaAsDjango -v
-
-      - name: Verify the ported migration operations match Django
-        working-directory: apps/api
-        env:
-          # The checker makes two scratch databases of its own; this only tells it which server to make them on.
-          DATABASE_URL: postgresql://pace:pace@localhost:5432/postgres
-        run: python ../api-go/tools/check_migration_operations.py

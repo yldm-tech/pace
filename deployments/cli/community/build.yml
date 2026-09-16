@@ -20,14 +20,14 @@ services:
   live:
     image: ${DOCKERHUB_USER:-local}/plane-live:${APP_RELEASE:-latest}
     build:
-      context: ../../
-      dockerfile: apps/live/Dockerfile.live
+      context: ../../apps/api-go
+      dockerfile: Dockerfile.live
 
   api:
     image: ${DOCKERHUB_USER:-local}/plane-backend:${APP_RELEASE:-latest}
     build:
-      context: ../../apps/api
-      dockerfile: Dockerfile.api
+      context: ../../apps/api-go
+      dockerfile: Dockerfile
 
   proxy:
     image: ${DOCKERHUB_USER:-local}/plane-proxy:${APP_RELEASE:-latest}

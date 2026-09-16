@@ -1,4 +1,4 @@
--- db.0088_sticky_sort_order_workspaceuserlink, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0088_sticky_sort_order_workspaceuserlink, recorded from the Django app this replaced.
 ALTER TABLE "stickies" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
 ALTER TABLE "stickies" ALTER COLUMN "sort_order" DROP DEFAULT;
 CREATE TABLE "workspace_user_links" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "title" varchar(255) NULL, "url" text NOT NULL, "metadata" jsonb NOT NULL, "created_by_id" uuid NULL, "owner_id" uuid NOT NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);

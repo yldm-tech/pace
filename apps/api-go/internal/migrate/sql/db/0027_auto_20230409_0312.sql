@@ -1,4 +1,4 @@
--- db.0027_auto_20230409_0312, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0027_auto_20230409_0312, recorded from the Django app this replaced.
 CREATE TABLE "estimates" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" text NOT NULL, "created_by_id" uuid NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "issues" DROP COLUMN "attachments" CASCADE;
 ALTER TABLE "issues" ADD COLUMN "estimate_point" integer DEFAULT 0 NOT NULL;

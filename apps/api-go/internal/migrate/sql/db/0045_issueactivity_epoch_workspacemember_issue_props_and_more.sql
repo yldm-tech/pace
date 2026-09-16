@@ -1,4 +1,4 @@
--- db.0045_issueactivity_epoch_workspacemember_issue_props_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0045_issueactivity_epoch_workspacemember_issue_props_and_more, recorded from the Django app this replaced.
 CREATE TABLE "global_views" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" text NOT NULL, "query" jsonb NOT NULL, "access" smallint NOT NULL CHECK ("access" >= 0), "query_data" jsonb NOT NULL, "sort_order" double precision NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "workspace_members" ADD COLUMN "issue_props" jsonb DEFAULT '{"subscribed": true, "assigned": true, "created": true, "all_issues": true}'::jsonb NOT NULL;
 ALTER TABLE "workspace_members" ALTER COLUMN "issue_props" DROP DEFAULT;

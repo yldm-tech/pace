@@ -1,26 +1,20 @@
-# Docker Compose for running the API pytest suite in a contained environment.
-#
-# Prerequisite:
-#   ./setup.sh    # creates apps/api/.env (and the other env files) from .env.example
+# Docker Compose for running the Go test suite against real services.
 #
 # Usage:
-#   # Run the full suite (defaults to `pytest`):
+#   # Run everything:
 #   docker compose -f docker-compose-test.yml up --build --abort-on-container-exit --exit-code-from api-tests
 #
 #   # Run a subset by overriding the command:
-#   docker compose -f docker-compose-test.yml run --rm --build api-tests pytest -m unit
-#   docker compose -f docker-compose-test.yml run --rm api-tests pytest plane/tests/unit -k "test_workspace"
+#   docker compose -f docker-compose-test.yml run --rm --build api-tests go test ./internal/beat/ -run Schema
 #
 #   # Tear down (removes ephemeral volumes and the test network):
 #   docker compose -f docker-compose-test.yml down -v
 #
 # Notes:
-# - Postgres / Valkey / RabbitMQ / MinIO start with health checks; the test
-#   runner only starts once each dependency is healthy.
+# - Postgres / Valkey / RabbitMQ / MinIO start with health checks; the test runner only starts once each dependency is healthy.
 # - Data dirs are tmpfs so every run begins from a clean state.
-# - Env vars come from apps/api/.env (the same file the local stack uses); tests
-#   use plane.settings.test, which inherits from common and reads DATABASE_URL,
-#   REDIS_URL, RABBITMQ_* etc. from the environment.
+# - The schema is built by the Go migrator before the tests run, which is also the first thing every run checks: if the recorded migrations no longer apply, nothing else gets to fail first.
+# - Most of the suite runs without a database. The parts that do not are opt-in on one environment variable each, and the entrypoint below sets all of them at the same database.
 
 services:
   test-db:
@@ -28,7 +22,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-plane}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-plane}
@@ -58,7 +52,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-plane}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-plane}
@@ -76,7 +70,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-access-key}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-secret-key}
@@ -99,29 +93,30 @@ services:
 
   api-tests:
     build:
-      context: ./apps/api
+      context: ./apps/api-go
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
     networks:
       - test_env
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
-      DJANGO_SETTINGS_MODULE: plane.settings.test
-      # Override service hostnames to point at the test-only services above.
-      POSTGRES_HOST: test-db
       DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}
-      REDIS_HOST: test-redis
       REDIS_URL: redis://test-redis:6379/
-      RABBITMQ_HOST: test-mq
+      AMQP_URL: amqp://${RABBITMQ_USER:-plane}:${RABBITMQ_PASSWORD:-plane}@test-mq:5672/${RABBITMQ_VHOST:-plane}
       AWS_S3_ENDPOINT_URL: http://test-minio:9000
-      # Magic-link tests mock the celery delay but the view first checks that
-      # EMAIL_HOST is configured. Set a placeholder so the check passes.
-      EMAIL_HOST: test-smtp.invalid
+      SECRET_KEY: test-secret-key
+      # One database, named once per suite that asks for one. A test that is not given its variable skips rather than failing, so leaving one out here quietly shrinks the run.
+      AUTH_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
+      USER_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
+      WORKSPACE_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
+      PROJECT_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
+      WORKER_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
+      BEAT_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
     volumes:
-      - ./apps/api:/code
-    working_dir: /code
+      - ./apps/api-go:/src
+    working_dir: /src
     depends_on:
       test-db:
         condition: service_healthy
@@ -131,20 +126,16 @@ services:
         condition: service_healthy
       test-minio:
         condition: service_healthy
-    # Install test-only requirements (not in local.txt) then exec pytest.
-    # Any args passed via `docker compose run api-tests <args>` replace the default command.
+    # The schema first, then whatever was asked for. Any args passed via `docker compose run api-tests <args>` replace the default command.
     entrypoint:
       - /bin/sh
       - -c
       - |
         set -e
-        pip install --no-cache-dir -r requirements/test.txt
-        # STATIC_ROOT must exist or Django's static middleware emits a
-        # UserWarning on every request (~100 of the warnings in test runs).
-        mkdir -p plane/static-assets/collected-static
+        go run ./cmd/manage migrate
         exec "$@"
       - --
-    command: ["pytest"]
+    command: ["go", "test", "./..."]
 
 networks:
   test_env:

@@ -1,4 +1,4 @@
--- db.0033_auto_20230618_2125, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0033_auto_20230618_2125, recorded from the Django app this replaced.
 CREATE TABLE "inboxes" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" text NOT NULL, "is_default" boolean NOT NULL, "view_props" jsonb NOT NULL, "created_by_id" uuid NULL);
 ALTER TABLE "projects" ADD COLUMN "inbox_view" boolean DEFAULT false NOT NULL;
 ALTER TABLE "projects" ALTER COLUMN "inbox_view" DROP DEFAULT;

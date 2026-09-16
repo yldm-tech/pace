@@ -1,1 +1,1 @@
--- db.0075_alter_fileasset_asset, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0075_alter_fileasset_asset, recorded from the Django app this replaced.

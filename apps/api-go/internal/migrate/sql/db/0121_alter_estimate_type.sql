@@ -1,1 +1,1 @@
--- db.0121_alter_estimate_type, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0121_alter_estimate_type, recorded from the Django app this replaced.

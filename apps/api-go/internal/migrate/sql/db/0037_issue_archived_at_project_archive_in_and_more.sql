@@ -1,4 +1,4 @@
--- db.0037_issue_archived_at_project_archive_in_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0037_issue_archived_at_project_archive_in_and_more, recorded from the Django app this replaced.
 ALTER TABLE "issues" ADD COLUMN "archived_at" date NULL;
 ALTER TABLE "projects" ADD COLUMN "archive_in" integer DEFAULT 0 NOT NULL;
 ALTER TABLE "projects" ALTER COLUMN "archive_in" DROP DEFAULT;

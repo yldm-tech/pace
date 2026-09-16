@@ -1,4 +1,4 @@
--- db.0047_webhook_apitoken_description_apitoken_expired_at_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0047_webhook_apitoken_description_apitoken_expired_at_and_more, recorded from the Django app this replaced.
 CREATE TABLE "webhooks" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "url" varchar(200) NOT NULL, "is_active" boolean NOT NULL, "secret_key" varchar(255) NOT NULL, "project" boolean NOT NULL, "issue" boolean NOT NULL, "module" boolean NOT NULL, "cycle" boolean NOT NULL, "issue_comment" boolean NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "api_tokens" ADD COLUMN "description" text DEFAULT '' NOT NULL;
 ALTER TABLE "api_tokens" ALTER COLUMN "description" DROP DEFAULT;

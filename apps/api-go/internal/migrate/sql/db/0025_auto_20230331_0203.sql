@@ -1,4 +1,4 @@
--- db.0025_auto_20230331_0203, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0025_auto_20230331_0203, recorded from the Django app this replaced.
 ALTER TABLE "pages" ADD COLUMN "color" varchar(255) DEFAULT '' NOT NULL;
 ALTER TABLE "pages" ALTER COLUMN "color" DROP DEFAULT;
 ALTER TABLE "page_blocks" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;

@@ -1,4 +1,4 @@
--- db.0084_remove_label_label_unique_name_project_when_deleted_at_null_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0084_remove_label_label_unique_name_project_when_deleted_at_null_and_more, recorded from the Django app this replaced.
 DROP INDEX IF EXISTS "label_unique_name_project_when_deleted_at_null";
 ALTER TABLE "labels" DROP CONSTRAINT "labels_name_project_id_deleted_at_eebc553a_uniq";
 ALTER TABLE "deploy_boards" ADD COLUMN "is_disabled" boolean DEFAULT false NOT NULL;

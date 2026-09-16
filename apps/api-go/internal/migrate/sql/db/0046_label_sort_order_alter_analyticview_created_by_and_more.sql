@@ -1,4 +1,4 @@
--- db.0046_label_sort_order_alter_analyticview_created_by_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0046_label_sort_order_alter_analyticview_created_by_and_more, recorded from the Django app this replaced.
 ALTER TABLE "labels" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
 ALTER TABLE "labels" ALTER COLUMN "sort_order" DROP DEFAULT;
 CREATE TABLE "issue_mentions" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "issue_id" uuid NOT NULL, "mention_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);

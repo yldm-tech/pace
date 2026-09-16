@@ -1,4 +1,4 @@
--- db.0012_auto_20230104_0117, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0012_auto_20230104_0117, recorded from the Django app this replaced.
 ALTER TABLE "issue_activity" ADD COLUMN "new_identifier" uuid NULL;
 ALTER TABLE "issue_activity" ADD COLUMN "old_identifier" uuid NULL;
 SET CONSTRAINTS "module_issues_issue_id_7caa908b_fk_issue_id" IMMEDIATE; ALTER TABLE "module_issues" DROP CONSTRAINT "module_issues_issue_id_7caa908b_fk_issue_id";

@@ -1,0 +1,17 @@
+# The development image, replacing apps/api/Dockerfile.dev.
+#
+# What it exists for is the thing the Django dev stack had and a compiled language does not: an edit to a source file restarting the process. runserver did that itself; here air watches the tree and rebuilds. The source is mounted rather than copied, so nothing in this image is the code — it is the toolchain that compiles it.
+FROM golang:1.26-alpine
+
+RUN apk add --no-cache git ca-certificates
+# Pinned rather than @latest so that two people building this a month apart get the same watcher.
+RUN go install github.com/air-verse/air@v1.61.7
+
+WORKDIR /src
+# Warm the module cache from the manifests alone, so an edit to a source file does not re-download the world.
+COPY go.mod go.sum ./
+RUN go mod download
+
+# air.toml decides what is watched and what is built; it lives beside the source so that running air outside docker behaves the same way.
+EXPOSE 8000 3000
+ENTRYPOINT ["air", "-c", ".air.toml"]

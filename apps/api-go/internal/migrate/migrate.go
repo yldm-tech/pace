@@ -1,6 +1,8 @@
 // Package migrate applies the Django app's migrations from Go.
 //
-// Django owns the schema, and this package does not try to redescribe it. What every migration does to a database was recorded from Django itself — a real migrate, with the statements captured as they were executed — and is replayed here in the same order, against the same ledger table. The generator is apps/api-go/tools/generate_migration_sql.py, and CI regenerates its output and diffs it, so a migration added to the Python app cannot be forgotten here.
+// Django owned the schema, and this package does not redescribe it. What every one of its 164 migrations does to a database was recorded from Django itself — a real migrate, with the statements captured as they were executed — and is replayed here in the same order, against the same ledger table.
+//
+// That app is gone now, so those 164 are a frozen history: they have already run everywhere and cannot change. A migration added from here on is written by hand, as a row in plan.tsv and a file of statements beside it, and TestGoBuildsTheSameSchemaAsDjango is what checks the whole sequence still produces the schema testdata/schema.tsv records.
 //
 // The part that could not be recorded is RunPython. What those operations do depends on the rows already in the database, and the database they were recorded against was empty, so they are ported to Go by hand and registered in operations.go. A migration carrying one that has not been ported is refused by name rather than half applied.
 package migrate
