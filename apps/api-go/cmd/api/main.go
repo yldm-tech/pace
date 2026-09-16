@@ -13,8 +13,10 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/config"
 	"github.com/yldm-tech/pace/apps/api-go/internal/database"
+	"github.com/yldm-tech/pace/apps/api-go/internal/instances"
 	"github.com/yldm-tech/pace/apps/api-go/internal/server"
 	"github.com/yldm-tech/pace/apps/api-go/internal/worker"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -82,6 +84,13 @@ func main() {
 			AuthAvatarStore:           avatarStore,
 			AuthMagicStore:            auth.NewRedisMagicStore(redisClient), AuthTaskPublisher: taskPublisher,
 			AuthRateLimiter: authLimiter,
+			InstanceSettings: server.InstanceSettings{
+				AdminBaseURL:         cfg.Auth.AdminBaseURL,
+				AdminBasePath:        cfg.Auth.AdminBasePath,
+				InstanceChangelogURL: cfg.Auth.InstanceChangelogURL,
+				IsSelfManaged:        cfg.Auth.IsSelfManaged,
+			},
+			InstanceMailer: instanceMailer(connection.GORM, cfg),
 		}),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
@@ -121,4 +130,37 @@ func authenticationEnvironment() map[string]string {
 		}
 	}
 	return values
+}
+
+// instanceMailer is how the admin console's credential check sends its one message: the same settings and the same client the worker's emails use.
+func instanceMailer(db *gorm.DB, cfg config.Config) instances.Mailer {
+	return &consoleMailer{
+		reader: auth.NewGORMRepository(db, cfg.Auth.SkipEnvironmentConfig, cfg.Auth.SecretKey),
+		defaults: worker.EmailSettings{
+			Host:     os.Getenv("EMAIL_HOST"),
+			User:     os.Getenv("EMAIL_HOST_USER"),
+			Password: os.Getenv("EMAIL_HOST_PASSWORD"),
+			Port:     envOrDefault("EMAIL_PORT", "587"),
+			UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
+			UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
+			From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+		},
+	}
+}
+
+// consoleMailer sends a plain text message with the instance's own mail settings.
+type consoleMailer struct {
+	reader   worker.ConfigurationReader
+	defaults worker.EmailSettings
+}
+
+func (mailer *consoleMailer) Send(ctx context.Context, to, subject, text string) error {
+	return worker.SendPlainEmail(ctx, mailer.defaults, mailer.reader, worker.SMTPMailer{}, to, subject, text)
+}
+
+func envOrDefault(name, fallback string) string {
+	if value := os.Getenv(name); value != "" {
+		return value
+	}
+	return fallback
 }
