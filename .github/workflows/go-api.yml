@@ -177,6 +177,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the export format fixture matches Python
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_export_format_fixture.py > /tmp/export_format.json
+          if ! diff -u ../api-go/internal/worker/testdata/export_format.json /tmp/export_format.json; then
+            echo "::error::apps/api-go/internal/worker/testdata/export_format.json is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_export_format_fixture.py > ../api-go/internal/worker/testdata/export_format.json"
+            exit 1
+          fi
+
       - name: Verify the complex filter fixture matches Python
         working-directory: apps/api
         run: |

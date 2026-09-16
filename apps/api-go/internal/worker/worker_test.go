@@ -251,6 +251,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 		t.Fatal(err)
 	}
 	emailSend.Register(consumer)
+	NewExportTasks(nil, nil, nil, false).Register(consumer)
 	NewAPILogTasks(nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
