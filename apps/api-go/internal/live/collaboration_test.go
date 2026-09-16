@@ -488,12 +488,11 @@ func TestASecondReaderWaitsForTheFirstLoad(t *testing.T) {
 	first.readUntil(hocuspocus.MessageAuth)
 	second.readUntil(hocuspocus.MessageAuth)
 
-	if server.hub.Document(testPageID) == nil {
-		t.Fatal("the page is not open")
-	}
-	if got := server.hub.Document(testPageID).ConnectionCount(); got != 2 {
-		t.Errorf("connections = %d, want both on one document", got)
-	}
+	// The client is told it is in just before it is registered, so both being on the page is waited for rather than asserted straight away.
+	waitFor(t, func() bool {
+		document := server.hub.Document(testPageID)
+		return document != nil && document.ConnectionCount() == 2
+	})
 
 	api.mu.Lock()
 	reads := 0

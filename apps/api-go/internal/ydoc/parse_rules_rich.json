@@ -1,0 +1,1727 @@
+{
+  "rules": [
+    {
+      "owner": "taskList",
+      "owner_index": 0,
+      "tag": "ul[data-type=\"taskList\"]",
+      "style": null,
+      "node": "taskList",
+      "mark": null,
+      "reads": [],
+      "priority": 51,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "taskItem",
+      "owner_index": 0,
+      "tag": "li[data-type=\"taskItem\"]",
+      "style": null,
+      "node": "taskItem",
+      "mark": null,
+      "reads": [
+        {
+          "name": "checked",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n          const dataChecked = element.getAttribute(\"data-checked\");\n          return dataChecked === \"\" || dataChecked === \"true\";\n        }"
+        }
+      ],
+      "priority": 51,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "link",
+      "owner_index": 0,
+      "tag": "a[href]",
+      "style": null,
+      "node": null,
+      "mark": "link",
+      "reads": [
+        {
+          "name": "href",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "target",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "rel",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "class",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "textStyle",
+      "owner_index": 0,
+      "tag": "span",
+      "style": null,
+      "node": null,
+      "mark": "textStyle",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "bold",
+      "owner_index": 0,
+      "tag": "strong",
+      "style": null,
+      "node": null,
+      "mark": "bold",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "bold",
+      "owner_index": 1,
+      "tag": "b",
+      "style": null,
+      "node": null,
+      "mark": "bold",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "bold",
+      "owner_index": 2,
+      "tag": null,
+      "style": "font-weight=400",
+      "node": null,
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": false,
+      "has_clear_mark": true,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "bold",
+      "owner_index": 3,
+      "tag": null,
+      "style": "font-weight",
+      "node": null,
+      "mark": "bold",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "italic",
+      "owner_index": 0,
+      "tag": "em",
+      "style": null,
+      "node": null,
+      "mark": "italic",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "italic",
+      "owner_index": 1,
+      "tag": "i",
+      "style": null,
+      "node": null,
+      "mark": "italic",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "italic",
+      "owner_index": 2,
+      "tag": null,
+      "style": "font-style=normal",
+      "node": null,
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": false,
+      "has_clear_mark": true,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "italic",
+      "owner_index": 3,
+      "tag": null,
+      "style": "font-style=italic",
+      "node": null,
+      "mark": "italic",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": false,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "strike",
+      "owner_index": 0,
+      "tag": "s",
+      "style": null,
+      "node": null,
+      "mark": "strike",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "strike",
+      "owner_index": 1,
+      "tag": "del",
+      "style": null,
+      "node": null,
+      "mark": "strike",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "strike",
+      "owner_index": 2,
+      "tag": "strike",
+      "style": null,
+      "node": null,
+      "mark": "strike",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "strike",
+      "owner_index": 3,
+      "tag": null,
+      "style": "text-decoration",
+      "node": null,
+      "mark": "strike",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": false,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "underline",
+      "owner_index": 0,
+      "tag": "u",
+      "style": null,
+      "node": null,
+      "mark": "underline",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "underline",
+      "owner_index": 1,
+      "tag": null,
+      "style": "text-decoration",
+      "node": null,
+      "mark": "underline",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": false,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "code",
+      "owner_index": 0,
+      "tag": "code",
+      "style": null,
+      "node": null,
+      "mark": "code",
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "customColor",
+      "owner_index": 0,
+      "tag": "span",
+      "style": null,
+      "node": null,
+      "mark": "customColor",
+      "reads": [
+        {
+          "name": "color",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.getAttribute(\"data-text-color\")"
+        },
+        {
+          "name": "backgroundColor",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.getAttribute(\"data-background-color\")"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "customColor",
+      "owner_index": 1,
+      "tag": "span",
+      "style": null,
+      "node": null,
+      "mark": "customColor",
+      "reads": [
+        {
+          "name": "color",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.getAttribute(\"data-text-color\")"
+        },
+        {
+          "name": "backgroundColor",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.getAttribute(\"data-background-color\")"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "paragraph",
+      "owner_index": 0,
+      "tag": "p",
+      "style": null,
+      "node": "paragraph",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "mention",
+      "owner_index": 0,
+      "tag": "mention-component",
+      "style": null,
+      "node": "mention",
+      "mark": null,
+      "reads": [
+        {
+          "name": "id",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "entity_identifier",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "entity_name",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "bulletList",
+      "owner_index": 0,
+      "tag": "ul",
+      "style": null,
+      "node": "bulletList",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "hardBreak",
+      "owner_index": 0,
+      "tag": "br",
+      "style": null,
+      "node": "hardBreak",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 0,
+      "tag": "h1",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 1
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 1,
+      "tag": "h2",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 2
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 2,
+      "tag": "h3",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 3
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 3,
+      "tag": "h4",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 4
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 4,
+      "tag": "h5",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 5
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "heading",
+      "owner_index": 5,
+      "tag": "h6",
+      "style": null,
+      "node": "heading",
+      "mark": null,
+      "reads": [
+        {
+          "name": "textAlign",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n              const alignment = element.style.textAlign;\n              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;\n            }"
+        },
+        {
+          "name": "level",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": {
+        "level": 6
+      },
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "listItem",
+      "owner_index": 0,
+      "tag": "li",
+      "style": null,
+      "node": "listItem",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "orderedList",
+      "owner_index": 0,
+      "tag": "ol",
+      "style": null,
+      "node": "orderedList",
+      "mark": null,
+      "reads": [
+        {
+          "name": "start",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n          return element.hasAttribute(\"start\") ? parseInt(element.getAttribute(\"start\") || \"\", 10) : 1;\n        }"
+        },
+        {
+          "name": "type",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.getAttribute(\"type\")"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "emoji",
+      "owner_index": 0,
+      "tag": "span[data-type=\"emoji\"]",
+      "style": null,
+      "node": "emoji",
+      "mark": null,
+      "reads": [
+        {
+          "name": "name",
+          "has_parse_html": true,
+          "parse_html": "(element) => element.dataset.name"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "blockquote",
+      "owner_index": 0,
+      "tag": "blockquote",
+      "style": null,
+      "node": "blockquote",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "horizontalRule",
+      "owner_index": 0,
+      "tag": "div[data-type=\"horizontalRule\"]",
+      "style": null,
+      "node": "horizontalRule",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "horizontalRule",
+      "owner_index": 1,
+      "tag": "hr",
+      "style": null,
+      "node": "horizontalRule",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "image",
+      "owner_index": 0,
+      "tag": "img[src]:not([src^=\"data:\"])",
+      "style": null,
+      "node": "image",
+      "mark": null,
+      "reads": [
+        {
+          "name": "src",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "alt",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "title",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "width",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "height",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "aspectRatio",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "alignment",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "imageComponent",
+      "owner_index": 0,
+      "tag": "image-component",
+      "style": null,
+      "node": "imageComponent",
+      "mark": null,
+      "reads": [
+        {
+          "name": "src",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "alt",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "title",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "id",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "width",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "height",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "aspectRatio",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "alignment",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "status",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "codeBlock",
+      "owner_index": 0,
+      "tag": "pre",
+      "style": null,
+      "node": "codeBlock",
+      "mark": null,
+      "reads": [
+        {
+          "name": "language",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n          const { languageClassPrefix } = this.options;\n          const classNames = [...element.firstElementChild?.classList || []];\n          const languages = classNames.filter((className) => className.startsWith(languageClassPrefix)).map((className) => className.replace(languageClassPrefix, \"\"));\n          const language = languages[0];\n          if (!language) {\n            return null;\n          }\n          return language;\n        }"
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": "full",
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "table",
+      "owner_index": 0,
+      "tag": "table",
+      "style": null,
+      "node": "table",
+      "mark": null,
+      "reads": [],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "tableHeader",
+      "owner_index": 0,
+      "tag": "th",
+      "style": null,
+      "node": "tableHeader",
+      "mark": null,
+      "reads": [
+        {
+          "name": "colspan",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "rowspan",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "colwidth",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n          const colwidth = element.getAttribute(\"colwidth\");\n          const value = colwidth ? [parseInt(colwidth, 10)] : null;\n          return value;\n        }"
+        },
+        {
+          "name": "background",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "tableCell",
+      "owner_index": 0,
+      "tag": "td",
+      "style": null,
+      "node": "tableCell",
+      "mark": null,
+      "reads": [
+        {
+          "name": "colspan",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "rowspan",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "colwidth",
+          "has_parse_html": true,
+          "parse_html": "(element) => {\n          const colwidth = element.getAttribute(\"colwidth\");\n          const value = colwidth ? [parseInt(colwidth, 10)] : null;\n          return value;\n        }"
+        },
+        {
+          "name": "background",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "textColor",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "tableRow",
+      "owner_index": 0,
+      "tag": "tr",
+      "style": null,
+      "node": "tableRow",
+      "mark": null,
+      "reads": [
+        {
+          "name": "background",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "textColor",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    },
+    {
+      "owner": "calloutComponent",
+      "owner_index": 0,
+      "tag": "div[data-block-type=\"callout-component\"]",
+      "style": null,
+      "node": "calloutComponent",
+      "mark": null,
+      "reads": [
+        {
+          "name": "id",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-icon-color",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-icon-name",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-emoji-unicode",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-emoji-url",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-logo-in-use",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-background",
+          "has_parse_html": false,
+          "parse_html": null
+        },
+        {
+          "name": "data-block-type",
+          "has_parse_html": false,
+          "parse_html": null
+        }
+      ],
+      "priority": null,
+      "context": null,
+      "ignore": false,
+      "skip": false,
+      "close_parent": false,
+      "consuming": null,
+      "preserve_whitespace": null,
+      "attrs": null,
+      "has_get_attrs": true,
+      "has_clear_mark": false,
+      "has_content_element": false,
+      "has_get_content": false
+    }
+  ],
+  "base_rules": [
+    {
+      "owner": "bold",
+      "index": 0,
+      "tag": "strong",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "bold",
+      "index": 1,
+      "tag": "b",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(node) => node.style.fontWeight !== \"normal\" && null",
+      "clear_mark": null
+    },
+    {
+      "owner": "bold",
+      "index": 2,
+      "tag": null,
+      "style": "font-weight=400",
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": "(mark) => mark.type.name === this.name"
+    },
+    {
+      "owner": "bold",
+      "index": 3,
+      "tag": null,
+      "style": "font-weight",
+      "attrs": null,
+      "get_attrs": "(value) => /^(bold(er)?|[5-9]\\d{2,})$/.test(value) && null",
+      "clear_mark": null
+    },
+    {
+      "owner": "bulletList",
+      "index": 0,
+      "tag": "ul",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "hardBreak",
+      "index": 0,
+      "tag": "br",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 0,
+      "tag": "h1",
+      "style": null,
+      "attrs": {
+        "level": 1
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 1,
+      "tag": "h2",
+      "style": null,
+      "attrs": {
+        "level": 2
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 2,
+      "tag": "h3",
+      "style": null,
+      "attrs": {
+        "level": 3
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 3,
+      "tag": "h4",
+      "style": null,
+      "attrs": {
+        "level": 4
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 4,
+      "tag": "h5",
+      "style": null,
+      "attrs": {
+        "level": 5
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "heading",
+      "index": 5,
+      "tag": "h6",
+      "style": null,
+      "attrs": {
+        "level": 6
+      },
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "italic",
+      "index": 0,
+      "tag": "em",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "italic",
+      "index": 1,
+      "tag": "i",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(node) => node.style.fontStyle !== \"normal\" && null",
+      "clear_mark": null
+    },
+    {
+      "owner": "italic",
+      "index": 2,
+      "tag": null,
+      "style": "font-style=normal",
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": "(mark) => mark.type.name === this.name"
+    },
+    {
+      "owner": "italic",
+      "index": 3,
+      "tag": null,
+      "style": "font-style=italic",
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "listItem",
+      "index": 0,
+      "tag": "li",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "orderedList",
+      "index": 0,
+      "tag": "ol",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "paragraph",
+      "index": 0,
+      "tag": "p",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "strike",
+      "index": 0,
+      "tag": "s",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "strike",
+      "index": 1,
+      "tag": "del",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "strike",
+      "index": 2,
+      "tag": "strike",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "strike",
+      "index": 3,
+      "tag": null,
+      "style": "text-decoration",
+      "attrs": null,
+      "get_attrs": "(style) => style.includes(\"line-through\") ? {} : false",
+      "clear_mark": null
+    },
+    {
+      "owner": "emoji",
+      "index": 0,
+      "tag": "span[data-type=\"emoji\"]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "blockquote",
+      "index": 0,
+      "tag": "blockquote",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "horizontalRule",
+      "index": 0,
+      "tag": "div[data-type=\"horizontalRule\"]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "horizontalRule",
+      "index": 1,
+      "tag": "hr",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "link",
+      "index": 0,
+      "tag": "a[href]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(node) => {\n          if (typeof node === \"string\") {\n            return null;\n          }\n          const href = node.getAttribute(\"href\") || \"\";\n          if (isDangerousHref(href)) {\n            return false;\n          }\n          return {};\n        }",
+      "clear_mark": null
+    },
+    {
+      "owner": "image",
+      "index": 0,
+      "tag": "img[src]:not([src^=\"data:\"])",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "imageComponent",
+      "index": 0,
+      "tag": "image-component",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "underline",
+      "index": 0,
+      "tag": "u",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "underline",
+      "index": 1,
+      "tag": null,
+      "style": "text-decoration",
+      "attrs": null,
+      "get_attrs": "(style) => style.includes(\"underline\") ? {} : false",
+      "clear_mark": null
+    },
+    {
+      "owner": "textStyle",
+      "index": 0,
+      "tag": "span",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(element) => {\n          const hasStyles = element.hasAttribute(\"style\");\n          if (!hasStyles) {\n            return false;\n          }\n          if (this.options.mergeNestedSpanStyles) {\n            mergeNestedSpanStyles(element);\n          }\n          return {};\n        }",
+      "clear_mark": null
+    },
+    {
+      "owner": "taskList",
+      "index": 0,
+      "tag": "ul[data-type=\"taskList\"]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "taskItem",
+      "index": 0,
+      "tag": "li[data-type=\"taskItem\"]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "code",
+      "index": 0,
+      "tag": "code",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "codeBlock",
+      "index": 0,
+      "tag": "pre",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "table",
+      "index": 0,
+      "tag": "table",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "tableHeader",
+      "index": 0,
+      "tag": "th",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "tableCell",
+      "index": 0,
+      "tag": "td",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "tableRow",
+      "index": 0,
+      "tag": "tr",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "mention",
+      "index": 0,
+      "tag": "mention-component",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "calloutComponent",
+      "index": 0,
+      "tag": "div[data-block-type=\"callout-component\"]",
+      "style": null,
+      "attrs": null,
+      "get_attrs": null,
+      "clear_mark": null
+    },
+    {
+      "owner": "customColor",
+      "index": 0,
+      "tag": "span",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(node) => node.getAttribute(\"data-text-color\") && null",
+      "clear_mark": null
+    },
+    {
+      "owner": "customColor",
+      "index": 1,
+      "tag": "span",
+      "style": null,
+      "attrs": null,
+      "get_attrs": "(node) => node.getAttribute(\"data-background-color\") && null",
+      "clear_mark": null
+    }
+  ],
+  "matched_styles": [
+    "font-weight",
+    "font-style",
+    "text-decoration"
+  ],
+  "normalize_lists": true
+}

@@ -9,9 +9,13 @@
  *
  *     pnpm install --filter @plane/editor...
  *     node apps/api-go/tools/generate_parse_rules.mjs > apps/api-go/internal/ydoc/parse_rules.json
+ *     node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > apps/api-go/internal/ydoc/parse_rules_rich.json
  */
 
 import { loadEditorModule } from "./ydoc_bundle.mjs";
+
+// The editor has two schemas, and so two sets of rules. Which is dumped is chosen with --variant.
+const variant = process.argv.includes("--variant=rich") ? "rich" : "document";
 
 const { schema, DOMParser, extensionAttributes, baseRules } = await loadEditorModule(process.cwd(), {
   source: `
@@ -19,7 +23,7 @@ const { schema, DOMParser, extensionAttributes, baseRules } = await loadEditorMo
     import { CoreEditorExtensionsWithoutProps, DocumentEditorExtensionsWithoutProps } from "@/extensions/core-without-props";
     export { DOMParser } from "@tiptap/pm/model";
     import { getExtensionField } from "@tiptap/core";
-    const extensions = [...CoreEditorExtensionsWithoutProps, ...DocumentEditorExtensionsWithoutProps];
+    const extensions = ${variant === "rich" ? "[...CoreEditorExtensionsWithoutProps]" : "[...CoreEditorExtensionsWithoutProps, ...DocumentEditorExtensionsWithoutProps]"};
     export const schema = getSchema(extensions);
     // Flattened here rather than through the manager's own resolve, which is not exported: a kit contributes its extensions through addExtensions, and only the leaves declare attributes.
     const flatten = (list) => list.flatMap((extension) => {

@@ -65,8 +65,13 @@ func (s *Server) registerRoutes(group *gin.RouterGroup) {
 		group.GET(path, handler)
 		group.GET(strings.TrimSuffix(path, "/"), handler)
 	}
+	post := func(path string, handler gin.HandlerFunc) {
+		group.POST(path, handler)
+		group.POST(strings.TrimSuffix(path, "/"), handler)
+	}
 	get("/health/", s.health)
 	get("/collaboration/", s.collaboration)
+	post("/convert-document/", s.convertDocument)
 }
 
 // health answers the liveness probe.

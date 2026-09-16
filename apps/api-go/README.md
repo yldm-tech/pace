@@ -2752,3 +2752,25 @@ The shape that works: the waiting change is claimed out of a map before anything
 ### Without Redis
 
 `REDIS_URL` and `REDIS_HOST` unset means the service runs as a single node and every relay call is a call on nothing. Two people on one page then have to reach the same server for it to converge, which is what the deployment is choosing when it leaves those unset.
+
+## The live service, part ten: converting a document without a connection
+
+`POST /live/convert-document/` is the one route here that is not about a live connection. The API calls it when it copies a page or a work item description: the assets in the HTML have been swapped for their copies, and the Yjs document and the JSON beside it have to be rebuilt from the result.
+
+### There are two schemas
+
+The editor has two. A page is written with the document one; everything else — a work item's description, a comment — with the rich text one, which is the same extension list **without the work item embed**. That single node is the whole difference, and it is a real one: the same HTML converted as a page keeps its embed and converted as a description loses it.
+
+Both are generated, both are diffed by CI, and a test pins the disagreement, because it is the reason there are two.
+
+**The caller asks for them the other way round.** The API sends `"rich"` for a page and `"document"` for everything else. That is upstream's, reproduced rather than corrected.
+
+### It is not a parse and a render
+
+The HTML is read into a document, the document is written out as a Yjs update, and the three representations are then derived from **that update** — not from the document that was read. A document read out of an update is not always the document that went into it, and the route's answer follows the longer path because the editor's does.
+
+Only two of the three go back. The caller keeps the HTML it sent, even though converting it changes it, which is what keeps a copy's HTML identical to the original's.
+
+### The binary is different every time
+
+A Yjs update carries the client id of whoever wrote it and the route draws a fresh one on every call, deliberately, so that two servers converting the same content do not claim the same identity. So the corpus compares the update as the document it holds rather than as bytes, and compares the JSON and the HTML exactly.

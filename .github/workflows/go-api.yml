@@ -488,6 +488,36 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the rich text schema matches the editor
+        run: |
+          node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > /tmp/schema_rich.json
+          if ! diff -u apps/api-go/internal/ydoc/schema_rich.json /tmp/schema_rich.json; then
+            echo "::error::apps/api-go/internal/ydoc/schema_rich.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > apps/api-go/internal/ydoc/schema_rich.json"
+            exit 1
+          fi
+
+      - name: Verify the rich text parse rules match the schema
+        run: |
+          node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > /tmp/parse_rules_rich.json
+          if ! diff -u apps/api-go/internal/ydoc/parse_rules_rich.json /tmp/parse_rules_rich.json; then
+            echo "::error::apps/api-go/internal/ydoc/parse_rules_rich.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > apps/api-go/internal/ydoc/parse_rules_rich.json"
+            exit 1
+          fi
+
+      - name: Verify the converted documents match the editor
+        run: |
+          node apps/api-go/tools/generate_convert_fixture.mjs > /tmp/converted.json
+          if ! diff -u apps/api-go/internal/live/testdata/converted.json /tmp/converted.json; then
+            echo "::error::apps/api-go/internal/live/testdata/converted.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_convert_fixture.mjs > apps/api-go/internal/live/testdata/converted.json"
+            exit 1
+          fi
+
       - name: Verify the parse rules match the schema
         run: |
           node apps/api-go/tools/generate_parse_rules.mjs > /tmp/parse_rules.json
