@@ -4,7 +4,7 @@ set -e
 
 DIST_DIR=${DIST_DIR:-./dist}
 CPU_ARCH=$(uname -m)
-IMAGE_NAME=${IMAGE_NAME:-${DOCKERHUB_USER:-yldm-tech}/plane-aio-community}
+IMAGE_NAME=${IMAGE_NAME:-${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-aio-community}
 
 
 # loop though all flags and set the variables
@@ -117,7 +117,7 @@ build_dist_files(){
     echo "docker build -t $IMAGE_NAME \\"
     echo "  -f $(pwd)/Dockerfile \\"
     echo "  --build-arg PLANE_VERSION=$APP_RELEASE_VERSION \\"
-    echo "  --build-arg PLANE_IMAGE_OWNER=${DOCKERHUB_USER:-yldm-tech} \\"
+    echo "  --build-arg PLANE_IMAGE_OWNER=${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech} \\"
     echo "  $(pwd)"
     echo ""
     echo "------------------------------------------------"

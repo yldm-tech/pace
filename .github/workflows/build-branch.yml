@@ -39,6 +39,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# packages: write is what lets GITHUB_TOKEN push to ghcr.io. contents stays read here and is widened to write on publish_release alone, which is the only job that writes back to the repository.
+permissions:
+  contents: read
+  packages: write
+
 env:
   TARGET_BRANCH: ${{ github.ref_name }}
   ARM64_BUILD: ${{ github.event.inputs.arm64 }}
@@ -96,8 +101,9 @@ jobs:
           BR_NAME=$( echo "${{ env.TARGET_BRANCH }}" |sed 's/[^a-zA-Z0-9.-]//g')
           echo "TARGET_BRANCH=$BR_NAME" >> $GITHUB_OUTPUT
 
-          # Where the images are pushed. It was makeplane, which is upstream's namespace and not this fork's — pushing there needs credentials this repository does not have, and would put this fork's images under upstream's name if it did. Set the DOCKERHUB_USER repository variable to override the default.
-          echo "DH_OWNER=${{ vars.DOCKERHUB_USER || 'yldm-tech' }}" >> $GITHUB_OUTPUT
+          # Where the images are pushed. It was makeplane, which is upstream's namespace and not this fork's. The owner is derived from the repository rather than configured: GITHUB_TOKEN can already write packages under it, so publishing needs no account, no secret and no guess about which namespace this fork owns. ghcr requires a lowercase path.
+          IMAGE_OWNER=$(printf 'ghcr.io/%s' "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "DH_OWNER=${IMAGE_OWNER}" >> $GITHUB_OUTPUT
           echo "DH_IMG_WEB=plane-frontend" >> $GITHUB_OUTPUT
           echo "DH_IMG_SPACE=plane-space" >> $GITHUB_OUTPUT
           echo "DH_IMG_ADMIN=plane-admin" >> $GITHUB_OUTPUT
@@ -168,13 +174,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Admin Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_admin }}
           build-context: .
@@ -196,13 +200,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_admin]
     steps:
       - name: Merge Admin Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_admin }}
           digest-artifact-pattern: digest-admin-*
@@ -219,13 +221,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Web Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_web }}
           build-context: .
@@ -247,13 +247,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_web]
     steps:
       - name: Merge Web Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_web }}
           digest-artifact-pattern: digest-web-*
@@ -270,13 +268,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Space Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_space }}
           build-context: .
@@ -298,13 +294,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_space]
     steps:
       - name: Merge Space Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_space }}
           digest-artifact-pattern: digest-space-*
@@ -321,13 +315,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Live Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_live }}
           build-context: ./apps/api-go
@@ -349,13 +341,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_live]
     steps:
       - name: Merge Live Collaboration Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_live }}
           digest-artifact-pattern: digest-live-*
@@ -372,13 +362,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Backend Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_backend }}
           build-context: ./apps/api-go
@@ -400,13 +388,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_api]
     steps:
       - name: Merge API Server Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_backend }}
           digest-artifact-pattern: digest-api-*
@@ -423,13 +409,11 @@ jobs:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
       - name: Proxy Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_proxy }}
           build-context: ./apps/proxy
@@ -451,13 +435,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_proxy]
     steps:
       - name: Merge Proxy Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_proxy }}
           digest-artifact-pattern: digest-proxy-*
@@ -520,13 +502,11 @@ jobs:
       - branch_merge_proxy
     steps:
       - name: AIO Build and Push
-        uses: makeplane/actions/build-push@v1.6.0
+        uses: ./.github/actions/build-push
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_aio }}
           build-context: ./deployments/aio/community
@@ -542,6 +522,7 @@ jobs:
           additional-assets-dir: ./deployments/aio/community/dist
           build-args: |
             PLANE_VERSION=${{ needs.prepare_aio_assets.outputs.aio_build_version }}
+            PLANE_IMAGE_OWNER=${{ needs.branch_build_setup.outputs.dh_owner }}
 
   branch_merge_aio:
     name: Merge AIO Manifest
@@ -550,13 +531,11 @@ jobs:
     needs: [branch_build_setup, branch_build_push_aio]
     steps:
       - name: Merge AIO Manifest
-        uses: makeplane/actions/merge-manifest@v1.6.0
+        uses: ./.github/actions/merge-manifest
         with:
           build-release: ${{ needs.branch_build_setup.outputs.build_release }}
           build-prerelease: ${{ needs.branch_build_setup.outputs.build_prerelease }}
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
-          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_aio }}
           digest-artifact-pattern: digest-aio-*
@@ -612,6 +591,8 @@ jobs:
     if: ${{ needs.branch_build_setup.outputs.build_type == 'Release' }}
     name: Build Release
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     needs:
       [
         branch_build_setup,

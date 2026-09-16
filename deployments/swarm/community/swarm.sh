@@ -6,7 +6,7 @@ SERVICE_FOLDER=plane-app
 SCRIPT_DIR=$PWD
 PLANE_INSTALL_DIR=$PWD/$SERVICE_FOLDER
 export APP_RELEASE="stable"
-export DOCKERHUB_USER=${DOCKERHUB_USER:-yldm-tech}
+export PLANE_IMAGE_OWNER=${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}
 
 # This repository, not upstream's. It was makeplane/plane, so the installer downloaded upstream's compose file and stood up upstream's Django and Node — none of the Go in this tree.
 export GH_REPO=${GH_REPO:-yldm-tech/pace}
@@ -593,12 +593,12 @@ fi
 
 # Sync environment variables
 if [ -f "$DOCKER_ENV_PATH" ]; then
-    DOCKERHUB_USER=$(getEnvValue "DOCKERHUB_USER" "$DOCKER_ENV_PATH")
+    PLANE_IMAGE_OWNER=$(getEnvValue "PLANE_IMAGE_OWNER" "$DOCKER_ENV_PATH")
     APP_RELEASE=$(getEnvValue "APP_RELEASE" "$DOCKER_ENV_PATH")
 
-    if [ -z "$DOCKERHUB_USER" ]; then
-        DOCKERHUB_USER=makeplane
-        updateEnvFile "DOCKERHUB_USER" "$DOCKERHUB_USER" "$DOCKER_ENV_PATH"
+    if [ -z "$PLANE_IMAGE_OWNER" ]; then
+        PLANE_IMAGE_OWNER=ghcr.io/yldm-tech
+        updateEnvFile "PLANE_IMAGE_OWNER" "$PLANE_IMAGE_OWNER" "$DOCKER_ENV_PATH"
     fi
 
     if [ -z "$APP_RELEASE" ]; then

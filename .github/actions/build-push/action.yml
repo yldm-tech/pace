@@ -1,0 +1,203 @@
+name: "Build and Push Docker Image"
+description: "Builds an image and pushes it to the GitHub Container Registry"
+
+# This began as makeplane/actions/build-push, and is local for one reason: that action logs into Docker Hub unconditionally, with credentials this repository does not have and cannot get without someone creating an account and two secrets. GITHUB_TOKEN is already present in every run and already has rights to this repository's packages, so the registry that needs no setup is the one this fork publishes to.
+#
+# Everything upstream offers that this fork does not use -- FIPS variants, a private registry mirror -- is gone rather than carried as dead configuration.
+
+inputs:
+  # Docker Image Options
+  docker-image-owner:
+    description: "Registry-qualified owner of the image, e.g. ghcr.io/yldm-tech"
+    required: true
+  docker-image-name:
+    description: "The name of the Docker image"
+    required: true
+  build-context:
+    description: "The build context"
+    required: true
+    default: "."
+  dockerfile-path:
+    description: "The path to the Dockerfile"
+    required: true
+  build-args:
+    description: "The build arguments"
+    required: false
+    default: ""
+
+  # Buildx Options
+  buildx-driver:
+    description: "Buildx driver"
+    required: true
+    default: "docker-container"
+  buildx-version:
+    description: "Buildx version"
+    required: true
+    default: "latest"
+  buildx-platforms:
+    description: "Buildx platforms"
+    required: true
+    default: "linux/amd64"
+  buildx-endpoint:
+    description: "Buildx endpoint"
+    required: true
+    default: "default"
+
+  # Split-architecture (push-by-digest) options.
+  #
+  # These exist so one image can be built by several jobs in parallel -- one per architecture, each on a runner native to that architecture -- and merged afterwards by the merge-manifest action.
+  push-by-digest:
+    description: "Push an untagged manifest and return its digest instead of pushing tags. Requires exactly one platform in buildx-platforms; the merge-manifest action applies the tags afterwards."
+    required: false
+    default: "false"
+  cache-scope-suffix:
+    description: "Appended to the registry cache ref (<image>:buildcache<suffix>). Set this per-architecture when building one image from several jobs, otherwise the jobs overwrite each other's cache."
+    required: false
+    default: ""
+  digest-artifact-name:
+    description: "When set (with push-by-digest), the resulting digest is uploaded under this artifact name for the merge job to collect. Must be unique per image and architecture within a workflow run."
+    required: false
+    default: ""
+
+  # Release Build Options
+  build-release:
+    description: "Flag to publish release"
+    required: false
+    default: "false"
+  build-prerelease:
+    description: "Flag to publish prerelease"
+    required: false
+    default: "false"
+  release-version:
+    description: "The release version"
+    required: false
+    default: "latest"
+
+  additional-assets:
+    description: "Additional assets to download"
+    required: false
+    default: ""
+  additional-assets-dir:
+    description: "Additional assets directory"
+    required: false
+    default: ""
+
+outputs:
+  digest:
+    description: "Digest of the pushed manifest. Only set when push-by-digest is true."
+    value: ${{ steps.build_by_digest.outputs.digest }}
+  tags:
+    description: "Comma-separated tag list computed for this image. Pass this to merge-manifest so the merge cannot disagree with the build about tag policy."
+    value: ${{ steps.compute_tags.outputs.DOCKER_TAGS }}
+  image-ref:
+    description: "Bare <owner>/<name> repository reference, with no tag."
+    value: ${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }}
+
+runs:
+  using: "composite"
+  steps:
+    # push-by-digest cannot express more than one platform, and it would fail in a way that is hard to read from a build log. Refuse up front instead.
+    - name: Validate digest-mode inputs
+      if: ${{ inputs.push-by-digest == 'true' }}
+      shell: bash
+      env:
+        BUILDX_PLATFORMS: ${{ inputs.buildx-platforms }}
+      run: |
+        if [[ "$BUILDX_PLATFORMS" == *,* ]]; then
+          echo "push-by-digest builds exactly one platform per job, got: ${BUILDX_PLATFORMS}" >&2
+          echo "Give each architecture its own job and merge them with merge-manifest." >&2
+          exit 1
+        fi
+
+    - name: Set Docker Tag
+      id: compute_tags
+      shell: bash
+      env:
+        IMG_OWNER: ${{ inputs.docker-image-owner }}
+        IMG_NAME: ${{ inputs.docker-image-name }}
+        BUILD_RELEASE: ${{ inputs.build-release }}
+        IS_PRERELEASE: ${{ inputs.build-prerelease }}
+        REL_VERSION: ${{ inputs.release-version }}
+        TARGET_BRANCH: ${{ github.ref_name }}
+      run: bash "${{ github.action_path }}/../scripts/compute-tags.sh"
+
+    # github.token is the automatic Actions token. It needs packages: write, which the calling workflow grants.
+    - name: Login to the GitHub Container Registry
+      uses: docker/login-action@v4.0.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4.0.0
+      with:
+        driver: ${{ inputs.buildx-driver }}
+        version: ${{ inputs.buildx-version }}
+        endpoint: ${{ inputs.buildx-endpoint }}
+
+    - name: Check out the repo
+      uses: actions/checkout@v6.0.2
+
+    - name: Download Additional Assets
+      if: ${{ inputs.additional-assets != '' && inputs.additional-assets-dir != '' }}
+      uses: actions/download-artifact@v8.0.1
+      with:
+        name: ${{ inputs.additional-assets }}
+        path: ${{ inputs.additional-assets-dir }}
+
+    - name: Build and Push Docker Image
+      if: ${{ inputs.push-by-digest != 'true' }}
+      uses: docker/build-push-action@v7.0.0
+      with:
+        context: ${{ inputs.build-context }}
+        file: ${{ inputs.dockerfile-path }}
+        platforms: ${{ inputs.buildx-platforms }}
+        tags: ${{ env.DOCKER_TAGS }}
+        cache-from: type=registry,ref=${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }}:buildcache${{ inputs.cache-scope-suffix }}
+        cache-to: type=registry,ref=${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }}:buildcache${{ inputs.cache-scope-suffix }},mode=max
+        push: true
+        build-args: ${{ inputs.build-args }}
+      env:
+        DOCKER_BUILDKIT: 1
+
+    # Digest mode. No tag is written here at all: the image exporter pushes the manifest and the registry hands back its digest, which merge-manifest later collects alongside the other architectures' digests. provenance is pinned off so each job pushes a plain manifest rather than an index.
+    - name: Build and Push Docker Image by Digest
+      id: build_by_digest
+      if: ${{ inputs.push-by-digest == 'true' }}
+      uses: docker/build-push-action@v7.0.0
+      with:
+        context: ${{ inputs.build-context }}
+        file: ${{ inputs.dockerfile-path }}
+        platforms: ${{ inputs.buildx-platforms }}
+        outputs: type=image,name=${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }},push-by-digest=true,name-canonical=true,push=true
+        cache-from: type=registry,ref=${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }}:buildcache${{ inputs.cache-scope-suffix }}
+        cache-to: type=registry,ref=${{ inputs.docker-image-owner }}/${{ inputs.docker-image-name }}:buildcache${{ inputs.cache-scope-suffix }},mode=max
+        provenance: false
+        push: false
+        build-args: ${{ inputs.build-args }}
+      env:
+        DOCKER_BUILDKIT: 1
+
+    # The digest travels to the merge job as an artifact rather than a job output: every leg of a matrix writes the same job-output key, so only the last leg to finish would survive and the merge would quietly produce a single-platform manifest.
+    - name: Export digest
+      if: ${{ inputs.push-by-digest == 'true' && inputs.digest-artifact-name != '' }}
+      shell: bash
+      env:
+        DIGEST: ${{ steps.build_by_digest.outputs.digest }}
+      run: |
+        if [ -z "$DIGEST" ]; then
+          echo "Build produced no digest; refusing to upload an empty artifact." >&2
+          exit 1
+        fi
+        mkdir -p "${RUNNER_TEMP}/digests"
+        touch "${RUNNER_TEMP}/digests/${DIGEST#sha256:}"
+
+    - name: Upload digest
+      if: ${{ inputs.push-by-digest == 'true' && inputs.digest-artifact-name != '' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ inputs.digest-artifact-name }}
+        path: ${{ runner.temp }}/digests/*
+        retention-days: 1
+        if-no-files-found: error
