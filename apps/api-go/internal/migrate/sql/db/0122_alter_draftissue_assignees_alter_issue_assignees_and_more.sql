@@ -1,0 +1,1 @@
+-- db.0122_alter_draftissue_assignees_alter_issue_assignees_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

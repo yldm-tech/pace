@@ -1,0 +1,21 @@
+-- db.0056_usernotificationpreference_emailnotificationlog, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "user_notification_preferences" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "property_change" boolean NOT NULL, "state_change" boolean NOT NULL, "comment" boolean NOT NULL, "mention" boolean NOT NULL, "issue_completed" boolean NOT NULL, "created_by_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL, "workspace_id" uuid NULL);
+CREATE TABLE "email_notification_logs" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_identifier" uuid NULL, "entity_name" varchar(255) NOT NULL, "data" jsonb NULL, "processed_at" timestamp with time zone NULL, "sent_at" timestamp with time zone NULL, "entity" varchar(200) NOT NULL, "old_value" varchar(300) NULL, "new_value" varchar(300) NULL, "created_by_id" uuid NULL, "receiver_id" uuid NOT NULL, "triggered_by_id" uuid NOT NULL, "updated_by_id" uuid NULL);
+ALTER TABLE "user_notification_preferences" ADD CONSTRAINT "user_notification_pr_created_by_id_54dc743a_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_notification_preferences" ADD CONSTRAINT "user_notification_pr_project_id_e0ca17f8_fk_projects_" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_notification_preferences" ADD CONSTRAINT "user_notification_pr_updated_by_id_eb70a86d_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_notification_preferences" ADD CONSTRAINT "user_notification_preferences_user_id_9dccc056_fk_users_id" FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_notification_preferences" ADD CONSTRAINT "user_notification_pr_workspace_id_a2321c58_fk_workspace" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "user_notification_preferences_created_by_id_54dc743a" ON "user_notification_preferences" ("created_by_id");
+CREATE INDEX "user_notification_preferences_project_id_e0ca17f8" ON "user_notification_preferences" ("project_id");
+CREATE INDEX "user_notification_preferences_updated_by_id_eb70a86d" ON "user_notification_preferences" ("updated_by_id");
+CREATE INDEX "user_notification_preferences_user_id_9dccc056" ON "user_notification_preferences" ("user_id");
+CREATE INDEX "user_notification_preferences_workspace_id_a2321c58" ON "user_notification_preferences" ("workspace_id");
+ALTER TABLE "email_notification_logs" ADD CONSTRAINT "email_notification_logs_created_by_id_6faff587_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "email_notification_logs" ADD CONSTRAINT "email_notification_logs_receiver_id_7c7d2e13_fk_users_id" FOREIGN KEY ("receiver_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "email_notification_logs" ADD CONSTRAINT "email_notification_logs_triggered_by_id_b551e727_fk_users_id" FOREIGN KEY ("triggered_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "email_notification_logs" ADD CONSTRAINT "email_notification_logs_updated_by_id_5d99c798_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "email_notification_logs_created_by_id_6faff587" ON "email_notification_logs" ("created_by_id");
+CREATE INDEX "email_notification_logs_receiver_id_7c7d2e13" ON "email_notification_logs" ("receiver_id");
+CREATE INDEX "email_notification_logs_triggered_by_id_b551e727" ON "email_notification_logs" ("triggered_by_id");
+CREATE INDEX "email_notification_logs_updated_by_id_5d99c798" ON "email_notification_logs" ("updated_by_id");

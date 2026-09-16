@@ -1,0 +1,1 @@
+-- django_celery_beat.0019_alter_periodictasks_options, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

@@ -1,0 +1,1 @@
+-- django_celery_beat.0015_edit_solarschedule_events_choices, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

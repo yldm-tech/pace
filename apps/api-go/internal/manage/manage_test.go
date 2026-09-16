@@ -6,12 +6,14 @@ import (
 )
 
 // Every manage.py command has a subcommand here under the same name, so a runbook written against manage.py still reads true.
+//
+// migrate and showmigrations are Django's own rather than Plane's, and are here for the same reason: the entrypoint scripts and every runbook call them by those names.
 func TestEveryCommandKeepsItsName(t *testing.T) {
 	want := []string{
 		"activate_user", "clear_cache", "configure_instance", "copy_issue_comment_to_description", "create_bucket",
 		"create_dummy_data", "create_instance_admin", "create_project_member",
-		"fix_duplicate_sequences", "reactivate_workspace_member", "register_instance", "reset_password",
-		"sync_issue_description_version", "sync_issue_version", "test_email",
+		"fix_duplicate_sequences", "migrate", "reactivate_workspace_member", "register_instance", "reset_password",
+		"showmigrations", "sync_issue_description_version", "sync_issue_version", "test_email",
 		"update_bucket", "update_deleted_workspace_slug", "wait_for_db", "wait_for_migrations",
 	}
 	commands := Registry()

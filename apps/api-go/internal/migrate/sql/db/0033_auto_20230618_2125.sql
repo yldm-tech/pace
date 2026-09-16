@@ -1,0 +1,28 @@
+-- db.0033_auto_20230618_2125, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "inboxes" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NOT NULL, "description" text NOT NULL, "is_default" boolean NOT NULL, "view_props" jsonb NOT NULL, "created_by_id" uuid NULL);
+ALTER TABLE "projects" ADD COLUMN "inbox_view" boolean DEFAULT false NOT NULL;
+ALTER TABLE "projects" ALTER COLUMN "inbox_view" DROP DEFAULT;
+CREATE TABLE "inbox_issues" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "status" integer NOT NULL, "snoozed_till" timestamp with time zone NULL, "source" text NULL, "created_by_id" uuid NULL, "duplicate_to_id" uuid NULL, "inbox_id" uuid NOT NULL, "issue_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+ALTER TABLE "inboxes" ADD COLUMN "project_id" uuid NOT NULL CONSTRAINT "inboxes_project_id_a0135c66_fk_projects_id" REFERENCES "projects"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "inboxes_project_id_a0135c66_fk_projects_id" IMMEDIATE;
+ALTER TABLE "inboxes" ADD COLUMN "updated_by_id" uuid NULL CONSTRAINT "inboxes_updated_by_id_69b7b3ae_fk_users_id" REFERENCES "users"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "inboxes_updated_by_id_69b7b3ae_fk_users_id" IMMEDIATE;
+ALTER TABLE "inboxes" ADD COLUMN "workspace_id" uuid NOT NULL CONSTRAINT "inboxes_workspace_id_d6178865_fk_workspaces_id" REFERENCES "workspaces"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "inboxes_workspace_id_d6178865_fk_workspaces_id" IMMEDIATE;
+ALTER TABLE "inboxes" ADD CONSTRAINT "inboxes_name_project_id_daf38984_uniq" UNIQUE ("name", "project_id");
+ALTER TABLE "inboxes" ADD CONSTRAINT "inboxes_created_by_id_9f1cf5ec_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "inboxes_created_by_id_9f1cf5ec" ON "inboxes" ("created_by_id");
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_created_by_id_483bce13_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_duplicate_to_id_6cb8d961_fk_issues_id" FOREIGN KEY ("duplicate_to_id") REFERENCES "issues" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_inbox_id_444b05b9_fk_inboxes_id" FOREIGN KEY ("inbox_id") REFERENCES "inboxes" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_issue_id_7d74b224_fk_issues_id" FOREIGN KEY ("issue_id") REFERENCES "issues" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_project_id_5117a70b_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_updated_by_id_d1b2b70f_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "inbox_issues" ADD CONSTRAINT "inbox_issues_workspace_id_4a61a7bd_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "inbox_issues_created_by_id_483bce13" ON "inbox_issues" ("created_by_id");
+CREATE INDEX "inbox_issues_duplicate_to_id_6cb8d961" ON "inbox_issues" ("duplicate_to_id");
+CREATE INDEX "inbox_issues_inbox_id_444b05b9" ON "inbox_issues" ("inbox_id");
+CREATE INDEX "inbox_issues_issue_id_7d74b224" ON "inbox_issues" ("issue_id");
+CREATE INDEX "inbox_issues_project_id_5117a70b" ON "inbox_issues" ("project_id");
+CREATE INDEX "inbox_issues_updated_by_id_d1b2b70f" ON "inbox_issues" ("updated_by_id");
+CREATE INDEX "inbox_issues_workspace_id_4a61a7bd" ON "inbox_issues" ("workspace_id");
+CREATE INDEX "inboxes_project_id_a0135c66" ON "inboxes" ("project_id");
+CREATE INDEX "inboxes_updated_by_id_69b7b3ae" ON "inboxes" ("updated_by_id");
+CREATE INDEX "inboxes_workspace_id_d6178865" ON "inboxes" ("workspace_id");
