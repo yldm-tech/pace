@@ -142,6 +142,8 @@ func main() {
 		copyStore = assetStore
 	}
 	copyAssets := worker.NewCopyAssetTasks(db, copyStore, liveURL(), logger)
+	// The version backfill asks for its own next batch after a countdown, which is the one place a task here queues another with a delay.
+	versionSync := worker.NewVersionSyncTasks(db, activityPublisher, logger)
 
 	// The analytics export builds its spreadsheet out of the same chart the analytics endpoint draws, and mails it with the same settings the notification emails use.
 	analyticExports := worker.NewAnalyticExportTasks(db, emailDefaults, repository, worker.SMTPMailer{}, logger)
@@ -167,17 +169,21 @@ func main() {
 	exports.Register(consumer)
 	analyticExports.Register(consumer)
 	copyAssets.Register(consumer)
+	versionSync.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
 		err := consumer.Run(ctx)
 		if ctx.Err() != nil {
+			// A task held until its eta is still running in the background; give it the chance to finish what it started.
+			consumer.Wait()
 			logger.Info("worker stopped")
 			return
 		}
 		logger.Error("consumer stopped, reconnecting", "error", err)
 		select {
 		case <-ctx.Done():
+			consumer.Wait()
 			return
 		case <-time.After(5 * time.Second):
 		}

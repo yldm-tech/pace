@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"sync"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -33,6 +34,8 @@ type Consumer struct {
 	logger    *slog.Logger
 	// prefetch bounds how many unacknowledged messages the broker hands over.
 	prefetch int
+	// running counts the tasks held until their eta, so a shutdown can wait for them.
+	running sync.WaitGroup
 }
 
 func NewConsumer(brokerURL, queue string, logger *slog.Logger) *Consumer {
@@ -127,6 +130,24 @@ func (consumer *Consumer) handle(ctx context.Context, delivery amqp.Delivery) {
 		_ = delivery.Reject(false)
 		return
 	}
+	if wait := etaDelay(delivery.Headers["eta"], time.Now()); wait > 0 {
+		// Celery holds an eta task in the worker rather than at the broker, and acknowledges it on receipt — so a restart loses it. This does the same, and waits out of the way of the messages behind it.
+		logger.Info("task held until its eta", "wait", wait)
+		_ = delivery.Ack(false)
+		consumer.running.Add(1)
+		go func() {
+			defer consumer.running.Done()
+			timer := time.NewTimer(wait)
+			defer timer.Stop()
+			select {
+			case <-ctx.Done():
+				return
+			case <-timer.C:
+			}
+			consumer.run(ctx, logger, handler, arguments, keywords)
+		}()
+		return
+	}
 	started := time.Now()
 	if err := handler(ctx, arguments, keywords); err != nil {
 		// Django's tasks swallow their own errors and return, so a failure here
@@ -137,6 +158,37 @@ func (consumer *Consumer) handle(ctx context.Context, delivery amqp.Delivery) {
 	}
 	logger.Info("task completed", "duration", time.Since(started))
 	_ = delivery.Ack(false)
+}
+
+// run is the handler call on its own, for the held tasks that have already been acknowledged.
+func (consumer *Consumer) run(ctx context.Context, logger *slog.Logger, handler Handler, arguments []any, keywords map[string]any) {
+	started := time.Now()
+	if err := handler(ctx, arguments, keywords); err != nil {
+		logger.Error("task failed", "error", err, "duration", time.Since(started))
+		return
+	}
+	logger.Info("task completed", "duration", time.Since(started))
+}
+
+// etaDelay reads the eta header and says how long to wait. A moment already past, or a header in a shape this does not know, is no wait at all.
+func etaDelay(header any, now time.Time) time.Duration {
+	text, ok := header.(string)
+	if !ok || text == "" {
+		return 0
+	}
+	moment, err := time.Parse(time.RFC3339Nano, text)
+	if err != nil {
+		return 0
+	}
+	if wait := moment.Sub(now); wait > 0 {
+		return wait
+	}
+	return 0
+}
+
+// Wait blocks until every held task has run, so a shutdown does not cut one off mid-write.
+func (consumer *Consumer) Wait() {
+	consumer.running.Wait()
 }
 
 // decodeBody reads Celery's protocol v2 body: [args, kwargs, embed].
