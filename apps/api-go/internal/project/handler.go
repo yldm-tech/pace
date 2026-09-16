@@ -41,10 +41,18 @@ type Settings struct {
 	WebURL     string
 	// FileSizeLimit is settings.FILE_SIZE_LIMIT, the cap every attachment size is clamped to.
 	FileSizeLimit int64
+	// SkipEnvironmentConfig is SKIP_ENV_VAR: with it set the instance configuration rows are authoritative, and without it they are ignored.
+	SkipEnvironmentConfig bool
+	// Environment is the fallback a configuration value falls back to when no row has been written.
+	Environment map[string]string
+	// LLMBaseURL is where the assistant's completions are asked for. The python client points at OpenAI unless it is told otherwise.
+	LLMBaseURL string
 	// The three webhook settings, which together decide which urls a workspace may be told to call.
 	WebhookAllowedIPs        []netip.Prefix
 	WebhookAllowedHosts      []string
 	WebhookDisallowedDomains []string
+	// SecretKey is what an encrypted configuration value is read back with.
+	SecretKey string
 }
 
 type TaskPublisher interface {
@@ -65,13 +73,14 @@ type TaskPublisher interface {
 }
 
 type Handler struct {
-	db       *gorm.DB
-	sessions *auth.SessionManager
-	settings Settings
-	tasks    TaskPublisher
-	cache    auth.CacheInvalidator
-	clock    func() time.Time
-	storage  *storage.Store
+	db         *gorm.DB
+	httpClient *http.Client
+	sessions   *auth.SessionManager
+	settings   Settings
+	tasks      TaskPublisher
+	cache      auth.CacheInvalidator
+	clock      func() time.Time
+	storage    *storage.Store
 }
 
 func NewHandler(db *gorm.DB, sessions *auth.SessionManager, settings Settings) *Handler {
@@ -79,6 +88,42 @@ func NewHandler(db *gorm.DB, sessions *auth.SessionManager, settings Settings) *
 }
 
 func (handler *Handler) SetTasks(publisher TaskPublisher) { handler.tasks = publisher }
+
+// SetHTTPClient replaces the client the two outward-facing routes reach with, which is what lets a test answer for them.
+func (handler *Handler) SetHTTPClient(client *http.Client) { handler.httpClient = client }
+
+// configurationValue is get_configuration_value for one key: the row when SKIP_ENV_VAR is set and there is one, and the environment otherwise.
+func (handler *Handler) configurationValue(c *gin.Context, key, fallback string) string {
+	if value, present := handler.settings.Environment[key]; present {
+		fallback = value
+	}
+	if !handler.settings.SkipEnvironmentConfig {
+		return fallback
+	}
+	var row struct {
+		Value       *string `gorm:"column:value"`
+		IsEncrypted bool    `gorm:"column:is_encrypted"`
+	}
+	err := handler.db.WithContext(c.Request.Context()).Table("instance_configurations").
+		Select("value, is_encrypted").Where("key = ? AND deleted_at IS NULL", key).
+		Order("created_at DESC").Limit(1).Take(&row).Error
+	if err != nil {
+		// Only a key with no row at all falls back; a row holding an empty value really is empty.
+		return fallback
+	}
+	if row.Value == nil {
+		return ""
+	}
+	if !row.IsEncrypted {
+		return *row.Value
+	}
+	decrypted, err := auth.DecryptConfiguration(*row.Value, handler.settings.SecretKey)
+	if err != nil {
+		// decrypt_data answers an empty string for anything it cannot read.
+		return ""
+	}
+	return decrypted
+}
 
 // SetCache wires the Redis invalidator the label routes need, since Django
 // drops the cached workspace label list when a project label changes.
@@ -159,6 +204,9 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerUserIssueListRoutes(router)
 	handler.registerUserRestRoutes(router)
 	handler.registerExporterRoutes(router)
+	handler.registerTimezoneRoutes(router)
+	handler.registerExternalRoutes(router)
+	handler.registerWorkspaceEstimateRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

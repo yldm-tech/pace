@@ -34,6 +34,8 @@ type Dependencies struct {
 	InstanceSettings InstanceSettings
 	// InstanceMailer sends the one message the console's credential check sends. Without it the check reports that mail is not configured.
 	InstanceMailer instancesapi.Mailer
+	// LLMBaseURL is where the assistant asks for its completions. Empty means OpenAI's own.
+	LLMBaseURL string
 }
 
 // InstanceSettings are the four settings only the admin console reads.
@@ -145,6 +147,10 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			WebhookAllowedIPs:        dependencies.AuthSettings.WebhookAllowedIPs,
 			WebhookAllowedHosts:      dependencies.AuthSettings.WebhookAllowedHosts,
 			WebhookDisallowedDomains: dependencies.AuthSettings.WebhookDisallowedDomains,
+			SecretKey:                dependencies.AuthSettings.SecretKey,
+			SkipEnvironmentConfig:    dependencies.AuthSkipEnvironmentConfig,
+			Environment:              dependencies.AuthSettings.Environment,
+			LLMBaseURL:               dependencies.LLMBaseURL,
 		})
 		if err == nil {
 			projectHandler.SetStorage(attachmentStore)

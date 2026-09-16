@@ -183,6 +183,15 @@
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_draft_issues api-go:8000
 
+	reverse_proxy /api/timezones/ api-go:8000
+	reverse_proxy /api/unsplash/ api-go:8000
+
+	@go_workspace_estimates path_regexp go_workspace_estimates ^/api/workspaces/[^/]+/estimates/$
+	reverse_proxy @go_workspace_estimates api-go:8000
+
+	@go_ai_assistant path_regexp go_ai_assistant ^/api/workspaces/[^/]+/(projects/[0-9A-Fa-f-]+/)?ai-assistant/$
+	reverse_proxy @go_ai_assistant api-go:8000
+
 	@go_instances path_regexp go_instances ^/api/instances/(admins/([0-9A-Fa-f-]+/|me/|session/|sign-in/|sign-out/|sign-up/|sign-up-screen-visited/)?|configurations/(disable-email-feature/)?|email-credentials-check/|workspace-slug-check/|workspaces/)?$
 	reverse_proxy @go_instances api-go:8000
 

@@ -307,6 +307,12 @@ func TestProjectRouteInventory(t *testing.T) {
 
 		"GET /api/workspaces/:slug/export-issues/":  true,
 		"POST /api/workspaces/:slug/export-issues/": true,
+
+		"GET /api/timezones/":                                   true,
+		"GET /api/unsplash/":                                    true,
+		"GET /api/workspaces/:slug/estimates/":                  true,
+		"POST /api/workspaces/:slug/ai-assistant/":              true,
+		"POST /api/workspaces/:slug/projects/:id/ai-assistant/": true,
 	}
 	for _, route := range router.Routes() {
 		key := route.Method + " " + route.Path

@@ -184,6 +184,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the timezone list matches Django
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_timezone_list.py > /tmp/timezones.tsv
+          if ! diff -u ../api-go/internal/project/timezones.tsv /tmp/timezones.tsv; then
+            echo "::error::apps/api-go/internal/project/timezones.tsv is stale, so the picker would offer a different list."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_timezone_list.py > ../api-go/internal/project/timezones.tsv"
+            exit 1
+          fi
+
       - name: Verify the instance configuration list matches Django
         working-directory: apps/api
         run: |

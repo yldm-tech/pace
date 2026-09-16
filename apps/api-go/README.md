@@ -2391,3 +2391,33 @@ Things worth knowing before reading a response from it:
 The first-run screen takes the instance row's lock and re-checks the guard inside it, because two people submitting the form at the same moment could otherwise both become the first administrator. The guard asks whether *any* administrator exists rather than any of this instance, so a stray second registration cannot be used to get past it.
 
 The credential check is the one place where the ported errors are coarser than Django's. Python's `smtplib` raises a different exception for each SMTP reply code and the view names each one; Go's client does not separate them the same way, so what is reported is the nearest of those sentences and, failing that, the one that covers the rest. The request fails either way, and with a sentence rather than a traceback.
+
+## Migrated module: the five loose routes
+
+Five routes that belong to nothing larger: the timezone list, the Unsplash search, the workspace's estimate scales, and the two assistant routes.
+
+### Timezones
+
+`GET /api/timezones/`, which anybody may read because the sign-up screen offers it. The pairs of friendly name and IANA identifier are copied into `internal/project/timezones.tsv` and CI diffs them against the endpoint that declares them; the *order* cannot be baked in, because it is by how far each zone is from UTC right now and that moves with daylight saving.
+
+**A zone west of Greenwich on a half hour is reported an hour further out than it is.** The offset is worked out with python's floor division, so −9.5 hours floors to −10 and the remainder of 1800 seconds becomes 30 — and Marquesas, which is UTC−09:30, is reported as UTC−10:30. St John's has the same problem. East of Greenwich the arithmetic works, so Kolkata and Kathmandu are right. Reproduced rather than corrected.
+
+The order is by `int(strftime("%z"))`, so a half-hour zone sorts thirty past its hour rather than halfway to the next one — the key is a four-digit number, not a duration.
+
+### Unsplash
+
+`GET /api/unsplash/` passes a search on and hands back whatever Unsplash says, status and body alike — including an error body, so a rejected key reaches the browser as Unsplash worded it. Without a key configured it answers an empty list rather than an error.
+
+**Every search asks for the wrong page.** The url is built from a template literal whose dollar sign was never removed, so the page goes out as `page=$1` rather than `page=1`. Reproduced.
+
+### The assistant
+
+`POST` on `ai-assistant/` under a workspace and under a project. The project one names the project and the workspace beside the answer; the workspace one answers the text alone.
+
+Three different misconfigurations — a provider nobody recognises, a missing key, and a model the provider does not list — all give back the same sentence, so an operator cannot tell which it was from the response. Every failure of the call itself answers the same sentence and a 500, so nothing about the provider reaches the caller either.
+
+All three providers are called through the same OpenAI-shaped endpoint, because upstream points the OpenAI client at whichever one is configured. Gemini's model name is prefixed with the provider, which is the one thing that differs. The one deliberate addition is a thirty-second timeout, which `requests` does not have — without it a provider that never answers holds the request open.
+
+### Workspace estimates
+
+`GET /api/workspaces/<slug>/estimates/` starts from the projects rather than from the scales, so a scale nobody has selected is left out even though it exists, and a scale two projects share is listed once. Any active member may read it, guests included: the permission only narrows on the unsafe methods and this route has none.
