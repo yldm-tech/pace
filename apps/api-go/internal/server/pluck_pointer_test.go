@@ -18,8 +18,10 @@ import (
 //
 // []sql.NullString works, and so does Row().Scan into a sql.Null*. Verified against a live database rather than assumed.
 func TestNoPluckIntoAPointerSlice(t *testing.T) {
-	// A Pluck whose destination is a variable declared as []*T, in either declaration form.
-	pointerSlice := regexp.MustCompile(`(?m)(var\s+(\w+)\s+\[\]\*\w+|(\w+)\s*:=\s*\[\]\*\w+\{)`)
+	// A Pluck whose destination is a variable declared as []*T or as a bare pointer, in either declaration form.
+	//
+	// The bare pointer is the worse of the two: Pluck walks rows into a slice, so *T never has Next called on it and fails with `sql: Scan called without calling Next` on every row, null or not. guestMayComment did that, which turned one permission decision into a 500 for every guest.
+	pointerSlice := regexp.MustCompile(`(?m)(var\s+(\w+)\s+\[\]\*\w+|(\w+)\s*:=\s*\[\]\*\w+\{|var\s+(\w+)\s+\*\w+[\w.]*\s*$)`)
 	pluck := regexp.MustCompile(`\.Pluck\([^,]+,\s*&(\w+)\)`)
 
 	var offenders []string
