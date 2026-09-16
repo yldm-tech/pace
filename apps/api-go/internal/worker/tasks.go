@@ -284,7 +284,7 @@ func MigratedTaskNames() []string {
 		SoftDeleteRelatedObjectsTask, HardDeleteTask,
 		PageTransactionTask, TrackPageVersionTask, IssueDescriptionVersionTask,
 		AssetObjectMetadataTask, DeleteUnuploadedFileAssetTask, CrawlLinkTitleTask,
-		DeleteOldExportLinksTask, ArchiveAndCloseTask, ModelActivityTask, IssueActivityTask, NotificationsTask, WebhookSendTask, WebhookActivityTask, StackEmailNotificationTask, SendEmailNotificationTask,
+		DeleteOldExportLinksTask, ArchiveAndCloseTask, ModelActivityTask, IssueActivityTask, NotificationsTask, WebhookSendTask, WebhookActivityTask, StackEmailNotificationTask, SendEmailNotificationTask, ProcessLogsTask,
 	}
 }
 

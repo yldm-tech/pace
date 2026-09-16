@@ -141,6 +141,7 @@ func main() {
 	webhooks.Register(consumer)
 	emailStack.Register(consumer)
 	emailSend.Register(consumer)
+	worker.NewAPILogTasks(db, logger).Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

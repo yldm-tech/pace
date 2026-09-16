@@ -135,6 +135,14 @@ const webhookDeactivationTaskName = "plane.bgtasks.webhook_task.send_webhook_dea
 
 const notificationsTaskName = "plane.bgtasks.notification_task.notifications"
 
+// processLogsTaskName is the task that keeps a record of every request made with an api key.
+const processLogsTaskName = "plane.bgtasks.logger_task.process_logs"
+
+// PublishAPIActivityLog mirrors process_logs.delay, which the logging middleware calls once a request has been answered.
+func (publisher *CeleryPublisher) PublishAPIActivityLog(ctx context.Context, data map[string]any) error {
+	return publisher.publishKeywords(ctx, processLogsTaskName, map[string]any{"log_data": data})
+}
+
 // sendEmailNotificationTaskName is the task that renders and sends one batched notification email.
 const sendEmailNotificationTaskName = "plane.bgtasks.email_notification_task.send_email_notification"
 
