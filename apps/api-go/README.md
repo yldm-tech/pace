@@ -2791,3 +2791,22 @@ Every other piece of this migration is checked against the original's own output
 ### Nothing in this repository calls it
 
 The web app renders its PDFs in the browser with react-pdf, and no other caller exists here. The route is ported because it is part of the service being replaced and something outside this repository may reach for it — not because anything inside it does.
+
+## The live service, part twelve: the cutover
+
+The eleven parts above build a service. This part is the one that makes the Node one stop running.
+
+`docker-compose.yml` still has a service called `live`, and the container is still called `plane-live`. Only the build changed: `./apps/api-go` with `entrypoint: ["pace-live"]` instead of `./apps/live/Dockerfile.live`. The names are deliberate. `apps/proxy/Caddyfile.ce` routes with `reverse_proxy /live/* live:3000`, and the web and admin apps are handed a `LIVE_URL`; renaming the service would mean editing both, so it keeps its name and neither changes.
+
+It replaces the Node service rather than running beside it. Two servers holding the same page converge only through the Redis relay of part nine, and the proxy sends every `/live/*` request to one host anyway — so running both would mean some editors on one server and some on the other with no path between them. Reverting is switching the build back to `./apps/live/Dockerfile.live`, which is still in the tree.
+
+The image now carries five binaries rather than four, and its base tag moved from `golang:1.25-alpine` to `golang:1.26-alpine` — the `go` line in `go.mod` had already moved to 1.26, and since the image pins `GOTOOLCHAIN=local`, `go mod download` was refusing to run rather than fetching a newer toolchain. The image had not been buildable since; it is now, and `pace-live` was run out of it and asked for a page conversion to confirm the binary in it works.
+
+### What is not switched
+
+`deployments/` is untouched, and nothing there runs the Go live service:
+
+- `deployments/cli/community/docker-compose.yml` still pulls `makeplane/plane-live:${APP_RELEASE:-stable}`.
+- `deployments/aio/community/` still pulls that same published image and its `supervisor.conf` still runs `node /app/live/apps/live`.
+
+This is not an oversight in this change. No Go service is wired into `deployments/` at all — not the API, not the worker, not the beat scheduler — because those directories consume published `makeplane/*` images rather than building from this tree. Switching them needs a published image to switch to, which is a release concern and not a code change.
