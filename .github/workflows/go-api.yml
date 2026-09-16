@@ -184,6 +184,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the instance configuration list matches Django
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_instance_config_variables.py > /tmp/instance_config.tsv
+          if ! diff -u ../api-go/internal/manage/instance_config.tsv /tmp/instance_config.tsv; then
+            echo "::error::apps/api-go/internal/manage/instance_config.tsv is stale, so configure_instance would miss a variable."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_instance_config_variables.py > ../api-go/internal/manage/instance_config.tsv"
+            exit 1
+          fi
+
       - name: Verify the seed data matches the one apps/api ships
         working-directory: apps/api
         run: |

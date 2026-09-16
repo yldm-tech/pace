@@ -103,7 +103,7 @@ func resetPassword(ctx context.Context, env Environment, arguments []string) err
 
 // createInstanceAdmin is manage.py create_instance_admin: give somebody the instance-wide admin role.
 //
-// The instance it attaches them to is whichever row the table holds last by primary key, which is Instance.objects.last() with no ordering of its own.
+// The instance it attaches them to is the *oldest* registration, not the newest: Instance.objects.last() over a model whose Meta orders newest first.
 func createInstanceAdmin(ctx context.Context, env Environment, arguments []string) error {
 	db, err := database(env)
 	if err != nil {
@@ -124,7 +124,10 @@ func createInstanceAdmin(ctx context.Context, env Environment, arguments []strin
 	}
 
 	var instances []string
-	if err := db.WithContext(ctx).Table("instances").Order("id DESC").Limit(1).Pluck("id", &instances).Error; err != nil {
+	// Instance.objects.last() over a model ordered newest first, so it is the *oldest* registration that the admin is attached to.
+	err = db.WithContext(ctx).Table("instances").Where("deleted_at IS NULL").
+		Order("created_at").Limit(1).Pluck("id", &instances).Error
+	if err != nil {
 		return commandError("Failed to create the instance admin.")
 	}
 	var instanceID any

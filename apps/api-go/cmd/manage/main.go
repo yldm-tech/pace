@@ -70,6 +70,7 @@ func main() {
 	manage.Mail = func() (worker.EmailSettings, worker.ConfigurationReader, worker.Mailer) {
 		return emailDefaults(), auth.NewGORMRepository(db, settings.Auth.SkipEnvironmentConfig, settings.Auth.SecretKey), worker.SMTPMailer{}
 	}
+	manage.SecretKey = settings.Auth.SecretKey
 	manage.Queue = func() worker.DelayedPublisher { return auth.NewCeleryPublisher(settings.Auth.AMQPURL) }
 
 	if err := command.Run(ctx, env, os.Args[2:]); err != nil {
