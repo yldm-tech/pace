@@ -484,20 +484,32 @@ func TestAwarenessReachesTheOthersAndLeavesWithThem(t *testing.T) {
 
 	// When the first client goes, the others are told its cursor is gone.
 	_ = first.socket.Close()
-	removal := second.readUntil(hocuspocus.MessageAwareness)
-	removed, err := removal.ReadAwarenessUpdate()
-	if err != nil {
-		t.Fatalf("read: %v", err)
+
+	// Read awareness frames until the removal is among them rather than assuming it is the next one. The announcement above can still be in flight -- the server also sends awareness on joining -- so on a loaded runner the frame read here is the announcement again, at its own clock and with its state intact, and the assertion fails on a message that is perfectly correct.
+	deadline := time.Now().Add(10 * time.Second)
+	var id, clock uint64
+	var state string
+	var found bool
+	for !found {
+		removal, arrived := second.readUntilBefore(deadline, hocuspocus.MessageAwareness)
+		if !arrived {
+			break
+		}
+		removed, err := removal.ReadAwarenessUpdate()
+		if err != nil {
+			t.Fatalf("read: %v", err)
+		}
+		decoder := hocuspocus.NewDecoder(removed)
+		count, _ := decoder.ReadVarUint()
+		if count != 1 {
+			t.Fatalf("the removal names %d clients", count)
+		}
+		id, _ = decoder.ReadVarUint()
+		clock, _ = decoder.ReadVarUint()
+		state, _ = decoder.ReadVarString()
+		found = state == "null"
 	}
-	decoder := hocuspocus.NewDecoder(removed)
-	count, _ := decoder.ReadVarUint()
-	if count != 1 {
-		t.Fatalf("the removal names %d clients", count)
-	}
-	id, _ := decoder.ReadVarUint()
-	clock, _ := decoder.ReadVarUint()
-	state, _ := decoder.ReadVarString()
-	if id != 7 || clock != 2 || state != "null" {
+	if !found || id != 7 || clock != 2 {
 		t.Errorf("removal = client %d clock %d state %q, want client 7 at a higher clock with no state", id, clock, state)
 	}
 
