@@ -1,13 +1,15 @@
 #!/bin/bash
 
-BRANCH=${BRANCH:-master}
+# main rather than master: that is this repository's default branch, and the fallback download below reads a file from it.
+BRANCH=${BRANCH:-main}
 SERVICE_FOLDER=plane-app
 SCRIPT_DIR=$PWD
 PLANE_INSTALL_DIR=$PWD/$SERVICE_FOLDER
 export APP_RELEASE="stable"
-export DOCKERHUB_USER=makeplane
+export DOCKERHUB_USER=${DOCKERHUB_USER:-yldm-tech}
 
-export GH_REPO=makeplane/plane
+# This repository, not upstream's. It was makeplane/plane, so the installer downloaded upstream's compose file and stood up upstream's Django and Node — none of the Go in this tree.
+export GH_REPO=${GH_REPO:-yldm-tech/pace}
 export RELEASE_DOWNLOAD_URL="https://github.com/$GH_REPO/releases/download"
 export FALLBACK_DOWNLOAD_URL="https://raw.githubusercontent.com/$GH_REPO/$BRANCH/deployments/cli/community"
 
