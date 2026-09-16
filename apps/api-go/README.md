@@ -2810,3 +2810,21 @@ The image now carries five binaries rather than four, and its base tag moved fro
 - `deployments/aio/community/` still pulls that same published image and its `supervisor.conf` still runs `node /app/live/apps/live`.
 
 This is not an oversight in this change. No Go service is wired into `deployments/` at all — not the API, not the worker, not the beat scheduler — because those directories consume published `makeplane/*` images rather than building from this tree. Switching them needs a published image to switch to, which is a release concern and not a code change.
+
+## The beat, cut over
+
+`beat-go` now runs and `beat-worker` is gone. The two could not have run side by side: both read and write `django_celery_beat_periodictask`, so the pair would have queued all twelve periodic tasks twice. It keeps its own container name rather than taking over `beatworker`, since nothing addresses the scheduler by name — it talks to Postgres and RabbitMQ and nothing talks to it.
+
+Running it against a database carrying the real `django_celery_beat` schema found something reading the code had not. A task whose `last_run_at` is null was treated as due immediately, so the first time beat ever started it fired the whole schedule at once — `hard_delete`, `archive_and_close_old_issues` and the ten others, all in the same second.
+
+Django does not do that. `ModelEntry` fills a null `last_run_at` in from `date_changed`, which `auto_now` holds at the moment the row was last written, so a task the scheduler has only just created waits a full period before its first run. The exception is a task with a start time, which is backdated by thirty years instead — that makes the schedule due whatever it is and leaves the separate start-time gate to decide, which is how such a task fires *at* its start time rather than at the first slot after it.
+
+Both branches were read off django-celery-beat itself rather than off its source: three rows were built in a Django-migrated database, `last_run_at` forced back to null, and `ModelEntry.is_due` asked directly.
+
+| row | Django | Go, before | Go, now |
+| --- | --- | --- | --- |
+| never run, no start time | not due | due | not due |
+| never run, start time an hour ago | due | not due until midnight | due |
+| never run, start time in an hour | not due | not due | not due |
+
+The end of it, on a database truncated back to empty: beat syncs twelve entries and queues nothing. Set one task's `last_run_at` two days back and it queues that one, on `pace-go`, and nothing else.
