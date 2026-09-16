@@ -252,6 +252,15 @@ func emailSettings(ctx context.Context, reader ConfigurationReader, defaults Ema
 	return resolved, nil
 }
 
+// SendPlainEmail sends one message with no html part at all, which is what the admin console's credential check sends.
+func SendPlainEmail(ctx context.Context, defaults EmailSettings, reader ConfigurationReader, mailer Mailer, to, subject, text string) error {
+	settings, err := emailSettings(ctx, reader, defaults)
+	if err != nil {
+		return err
+	}
+	return mailer.Send(ctx, settings, to, subject, text, "")
+}
+
 // TestEmailSubject is what manage.py test_email sends under.
 const TestEmailSubject = "Test email from Plane"
 

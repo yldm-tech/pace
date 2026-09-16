@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -29,26 +30,31 @@ type Config struct {
 }
 
 type AuthConfig struct {
-	SecretKey                string
-	SecretKeyFallbacks       []string
-	RedisURL                 string
-	AMQPURL                  string
-	WebURL                   string
-	AppBaseURL               string
-	SpaceBaseURL             string
-	SpaceBasePath            string
-	SessionCookieName        string
-	SessionCookieDomain      string
-	SessionCookieSecure      bool
-	SessionCookieAge         time.Duration
-	SessionSaveEveryRequest  bool
-	CSRFCookieName           string
-	CSRFCookieDomain         string
-	CSRFCookieSecure         bool
-	CSRFCookieAge            time.Duration
-	CSRFTrustedOrigins       []string
-	AuthenticationRateLimit  string
-	SkipEnvironmentConfig    bool
+	SecretKey               string
+	SecretKeyFallbacks      []string
+	RedisURL                string
+	AMQPURL                 string
+	WebURL                  string
+	AppBaseURL              string
+	SpaceBaseURL            string
+	SpaceBasePath           string
+	SessionCookieName       string
+	SessionCookieDomain     string
+	SessionCookieSecure     bool
+	SessionCookieAge        time.Duration
+	SessionSaveEveryRequest bool
+	CSRFCookieName          string
+	CSRFCookieDomain        string
+	CSRFCookieSecure        bool
+	CSRFCookieAge           time.Duration
+	CSRFTrustedOrigins      []string
+	AuthenticationRateLimit string
+	SkipEnvironmentConfig   bool
+	// The four settings only the admin console reads. ADMIN_BASE_URL is dropped when it is not a url, the same way settings.py drops it.
+	AdminBaseURL             string
+	AdminBasePath            string
+	InstanceChangelogURL     string
+	IsSelfManaged            bool
 	AWSAccessKeyID           string
 	AWSSecretAccessKey       string
 	AWSRegion                string
@@ -82,26 +88,31 @@ func Load() (Config, error) {
 		MaxOpenConns:    positiveIntOrDefault(os.Getenv("DB_MAX_OPEN_CONNS"), defaultMaxOpenConns),
 		MaxIdleConns:    positiveIntOrDefault(os.Getenv("DB_MAX_IDLE_CONNS"), defaultMaxIdleConns),
 		Auth: AuthConfig{
-			SecretKey:                strings.TrimSpace(os.Getenv("SECRET_KEY")),
-			SecretKeyFallbacks:       csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
-			RedisURL:                 strings.TrimSpace(os.Getenv("REDIS_URL")),
-			AMQPURL:                  celeryBrokerURL(),
-			WebURL:                   strings.TrimRight(envOrDefault("WEB_URL", "http://localhost:8000"), "/"),
-			AppBaseURL:               strings.TrimRight(envOrDefault("APP_BASE_URL", "http://localhost:3000"), "/"),
-			SpaceBaseURL:             strings.TrimRight(envOrDefault("SPACE_BASE_URL", "http://localhost:3002"), "/"),
-			SpaceBasePath:            normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
-			SessionCookieName:        envOrDefault("SESSION_COOKIE_NAME", "session-id"),
-			SessionCookieDomain:      strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
-			SessionCookieSecure:      secureCookies,
-			SessionCookieAge:         secondsOrDefault(os.Getenv("SESSION_COOKIE_AGE"), 7*24*time.Hour),
-			SessionSaveEveryRequest:  boolOrDefault(os.Getenv("SESSION_SAVE_EVERY_REQUEST"), false),
-			CSRFCookieName:           envOrDefault("CSRF_COOKIE_NAME", "csrftoken"),
-			CSRFCookieDomain:         strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
-			CSRFCookieSecure:         secureCookies,
-			CSRFCookieAge:            secondsOrDefault(os.Getenv("CSRF_COOKIE_AGE"), 364*24*time.Hour),
-			CSRFTrustedOrigins:       trustedOrigins,
-			AuthenticationRateLimit:  envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
-			SkipEnvironmentConfig:    boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
+			SecretKey:               strings.TrimSpace(os.Getenv("SECRET_KEY")),
+			SecretKeyFallbacks:      csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
+			RedisURL:                strings.TrimSpace(os.Getenv("REDIS_URL")),
+			AMQPURL:                 celeryBrokerURL(),
+			WebURL:                  strings.TrimRight(envOrDefault("WEB_URL", "http://localhost:8000"), "/"),
+			AppBaseURL:              strings.TrimRight(envOrDefault("APP_BASE_URL", "http://localhost:3000"), "/"),
+			SpaceBaseURL:            strings.TrimRight(envOrDefault("SPACE_BASE_URL", "http://localhost:3002"), "/"),
+			SpaceBasePath:           normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
+			SessionCookieName:       envOrDefault("SESSION_COOKIE_NAME", "session-id"),
+			SessionCookieDomain:     strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			SessionCookieSecure:     secureCookies,
+			SessionCookieAge:        secondsOrDefault(os.Getenv("SESSION_COOKIE_AGE"), 7*24*time.Hour),
+			SessionSaveEveryRequest: boolOrDefault(os.Getenv("SESSION_SAVE_EVERY_REQUEST"), false),
+			CSRFCookieName:          envOrDefault("CSRF_COOKIE_NAME", "csrftoken"),
+			CSRFCookieDomain:        strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			CSRFCookieSecure:        secureCookies,
+			CSRFCookieAge:           secondsOrDefault(os.Getenv("CSRF_COOKIE_AGE"), 364*24*time.Hour),
+			CSRFTrustedOrigins:      trustedOrigins,
+			AuthenticationRateLimit: envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
+			SkipEnvironmentConfig:   boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
+			AdminBaseURL:            validURLOrEmpty(os.Getenv("ADMIN_BASE_URL")),
+			AdminBasePath:           envOrDefault("ADMIN_BASE_PATH", "/god-mode/"),
+			InstanceChangelogURL:    os.Getenv("INSTANCE_CHANGELOG_URL"),
+			// IS_SELF_MANAGED is a literal in settings.py rather than an environment variable, and the community edition is always self managed.
+			IsSelfManaged:            true,
 			AWSAccessKeyID:           strings.TrimSpace(os.Getenv("AWS_ACCESS_KEY_ID")),
 			AWSSecretAccessKey:       strings.TrimSpace(os.Getenv("AWS_SECRET_ACCESS_KEY")),
 			AWSRegion:                strings.TrimSpace(os.Getenv("AWS_REGION")),
@@ -245,4 +256,13 @@ func parseDisallowedDomains(raw string) []string {
 		}
 	}
 	return domains
+}
+
+// validURLOrEmpty keeps a base url only when it really is one, which is what settings.py does with ADMIN_BASE_URL.
+func validURLOrEmpty(raw string) string {
+	parsed, err := url.Parse(raw)
+	if err != nil || parsed.Scheme == "" || parsed.Host == "" {
+		return ""
+	}
+	return raw
 }

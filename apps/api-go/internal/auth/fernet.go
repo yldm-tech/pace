@@ -15,6 +15,11 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 )
 
+// DecryptConfiguration is decrypt_data, exported for the admin console — which reads the stored settings back out in full for whoever is signed in as an administrator.
+func DecryptConfiguration(value, secret string) (string, error) {
+	return decryptDjangoConfiguration(value, secret)
+}
+
 func decryptDjangoConfiguration(value, secret string) (string, error) {
 	key := pbkdf2.Key([]byte(secret), []byte("salt"), 100_000, 32, sha256.New)
 	token, err := base64.URLEncoding.DecodeString(value)

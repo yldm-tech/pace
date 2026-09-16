@@ -1043,6 +1043,23 @@ func containsURL(value string) bool {
 	return workspaceURLPattern.MatchString(value)
 }
 
+// The three rules a workspace name and slug are held to, exported because the admin console applies the same three to the workspaces it creates.
+
+// ContainsURL is plane.utils.url.contains_url.
+func ContainsURL(value string) bool { return containsURL(value) }
+
+// HasAlphanumeric is plane.utils.content_validator.has_alphanumeric: a name made only of punctuation is refused.
+func HasAlphanumeric(value string) bool { return hasAlphanumeric(value) }
+
+// RestrictedSlug says whether a slug is one of the names the web app routes to something else. The comparison is exact rather than case-insensitive, which is what lets a capitalised one through.
+func RestrictedSlug(slug string) bool {
+	_, restricted := restrictedWorkspaceSlugs[slug]
+	return restricted
+}
+
+// RandomHexColor is get_random_color, the column default a workspace's background takes.
+func RandomHexColor() string { return randomColor() }
+
 func hasAlphanumeric(value string) bool {
 	for _, runeValue := range value {
 		if unicode.IsLetter(runeValue) || unicode.IsNumber(runeValue) {

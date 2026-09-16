@@ -9,6 +9,7 @@ import (
 	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 	"github.com/yldm-tech/pace/apps/api-go/internal/externalapi"
+	instancesapi "github.com/yldm-tech/pace/apps/api-go/internal/instances"
 	projectapi "github.com/yldm-tech/pace/apps/api-go/internal/project"
 	spaceapi "github.com/yldm-tech/pace/apps/api-go/internal/space"
 	"github.com/yldm-tech/pace/apps/api-go/internal/storage"
@@ -29,6 +30,18 @@ type Dependencies struct {
 	AuthRateLimiter           auth.RateLimiter
 	AuthRedis                 redis.UniversalClient
 	AuthAvatarStore           auth.AvatarStore
+	// InstanceSettings is what the admin console needs to know about the installation around it.
+	InstanceSettings InstanceSettings
+	// InstanceMailer sends the one message the console's credential check sends. Without it the check reports that mail is not configured.
+	InstanceMailer instancesapi.Mailer
+}
+
+// InstanceSettings are the four settings only the admin console reads.
+type InstanceSettings struct {
+	AdminBaseURL         string
+	AdminBasePath        string
+	InstanceChangelogURL string
+	IsSelfManaged        bool
 }
 
 func NewRouter(dependencies Dependencies) *gin.Engine {
@@ -162,6 +175,24 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			externalHandler.SetTasks(publisher)
 		}
 		externalHandler.Register(router)
+
+		instancesHandler := instancesapi.NewHandler(dependencies.Database, sessions, instancesapi.Settings{
+			AdminBaseURL:          dependencies.InstanceSettings.AdminBaseURL,
+			AdminBasePath:         dependencies.InstanceSettings.AdminBasePath,
+			SpaceBaseURL:          dependencies.AuthSettings.SpaceBaseURL,
+			AppBaseURL:            dependencies.AuthSettings.AppBaseURL,
+			WebURL:                dependencies.AuthSettings.WebURL,
+			InstanceChangelogURL:  dependencies.InstanceSettings.InstanceChangelogURL,
+			IsSelfManaged:         dependencies.InstanceSettings.IsSelfManaged,
+			FileSizeLimit:         float64(dependencies.AuthSettings.FileSizeLimit),
+			SecretKey:             dependencies.AuthSettings.SecretKey,
+			SkipEnvironmentConfig: dependencies.AuthSkipEnvironmentConfig,
+			Environment:           dependencies.AuthSettings.Environment,
+		})
+		if dependencies.InstanceMailer != nil {
+			instancesHandler.SetMailer(dependencies.InstanceMailer)
+		}
+		instancesHandler.RegisterRoutes(router)
 	}
 	return router
 }

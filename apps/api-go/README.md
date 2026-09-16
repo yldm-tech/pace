@@ -2364,3 +2364,30 @@ Two gates come first: an installation that was never registered reports nothing,
 Nine gauges describe the installation and six describe each of its oldest thousand workspaces, read in a deterministic order so the same thousand is reported from one run to the next. The workspace counts are read in one statement rather than six per workspace, which is what the batched aggregation upstream is for.
 
 The page count is the one that is not a plain count: it leaves out pages that are *both* owned by a bot and private. That is one condition rather than two, so a bot's public page is counted and so is a person's private one. Django renders it as an inner join and a negated pair, which is what the SQL here is — taken from the ORM rather than written by hand.
+
+## Migrated module: the admin console
+
+`internal/instances` is the god-mode API — the screens an operator signs into to configure the installation itself. Fourteen paths, twenty routes, and the last block of the app API that was still entirely Django's.
+
+It is its own app with its own idea of who may call it. Being an administrator here has nothing to do with being an administrator of any workspace: the check is a row in `instance_admins` against the registration, with `role >= 15`. Fifteen is not a role the console ever hands out — it writes twenty — so the floor only matters for a row somebody wrote by hand.
+
+The two sign-in routes are form posts that answer with a redirect and never anything else. Every refusal goes back to the console's own origin with `error_code` and `error_message` in the query string, because the console is a separate front end that reads its errors from there. The nine codes are the admin block of `AUTHENTICATION_ERROR_CODES`, 5150 to 5190.
+
+`/api/instances/` is the one route here anybody may call, because the sign-in screen has to know what the installation offers before anybody has signed in. An installation with no registration answers two flags and nothing else, which is how the console knows to show the first-run screen.
+
+Things worth knowing before reading a response from it:
+
+- **`primary_owner_details` never appears.** `InstanceSerializer` declares it with `source="primary_owner"` and the model has no such field, so DRF drops it — the same rule that shortens the other serializers on instances. Twenty-two keys, not twenty-three.
+- **`InstanceAdminMeSerializer` lists `is_email_verified` twice**, so it renders fifteen keys rather than sixteen.
+- **`/api/instances/admins/session/` asks a different question from every other route here.** It checks only whether the caller administers *any* instance — no role floor, and without naming this one — so somebody left over from an earlier registration reads as signed in there and is refused everywhere else.
+- **The configuration values are decrypted on the way out.** A client secret is sent in full to whoever is signed in as an administrator, which is what lets the console show it in a field.
+- **Three of the config fallbacks disagree with what `configure_instance` seeds.** Signup falls back to off here and is seeded on; the magic link falls back to on here and is seeded off. It shows on an installation that has never been configured.
+- **`disable-email-feature` writes plain empty strings into encrypted rows**, because it is one SQL `UPDATE` with a `CASE` rather than a save. The stored password becomes the literal empty string rather than an encrypted one. Nothing reads it afterwards, since the switch is off.
+- **The first-run screen stores the telemetry answer as a boolean from whatever the form sent**, and any non-empty string is true — so `false` leaves telemetry on. Only an empty answer turns it off.
+- `get_configuration_value` has two rules that are easy to get backwards. With `SKIP_ENV_VAR` set — the default — a row's value is used *even when it is empty*, so a setting somebody cleared reads as cleared. Without it the rows are ignored entirely and every value comes from the environment, so an installation configured through the console but running without that flag shows none of it.
+- The two counts beside a workspace are correlated subqueries, so a workspace with no projects reports null rather than zero. The member count leaves out bots and anybody deactivated; the project count leaves out nothing.
+- Deleting an administrator is a hard delete rather than a soft one, and answers 204 whether or not there was anything to delete.
+
+The first-run screen takes the instance row's lock and re-checks the guard inside it, because two people submitting the form at the same moment could otherwise both become the first administrator. The guard asks whether *any* administrator exists rather than any of this instance, so a stray second registration cannot be used to get past it.
+
+The credential check is the one place where the ported errors are coarser than Django's. Python's `smtplib` raises a different exception for each SMTP reply code and the view names each one; Go's client does not separate them the same way, so what is reported is the nearest of those sentences and, failing that, the one that covers the rest. The request fails either way, and with a sentence rather than a traceback.
