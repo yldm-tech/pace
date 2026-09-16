@@ -162,7 +162,7 @@
           },
           "website": {
             "label": "URL del sito web",
-            "placeholder": "https://plane.so",
+            "placeholder": "https://pace.yldm.ai",
             "validation": {
               "invalid": "URL non valido",
               "maxLength": "L'URL deve contenere meno di 800 caratteri"
@@ -178,7 +178,7 @@
           },
           "contact_email": {
             "label": "Email di supporto",
-            "placeholder": "help@plane.so",
+            "placeholder": "help@pace.yldm.ai",
             "validation": {
               "invalid": "Indirizzo email non valido",
               "maxLength": "L'email di supporto deve contenere meno di 255 caratteri"

@@ -121,7 +121,7 @@ function WorkspaceInvitationPage() {
               <EmptySpaceItem
                 Icon={ShareAltOutline}
                 title="Join our community of active creators"
-                href="https://forum.plane.so"
+                href="https://pace.yldm.ai/forum"
               />
             </EmptySpace>
           )

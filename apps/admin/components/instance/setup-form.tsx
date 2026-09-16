@@ -357,7 +357,7 @@ export function InstanceSetupForm() {
               <label className="cursor-pointer text-13 font-medium text-tertiary" htmlFor="is_telemetry_enabled">
                 Allow Plane to anonymously collect usage events.{" "}
                 <a
-                  href="https://developers.plane.so/self-hosting/telemetry"
+                  href="https://pace.yldm.ai/docs/self-hosting/telemetry"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:text-blue-600 flex-shrink-0 text-13 font-medium"
