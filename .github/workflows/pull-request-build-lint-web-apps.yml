@@ -4,7 +4,11 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - "preview"
+      # main, not preview. This fork has no preview branch, so every pull request skipped
+      # this workflow silently -- format, lint, types and the web app builds have never
+      # been checked here, which is how a space build that fails on a clean install went
+      # unnoticed.
+      - "main"
     types:
       - "opened"
       - "synchronize"

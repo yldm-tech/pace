@@ -486,6 +486,8 @@ overrides:
   browserslist: '>=4.28.7'
   toml: '>=4.2.0 <5'
 
+packageExtensionsChecksum: sha256-QECFFk6DK7Z0SfGQwkx0ke2Qmxqf3UAVU0zgV68U06E=
+
 patchedDependencies:
   react-color@2.19.3: 311b81530f5338988f8b57718f24870a7550637159d8360d69f668cba2f2033f
 
@@ -1168,7 +1170,7 @@ importers:
         version: 6.3.7
       tiptap-markdown:
         specifier: 'catalog:'
-        version: 0.8.10(@tiptap/core@2.26.3(@tiptap/pm@2.26.1))
+        version: 0.8.10(@tiptap/core@2.26.3(@tiptap/pm@2.26.1))(@tiptap/pm@2.26.1)
       uuid:
         specifier: 14.0.0
         version: 14.0.0
@@ -8120,6 +8122,7 @@ packages:
     resolution: {integrity: sha512-iDVkR2BjAqkTDtFX0h94yVvE2AihCXlF0Q7RIXSJPRSR5I0PA1TMuAg6FHFpmqTn4tPxJ0by0CK7PUMlnFLGEQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.3
+      '@tiptap/pm': ^2.0.0
 
   tmp@0.2.7:
     resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==}
@@ -15303,9 +15306,10 @@ snapshots:
     dependencies:
       '@popperjs/core': 2.11.8
 
-  tiptap-markdown@0.8.10(@tiptap/core@2.26.3(@tiptap/pm@2.26.1)):
+  tiptap-markdown@0.8.10(@tiptap/core@2.26.3(@tiptap/pm@2.26.1))(@tiptap/pm@2.26.1):
     dependencies:
       '@tiptap/core': 2.26.3(@tiptap/pm@2.26.1)
+      '@tiptap/pm': 2.26.1
       '@types/markdown-it': 13.0.9
       markdown-it: 14.2.0
       markdown-it-task-lists: 2.1.1
