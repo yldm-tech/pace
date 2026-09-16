@@ -412,6 +412,10 @@ func primaryKeyField(raw json.RawMessage) (*string, []string) {
 	if json.Unmarshal(raw, &decoded) != nil {
 		return nil, []string{"“” is not a valid UUID."}
 	}
+	// RelatedField.run_validation turns an empty string into None before anything else looks at it: "We force empty strings to None values for relational fields."
+	if text, isText := decoded.(string); isText && text == "" {
+		return nil, nil
+	}
 	value, ok := decoded.(string)
 	if !ok {
 		return nil, []string{"“" + stringifyChoice(decoded) + "” is not a valid UUID."}

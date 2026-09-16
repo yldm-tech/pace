@@ -475,7 +475,7 @@ func (handler *Handler) labelFieldsFrom(c *gin.Context, body map[string]json.Raw
 	}
 	if raw, exists := body["parent"]; exists {
 		result.hasParent = true
-		if string(raw) != "null" {
+		if !blankRelation(raw) {
 			var value string
 			if json.Unmarshal(raw, &value) != nil {
 				c.JSON(http.StatusBadRequest, gin.H{"parent": []string{fmt.Sprintf("“%s” is not a valid UUID.", value)}})
