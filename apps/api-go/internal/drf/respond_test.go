@@ -95,6 +95,10 @@ func TestEverySuccessResponseGoesThroughRespond(t *testing.T) {
 		if err != nil || info.IsDir() || !strings.HasSuffix(path, ".go") || strings.HasSuffix(path, "_test.go") {
 			return err
 		}
+		// The live service is not the API. It answers as the Express service it replaces, whose bodies are JavaScript's own rendering rather than Django's, so putting them through a function that rewrites datetimes the Django way would be the bug rather than the fix.
+		if strings.Contains(filepath.ToSlash(path), "/internal/live/") {
+			return nil
+		}
 		contents, err := os.ReadFile(path)
 		if err != nil {
 			return err

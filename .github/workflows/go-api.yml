@@ -7,6 +7,7 @@ on:
       - ".github/workflows/go-api.yml"
       - "apps/api-go/**"
       - "packages/editor/**"
+      - "apps/live/**"
       - "apps/api/plane/db/migrations/**"
       - "apps/proxy/Caddyfile.ce"
 
@@ -426,7 +427,7 @@ jobs:
         run: go vet ./...
 
   editor-fixtures:
-    name: Verify the editor-derived files match the editor
+    name: Verify the generated files match the packages they come from
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -454,8 +455,8 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Install editor dependencies
-        run: pnpm install --frozen-lockfile --filter @plane/editor...
+      - name: Install editor and live dependencies
+        run: pnpm install --frozen-lockfile --filter @plane/editor... --filter live...
 
       - name: Verify the document editor schema matches the editor
         run: |
@@ -474,6 +475,16 @@ jobs:
             echo "::error::apps/api-go/internal/ydoc/emoji.tsv is stale."
             echo "Regenerate it from the repository root with:"
             echo "  node apps/api-go/tools/generate_ydoc_emoji.mjs > apps/api-go/internal/ydoc/emoji.tsv"
+            exit 1
+          fi
+
+      - name: Verify the collaboration frames match Hocuspocus
+        run: |
+          node apps/api-go/tools/generate_hocuspocus_frames.mjs > /tmp/frames.json
+          if ! diff -u apps/api-go/internal/live/hocuspocus/testdata/frames.json /tmp/frames.json; then
+            echo "::error::apps/api-go/internal/live/hocuspocus/testdata/frames.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_hocuspocus_frames.mjs > apps/api-go/internal/live/hocuspocus/testdata/frames.json"
             exit 1
           fi
 

@@ -2557,3 +2557,35 @@ What comes out is the title with `&`, `<` and `>` escaped and nothing else — a
 ### The emoji table is generated
 
 An emoji node stores a shortcode and nothing else; the character comes from a lookup against the list the editor is configured with, which is GitHub's set minus the entries that have no character. `tools/generate_ydoc_emoji.mjs` flattens that list into `internal/ydoc/emoji.tsv` — 2,832 keys, since a name and each of its aliases both resolve — and CI diffs it. A shortcode the table does not know renders back between colons.
+
+## The live service, part three: the process itself
+
+`cmd/live` is the Go replacement for the Node process. This is its skeleton — the HTTP surface, the configuration, the client it talks to the API with, and the wire protocol its websocket speaks. The websocket endpoint itself is the next piece.
+
+### It runs as the user, not as itself
+
+The service holds no credentials of its own for reading or writing a page. Every call it makes to the API carries the editing user's session cookie, so the API's permissions are what decide who may read and write. Authentication here is only the check that the cookie really belongs to the user the connection claims to be: the token is JSON carrying an id and a cookie, `/api/users/me/` is asked whose cookie it is, and the two ids have to match.
+
+The token carries the cookie because a browser opening a websocket to another origin does not reliably attach one. A token that will not parse is not fatal on its own — the cookie then comes from the request headers — but a connection that ends up with no user id is refused, and the user id only ever comes from the token.
+
+The client refuses to follow a redirect. The asset routes answer with a 302 into object storage, and following it would send the user's session cookie to a third party.
+
+### helmet and cors are ported rather than approximated
+
+Both are middleware the browser depends on, so both are written out header by header.
+
+The security headers are helmet's defaults, read off helmet 7.2: a content security policy with the eleven directives helmet ships, `Cross-Origin-Opener-Policy` and `Cross-Origin-Resource-Policy` at `same-origin`, `Origin-Agent-Cluster: ?1`, `Referrer-Policy: no-referrer`, HSTS at a hundred and eighty days, and the five `X-` headers. `Cross-Origin-Embedder-Policy` is deliberately absent, because helmet has not set it by default since version five.
+
+CORS is the `cors` package's behaviour for the way this service configures it. The allowed origins are a list, so an allowed request gets its own origin reflected back and a disallowed one gets no `Access-Control-Allow-Origin` at all — the request is still served, and it is the browser that refuses the answer. `Vary: Origin` goes out either way. A preflight is answered here and never reaches a route: `204` with an explicit `Content-Length: 0`, which Safari needs before it will stop waiting for a body, and that happens for any `OPTIONS` request including one to a path nothing serves.
+
+**With `CORS_ALLOWED_ORIGINS` unset, nothing is allowed.** Splitting an empty string on commas gives one empty entry rather than none, so the list has a member and no real origin matches it. That is the upstream behaviour and a deployment that has not set the variable is relying on it.
+
+### Every route answers with or without its trailing slash
+
+Express matches both spellings and answers both the same way; Gin would redirect. Each route is registered under both.
+
+### The wire protocol
+
+`internal/live/hocuspocus` is the framing the client speaks. It is not plain y-websocket: every frame carries the document's name in front of it, and there are message types beyond the two y-protocols defines — authentication, stateless signals, a save acknowledgement and a heartbeat. The encoding underneath is lib0's, unsigned LEB128 for a number and a length-prefixed run of bytes for everything else.
+
+`tools/generate_hocuspocus_frames.mjs` builds sixteen frames with the real server's own encoder and records them, and the Go side has to produce the same bytes. The corpus covers the cases a hand-written varint gets wrong: a document name long enough to need a two-byte length, a name and a payload with characters outside ASCII, and an empty payload.
