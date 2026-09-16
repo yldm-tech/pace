@@ -67,8 +67,9 @@ func (handler *Handler) stickyList(c *gin.Context, user *auth.User) {
 		results = append(results, stickyJSON(row))
 	}
 
+	// paginate(default_per_page=20) in plane/app/views/workspace/sticky.py, which leaves max_per_page at the paginator's own 1000. Passing twenty as the ceiling too refused the per_page=30 the sidebar asks for, so the stickies panel answered 400 on every workspace.
 	const stickiesPerPage = 20
-	perPage, err := pagination.PerPage(c.Query("per_page"), stickiesPerPage, stickiesPerPage)
+	perPage, err := pagination.PerPage(c.Query("per_page"), stickiesPerPage, pagination.DefaultPerPage)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
@@ -82,7 +83,8 @@ func (handler *Handler) stickyList(c *gin.Context, user *auth.User) {
 		}
 		cursor = parsed
 	}
-	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), stickiesPerPage)
+	// The last argument is OffsetPaginator's max_limit, which is the module-level MAX_LIMIT of 1000 and not the route's page size.
+	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), pagination.DefaultPerPage)
 	offset := page.Offset
 	if offset > len(results) {
 		offset = len(results)

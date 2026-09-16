@@ -1,6 +1,7 @@
 package pagination
 
 import (
+	"errors"
 	"encoding/json"
 	"os"
 	"strconv"
@@ -86,10 +87,10 @@ func TestPerPageIsRefusedRatherThanClamped(t *testing.T) {
 	if value, err := PerPage("50", 1000, 1000); err != nil || value != 50 {
 		t.Fatalf("a valid per_page gave (%d, %v)", value, err)
 	}
-	if _, err := PerPage("5000", 1000, 1000); err != ErrPerPageTooLarge {
+	if _, err := PerPage("5000", 1000, 1000); !errors.Is(err, ErrPerPageTooLarge) {
 		t.Fatalf("an oversized per_page gave %v, want a refusal", err)
 	}
-	if _, err := PerPage("many", 1000, 1000); err != ErrInvalidPerPage {
+	if _, err := PerPage("many", 1000, 1000); !errors.Is(err, ErrInvalidPerPage) {
 		t.Fatalf("a non-numeric per_page gave %v", err)
 	}
 	// The ceiling is raised to the default when it would otherwise sit below it.

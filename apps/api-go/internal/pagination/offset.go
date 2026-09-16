@@ -2,6 +2,7 @@ package pagination
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -50,11 +51,20 @@ func ParseOffsetCursor(value string) (OffsetCursor, error) {
 	return OffsetCursor{Value: int(head), Offset: offset, IsPrev: previous != 0}, nil
 }
 
-// ErrPerPageTooLarge is what get_per_page raises when the caller asks for more than the ceiling.
+// ErrPerPageTooLarge is what get_per_page raises when the caller asks for more than the ceiling. It is a sentinel to match on; the message a client sees carries the ceiling, as Django's does.
 var ErrPerPageTooLarge = errors.New("per_page exceeds the maximum")
 
+// perPageTooLarge renders get_per_page's ParseError verbatim. These strings go straight into the detail field of a 400, so they are the API's own wording rather than Go's, capital letter and full stop included.
+type perPageTooLarge struct{ max int }
+
+func (err perPageTooLarge) Error() string {
+	return fmt.Sprintf("Invalid per_page value. Cannot exceed %d.", err.max)
+}
+
+func (err perPageTooLarge) Is(target error) bool { return target == ErrPerPageTooLarge }
+
 // ErrInvalidPerPage is what it raises when per_page is not a number at all.
-var ErrInvalidPerPage = errors.New("invalid per_page parameter")
+var ErrInvalidPerPage = errors.New("Invalid per_page parameter.")
 
 // PerPage is BasePaginator.get_per_page: an absent value takes the default, a non-numeric one is refused, and one above the ceiling is refused rather than clamped.
 func PerPage(raw string, defaultPerPage, maxPerPage int) (int, error) {
@@ -69,7 +79,7 @@ func PerPage(raw string, defaultPerPage, maxPerPage int) (int, error) {
 		maxPerPage = defaultPerPage
 	}
 	if value > maxPerPage {
-		return 0, ErrPerPageTooLarge
+		return 0, perPageTooLarge{max: maxPerPage}
 	}
 	return value, nil
 }
