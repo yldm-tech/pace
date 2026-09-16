@@ -25,11 +25,15 @@ const (
 type Hub struct {
 	api    *APIClient
 	logger *slog.Logger
+	// relay carries a page's changes to the other servers serving it, and is nil when the service runs as a single node.
+	relay *Relay
 
 	mu        sync.Mutex
 	documents map[string]*Document
 	// loading holds the documents being read, so that two people opening a page at the same moment wait on one read rather than starting two.
 	loading map[string]chan struct{}
+	// pendingSaves records which pages have a change waiting to be written, and whose session to write it with. Taking an entry out of it is what decides who does the writing, so a page is never written twice and never forgotten.
+	pendingSaves map[string]ConnectionContext
 
 	saves *debouncer
 }
@@ -37,13 +41,17 @@ type Hub struct {
 // NewHub builds the registry.
 func NewHub(api *APIClient, logger *slog.Logger) *Hub {
 	return &Hub{
-		api:       api,
-		logger:    logger,
-		documents: map[string]*Document{},
-		loading:   map[string]chan struct{}{},
-		saves:     newDebouncer(),
+		api:          api,
+		logger:       logger,
+		documents:    map[string]*Document{},
+		loading:      map[string]chan struct{}{},
+		pendingSaves: map[string]ConnectionContext{},
+		saves:        newDebouncer(),
 	}
 }
+
+// AttachRelay gives the hub the carrier it publishes changes through. It is set after the hub is built because the relay needs the hub to deliver what it receives.
+func (h *Hub) AttachRelay(relay *Relay) { h.relay = relay }
 
 // Stop cancels every pending save. Whatever was waiting is lost, which is why a caller that wants the pages written should close the connections first and let the last one out save.
 func (h *Hub) Stop() { h.saves.Stop() }
@@ -85,6 +93,8 @@ func (h *Hub) Open(ctx context.Context, name string, connection ConnectionContex
 		if err != nil {
 			return nil, err
 		}
+		// Subscribed only once the document is registered, so that what arrives has somewhere to go.
+		h.relay.Subscribe(ctx, name, document)
 		return document, nil
 	}
 }
@@ -149,7 +159,13 @@ func (h *Hub) load(ctx context.Context, name string, connection ConnectionContex
 // Nothing observes a document before this, which is what keeps a page that could not be read from being written back empty: a failed read never reaches here and the document is thrown away rather than registered.
 func (h *Hub) finishLoading(document *Document) {
 	document.observeUpdates(func(_ []byte, origin any) {
-		// A change that did not come from a connection came from this server, and this server is not responsible for saving it.
+		// A change that arrived from another server is already being saved by whoever's client made it, and relaying it back would bounce it between the two forever.
+		if origin == relayOrigin {
+			return
+		}
+		h.relay.PublishChange(document)
+
+		// A change that came from neither a connection nor another server came from this process, and nothing here is responsible for saving one of those.
 		connection, ok := origin.(*Connection)
 		if !ok {
 			return
@@ -160,23 +176,61 @@ func (h *Hub) finishLoading(document *Document) {
 
 // scheduleSave puts the page in the queue to be written, replacing whatever was queued for it.
 func (h *Hub) scheduleSave(document *Document, connection ConnectionContext) {
-	h.saves.Debounce(document.Name(), func() {
+	name := document.Name()
+	h.mu.Lock()
+	h.pendingSaves[name] = connection
+	h.mu.Unlock()
+
+	h.saves.Debounce(name, func() {
+		document.lifetime.Lock()
+		defer document.lifetime.Unlock()
+		if document.destroyed {
+			return
+		}
+		connection, pending := h.takePendingSave(name)
+		if !pending {
+			return
+		}
 		h.save(document, connection)
 	}, storeDebounce, storeMaxDebounce)
 }
 
-// Release is what the last connection off a page does.
-//
-// A page with a change waiting is written now rather than left on a timer, and the write unloads it afterwards. A page with nothing waiting has nothing to write, so it is simply let go — otherwise a page somebody opened and did not touch would sit in memory until the process ended.
-func (h *Hub) Release(name string) {
-	if h.saves.IsDebounced(name) {
-		h.saves.ExecuteNow(name)
-		return
+// takePendingSave claims a page's waiting change. Whoever gets it does the writing; everybody else has nothing to do.
+func (h *Hub) takePendingSave(name string) (ConnectionContext, bool) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	connection, ok := h.pendingSaves[name]
+	if ok {
+		delete(h.pendingSaves, name)
 	}
-	h.unload(name)
+	return connection, ok
 }
 
-// save writes a page's three description columns.
+// Release is what the last connection off a page does.
+//
+// A page with a change waiting is written now rather than left on a timer; a page with nothing waiting is simply let go, so that one somebody opened and did not touch does not sit in memory until the process ended.
+//
+// The whole of it happens under the document's own guard, and the waiting change is claimed before anything else. That ordering is the point: two sockets closing at the same moment both arrive here, and without it one could let the document go while the other was still reading it out — which writes the page empty, or loses the change entirely.
+func (h *Hub) Release(name string) {
+	document := h.Document(name)
+	if document == nil {
+		return
+	}
+	document.lifetime.Lock()
+	defer document.lifetime.Unlock()
+	if document.destroyed {
+		return
+	}
+
+	h.saves.Cancel(name)
+	if connection, pending := h.takePendingSave(name); pending {
+		h.save(document, connection)
+		return
+	}
+	h.detach(document)
+}
+
+// save writes a page's three description columns. The caller holds the document's guard.
 //
 // A failure is told to the people editing rather than only logged, because the alternative is somebody typing into a page that is no longer being saved. A page that has grown too large for the API to accept is a special case: there is no way forward, so every connection is closed and the document is unloaded.
 func (h *Hub) save(document *Document, connection ConnectionContext) {
@@ -188,6 +242,16 @@ func (h *Hub) save(document *Document, connection ConnectionContext) {
 		h.logger.Error("could not build the page service to save with", "page", document.Name(), "error", err)
 		return
 	}
+
+	// Every server serving the page has the whole of it, so only one of them writes. A server that does not get the lock has nothing to do: whoever holds it is writing the same state.
+	release, ok := h.relay.AcquireWriteLock(ctx, document.Name())
+	if !ok {
+		if document.ConnectionCount() == 0 {
+			h.detach(document)
+		}
+		return
+	}
+	defer release()
 
 	payload, err := documentPayload(crdt.EncodeStateAsUpdateV1(document.Doc(), nil))
 	if err != nil {
@@ -202,7 +266,7 @@ func (h *Hub) save(document *Document, connection ConnectionContext) {
 
 	// Nobody is left on the page and it has just been written, so it can go.
 	if document.ConnectionCount() == 0 {
-		h.unload(document.Name())
+		h.detach(document)
 	}
 }
 
@@ -222,8 +286,17 @@ func (h *Hub) reportSaveFailure(document *Document, connection ConnectionContext
 	if !tooLarge {
 		return
 	}
-	// There is no way forward for a page the API will not take, so the editors are disconnected and the document is let go rather than left collecting changes nothing will ever save.
-	h.forceClose(document, forceCloseDocumentTooLarge, closeCodeDocumentTooLarge)
+	// There is no way forward for a page the API will not take, so the editors are disconnected and the document is let go rather than left collecting changes nothing will ever save — on every server serving it, not only this one.
+	//
+	// The other servers are told over Redis; this one closes the page itself rather than waiting for the command to come back, because the caller is holding the document's guard and the command's own path would want it too.
+	if h.relay != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), apiTimeout)
+		defer cancel()
+		if err := h.relay.ForceCloseEverywhere(ctx, document.Name(), forceCloseDocumentTooLarge, closeCodeDocumentTooLarge); err != nil {
+			h.logger.Warn("could not tell the other servers to close the page", "page", document.Name(), "error", err)
+		}
+	}
+	h.forceCloseHeld(document, forceCloseDocumentTooLarge, closeCodeDocumentTooLarge)
 }
 
 // documentPayload renders an update into the three columns a page keeps.
@@ -247,15 +320,28 @@ func documentPayload(update []byte) (DocumentPayload, error) {
 	}, nil
 }
 
-// unload takes a document out of memory. The next person to open the page reads it again.
-func (h *Hub) unload(name string) {
+// detach takes a document out of memory. The caller holds its guard. The next person to open the page reads it again.
+func (h *Hub) detach(document *Document) {
+	name := document.Name()
 	h.mu.Lock()
-	document, ok := h.documents[name]
-	if ok {
-		delete(h.documents, name)
-	}
+	delete(h.documents, name)
+	delete(h.pendingSaves, name)
 	h.mu.Unlock()
-	if ok {
-		document.doc.Destroy()
+
+	h.relay.Unsubscribe(name)
+	document.destroy()
+}
+
+// unload is detach for a caller that does not hold the document's guard, which is what a command arriving from another server is.
+func (h *Hub) unload(name string) {
+	document := h.Document(name)
+	if document == nil {
+		return
 	}
+	document.lifetime.Lock()
+	defer document.lifetime.Unlock()
+	if document.destroyed {
+		return
+	}
+	h.detach(document)
 }

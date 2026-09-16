@@ -2717,4 +2717,38 @@ An awareness update names the client ids it speaks for, and those are remembered
 
 ### What is not here yet
 
-This is a single server. Two people on the same page must reach the same one, because nothing is relayed between servers yet — the Redis relay and the cross-server force-close are the next piece.
+The relay that makes this work across more than one server is below.
+
+## The live service, part nine: carrying a page between servers
+
+Two people editing the same page do not necessarily reach the same server. `internal/live/relay.go` is what makes that work: one Redis channel per document, carrying **the same frames the clients send**. A server relaying to another is doing what a client does, from the other side.
+
+### Announcing a change does not send it
+
+The exchange is not obvious and getting it wrong is silent. A server that has applied a change publishes **its own state vector** — which on its own tells the others nothing about the change. Each of them answers with two things: what the first server is missing according to them, *and* their own state vector. It is the answer to that second half that carries the change back.
+
+The first version only did the first half. Everything looked connected and nothing ever crossed.
+
+### A publisher is delivered its own messages
+
+Redis has no way to be asked not to, so every message carries the sending server's name in front of it and a server drops its own. Applying one's own change twice is not harmless: it is applied to a document that already has it.
+
+### Only one server writes the page
+
+Every server serving a page holds the whole of it, so without a lock they would all write it and the last write would win a race nobody needed to run. The lock is held only for the write and expires on its own, so a server that dies holding one does not stop the page being saved — and releasing it only succeeds if it is still ours, because a lock that expired and was taken by somebody else is not ours to give away.
+
+If Redis cannot be reached the page is written anyway. The worst case is the write another server was also making; refusing to save would be worse.
+
+### A page nobody can save is closed everywhere
+
+A page the API refuses as too large is closed out from under everybody on every server serving it, not only the one that tried to write it, over a channel of its own.
+
+### The document's lifetime is one lock
+
+Two sockets closing at the same moment both decide the page is theirs to finish with, and the first version got this wrong twice — once writing the page out **empty**, because one goroutine read the document out while another had already let it go, and once **losing the change entirely**, because the one holding the pending save found the document destroyed.
+
+The shape that works: the waiting change is claimed out of a map before anything else, so exactly one caller writes it; and everything that writes the page or takes it out of memory holds the document's own guard. That also means a force close has two entry points — one for the save that is already holding the guard, and one for a command arriving from another server, which is not.
+
+### Without Redis
+
+`REDIS_URL` and `REDIS_HOST` unset means the service runs as a single node and every relay call is a call on nothing. Two people on one page then have to reach the same server for it to converge, which is what the deployment is choosing when it leaves those unset.

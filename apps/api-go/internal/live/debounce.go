@@ -52,25 +52,14 @@ func (d *debouncer) Debounce(id string, work func(), wait, maxWait time.Duration
 	d.mu.Unlock()
 }
 
-// IsDebounced reports whether work is scheduled under the id.
-func (d *debouncer) IsDebounced(id string) bool {
+// Cancel stops whatever is scheduled under the id without running it, for a caller that is taking the work over itself.
+func (d *debouncer) Cancel(id string) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
-	_, ok := d.timers[id]
-	return ok
-}
-
-// ExecuteNow runs whatever is scheduled under the id straight away, which is what the last connection leaving a document does so its final state is not left waiting on a timer.
-func (d *debouncer) ExecuteNow(id string) {
-	d.mu.Lock()
-	existing, ok := d.timers[id]
-	if !ok {
-		d.mu.Unlock()
-		return
+	if existing, ok := d.timers[id]; ok {
+		existing.timer.Stop()
+		delete(d.timers, id)
 	}
-	existing.timer.Stop()
-	d.mu.Unlock()
-	existing.run()
 }
 
 // Stop cancels everything scheduled, for shutdown.

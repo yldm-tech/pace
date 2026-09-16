@@ -160,7 +160,7 @@ func (s *clientSocket) establish(ctx context.Context, name, token string) {
 
 	s.write(hocuspocus.NewOutgoing(name).WriteAuthenticated(false).Bytes())
 
-	connection := newConnection(s.socket, document, connectionContext, s.logger)
+	connection := newConnection(s.socket, document, connectionContext, s.server.hub, s.logger)
 	go connection.writeLoop()
 
 	s.mu.Lock()

@@ -15,6 +15,7 @@ type Server struct {
 	config Config
 	api    *APIClient
 	hub    *Hub
+	relay  *Relay
 	logger *slog.Logger
 	engine *gin.Engine
 	http   *http.Server
@@ -23,12 +24,20 @@ type Server struct {
 // NewServer wires the router. It does not listen; Run does that.
 func NewServer(config Config, logger *slog.Logger) *Server {
 	api := NewAPIClient(config.APIBaseURL)
+	hub := NewHub(api, logger)
 	server := &Server{
 		config: config,
 		api:    api,
-		hub:    NewHub(api, logger),
+		hub:    hub,
 		logger: logger,
 	}
+	// A deployment with no Redis runs as a single node, and two people on one page then have to reach the same server for it to converge.
+	relay, err := NewRelay(config.RedisAddress(), hub, logger)
+	if err != nil {
+		logger.Error("could not reach redis, running as a single node", "error", err)
+	}
+	hub.AttachRelay(relay)
+	server.relay = relay
 	server.engine = server.newRouter()
 	return server
 }
@@ -95,5 +104,8 @@ func (s *Server) Run(ctx context.Context) error {
 	defer cancel()
 	err := s.http.Shutdown(shutdownCtx)
 	s.hub.Stop()
+	if closeErr := s.relay.Close(); closeErr != nil {
+		s.logger.Warn("could not close the relay", "error", closeErr)
+	}
 	return err
 }

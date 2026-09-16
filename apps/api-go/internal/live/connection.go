@@ -24,6 +24,7 @@ type Connection struct {
 	socket   *websocket.Conn
 	document *Document
 	context  ConnectionContext
+	hub      *Hub
 	logger   *slog.Logger
 
 	// send serialises writes. A websocket allows one writer at a time, and broadcasts arrive from whichever connection caused them.
@@ -33,11 +34,12 @@ type Connection struct {
 	closed bool
 }
 
-func newConnection(socket *websocket.Conn, document *Document, connectionContext ConnectionContext, logger *slog.Logger) *Connection {
+func newConnection(socket *websocket.Conn, document *Document, connectionContext ConnectionContext, hub *Hub, logger *slog.Logger) *Connection {
 	connection := &Connection{
 		socket:   socket,
 		document: document,
 		context:  connectionContext,
+		hub:      hub,
 		logger:   logger,
 		send:     make(chan []byte, 256),
 	}
@@ -45,18 +47,22 @@ func newConnection(socket *websocket.Conn, document *Document, connectionContext
 	return connection
 }
 
-// send queues a frame. A client too slow to keep up is closed rather than allowed to grow the queue without limit.
+// sendFrame queues a frame. A client too slow to keep up is closed rather than allowed to grow the queue without limit.
+//
+// The queue is written to while the connection's own lock is held, because the lock is also what closes it: checking and then sending would leave a window in which the channel is closed in between, and sending on a closed channel is a panic rather than an error. The send never blocks, so holding the lock across it costs nothing.
 func (c *Connection) sendFrame(frame []byte) {
 	c.mu.Lock()
-	if c.closed {
-		c.mu.Unlock()
-		return
+	overflowed := false
+	if !c.closed {
+		select {
+		case c.send <- frame:
+		default:
+			overflowed = true
+		}
 	}
 	c.mu.Unlock()
 
-	select {
-	case c.send <- frame:
-	default:
+	if overflowed {
 		c.logger.Warn("closing a connection that stopped reading", "document", c.document.Name())
 		c.close(websocket.CloseTryAgainLater, "too slow")
 	}
@@ -79,7 +85,7 @@ func (c *Connection) close(code int, reason string) {
 	c.mu.Unlock()
 
 	if removed := c.document.removeConnection(c); len(removed) > 0 {
-		c.document.removeAwarenessFor(removed)
+		c.document.removeAwarenessFor(removed, c.hub.relay)
 	}
 	deadline := time.Now().Add(time.Second)
 	_ = c.socket.WriteControl(websocket.CloseMessage, websocket.FormatCloseMessage(code, reason), deadline)
@@ -136,6 +142,7 @@ func (c *Connection) handleMessage(ctx context.Context, message *hocuspocus.Inco
 		}
 		if reply, ok := clientEventFor(payload); ok {
 			c.document.BroadcastStateless(reply)
+			c.hub.relay.PublishStateless(c.document.Name(), reply)
 		}
 		return nil
 
@@ -145,6 +152,7 @@ func (c *Connection) handleMessage(ctx context.Context, message *hocuspocus.Inco
 			return err
 		}
 		c.document.BroadcastStateless(payload)
+		c.hub.relay.PublishStateless(c.document.Name(), payload)
 		return nil
 
 	case hocuspocus.MessageClose:
@@ -178,13 +186,11 @@ func (c *Connection) handleSync(ctx context.Context, message *hocuspocus.Incomin
 		if err != nil {
 			return err
 		}
-		// The reply carries the first step back, unless this message was itself a reply — otherwise the two sides would answer each other forever.
-		if message.Type == hocuspocus.MessageSyncReply {
-			c.sendFrame(hocuspocus.NewOutgoing(c.document.Name()).WriteType(hocuspocus.MessageSync).WriteSyncPayload(reply).Bytes())
-			return nil
-		}
 		c.sendFrame(hocuspocus.NewOutgoing(c.document.Name()).WriteType(hocuspocus.MessageSync).WriteSyncPayload(reply).Bytes())
-		c.sendFrame(hocuspocus.NewOutgoing(c.document.Name()).WriteType(hocuspocus.MessageSyncReply).WriteSyncPayload(ysync.EncodeSyncStep1(c.document.Doc())).Bytes())
+		// This server's own first step goes back too, so the client sends whatever this one is missing — unless the message was already an answer, in which case the two would answer each other forever.
+		if message.Type == hocuspocus.MessageSync {
+			c.sendFrame(hocuspocus.NewOutgoing(c.document.Name()).WriteType(hocuspocus.MessageSyncReply).WriteSyncPayload(ysync.EncodeSyncStep1(c.document.Doc())).Bytes())
+		}
 		return nil
 
 	case ysync.MsgSyncStep2, ysync.MsgUpdate:
@@ -211,6 +217,7 @@ func (c *Connection) handleAwareness(update []byte) error {
 		return err
 	}
 	c.document.broadcast(hocuspocus.NewOutgoing(c.document.Name()).WriteAwarenessUpdate(update).Bytes(), c)
+	c.hub.relay.PublishAwareness(c.document, update)
 	return nil
 }
 
