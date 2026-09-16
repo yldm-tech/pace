@@ -146,6 +146,23 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the notification email rendering matches Django
+        working-directory: apps/api
+        run: |
+          if ! diff -u ../api-go/internal/djangotemplate/testdata/issue-updates.html templates/emails/notifications/issue-updates.html; then
+            echo "::error::apps/api-go/internal/djangotemplate/testdata/issue-updates.html is not the template apps/api ships."
+            echo "Copy it across with:"
+            echo "  cp templates/emails/notifications/issue-updates.html ../api-go/internal/djangotemplate/testdata/issue-updates.html"
+            exit 1
+          fi
+          python ../api-go/tools/generate_django_template_fixture.py > /tmp/issue_updates.txt
+          if ! diff -u ../api-go/internal/djangotemplate/testdata/issue_updates.txt /tmp/issue_updates.txt; then
+            echo "::error::apps/api-go/internal/djangotemplate/testdata/issue_updates.txt is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_django_template_fixture.py > ../api-go/internal/djangotemplate/testdata/issue_updates.txt"
+            exit 1
+          fi
+
       - name: Verify the work item activity fixture matches Python
         working-directory: apps/api
         run: |
