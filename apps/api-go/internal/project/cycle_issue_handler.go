@@ -15,6 +15,12 @@ import (
 
 func (handler *Handler) registerCycleIssueRoutes(router gin.IRouter) {
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/", handler.authenticated(handler.cycleIssueCreate))
+	// The detail path binds four methods. Only the delete is written by hand; the other three fall through to DRF's generics, which cannot find the work item at all — see genericActionMisconfigured.
+	const detail = "/api/workspaces/:slug/projects/:id/cycles/:cycle/cycle-issues/:issue/"
+	router.DELETE(detail, handler.authenticated(handler.cycleIssueDestroy))
+	router.GET(detail, handler.authenticated(handler.genericActionMisconfigured))
+	router.PUT(detail, handler.authenticated(handler.genericActionMisconfigured))
+	router.PATCH(detail, handler.authenticated(handler.genericActionMisconfigured))
 	router.POST("/api/workspaces/:slug/projects/:id/cycles/:cycle/archive/", handler.authenticated(handler.cycleArchive))
 	router.DELETE("/api/workspaces/:slug/projects/:id/cycles/:cycle/archive/", handler.authenticated(handler.cycleUnarchive))
 }

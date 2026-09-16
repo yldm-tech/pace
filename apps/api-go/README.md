@@ -1087,7 +1087,9 @@ Removing through `issues/<uuid>/modules/` reads the module's name **before** the
 
 ### The detail path stays on Django whole
 
-`modules/<uuid>/issues/<uuid>/` is not cut over, and the proxy matcher stops at the collection. Django binds four methods there: `DELETE` is written by hand and works, but `GET`, `PUT` and `PATCH` fall through to the generic actions, and those serialize an **Issue** — which is what the viewset's queryset returns — with a serializer built for **ModuleIssue**. Its required `issue` field has no matching attribute on an Issue, so the read raises, and the writes set a stray attribute on the wrong model before failing on the way out. Cutting a path over means owning every method on it, so the Go handler for the delete exists but stays unregistered until those three are decided. This is the same call as `cycle-issues/<uuid>/`.
+`modules/<uuid>/issues/<uuid>/` is cut over with all four of its methods, and three of them answer a 500 — which is what Django answers too. `DELETE` is written by hand and works. `GET`, `PUT` and `PATCH` fall through to DRF's own generic actions, and a generic action finds its row through `get_object()`, which looks for a URL keyword called `pk`. This path has none: its keyword is `issue_id`. So `get_object` fails its own assertion before touching the database, and the base view turns anything it does not recognise into one sentence and a 500.
+
+It is the same answer for a work item that exists, one that does not, and one in another project, because nothing is ever looked up. `cycle-issues/<uuid>/` is the same call with the same three methods. Both were held back for a long time on the grounds that cutting a path over means owning every method on it — which is exactly why they are cut over now: owning a method includes owning the answer it already gives.
 
 ## Migrated module: module read, update, delete and archive
 
@@ -2469,3 +2471,11 @@ The two projections differ from the live details in ways the archive screens dep
 The two distributions are not shaped alike either. A cycle's assignee rows carry a display name; a module's carry a first and a last name *and* a display name, and are ordered by the first name — so somebody with no first name sorts to the top rather than under their display name. That difference is upstream's, and the frontend reads both shapes.
 
 The counting rules are the ones already documented for the cycle analytics route and apply here unchanged: each count is over the grouping column rather than over the row, so the bucket holding work items with no assignee counts **zero** of them; and a sum with nothing to add is null rather than zero, so a bucket whose work is all still open reports `null` completed points.
+
+## Every route the Django app serves is now served here
+
+`TestEveryCutOverPathIsFullyServed` compares three sources — the routes Django binds, the paths the proxy cuts over, and the routes this router registers — and there is no longer a Django route without a Go route behind it.
+
+The proxy cuts 634 of the 639 over. The five it does not are one shape rather than five paths: the fixture collapses any segment carrying a star into a bare one, so `stickies.json`, `invitations.json` and the router root with a format suffix all read as `/api/v1/workspaces/*/*`, and a collapsed probe cannot match a matcher written against the real shapes. The real paths are cut over and are checked as such by `TestCommunityProxyCutsOverOnlyTheExternalStickyAndInviteRoutes`.
+
+What is left of the migration is not the API. It is the `live` service — the Node process behind the collaborative editor — which is still what it always was.
