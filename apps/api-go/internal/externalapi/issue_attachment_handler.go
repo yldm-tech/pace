@@ -161,7 +161,7 @@ func (handler *Handler) issueAttachmentReserve(c *gin.Context, user *auth.User, 
 		handler.serverError(c, err)
 		return
 	}
-	target, err := handler.assets.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.assets.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.serverError(c, err)
 		return
@@ -213,7 +213,7 @@ func (handler *Handler) issueAttachmentDownload(c *gin.Context, user *auth.User,
 	}
 	attributes, _ := decodeJSON(asset.Attributes).(map[string]any)
 	filename, _ := attributes["name"].(string)
-	url, err := handler.assets.PresignedDownload(c.Request.Context(), asset.Asset, "attachment", filename)
+	url, err := handler.assets.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, "attachment", filename)
 	if err != nil {
 		handler.serverError(c, err)
 		return

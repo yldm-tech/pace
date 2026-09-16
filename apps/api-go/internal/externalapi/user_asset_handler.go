@@ -127,7 +127,7 @@ func (handler *Handler) reserveUserAsset(c *gin.Context, user *auth.User, server
 		handler.serverError(c, err)
 		return
 	}
-	target, err := handler.assets.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.assets.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.serverError(c, err)
 		return

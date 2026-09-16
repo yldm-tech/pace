@@ -5,9 +5,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/minio/minio-go/v7"
@@ -36,6 +38,61 @@ type Store struct {
 	publicClient *minio.Client
 	bucket       string
 	expiry       time.Duration
+
+	// The rest is what ForRequest needs to sign against the host a request arrived on. hosts is a pointer so that copying a Store copies the cache rather than its lock.
+	settings Settings
+	hosts    *hostClients
+}
+
+// hostClients caches the per-host clients ForRequest builds, so a busy installation does not construct one per upload.
+type hostClients struct {
+	mutex sync.Mutex
+	byKey map[string]*minio.Client
+}
+
+// ForRequest is S3Storage(request=request).
+//
+// On MinIO, Django signs every presigned URL against the host the browser used to reach the API -- endpoint_url is f"{request.scheme}://{request.get_host()}" whenever a request is in hand -- and only falls back to AWS_S3_ENDPOINT_URL when there is none, which is the background worker's case. It has to: the endpoint the API writes through is a container name like plane-minio:9000, and a browser handed a URL on that host cannot resolve it. Uploading a project cover failed with ERR_NAME_NOT_RESOLVED for exactly that reason, and so did every other upload.
+//
+// The scheme follows Django's: the connection's own, since settings.py sets no SECURE_PROXY_SSL_HEADER, with MINIO_ENDPOINT_SSL forcing https for an installation that terminates TLS in front.
+//
+// Off MinIO the endpoint is the real S3 one and the request makes no difference.
+func (store *Store) ForRequest(request *http.Request) *Store {
+	if store == nil || request == nil || !store.settings.UseMinio || request.Host == "" {
+		return store
+	}
+	scheme := "http"
+	if store.settings.MinioEndpointSSL || request.TLS != nil {
+		scheme = "https"
+	}
+	client, err := store.hosts.get(store.settings, scheme, request.Host)
+	if err != nil {
+		// Signing against the internal host is no worse than refusing to sign at all, and it is what this did before.
+		return store
+	}
+	scoped := *store
+	scoped.client = client
+	scoped.publicClient = client
+	return &scoped
+}
+
+func (cache *hostClients) get(settings Settings, scheme, host string) (*minio.Client, error) {
+	key := scheme + "://" + host
+	cache.mutex.Lock()
+	defer cache.mutex.Unlock()
+	if client, made := cache.byKey[key]; made {
+		return client, nil
+	}
+	client, err := minio.New(host, &minio.Options{
+		Creds:  credentials.NewStaticV4(settings.AccessKey, settings.SecretKey, ""),
+		Secure: scheme == "https",
+		Region: regionOrDefault(settings.Region),
+	})
+	if err != nil {
+		return nil, err
+	}
+	cache.byKey[key] = client
+	return client, nil
 }
 
 // UploadTarget is the upload_data the create route returns, which the web client turns into a multipart form and posts straight at the bucket.
@@ -69,7 +126,7 @@ func New(settings Settings) (*Store, error) {
 	if expiry <= 0 {
 		expiry = time.Hour
 	}
-	store := &Store{client: client, publicClient: client, bucket: settings.Bucket, expiry: expiry}
+	store := &Store{client: client, publicClient: client, bucket: settings.Bucket, expiry: expiry, settings: settings, hosts: &hostClients{byKey: map[string]*minio.Client{}}}
 	if settings.UseMinio && strings.TrimSpace(settings.PublicEndpoint) != "" {
 		host, secure, err := endpointAndScheme(Settings{Endpoint: settings.PublicEndpoint, MinioEndpointSSL: settings.MinioEndpointSSL, Region: settings.Region})
 		if err != nil {

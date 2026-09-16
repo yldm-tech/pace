@@ -132,7 +132,8 @@ func (handler *Handler) projectFields(c *gin.Context, body map[string]json.RawMe
 	}
 
 	if raw, exists := body["description"]; exists {
-		value, ok := handler.stringField(c, "description", raw, 0)
+		// TextField(blank=True) on the model, so the empty string the web client sends is valid.
+		value, ok := handler.stringFieldAllowingBlank(c, "description", raw, 0)
 		if !ok {
 			return projectInput{}, false
 		}
@@ -243,7 +244,8 @@ func (handler *Handler) projectFields(c *gin.Context, body map[string]json.RawMe
 			result.values[optional.name] = (*string)(nil)
 			continue
 		}
-		value, ok := handler.stringField(c, optional.name, raw, optional.length)
+		// Every field in this list is blank=True on the model.
+		value, ok := handler.stringFieldAllowingBlank(c, optional.name, raw, optional.length)
 		if !ok {
 			return projectInput{}, false
 		}
@@ -375,6 +377,22 @@ func sanitizeDescriptionHTML(c *gin.Context, value auth.JSONValue) (auth.JSONVal
 	if !valid {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "html content is not valid"})
 		return nil, false
+	}
+	return value, true
+}
+
+// stringFieldAllowingBlank is stringField for a model field declared blank=True, which DRF maps to CharField(allow_blank=True). Rejecting "" on those refused what the web client actually sends: creating a project posts description:"" and came back 400 "This field may not be blank."
+func (handler *Handler) stringFieldAllowingBlank(c *gin.Context, name string, raw json.RawMessage, maxLength int) (string, bool) {
+	var value string
+	if json.Unmarshal(raw, &value) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{name: []string{"Not a valid string."}})
+		return "", false
+	}
+	// CharField trims by default, and an all-whitespace value becomes the empty one it is allowed to be.
+	value = strings.TrimSpace(value)
+	if maxLength > 0 && utf8.RuneCountInString(value) > maxLength {
+		c.JSON(http.StatusBadRequest, gin.H{name: []string{fmt.Sprintf("Ensure this field has no more than %d characters.", maxLength)}})
+		return "", false
 	}
 	return value, true
 }

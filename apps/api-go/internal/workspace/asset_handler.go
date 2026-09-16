@@ -197,7 +197,7 @@ func (handler *Handler) assetReserve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	target, err := handler.storage.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.storage.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -458,7 +458,7 @@ func (handler *Handler) staticAsset(c *gin.Context) {
 		return
 	}
 	// The static route signs without a filename, so the browser keeps the name the object has in the bucket.
-	url, err := handler.storage.PresignedDownload(c.Request.Context(), asset.Asset, disposition, "")
+	url, err := handler.storage.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, disposition, "")
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -474,7 +474,7 @@ func (handler *Handler) redirectToAsset(c *gin.Context, asset FileAsset, disposi
 	attributes := map[string]any{}
 	_ = json.Unmarshal(asset.Attributes, &attributes)
 	filename, _ := attributes["name"].(string)
-	url, err := handler.storage.PresignedDownload(c.Request.Context(), asset.Asset, disposition, filename)
+	url, err := handler.storage.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, disposition, filename)
 	if err != nil {
 		handler.internalError(c, err)
 		return
