@@ -117,3 +117,6 @@ packages/i18n/src/types/keys.generated.ts
 
 # Local security notes (not for version control)
 /security/
+
+# A malformed macOS "Icon" rule -- the one without its trailing carriage return -- matches any directory named icon, and core.ignorecase makes that the common case on macOS. This directory was lost to exactly that once, so it is re-included here rather than left to each contributor global config.
+!packages/propel/src/emoji-icon-picker/icon/
