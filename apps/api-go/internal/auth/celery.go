@@ -131,7 +131,17 @@ func (publisher *CeleryPublisher) PublishModelActivity(ctx context.Context, mode
 }
 
 // notificationsTaskName is the task that turns the activity rows a change produced into the notifications people actually see.
+const webhookDeactivationTaskName = "plane.bgtasks.webhook_task.send_webhook_deactivation_email"
+
 const notificationsTaskName = "plane.bgtasks.notification_task.notifications"
+
+// PublishWebhookDeactivation mirrors send_webhook_deactivation_email.delay, which the delivery queues once a webhook has failed often enough to be switched off.
+func (publisher *CeleryPublisher) PublishWebhookDeactivation(ctx context.Context, webhookID, receiverID, currentSite, reason string) error {
+	return publisher.publishKeywords(ctx, webhookDeactivationTaskName, map[string]any{
+		"webhook_id": webhookID, "receiver_id": receiverID,
+		"current_site": currentSite, "reason": reason,
+	})
+}
 
 // PublishNotifications mirrors notifications.delay, which the activity task calls once it has written the history.
 func (publisher *CeleryPublisher) PublishNotifications(ctx context.Context, keywords map[string]any) error {

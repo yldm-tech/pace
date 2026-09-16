@@ -1437,6 +1437,20 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the webhook delivery
+
+`webhook_send_task` now runs on the Go worker. It is the last link in the webhook chain: one webhook, one event, delivered and logged. The middle link — `webhook_activity`, which picks the webhooks that want an event and serialises the object for them — still runs on the Python worker, because it needs the nine v1 serializers and those are the next piece.
+
+**The payload keeps the bytes it was given.** The two halves that came from a serializer are spliced in as they arrived rather than decoded and rebuilt, so a receiver sees the same key order the sender produced. The rest of the object is written by hand in the order it is documented in rather than through a map, which has none.
+
+**The signature covers exactly the bytes that are sent.** That is what lets a receiver check it, and it is why the whitespace the two languages choose does not matter: each side signs what it sends.
+
+**A url that turns out to point somewhere internal is not a failure.** It is logged with a 400 and dropped — not retried, and not grounds for switching the webhook off. The cause may be a transient answer from dns, and switching a customer's webhook off for that would be worse than missing the event. Every delivery goes to an address that was resolved and checked first and is then connected to as a literal, so no second lookup can happen in between; redirects are never followed.
+
+**The backoff is not exponential.** Celery is asked for a doubling one starting at ten minutes, and its ceiling defaults to the same ten minutes — so every wait is a uniformly random stretch between none at all and ten minutes. After five of them the webhook is switched off and whoever made it is emailed.
+
+One difference in where the waiting happens: Celery publishes a new message with an eta and holds it in the worker until then, and this holds it in a timer. With the default acknowledgement settings neither survives the worker stopping.
+
 ## Migrated task: the notifications
 
 `notifications` now runs on the Go worker. It reads the history the previous task wrote and decides, for each person who cares about the work item, whether they hear about it in the app and whether they are sent an email.
