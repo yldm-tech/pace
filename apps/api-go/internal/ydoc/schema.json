@@ -1,0 +1,402 @@
+{
+  "top_node": "doc",
+  "nodes": [
+    {
+      "name": "paragraph",
+      "is_text": false,
+      "attrs": {
+        "textAlign": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "mention",
+      "is_text": false,
+      "attrs": {
+        "id": {
+          "has_default": true,
+          "default": null
+        },
+        "entity_identifier": {
+          "has_default": true,
+          "default": null
+        },
+        "entity_name": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "bulletList",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "doc",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "hardBreak",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "heading",
+      "is_text": false,
+      "attrs": {
+        "textAlign": {
+          "has_default": true,
+          "default": null
+        },
+        "level": {
+          "has_default": true,
+          "default": 1
+        }
+      }
+    },
+    {
+      "name": "listItem",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "orderedList",
+      "is_text": false,
+      "attrs": {
+        "start": {
+          "has_default": true,
+          "default": 1
+        },
+        "type": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "text",
+      "is_text": true,
+      "attrs": {}
+    },
+    {
+      "name": "emoji",
+      "is_text": false,
+      "attrs": {
+        "name": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "blockquote",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "horizontalRule",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "image",
+      "is_text": false,
+      "attrs": {
+        "src": {
+          "has_default": true,
+          "default": null
+        },
+        "alt": {
+          "has_default": true,
+          "default": null
+        },
+        "title": {
+          "has_default": true,
+          "default": null
+        },
+        "width": {
+          "has_default": true,
+          "default": "35%"
+        },
+        "height": {
+          "has_default": true,
+          "default": null
+        },
+        "aspectRatio": {
+          "has_default": true,
+          "default": null
+        },
+        "alignment": {
+          "has_default": true,
+          "default": "left"
+        }
+      }
+    },
+    {
+      "name": "imageComponent",
+      "is_text": false,
+      "attrs": {
+        "src": {
+          "has_default": true,
+          "default": null
+        },
+        "alt": {
+          "has_default": true,
+          "default": null
+        },
+        "title": {
+          "has_default": true,
+          "default": null
+        },
+        "id": {
+          "has_default": true,
+          "default": null
+        },
+        "width": {
+          "has_default": true,
+          "default": "35%"
+        },
+        "height": {
+          "has_default": true,
+          "default": "auto"
+        },
+        "aspectRatio": {
+          "has_default": true,
+          "default": null
+        },
+        "alignment": {
+          "has_default": true,
+          "default": "left"
+        },
+        "status": {
+          "has_default": true,
+          "default": "pending"
+        }
+      }
+    },
+    {
+      "name": "taskList",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "taskItem",
+      "is_text": false,
+      "attrs": {
+        "checked": {
+          "has_default": true,
+          "default": false
+        }
+      }
+    },
+    {
+      "name": "codeBlock",
+      "is_text": false,
+      "attrs": {
+        "language": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "table",
+      "is_text": false,
+      "attrs": {}
+    },
+    {
+      "name": "tableHeader",
+      "is_text": false,
+      "attrs": {
+        "colspan": {
+          "has_default": true,
+          "default": 1
+        },
+        "rowspan": {
+          "has_default": true,
+          "default": 1
+        },
+        "colwidth": {
+          "has_default": true,
+          "default": [
+            150
+          ]
+        },
+        "background": {
+          "has_default": true,
+          "default": "none"
+        }
+      }
+    },
+    {
+      "name": "tableCell",
+      "is_text": false,
+      "attrs": {
+        "colspan": {
+          "has_default": true,
+          "default": 1
+        },
+        "rowspan": {
+          "has_default": true,
+          "default": 1
+        },
+        "colwidth": {
+          "has_default": true,
+          "default": [
+            150
+          ]
+        },
+        "background": {
+          "has_default": true,
+          "default": null
+        },
+        "textColor": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "tableRow",
+      "is_text": false,
+      "attrs": {
+        "background": {
+          "has_default": true,
+          "default": null
+        },
+        "textColor": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    },
+    {
+      "name": "calloutComponent",
+      "is_text": false,
+      "attrs": {
+        "id": {
+          "has_default": true,
+          "default": null
+        },
+        "data-icon-color": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "data-icon-name": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "data-emoji-unicode": {
+          "has_default": true,
+          "default": "128161"
+        },
+        "data-emoji-url": {
+          "has_default": true,
+          "default": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4a1.png"
+        },
+        "data-logo-in-use": {
+          "has_default": true,
+          "default": "emoji"
+        },
+        "data-background": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "data-block-type": {
+          "has_default": true,
+          "default": "callout-component"
+        }
+      }
+    },
+    {
+      "name": "issue-embed-component",
+      "is_text": false,
+      "attrs": {
+        "entity_identifier": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "project_identifier": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "workspace_identifier": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "id": {
+          "has_default": true,
+          "default_is_undefined": true
+        },
+        "entity_name": {
+          "has_default": true,
+          "default_is_undefined": true
+        }
+      }
+    }
+  ],
+  "marks": [
+    {
+      "name": "link",
+      "attrs": {
+        "href": {
+          "has_default": true,
+          "default": null
+        },
+        "target": {
+          "has_default": true,
+          "default": "_blank"
+        },
+        "rel": {
+          "has_default": true,
+          "default": "noopener noreferrer nofollow"
+        },
+        "class": {
+          "has_default": true,
+          "default": "text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer"
+        }
+      }
+    },
+    {
+      "name": "textStyle",
+      "attrs": {}
+    },
+    {
+      "name": "bold",
+      "attrs": {}
+    },
+    {
+      "name": "italic",
+      "attrs": {}
+    },
+    {
+      "name": "strike",
+      "attrs": {}
+    },
+    {
+      "name": "underline",
+      "attrs": {}
+    },
+    {
+      "name": "code",
+      "attrs": {}
+    },
+    {
+      "name": "customColor",
+      "attrs": {
+        "color": {
+          "has_default": true,
+          "default": null
+        },
+        "backgroundColor": {
+          "has_default": true,
+          "default": null
+        }
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/go-api.yml"
       - "apps/api-go/**"
+      - "packages/editor/**"
       - "apps/api/plane/db/migrations/**"
       - "apps/proxy/Caddyfile.ce"
 
@@ -423,3 +424,55 @@ jobs:
       - name: Vet Go API
         working-directory: apps/api-go
         run: go vet ./...
+
+  editor-fixtures:
+    name: Verify the editor-derived files match the editor
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+
+      - name: Enable Corepack and pnpm
+        run: corepack enable pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm store
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
+
+      - name: Install editor dependencies
+        run: pnpm install --frozen-lockfile --filter @plane/editor...
+
+      - name: Verify the document editor schema matches the editor
+        run: |
+          node apps/api-go/tools/generate_ydoc_schema.mjs > /tmp/schema.json
+          if ! diff -u apps/api-go/internal/ydoc/schema.json /tmp/schema.json; then
+            echo "::error::apps/api-go/internal/ydoc/schema.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_ydoc_schema.mjs > apps/api-go/internal/ydoc/schema.json"
+            exit 1
+          fi
+
+      - name: Verify the document corpus matches the editor
+        run: |
+          node apps/api-go/tools/generate_ydoc_fixture.mjs > /tmp/documents.json
+          if ! diff -u apps/api-go/internal/ydoc/testdata/documents.json /tmp/documents.json; then
+            echo "::error::apps/api-go/internal/ydoc/testdata/documents.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_ydoc_fixture.mjs > apps/api-go/internal/ydoc/testdata/documents.json"
+            exit 1
+          fi

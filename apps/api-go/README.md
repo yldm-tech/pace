@@ -2478,4 +2478,46 @@ The counting rules are the ones already documented for the cycle analytics route
 
 The proxy cuts 634 of the 639 over. The five it does not are one shape rather than five paths: the fixture collapses any segment carrying a star into a bare one, so `stickies.json`, `invitations.json` and the router root with a format suffix all read as `/api/v1/workspaces/*/*`, and a collapsed probe cannot match a matcher written against the real shapes. The real paths are cut over and are checked as such by `TestCommunityProxyCutsOverOnlyTheExternalStickyAndInviteRoutes`.
 
-What is left of the migration is not the API. It is the `live` service — the Node process behind the collaborative editor — which is still what it always was.
+What is left of the migration is not the API. It is the `live` service — the Node process behind the collaborative editor — and the first piece of it is below.
+
+## The live service, part one: reading a page out of Yjs
+
+A Plane page is not stored as HTML. It is stored as a Yjs document — a CRDT update, `description_binary` on the row — and the HTML and JSON columns beside it are derived from that update every time the page is persisted. The live service is what derives them, so any Go replacement has to start by reading the same bytes into the same document. `internal/ydoc` does that.
+
+There is no CRDT here. `github.com/reearth/ygo` is a Go port of Yjs with a byte-level conformance suite against `yjs@13.6.31`, and it is a dependency rather than a rewrite. What this package adds is the layer above it: y-prosemirror's reconstruction of a ProseMirror document from a Yjs XML fragment, against Plane's own editor schema.
+
+### The schema is generated, not transcribed
+
+Reconstruction is `schema.node(name, attrs, children)` for every element and `schema.text(text, marks)` for every run of text, and both need to know the schema: which attributes each type declares, what each defaults to when the document does not carry it, and what order the mark types were registered in — because that order is the rank ProseMirror sorts a text node's marks by, and it is the reason `bold` precedes `italic` in the output no matter which order they were applied in.
+
+None of that is behaviour, so none of it is hand-written. `tools/generate_ydoc_schema.mjs` builds the real schema from the real extension list and dumps it to `internal/ydoc/schema.json`, which the package embeds. Twenty-three node types and eight mark types, and CI fails if the file drifts from the editor.
+
+The editor package will not build in this tree — `@plane/propel` has an import of a directory that does not exist — so the generators bundle the schema path directly with the workspace UI packages replaced by a proxy. Nothing replaced is ever called: building a schema reads names, attributes and renderers, and never renders a node view.
+
+### An attribute has three states, not two
+
+This is where the port was wrong first, and the corpus is what caught it.
+
+A declared attribute with no default has to be carried by the document; ProseMirror rejects a node that omits one. An attribute defaulting to `null` is satisfied without the document carrying it, and the null is stored and serialised. But several extensions — the work item embed, the callout — declare `default: undefined`, which is also satisfied without the document carrying it, and then holds no value at all: `JSON.stringify` drops the key, so the attribute is simply **not there** in `description_json`. Collapsing that into `null` puts three keys into an embed's attrs that the editor never wrote.
+
+The same distinction shows up one level out. A node type that declares no attributes at all produces no `attrs` key; a type that declares attributes always produces the key, even when every one of them came out undefined and it is left empty. So `Node.Attrs` distinguishes nil from empty, and marshals accordingly.
+
+A third rule follows from the writers rather than the readers: **a Yjs attribute is never null**. Both of y-prosemirror's write paths skip the key instead of writing one, so anything that decodes to nothing was JavaScript's `undefined`, and is read as "not supplied" — which is why a table cell that was handed `colwidth: null` comes back carrying the schema's `[150]`.
+
+### The title is a document, not a string
+
+A page's title lives in a second fragment of the same update, and it is not text: it is a whole ProseMirror document, a level-one heading holding the title. `ParseTitle` returns that document; flattening it to the string the API stores is `TextContent`.
+
+### What the corpus is
+
+`internal/ydoc/testdata/documents.json` is twenty-nine documents run through the real editor by `tools/generate_ydoc_fixture.mjs`, recording for each one the Yjs update bytes, the ProseMirror JSON, and the HTML. Every node type and every mark type in the schema appears in at least one of them, and a test fails if one stops appearing.
+
+Most cases are written as the HTML a user would paste. Four are written as ProseMirror JSON instead, for the shapes no HTML parses back into: an emoji only ever enters a document through the `:shortcode:` input rule, and `colspan` and `rowspan` only ever become non-default through the table toolbar.
+
+Yjs draws a random client id for every document it creates, so the same input produced different update bytes on every run and the fixture could not be diffed. The generator replaces lib0's randomness with a counter, which touches client ids and generated element ids and nothing the fixture exists to pin down. CI regenerates the file and diffs it.
+
+### What is not reproduced
+
+ProseMirror validates a node's children against its content expression, and y-prosemirror responds to a failure by **deleting the offending element from the document** and carrying on. That is not implemented here: this package checks that a node type exists, that a mark type exists, and that every attribute without a default was supplied, and returns an error rather than dropping anything. The difference is only reachable with a document whose structure the editor could not have produced.
+
+The HTML and the title HTML are not produced here either — that is the renderer, and it is the next piece. The corpus already records both, so the renderer arrives with its truth table already written.
