@@ -24,11 +24,6 @@ const linkMap = [
     label: "Status Page",
     value: "https://status.pace.yldm.ai/",
   },
-  {
-    key: "twitter_handle",
-    label: "@planepowers",
-    value: "https://x.com/planepowers",
-  },
 ];
 
 // Production Error Component
