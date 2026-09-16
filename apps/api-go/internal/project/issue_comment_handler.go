@@ -2,6 +2,7 @@ package project
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -441,13 +442,14 @@ func (handler *Handler) guestMayComment(ctx context.Context, slug, projectID, is
 	if project.GuestViewAllFeatures {
 		return true, nil
 	}
-	var creator *string
+	// A slice, and a nullable one. Pluck walks rows into a slice: handed a plain *string it never calls Next and fails with `sql: Scan called without calling Next` on every row, null or not -- so this check answered 500 rather than yes or no, for every guest, always. created_by_id is null for anything created outside a request, which BaseModel.save does whenever there is no user, so the element has to carry that too.
+	var creator []sql.NullString
 	err = handler.db.WithContext(ctx).Table("issues").Where("id = ?", issueID).
 		Limit(1).Pluck("created_by_id", &creator).Error
 	if err != nil {
 		return false, err
 	}
-	return creator != nil && *creator == userID, nil
+	return len(creator) > 0 && creator[0].Valid && creator[0].String == userID, nil
 }
 
 func (handler *Handler) isActiveProjectMember(ctx context.Context, slug, projectID, userID string) (bool, error) {
