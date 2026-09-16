@@ -9,7 +9,10 @@
     "types": ["vite/client"],
     "paths": {
       "package.json": ["./package.json"],
-      "@/*": ["./*"]
+      "@/*": ["./core/*"],
+      "@/app/*": ["./app/*"],
+      "@/helpers/*": ["./helpers/*"],
+      "@/styles/*": ["./styles/*"]
     }
   },
   "include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"],
