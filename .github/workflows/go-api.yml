@@ -184,6 +184,28 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the migration list matches Django
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_migration_list.py > /tmp/migrations.tsv
+          if ! diff -u ../api-go/internal/manage/migrations.tsv /tmp/migrations.tsv; then
+            echo "::error::apps/api-go/internal/manage/migrations.tsv is stale, so wait_for_migrations would let a deploy through early."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_migration_list.py > ../api-go/internal/manage/migrations.tsv"
+            exit 1
+          fi
+
+      - name: Verify the test email template matches the one apps/api ships
+        working-directory: apps/api
+        run: |
+          target=../api-go/internal/worker/templates/emails/test_email.html
+          if ! diff -u "$target" templates/emails/test_email.html; then
+            echo "::error::$target is not the template apps/api ships."
+            echo "Copy it across with:"
+            echo "  cp templates/emails/test_email.html $target"
+            exit 1
+          fi
+
       - name: Verify the BeautifulSoup fixture matches Python
         working-directory: apps/api
         run: |

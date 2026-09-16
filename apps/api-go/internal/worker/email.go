@@ -251,3 +251,26 @@ func emailSettings(ctx context.Context, reader ConfigurationReader, defaults Ema
 	}
 	return resolved, nil
 }
+
+// TestEmailSubject is what manage.py test_email sends under.
+const TestEmailSubject = "Test email from Plane"
+
+// SendTestEmail is manage.py test_email: one message to prove the mail settings work.
+//
+// Unlike the export emails this one really does carry an html alternative, and its plain text part is strip_tags rather than the fuller conversion the notification emails use — so the blank lines the template holds survive into it.
+func SendTestEmail(ctx context.Context, defaults EmailSettings, reader ConfigurationReader, mailer Mailer, to string) error {
+	html, err := renderEmail("emails/test_email.html", map[string]any{})
+	if err != nil {
+		return err
+	}
+	settings, err := emailSettings(ctx, reader, defaults)
+	if err != nil {
+		return err
+	}
+	return mailer.Send(ctx, settings, to, TestEmailSubject, stripTags(html), html)
+}
+
+// stripTags is django.utils.html.strip_tags, which drops the tags and leaves everything between them — entities included.
+func stripTags(value string) string {
+	return tagPattern.ReplaceAllString(value, "")
+}

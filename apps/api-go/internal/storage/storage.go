@@ -235,6 +235,60 @@ func (store *Store) PresignedObject(ctx context.Context, objectName string, expi
 	return signed.String(), nil
 }
 
+// EnsureBucket is manage.py create_bucket: make the bucket when it is not there, and say so either way.
+func (store *Store) EnsureBucket(ctx context.Context) (created bool, err error) {
+	exists, err := store.client.BucketExists(ctx, store.bucket)
+	if err != nil {
+		return false, err
+	}
+	if exists {
+		return false, nil
+	}
+	if err := store.client.MakeBucket(ctx, store.bucket, minio.MakeBucketOptions{}); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// BucketExists is head_bucket: does the bucket answer, without making one.
+func (store *Store) BucketExists(ctx context.Context) (bool, error) {
+	return store.client.BucketExists(ctx, store.bucket)
+}
+
+// Bucket names the bucket every one of these works on.
+func (store *Store) Bucket() string { return store.bucket }
+
+// ListObjectKeys reads the keys in the bucket, which is what the policy that keeps them readable is built out of.
+func (store *Store) ListObjectKeys(ctx context.Context, limit int) ([]string, error) {
+	keys := make([]string, 0)
+	for object := range store.client.ListObjects(ctx, store.bucket, minio.ListObjectsOptions{Recursive: true}) {
+		if object.Err != nil {
+			return nil, object.Err
+		}
+		keys = append(keys, object.Key)
+		if limit > 0 && len(keys) >= limit {
+			break
+		}
+	}
+	return keys, nil
+}
+
+// GetObjectBytes reads one object whole, which is only used to prove the key can read.
+func (store *Store) GetObjectBytes(ctx context.Context, objectName string) error {
+	object, err := store.client.GetObject(ctx, store.bucket, objectName, minio.GetObjectOptions{})
+	if err != nil {
+		return err
+	}
+	defer object.Close()
+	_, err = object.Stat()
+	return err
+}
+
+// SetBucketPolicy writes the bucket policy, which is what makes the objects named in it readable without a signature.
+func (store *Store) SetBucketPolicy(ctx context.Context, policy string) error {
+	return store.client.SetBucketPolicy(ctx, store.bucket, policy)
+}
+
 // RemoveObject takes an object out of the bucket. The exporter sweep uses it on the spreadsheets whose links have expired.
 func (store *Store) RemoveObject(ctx context.Context, objectName string) error {
 	return store.client.RemoveObject(ctx, store.bucket, objectName, minio.RemoveObjectOptions{})
