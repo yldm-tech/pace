@@ -40,6 +40,7 @@ const nodes = Object.values(schema.nodes).map((type) => ({
   content: type.spec.content ?? "",
   whitespace: type.spec.whitespace ?? "",
   marks: type.spec.marks ?? null,
+  attr_names: Object.keys(type.attrs),
   attrs: attributes(type.attrs),
 }));
 
@@ -49,6 +50,7 @@ const marks = Object.values(schema.marks).map((type) => ({
   spanning: type.spec.spanning !== false,
   groups: type.spec.group ? type.spec.group.split(" ") : [],
   excludes: type.spec.excludes ?? null,
+  attr_names: Object.keys(type.attrs),
   attrs: attributes(type.attrs),
 }));
 

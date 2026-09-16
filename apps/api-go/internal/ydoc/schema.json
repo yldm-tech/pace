@@ -12,6 +12,9 @@
       "content": "inline*",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "textAlign"
+      ],
       "attrs": {
         "textAlign": {
           "has_default": true,
@@ -30,6 +33,11 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "id",
+        "entity_identifier",
+        "entity_name"
+      ],
       "attrs": {
         "id": {
           "has_default": true,
@@ -57,6 +65,7 @@
       "content": "listItem+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -68,6 +77,7 @@
       "content": "block+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -81,6 +91,7 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -94,6 +105,10 @@
       "content": "inline*",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "textAlign",
+        "level"
+      ],
       "attrs": {
         "textAlign": {
           "has_default": true,
@@ -114,6 +129,7 @@
       "content": "paragraph block*",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -128,6 +144,10 @@
       "content": "listItem+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "start",
+        "type"
+      ],
       "attrs": {
         "start": {
           "has_default": true,
@@ -150,6 +170,7 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -163,6 +184,9 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "name"
+      ],
       "attrs": {
         "name": {
           "has_default": true,
@@ -181,6 +205,7 @@
       "content": "block+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -194,6 +219,7 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -207,6 +233,15 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "src",
+        "alt",
+        "title",
+        "width",
+        "height",
+        "aspectRatio",
+        "alignment"
+      ],
       "attrs": {
         "src": {
           "has_default": true,
@@ -249,6 +284,17 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "src",
+        "alt",
+        "title",
+        "id",
+        "width",
+        "height",
+        "aspectRatio",
+        "alignment",
+        "status"
+      ],
       "attrs": {
         "src": {
           "has_default": true,
@@ -300,6 +346,7 @@
       "content": "taskItem+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -311,6 +358,9 @@
       "content": "paragraph block*",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "checked"
+      ],
       "attrs": {
         "checked": {
           "has_default": true,
@@ -329,6 +379,9 @@
       "content": "text*",
       "whitespace": "",
       "marks": "",
+      "attr_names": [
+        "language"
+      ],
       "attrs": {
         "language": {
           "has_default": true,
@@ -347,6 +400,7 @@
       "content": "tableRow+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -358,6 +412,12 @@
       "content": "block+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "colspan",
+        "rowspan",
+        "colwidth",
+        "background"
+      ],
       "attrs": {
         "colspan": {
           "has_default": true,
@@ -388,6 +448,13 @@
       "content": "block+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "colspan",
+        "rowspan",
+        "colwidth",
+        "background",
+        "textColor"
+      ],
       "attrs": {
         "colspan": {
           "has_default": true,
@@ -422,6 +489,10 @@
       "content": "(tableCell | tableHeader)*",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "background",
+        "textColor"
+      ],
       "attrs": {
         "background": {
           "has_default": true,
@@ -444,6 +515,16 @@
       "content": "block+",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "id",
+        "data-icon-color",
+        "data-icon-name",
+        "data-emoji-unicode",
+        "data-emoji-url",
+        "data-logo-in-use",
+        "data-background",
+        "data-block-type"
+      ],
       "attrs": {
         "id": {
           "has_default": true,
@@ -490,6 +571,13 @@
       "content": "",
       "whitespace": "",
       "marks": null,
+      "attr_names": [
+        "entity_identifier",
+        "project_identifier",
+        "workspace_identifier",
+        "id",
+        "entity_name"
+      ],
       "attrs": {
         "entity_identifier": {
           "has_default": true,
@@ -520,6 +608,12 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [
+        "href",
+        "target",
+        "rel",
+        "class"
+      ],
       "attrs": {
         "href": {
           "has_default": true,
@@ -544,6 +638,7 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -551,6 +646,7 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -558,6 +654,7 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -565,6 +662,7 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -572,6 +670,7 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -579,6 +678,7 @@
       "spanning": true,
       "groups": [],
       "excludes": "_",
+      "attr_names": [],
       "attrs": {}
     },
     {
@@ -586,6 +686,10 @@
       "spanning": true,
       "groups": [],
       "excludes": null,
+      "attr_names": [
+        "color",
+        "backgroundColor"
+      ],
       "attrs": {
         "color": {
           "has_default": true,
