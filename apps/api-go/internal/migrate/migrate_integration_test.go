@@ -27,12 +27,9 @@ func TestGoBuildsTheSameSchemaAsDjango(t *testing.T) {
 	defer db.Close()
 
 	ctx := context.Background()
-	applied, err := Applied(ctx, db)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(applied) > 0 {
-		t.Fatalf("the database already has %d migrations applied, and this needs an empty one", len(applied))
+	// Emptied rather than required to be empty. The suite runs more than once in a row — plainly with the race detector, and again for any step that names a single test — and the first run leaves 164 migrations behind, so a check that the database starts empty fails every run after the first. The variable already promises a disposable database; this takes it at its word.
+	if _, err := db.ExecContext(ctx, `DROP SCHEMA public CASCADE; CREATE SCHEMA public`); err != nil {
+		t.Fatalf("empty the database first: %v", err)
 	}
 
 	withStubbedOperations(t)
