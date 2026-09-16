@@ -158,6 +158,13 @@ jobs:
               exit 1
             fi
           done
+          analytics=../api-go/internal/worker/templates/emails/exports/analytics.html
+          if ! diff -u "$analytics" templates/emails/exports/analytics.html; then
+            echo "::error::$analytics is not the template apps/api ships."
+            echo "Copy it across with:"
+            echo "  cp templates/emails/exports/analytics.html $analytics"
+            exit 1
+          fi
           python ../api-go/tools/generate_django_template_fixture.py > /tmp/issue_updates.txt
           if ! diff -u ../api-go/internal/djangotemplate/testdata/issue_updates.txt /tmp/issue_updates.txt; then
             echo "::error::apps/api-go/internal/djangotemplate/testdata/issue_updates.txt is stale."

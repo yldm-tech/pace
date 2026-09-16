@@ -2202,3 +2202,26 @@ The same list reaches the two formats differently, which is a difference between
 The key an export is stored under carries only the first six characters of its token, so two exports of the same workspace made on the same day overwrite each other unless their tokens differ in those six characters. The link is presigned for seven days. On MinIO it is signed against a second client built from `WEB_URL`, because the browser reaches the bucket through the web host and not through the internal one — Django builds that endpoint by stripping the literal string `/uploads` from its custom domain, which only removes the bucket name when the bucket is actually called `uploads`; a differently named bucket leaves it in the endpoint's path and produces a link that does not work. That last part is not reproduced, since it is a broken configuration either way.
 
 Failure is reported onto the record and nowhere else: anything that goes wrong sets `status` to `failed` and writes the exception's message into `reason`, which is what the web app shows beside a failed export. `save(update_fields=...)` names only the columns it changes, so `updated_at` is left where it was even though it is an `auto_now` column. The one failure that cannot be reported is a token naming no record at all — Django reads it again inside its own `except` block, so that raises a second time and the task dies without telling anyone.
+
+## Migrated service: the analytics export
+
+`analytic_export_task` emails somebody the spreadsheet of the chart they were looking at. The rows are built in `internal/project/analytics_export.go`, beside the analytics endpoint rather than in the worker, because it is the same chart: `build_graph_plot`, the filter translation and the lookup tables are all there already, and a second copy in the worker would be a second thing to keep in step. The worker's half — `internal/worker/analytic_export.go` — turns those rows into a csv and sends it.
+
+Nothing that goes wrong is reported anywhere. The whole task body sits in one `try`, and its `except` logs and returns, so a bad axis, a filter the ORM refuses, and a mail server that will not answer all end the same way: the person who asked waits for an email that never arrives. That is reproduced rather than corrected, which is why the errors on this path are logged and swallowed rather than returned.
+
+The exported grid carries several things worth knowing before reading one:
+
+- A chart grouped by state is headed literally `X-Axis`. `row_mapping` names `state__name`, which is not a valid axis, and does not name `state_id`, which is.
+- An id keeps its raw uuid whenever the lookup table does not name it. For assignees that is routine rather than rare: `get_assignee_details` only lists people who have a picture, so anyone who never set an avatar appears in the file as a uuid.
+- The assignee name is written by an f-string over the first and last name rather than by the model's own `full_name`, so it is not trimmed — somebody with no last name is followed by a trailing space.
+- A chart segmented by module never renames its segment columns, because `generate_segmented_rows` looks module segments up in `label_details`. With no label axis that table is empty and the lookup quietly finds nothing. With a label axis it is full of label rows, and asking one for its module id raises `KeyError` — so a chart grouped by label and segmented by module produces no file and no email at all. Both are reproduced.
+- The label lookup is the one that reads through `Issue.objects` rather than `Issue.issue_objects`, so a label is listed even when every work item carrying it is archived or a draft.
+- A bucket with nothing in a given segment is written as the string `"0"`, not as a number.
+
+The segment columns are the one place this deliberately differs. Upstream builds their headings out of a python `set`, so their order is whatever that set happens to iterate in — which changes between runs, since python randomises string hashing. They are sorted here. The columns are the same columns; only their order is decided rather than left to chance.
+
+`generate_csv_from_rows` asks for `QUOTE_ALL`, where the work item export's formatter takes the default `QUOTE_MINIMAL`, so the same value is written two different ways depending on which export produced it. Both run every cell through `sanitize_csv_value` first, and both sanitise *before* rendering — which is why a negative count keeps its minus sign while a string that merely starts with one is prefixed with an apostrophe.
+
+The email itself has no html part. Django renders `emails/exports/analytics.html` only to turn it into plain text and never attaches it, so what arrives is a text body with a spreadsheet beside it. The template is a copy of the one `apps/api` ships and CI diffs the two, the same way it does for the notification email.
+
+`export_analytics_to_csv_email` is ported alongside it. Nothing in this edition queues it; it is handled so that a message carrying its name does not sit unconsumed.

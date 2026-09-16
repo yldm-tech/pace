@@ -185,6 +185,19 @@ func TestNonASCIISubjectIsEncoded(t *testing.T) {
 
 type recordingMailer struct {
 	to, subject, text, html string
+	attachments             []recordedAttachment
+}
+
+func (mailer *recordingMailer) SendAttachment(_ context.Context, _ EmailSettings, to, subject, text, filename, contentType string, content []byte) error {
+	mailer.attachments = append(mailer.attachments, recordedAttachment{
+		to: to, subject: subject, text: text, filename: filename, contentType: contentType, content: string(content),
+	})
+	return nil
+}
+
+// recordedAttachment is one export email, kept whole so a test can read the file that went with it.
+type recordedAttachment struct {
+	to, subject, text, filename, contentType, content string
 }
 
 func (mailer *recordingMailer) Send(_ context.Context, _ EmailSettings, to, subject, text, html string) error {
@@ -252,6 +265,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	}
 	emailSend.Register(consumer)
 	NewExportTasks(nil, nil, nil, false).Register(consumer)
+	NewAnalyticExportTasks(nil, EmailSettings{}, nil, nil, nil).Register(consumer)
 	NewAPILogTasks(nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
