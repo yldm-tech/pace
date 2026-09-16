@@ -2455,3 +2455,17 @@ A suffix other than `json` is a `404` rather than a `406`, which is what content
 The router's own root, `GET /api/v1/workspaces/<slug>/`, answers one key and one absolute url. Two routers are mounted at the same prefix, so only the first one's root ever resolves — and the first is the invitations one, which is why the stickies are not listed beside it. It is also **the one route under `/api/v1/` that an api key cannot reach**: DRF's own `APIRootView` takes the project's default authentication, which is the session, rather than the key authentication every view in that package declares for itself.
 
 The cutover guard is taught these shapes explicitly, because they really are served but not by a route of their own.
+
+## Migrated module: the archived cycle and module details
+
+The two detail routes under `archived-cycles/<id>/` and `archived-modules/<id>/`, which the archive screens open a card into.
+
+Each answers the archived projection plus both distributions: `distribution`, which counts work items per assignee and per label, and `estimate_distribution`, which sums points the same two ways. The point one is an empty object unless the project measures in points at all, and each carries a completion chart that is drawn only when both of the dates are set.
+
+**A cycle or module that is not archived is a 500, not a 404.** Both querysets filter `archived_at__isnull=False` before the id is applied, so a live one gives nothing back and the view then subscripts that nothing. Reproduced rather than corrected: a 404 here would be a different answer to the same request.
+
+The two projections differ from the live details in ways the archive screens depend on. The cycle's is the archived list's twenty-three fields plus five — `sub_issues`, `logo_props`, the two point totals and `created_by` — and it renders its dates in UTC rather than in the project's zone, because nothing on this path converts them. The module's is `ModuleDetailSerializer`: the module serializer's fields plus the nested links, the sub-item count, and the four per-state point sums.
+
+The two distributions are not shaped alike either. A cycle's assignee rows carry a display name; a module's carry a first and a last name *and* a display name, and are ordered by the first name — so somebody with no first name sorts to the top rather than under their display name. That difference is upstream's, and the frontend reads both shapes.
+
+The counting rules are the ones already documented for the cycle analytics route and apply here unchanged: each count is over the grouping column rather than over the row, so the bucket holding work items with no assignee counts **zero** of them; and a sum with nothing to add is null rather than zero, so a bucket whose work is all still open reports `null` completed points.

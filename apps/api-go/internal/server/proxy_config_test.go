@@ -554,6 +554,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		cycle + "archive/",
 		cycle + "cycle-issues/",
 		project + "archived-cycles/",
+		project + "archived-cycles/11111111-2222-3333-4444-555555555555/",
 		cycle + "progress/",
 		cycle + "analytics/",
 		cycle + "transfer-issues/",
@@ -563,9 +564,8 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 		}
 	}
 	for _, route := range []string{
-		// The rest of the cycle module is not migrated. The cycle issue detail path serves four methods on Django and only one here, so it stays until the other three exist.
+		// The cycle issue detail path serves four methods on Django and only one here, so it stays until the other three exist.
 		cycle + "cycle-issues/66666666-7777-8888-9999-000000000000/",
-		project + "archived-cycles/11111111-2222-3333-4444-555555555555/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
@@ -1862,15 +1862,15 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 		module + "archive/",
 		module + "issues/",
 		project + "archived-modules/",
+		project + "archived-modules/11111111-2222-3333-4444-555555555555/",
 	} {
 		if !matcher.MatchString(route) {
 			t.Errorf("Module route %q is not cut over to Go", route)
 		}
 	}
 	for _, route := range []string{
-		// The rest of the module app is not migrated, and the issue detail path stays on Django whole.
+		// The module issue detail path stays on Django whole: three of its four methods serialize the wrong model.
 		module + "issues/66666666-7777-8888-9999-000000000000/",
-		project + "archived-modules/11111111-2222-3333-4444-555555555555/",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

@@ -31,6 +31,9 @@ type cycleRow struct {
 	StartedIssues   int64 `gorm:"column:started_issues"`
 	UnstartedIssues int64 `gorm:"column:unstarted_issues"`
 	BacklogIssues   int64 `gorm:"column:backlog_issues"`
+	// The two point totals are annotated only by the archived detail, and both coalesce to zero rather than to null.
+	CompletedEstimatePoints float64 `gorm:"column:completed_estimate_points"`
+	TotalEstimatePoints     float64 `gorm:"column:total_estimate_points"`
 }
 
 // cycleList returns every cycle of a project that is not archived. Its timestamps are rendered in the **project's** timezone rather than the caller's, which is the one place in the codebase that distinction is made.

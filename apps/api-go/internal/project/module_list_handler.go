@@ -27,6 +27,12 @@ type moduleRow struct {
 	BacklogIssues           int64          `gorm:"column:backlog_issues"`
 	CompletedEstimatePoints float64        `gorm:"column:completed_estimate_points"`
 	TotalEstimatePoints     float64        `gorm:"column:total_estimate_points"`
+	// The five below are annotated only by the archived detail, which is the one projection that asks for them.
+	SubIssues               *int64  `gorm:"column:sub_issues"`
+	BacklogEstimatePoints   float64 `gorm:"column:backlog_estimate_points"`
+	UnstartedEstimatePoints float64 `gorm:"column:unstarted_estimate_points"`
+	StartedEstimatePoints   float64 `gorm:"column:started_estimate_points"`
+	CancelledEstimatePoints float64 `gorm:"column:cancelled_estimate_points"`
 }
 
 // moduleList returns every module of a project that is not archived.

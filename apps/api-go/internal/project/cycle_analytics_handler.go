@@ -113,7 +113,10 @@ func (handler *Handler) projectEstimatesPoints(c *gin.Context, slug, projectID s
 
 // distributionRow carries both shapes: the assignee columns or the label ones, and either the three sums or the three counts.
 type distributionRow struct {
-	DisplayName *string  `gorm:"column:display_name"`
+	DisplayName *string `gorm:"column:display_name"`
+	// The module distributions name a first and a last name where the cycle's name a display name, so both are read here.
+	FirstName   *string  `gorm:"column:first_name"`
+	LastName    *string  `gorm:"column:last_name"`
 	AssigneeID  *string  `gorm:"column:assignee_id"`
 	AvatarURL   *string  `gorm:"column:avatar_url"`
 	LabelName   *string  `gorm:"column:label_name"`
