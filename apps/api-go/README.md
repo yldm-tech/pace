@@ -3064,3 +3064,16 @@ They are blunt and they read names rather than being told them, so a column that
 ### Where the defaults came from
 
 Django is deleted, so "what would Django have written here" is no longer a question anything can be asked. It did not need to be: the recorded migrations carry `ALTER TABLE ... ADD COLUMN ... DEFAULT ...` for every column that was added with one, and that is where every value in these fixes was read from — `60/min`, `v1`, `65535`, `UTC`, `en`, `#4a9B8c`, the two display objects, and the rest. The recording turned out to be worth more than the schema it was made for.
+
+## Object storage, and the work item with no priority
+
+`minio/minio` is gone from Docker Hub. The repository 404s there — not a rate limit and not a missing login, the image was withdrawn while the rest of the `minio` namespace stayed. `quay.io/minio/minio` is MinIO's own other registry and still carries it, so that is where the four compose files point now, pinned at `RELEASE.2025-09-07T16-13-09Z`, which is what `latest` there resolves to. Worth knowing: that release is a year old and everything published since is a hotfix tag on an older base.
+
+While it could not be pulled, nothing that touches object storage had ever been run. With it running, two things came out:
+
+- **`create_bucket` does create the bucket.** Before, it neither created one nor failed, so the step said nothing either way.
+- **A work item created without a priority failed.** `issues.priority` is NOT NULL, every earlier test had sent one, and the first request that left it out got a 500. The value for having no priority is the word `none` — `db.0043` is where every null one was turned into that.
+
+The second is the same shape as a dozen already fixed, and it is the shape the source-reading guards cannot see: a work item is written from a map built at runtime out of the request, so nothing static can tell which columns it ends up with. What can be checked is coverage, and now is: `issues.CreateDefaults` and `issues.CreateAssigned` between them have to account for every NOT NULL column of `issues` with no database default, and `TestCreateDefaultsCoverTheRequiredColumns` fails if one is missing from both.
+
+The upload path end to end: presign, POST the form to MinIO (204), the completion callback (204), the attachment listed, the object on MinIO's disk, the file downloaded back with its contents, and `get_asset_object_metadata` run by the worker.

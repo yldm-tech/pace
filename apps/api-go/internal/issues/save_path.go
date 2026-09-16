@@ -31,6 +31,24 @@ func AdvisoryLockKey(projectID string) int64 {
 // PrepareCreate is Issue.save's adding path over the values a serializer produced, and answers with the sequence number it handed out.
 //
 // The project is locked first. The sequence number and the sort order are both derived from rows another request could be writing at the same moment, so without the lock two work items created together could claim the same number.
+
+// CreateDefaults is what a work item gets for the NOT NULL columns a request does not have to send.
+//
+// Django fills each of these from the field's own default, so a caller that leaves one out still writes a row; a map handed straight to the database does not, and the insert fails on the constraint. "none" rather than an empty string is the priority for having none — db.0043 is where every null one was turned into that word.
+//
+// It is a named table rather than a run of ifs so that TestCreateDefaultsCoverTheRequiredColumns can check it against the schema: every NOT NULL column of issues with no database default is either set above from the request or defaulted here.
+var CreateDefaults = map[string]any{
+	"priority":         "none",
+	"description_json": []byte("{}"),
+	"is_draft":         false,
+}
+
+// CreateAssigned is the rest: the NOT NULL columns this function sets itself, listed so the same test can tell "covered" from "forgotten".
+var CreateAssigned = []string{
+	"id", "name", "created_at", "updated_at", "project_id", "workspace_id",
+	"sequence_id", "sort_order", "description_html",
+}
+
 func PrepareCreate(tx *gorm.DB, values map[string]any, projectID, workspaceID, actorID string, now time.Time) (int64, error) {
 	if err := tx.Exec("SELECT pg_advisory_xact_lock(?)", AdvisoryLockKey(projectID)).Error; err != nil {
 		return 0, err
@@ -71,9 +89,10 @@ func PrepareCreate(tx *gorm.DB, values map[string]any, projectID, workspaceID, a
 		values["description_html"] = defaultDescriptionHTML
 	}
 	values["description_stripped"] = StripTags(stringOrEmpty(values["description_html"]))
-	// NOT NULL with no database default. Django fills it from the field's default when the caller does not, and a work item created through this path is never a draft — the drafts have a table of their own.
-	if _, given := values["is_draft"]; !given {
-		values["is_draft"] = false
+	for column, fallback := range CreateDefaults {
+		if _, given := values[column]; !given {
+			values[column] = fallback
+		}
 	}
 
 	// completed_at is set on creation when the chosen state is a completed one, which is what _sync_completed_at does while adding.
