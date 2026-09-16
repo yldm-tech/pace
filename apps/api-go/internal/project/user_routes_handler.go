@@ -255,7 +255,8 @@ func (handler *Handler) completedGraph(c *gin.Context, user *auth.User) {
 		Where("i.completed_at IS NOT NULL AND EXTRACT(MONTH FROM i.completed_at AT TIME ZONE 'UTC') = ?", month).
 		Select(`(EXTRACT(WEEK FROM i.completed_at AT TIME ZONE 'UTC')::integer % 4) AS week,
 			COUNT(EXTRACT(WEEK FROM i.completed_at AT TIME ZONE 'UTC')) AS completed_count`).
-		Group("1").Order("1").Scan(&rows).Error
+		// Grouped by the alias rather than by the ordinal 1: Group quotes what it is given, so "1" reaches Postgres as an identifier and the query dies with `column "1" does not exist`. Order does not quote, which is why only half of this line was wrong.
+		Group("week").Order("1").Scan(&rows).Error
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -289,7 +290,8 @@ func (handler *Handler) workspaceDashboard(c *gin.Context, user *auth.User) {
 		Where("i.completed_at IS NOT NULL AND EXTRACT(MONTH FROM i.completed_at AT TIME ZONE 'UTC') = ?", month).
 		Select(`(((EXTRACT(DAY FROM i.completed_at AT TIME ZONE 'UTC') - 1) / 7) + 1)::INTEGER AS week_in_month,
 			COUNT(i.id) AS completed_count`).
-		Group("1").Order("1").Scan(&weekly).Error
+		// Grouped by the alias rather than by the ordinal 1: Group quotes what it is given, so "1" reaches Postgres as an identifier and the query dies with `column "1" does not exist`. Order does not quote, which is why only half of this line was wrong.
+		Group("week_in_month").Order("1").Scan(&weekly).Error
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -412,7 +414,8 @@ func (handler *Handler) dailyActivityCounts(c *gin.Context, userID, slug string,
 		Where(`ia.deleted_at IS NULL AND ia.actor_id = ? AND w.slug = ?
 			AND (ia.created_at AT TIME ZONE 'UTC')::date >= ?`, userID, slug, since.Format("2006-01-02")).
 		Select(`ia.created_at::date AS created_date, COUNT(ia.created_at::date) AS activity_count`).
-		Group("1").Order("1").Scan(&rows).Error
+		// Grouped by the alias rather than by the ordinal 1: Group quotes what it is given, so "1" reaches Postgres as an identifier and the query dies with `column "1" does not exist`. Order does not quote, which is why only half of this line was wrong.
+		Group("created_date").Order("1").Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}
