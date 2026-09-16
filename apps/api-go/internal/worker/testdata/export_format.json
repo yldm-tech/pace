@@ -1,0 +1,258 @@
+[
+  {
+    "name": "rows",
+    "rows": [
+      {
+        "project_name": "Apollo",
+        "project_identifier": "APO",
+        "parent": "APO-1",
+        "identifier": "APO-42",
+        "sequence_id": 42,
+        "name": "Land the thing",
+        "state_name": "In Progress",
+        "priority": "urgent",
+        "assignees": [
+          "Ada Lovelace",
+          "Grace Hopper"
+        ],
+        "subscribers": [
+          "Ada Lovelace"
+        ],
+        "created_by_name": "Ada Lovelace",
+        "start_date": "2026-01-01",
+        "target_date": "2026-02-01",
+        "completed_at": null,
+        "created_at": "2026-01-01T00:00:00Z",
+        "updated_at": "2026-01-02T03:04:05.120000Z",
+        "archived_at": null,
+        "estimate": "8",
+        "labels": [
+          "backend",
+          "urgent"
+        ],
+        "cycles": [
+          "Sprint 1"
+        ],
+        "modules": [
+          "Launch"
+        ],
+        "links": [
+          {
+            "url": "https://example.test/a",
+            "title": "A link"
+          }
+        ],
+        "relations": [
+          {
+            "type": "blocked_by",
+            "issue": "APO-7",
+            "direction": "outgoing"
+          }
+        ],
+        "comments": [
+          {
+            "comment": "ship it",
+            "created_by": "Ada Lovelace",
+            "created_at": "2026-01-01 10:00:00"
+          }
+        ],
+        "is_draft": false
+      },
+      {
+        "project_name": "Apollo",
+        "project_identifier": "APO",
+        "parent": "",
+        "identifier": "APO-43",
+        "sequence_id": 43,
+        "name": "",
+        "state_name": "",
+        "priority": "none",
+        "assignees": [],
+        "subscribers": [],
+        "created_by_name": "",
+        "start_date": null,
+        "target_date": null,
+        "completed_at": null,
+        "created_at": "2026-01-03T00:00:00Z",
+        "updated_at": "2026-01-03T00:00:00Z",
+        "archived_at": null,
+        "estimate": "",
+        "labels": [],
+        "cycles": [],
+        "modules": [],
+        "links": [],
+        "relations": [],
+        "comments": [],
+        "is_draft": true
+      },
+      {
+        "project_name": "=cmd|' /C calc'!A0",
+        "project_identifier": "-BAD",
+        "parent": "+1",
+        "identifier": "@here",
+        "sequence_id": 44,
+        "name": "a \"quoted\", comma\nand a newline",
+        "state_name": "Ünicode ☃",
+        "priority": "low",
+        "assignees": [
+          "O'Brien",
+          "Zoë"
+        ],
+        "subscribers": [],
+        "created_by_name": "\tTabbed",
+        "start_date": null,
+        "target_date": null,
+        "completed_at": "2026-01-04T05:06:07Z",
+        "created_at": "2026-01-04T00:00:00Z",
+        "updated_at": "2026-01-04T00:00:00Z",
+        "archived_at": "2026-01-05",
+        "estimate": "",
+        "labels": [
+          "back\\slash"
+        ],
+        "cycles": [],
+        "modules": [],
+        "links": [
+          {
+            "url": "https://example.test/b",
+            "title": "it's here"
+          }
+        ],
+        "relations": [],
+        "comments": [
+          {
+            "comment": "line one\nline two",
+            "created_by": "Zoë",
+            "created_at": "2026-01-04 01:02:03"
+          }
+        ],
+        "is_draft": false
+      }
+    ],
+    "csv": "Project Name,Project Identifier,Parent,Identifier,Sequence Id,Name,State Name,Priority,Assignees,Subscribers,Created By Name,Start Date,Target Date,Completed At,Created At,Updated At,Archived At,Estimate,Labels,Cycles,Modules,Links,Relations,Comments,Is Draft\r\nApollo,APO,APO-1,APO-42,42,Land the thing,In Progress,urgent,\"[\"\"Ada Lovelace\"\", \"\"Grace Hopper\"\"]\",\"[\"\"Ada Lovelace\"\"]\",Ada Lovelace,2026-01-01,2026-02-01,,2026-01-01T00:00:00Z,2026-01-02T03:04:05.120000Z,,8,\"[\"\"backend\"\", \"\"urgent\"\"]\",\"[\"\"Sprint 1\"\"]\",\"[\"\"Launch\"\"]\",\"[{\"\"url\"\": \"\"https://example.test/a\"\", \"\"title\"\": \"\"A link\"\"}]\",\"[{\"\"type\"\": \"\"blocked_by\"\", \"\"issue\"\": \"\"APO-7\"\", \"\"direction\"\": \"\"outgoing\"\"}]\",\"[{\"\"comment\"\": \"\"ship it\"\", \"\"created_by\"\": \"\"Ada Lovelace\"\", \"\"created_at\"\": \"\"2026-01-01 10:00:00\"\"}]\",False\r\nApollo,APO,,APO-43,43,,,none,[],[],,,,,2026-01-03T00:00:00Z,2026-01-03T00:00:00Z,,,[],[],[],[],[],[],True\r\n'=cmd|' /C calc'!A0,'-BAD,'+1,'@here,44,\"a \"\"quoted\"\", comma\nand a newline\",Ünicode ☃,low,\"[\"\"O'Brien\"\", \"\"Zo\\u00eb\"\"]\",[],'\tTabbed,,,2026-01-04T05:06:07Z,2026-01-04T00:00:00Z,2026-01-04T00:00:00Z,2026-01-05,,\"[\"\"back\\\\slash\"\"]\",[],[],\"[{\"\"url\"\": \"\"https://example.test/b\"\", \"\"title\"\": \"\"it's here\"\"}]\",[],\"[{\"\"comment\"\": \"\"line one\\nline two\"\", \"\"created_by\"\": \"\"Zo\\u00eb\"\", \"\"created_at\"\": \"\"2026-01-04 01:02:03\"\"}]\",False\r\n",
+    "json": "[\n  {\n    \"project_name\": \"Apollo\",\n    \"project_identifier\": \"APO\",\n    \"parent\": \"APO-1\",\n    \"identifier\": \"APO-42\",\n    \"sequence_id\": 42,\n    \"name\": \"Land the thing\",\n    \"state_name\": \"In Progress\",\n    \"priority\": \"urgent\",\n    \"assignees\": [\n      \"Ada Lovelace\",\n      \"Grace Hopper\"\n    ],\n    \"subscribers\": [\n      \"Ada Lovelace\"\n    ],\n    \"created_by_name\": \"Ada Lovelace\",\n    \"start_date\": \"2026-01-01\",\n    \"target_date\": \"2026-02-01\",\n    \"completed_at\": null,\n    \"created_at\": \"2026-01-01T00:00:00Z\",\n    \"updated_at\": \"2026-01-02T03:04:05.120000Z\",\n    \"archived_at\": null,\n    \"estimate\": \"8\",\n    \"labels\": [\n      \"backend\",\n      \"urgent\"\n    ],\n    \"cycles\": [\n      \"Sprint 1\"\n    ],\n    \"modules\": [\n      \"Launch\"\n    ],\n    \"links\": [\n      {\n        \"url\": \"https://example.test/a\",\n        \"title\": \"A link\"\n      }\n    ],\n    \"relations\": [\n      {\n        \"type\": \"blocked_by\",\n        \"issue\": \"APO-7\",\n        \"direction\": \"outgoing\"\n      }\n    ],\n    \"comments\": [\n      {\n        \"comment\": \"ship it\",\n        \"created_by\": \"Ada Lovelace\",\n        \"created_at\": \"2026-01-01 10:00:00\"\n      }\n    ],\n    \"is_draft\": false\n  },\n  {\n    \"project_name\": \"Apollo\",\n    \"project_identifier\": \"APO\",\n    \"parent\": \"\",\n    \"identifier\": \"APO-43\",\n    \"sequence_id\": 43,\n    \"name\": \"\",\n    \"state_name\": \"\",\n    \"priority\": \"none\",\n    \"assignees\": [],\n    \"subscribers\": [],\n    \"created_by_name\": \"\",\n    \"start_date\": null,\n    \"target_date\": null,\n    \"completed_at\": null,\n    \"created_at\": \"2026-01-03T00:00:00Z\",\n    \"updated_at\": \"2026-01-03T00:00:00Z\",\n    \"archived_at\": null,\n    \"estimate\": \"\",\n    \"labels\": [],\n    \"cycles\": [],\n    \"modules\": [],\n    \"links\": [],\n    \"relations\": [],\n    \"comments\": [],\n    \"is_draft\": true\n  },\n  {\n    \"project_name\": \"=cmd|' /C calc'!A0\",\n    \"project_identifier\": \"-BAD\",\n    \"parent\": \"+1\",\n    \"identifier\": \"@here\",\n    \"sequence_id\": 44,\n    \"name\": \"a \\\"quoted\\\", comma\\nand a newline\",\n    \"state_name\": \"\\u00dcnicode \\u2603\",\n    \"priority\": \"low\",\n    \"assignees\": [\n      \"O'Brien\",\n      \"Zo\\u00eb\"\n    ],\n    \"subscribers\": [],\n    \"created_by_name\": \"\\tTabbed\",\n    \"start_date\": null,\n    \"target_date\": null,\n    \"completed_at\": \"2026-01-04T05:06:07Z\",\n    \"created_at\": \"2026-01-04T00:00:00Z\",\n    \"updated_at\": \"2026-01-04T00:00:00Z\",\n    \"archived_at\": \"2026-01-05\",\n    \"estimate\": \"\",\n    \"labels\": [\n      \"back\\\\slash\"\n    ],\n    \"cycles\": [],\n    \"modules\": [],\n    \"links\": [\n      {\n        \"url\": \"https://example.test/b\",\n        \"title\": \"it's here\"\n      }\n    ],\n    \"relations\": [],\n    \"comments\": [\n      {\n        \"comment\": \"line one\\nline two\",\n        \"created_by\": \"Zo\\u00eb\",\n        \"created_at\": \"2026-01-04 01:02:03\"\n      }\n    ],\n    \"is_draft\": false\n  }\n]",
+    "xlsx": {
+      "title": "Sheet",
+      "cells": [
+        [
+          "Project Name",
+          "Project Identifier",
+          "Parent",
+          "Identifier",
+          "Sequence Id",
+          "Name",
+          "State Name",
+          "Priority",
+          "Assignees",
+          "Subscribers",
+          "Created By Name",
+          "Start Date",
+          "Target Date",
+          "Completed At",
+          "Created At",
+          "Updated At",
+          "Archived At",
+          "Estimate",
+          "Labels",
+          "Cycles",
+          "Modules",
+          "Links",
+          "Relations",
+          "Comments",
+          "Is Draft"
+        ],
+        [
+          "Apollo",
+          "APO",
+          "APO-1",
+          "APO-42",
+          42,
+          "Land the thing",
+          "In Progress",
+          "urgent",
+          "Ada Lovelace, Grace Hopper",
+          "Ada Lovelace",
+          "Ada Lovelace",
+          "2026-01-01",
+          "2026-02-01",
+          null,
+          "2026-01-01T00:00:00Z",
+          "2026-01-02T03:04:05.120000Z",
+          null,
+          "8",
+          "backend, urgent",
+          "Sprint 1",
+          "Launch",
+          "{'url': 'https://example.test/a', 'title': 'A link'}",
+          "{'type': 'blocked_by', 'issue': 'APO-7', 'direction': 'outgoing'}",
+          "{'comment': 'ship it', 'created_by': 'Ada Lovelace', 'created_at': '2026-01-01 10:00:00'}",
+          false
+        ],
+        [
+          "Apollo",
+          "APO",
+          null,
+          "APO-43",
+          43,
+          null,
+          null,
+          "none",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "2026-01-03T00:00:00Z",
+          "2026-01-03T00:00:00Z",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          true
+        ],
+        [
+          "'=cmd|' /C calc'!A0",
+          "'-BAD",
+          "'+1",
+          "'@here",
+          44,
+          "a \"quoted\", comma\nand a newline",
+          "Ünicode ☃",
+          "low",
+          "O'Brien, Zoë",
+          null,
+          "'\tTabbed",
+          null,
+          null,
+          "2026-01-04T05:06:07Z",
+          "2026-01-04T00:00:00Z",
+          "2026-01-04T00:00:00Z",
+          "2026-01-05",
+          null,
+          "back\\slash",
+          null,
+          null,
+          "{'url': 'https://example.test/b', 'title': \"it's here\"}",
+          null,
+          "{'comment': 'line one\\nline two', 'created_by': 'Zoë', 'created_at': '2026-01-04 01:02:03'}",
+          false
+        ]
+      ]
+    }
+  },
+  {
+    "name": "empty",
+    "rows": [],
+    "csv": "",
+    "json": "[]",
+    "xlsx": {
+      "title": "Sheet",
+      "cells": []
+    }
+  }
+]

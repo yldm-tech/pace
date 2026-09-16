@@ -79,11 +79,20 @@ func main() {
 		UseMinio:         settings.Auth.UseMinio,
 		MinioEndpointSSL: settings.Auth.MinioEndpointSSL,
 		SignedURLExpiry:  settings.Auth.SignedURLExpiration,
+		// On MinIO the download link is signed against the web host rather than the internal one, which is what makes it followable from a browser.
+		PublicEndpoint: settings.Auth.WebURL,
 	})
 	if err != nil {
 		logger.Warn("object storage is not configured, asset metadata will be skipped", "error", err)
 		assetStore = nil
 	}
+	// A nil *storage.Store has to be left out of the interface rather than put into it, or the task would see a non-nil interface holding nothing.
+	var exportStore worker.ExportStore
+	if assetStore != nil {
+		exportStore = assetStore
+	}
+	exports := worker.NewExportTasks(db, logger, exportStore, settings.Auth.UseMinio)
+
 	allowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
 	links := worker.NewLinkTasks(db, httpsafe.Settings{
 		AllowedIPs:   allowedIPs,
@@ -142,6 +151,7 @@ func main() {
 	emailStack.Register(consumer)
 	emailSend.Register(consumer)
 	worker.NewAPILogTasks(db, logger).Register(consumer)
+	exports.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

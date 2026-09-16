@@ -241,6 +241,22 @@ func (publisher *CeleryPublisher) PublishCopyDescriptionAssets(ctx context.Conte
 	})
 }
 
+// issueExportTaskName builds the zip of work item spreadsheets an export ends up as.
+const issueExportTaskName = "plane.bgtasks.export_task.issue_export_task"
+
+// PublishIssueExport mirrors issue_export_task.delay.
+func (publisher *CeleryPublisher) PublishIssueExport(ctx context.Context, provider, workspaceID string, projectIDs []string, token string, multiple bool, slug string) error {
+	// The project ids go over as strings, which is what the view already made of them.
+	ids := make([]any, 0, len(projectIDs))
+	for _, projectID := range projectIDs {
+		ids = append(ids, projectID)
+	}
+	return publisher.publishKeywords(ctx, issueExportTaskName, map[string]any{
+		"provider": provider, "workspace_id": workspaceID, "project_ids": ids,
+		"token_id": token, "multiple": multiple, "slug": slug,
+	})
+}
+
 // PublishAnalyticExport mirrors analytic_export_task.delay, which builds the spreadsheet and emails it. It still runs on the Python worker.
 func (publisher *CeleryPublisher) PublishAnalyticExport(ctx context.Context, email string, data map[string]any, slug string) error {
 	return publisher.publishKeywords(ctx, analyticExportTaskName, map[string]any{

@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"net/url"
@@ -22,6 +23,8 @@ type Settings struct {
 	Endpoint         string
 	UseMinio         bool
 	MinioEndpointSSL bool
+	// PublicEndpoint is the host a presigned link is signed against when MinIO is in use. Django builds it out of WEB_URL rather than the endpoint the upload went to, because the browser reaches the bucket through the web host and not through the internal one.
+	PublicEndpoint string
 	// SignedURLExpiry is SIGNED_URL_EXPIRATION, an hour when unset.
 	SignedURLExpiry time.Duration
 }
@@ -29,8 +32,10 @@ type Settings struct {
 // Store signs uploads and downloads. minio-go is used rather than the AWS SDK because the SDK has no presigned POST: it signs GET and PUT, and the browser upload here is a POST against a policy document.
 type Store struct {
 	client *minio.Client
-	bucket string
-	expiry time.Duration
+	// publicClient signs the links a browser follows. It is the same client unless MinIO is in use, where a link has to be signed against the host the browser can reach.
+	publicClient *minio.Client
+	bucket       string
+	expiry       time.Duration
 }
 
 // UploadTarget is the upload_data the create route returns, which the web client turns into a multipart form and posts straight at the bucket.
@@ -64,7 +69,23 @@ func New(settings Settings) (*Store, error) {
 	if expiry <= 0 {
 		expiry = time.Hour
 	}
-	return &Store{client: client, bucket: settings.Bucket, expiry: expiry}, nil
+	store := &Store{client: client, publicClient: client, bucket: settings.Bucket, expiry: expiry}
+	if settings.UseMinio && strings.TrimSpace(settings.PublicEndpoint) != "" {
+		host, secure, err := endpointAndScheme(Settings{Endpoint: settings.PublicEndpoint, MinioEndpointSSL: settings.MinioEndpointSSL, Region: settings.Region})
+		if err != nil {
+			return nil, err
+		}
+		public, err := minio.New(host, &minio.Options{
+			Creds:  credentials.NewStaticV4(settings.AccessKey, settings.SecretKey, ""),
+			Secure: secure,
+			Region: region,
+		})
+		if err != nil {
+			return nil, err
+		}
+		store.publicClient = public
+	}
+	return store, nil
 }
 
 // endpointAndScheme splits the configured endpoint into the host and scheme minio-go wants. An unset endpoint means real S3.
@@ -191,6 +212,27 @@ func (store *Store) StatObject(ctx context.Context, objectName string) (*ObjectM
 		ContentType: info.ContentType, ContentLength: info.Size,
 		LastModified: lastModified, ETag: etag, Metadata: metadata,
 	}, nil
+}
+
+// PutObject writes bytes straight into the bucket, which is how the worker puts a finished export there without a browser in the middle.
+//
+// publicRead is the ACL Django sets on the MinIO path and leaves off everywhere else, which is what makes the object readable without a signature on a local install.
+func (store *Store) PutObject(ctx context.Context, objectName, contentType string, payload []byte, publicRead bool) error {
+	options := minio.PutObjectOptions{ContentType: contentType}
+	if publicRead {
+		options.UserMetadata = map[string]string{"x-amz-acl": "public-read"}
+	}
+	_, err := store.client.PutObject(ctx, store.bucket, objectName, bytes.NewReader(payload), int64(len(payload)), options)
+	return err
+}
+
+// PresignedObject is generate_presigned_url with nothing but an expiry, which is the link an export ends up as. It is signed against the public host so a browser can follow it.
+func (store *Store) PresignedObject(ctx context.Context, objectName string, expiry time.Duration) (string, error) {
+	signed, err := store.publicClient.PresignedGetObject(ctx, store.bucket, objectName, expiry, url.Values{})
+	if err != nil {
+		return "", err
+	}
+	return signed.String(), nil
 }
 
 // RemoveObject takes an object out of the bucket. The exporter sweep uses it on the spreadsheets whose links have expired.
