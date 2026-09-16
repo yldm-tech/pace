@@ -140,6 +140,11 @@ func (r *Relay) Subscribe(ctx context.Context, name string, document *Document) 
 	r.subscriptions[name] = subscription
 	r.mu.Unlock()
 
+	// Wait for Redis to confirm the subscription before publishing anything below. Subscribe only queues the command -- Channel(), which receive calls, is what sends it, from a goroutine of its own -- so without this the two publishes race the subscription. Pub/sub keeps no backlog, so an answer that arrives before this server is listening is not late, it is gone: the page then holds whatever it had until somebody types into it again.
+	if _, err := subscription.Receive(ctx); err != nil {
+		r.logger.Warn("live: the relay subscription was not confirmed", "document", name, "error", err)
+	}
+
 	go r.receive(name, subscription)
 
 	r.publish(ctx, name, hocuspocus.NewOutgoing(name).WriteType(hocuspocus.MessageSync).WriteSyncPayload(ysync.EncodeSyncStep1(document.Doc())).Bytes())
