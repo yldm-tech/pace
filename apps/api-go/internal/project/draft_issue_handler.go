@@ -1001,7 +1001,7 @@ func (handler *Handler) draftIssueFields(c *gin.Context, body map[string]json.Ra
 			if !exists {
 				continue
 			}
-			if string(raw) == "null" {
+			if blankRelation(raw) {
 				result.values[relation.column] = nil
 				continue
 			}

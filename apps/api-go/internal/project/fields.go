@@ -267,7 +267,7 @@ func (handler *Handler) projectFields(c *gin.Context, body map[string]json.RawMe
 		if !exists {
 			continue
 		}
-		if string(raw) == "null" {
+		if blankRelation(raw) {
 			result.values[relation.field] = (*string)(nil)
 			continue
 		}
@@ -395,6 +395,20 @@ func (handler *Handler) stringFieldAllowingBlank(c *gin.Context, name string, ra
 		return "", false
 	}
 	return value, true
+}
+
+// blankRelation is RelatedField.run_validation's first two lines:
+//
+//	# We force empty strings to None values for relational fields.
+//	if data == '': data = None
+//
+// So for a foreign key an empty string is not a malformed identifier, it is the absence of one. The web client relies on it: creating a work item posts state_id:"" to mean "whatever the project's default state is", and that came back 400 "“” is not a valid UUID." with no work item created.
+func blankRelation(raw json.RawMessage) bool {
+	if string(raw) == "null" {
+		return true
+	}
+	var value string
+	return json.Unmarshal(raw, &value) == nil && value == ""
 }
 
 func (handler *Handler) stringField(c *gin.Context, name string, raw json.RawMessage, maxLength int) (string, bool) {

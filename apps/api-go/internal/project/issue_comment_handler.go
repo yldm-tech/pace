@@ -534,7 +534,7 @@ func (handler *Handler) issueCommentFieldsFrom(c *gin.Context, body map[string]j
 	}
 	if raw, exists := body["parent"]; exists {
 		result.hasParent = true
-		if string(raw) != "null" {
+		if !blankRelation(raw) {
 			var value string
 			if json.Unmarshal(raw, &value) != nil {
 				c.JSON(http.StatusBadRequest, gin.H{"parent": []string{`“` + value + `” is not a valid UUID.`}})
