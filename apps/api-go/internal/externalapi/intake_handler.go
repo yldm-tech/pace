@@ -43,7 +43,7 @@ type IntakeIssue struct {
 	Extra          []byte     `gorm:"column:extra;type:jsonb"`
 }
 
-func (IntakeIssue) TableName() string { return "issue_intake" }
+func (IntakeIssue) TableName() string { return "intake_issues" }
 
 // intakeIssueList returns what is waiting in the project's intake.
 //
@@ -62,7 +62,7 @@ func (handler *Handler) intakeIssueList(c *gin.Context, user *auth.User, _ APITo
 	if enabled {
 		now := handler.clock().UTC()
 		var rows []IntakeIssue
-		err := handler.db.WithContext(c.Request.Context()).Table("issue_intake ii").Select("ii.*").
+		err := handler.db.WithContext(c.Request.Context()).Table("intake_issues ii").Select("ii.*").
 			Joins("JOIN workspaces w ON w.id = ii.workspace_id").
 			Where("w.slug = ? AND ii.project_id = ? AND ii.intake_id = ? AND ii.deleted_at IS NULL",
 				c.Param("slug"), c.Param("project"), intake.ID).
@@ -571,7 +571,7 @@ func (handler *Handler) ensureTriageState(c *gin.Context, workspaceID string, no
 
 func (handler *Handler) intakeIssueByIssue(c *gin.Context) (IntakeIssue, bool, error) {
 	var rows []IntakeIssue
-	err := handler.db.WithContext(c.Request.Context()).Table("issue_intake ii").Select("ii.*").
+	err := handler.db.WithContext(c.Request.Context()).Table("intake_issues ii").Select("ii.*").
 		Joins("JOIN workspaces w ON w.id = ii.workspace_id").
 		Where("w.slug = ? AND ii.project_id = ? AND ii.issue_id = ? AND ii.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), c.Param("issue")).
@@ -584,7 +584,7 @@ func (handler *Handler) intakeIssueByIssue(c *gin.Context) (IntakeIssue, bool, e
 
 func (handler *Handler) intakeIssueByID(c *gin.Context, identifier string) (IntakeIssue, bool, error) {
 	var rows []IntakeIssue
-	err := handler.db.WithContext(c.Request.Context()).Table("issue_intake ii").Select("ii.*").
+	err := handler.db.WithContext(c.Request.Context()).Table("intake_issues ii").Select("ii.*").
 		Where("ii.id = ? AND ii.deleted_at IS NULL", identifier).Limit(1).Scan(&rows).Error
 	if err != nil || len(rows) == 0 {
 		return IntakeIssue{}, false, err

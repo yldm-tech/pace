@@ -295,7 +295,7 @@ func projectSummaryColumn(field string) string {
 			WHERE si.project_id = p.id AND si.deleted_at IS NULL
 			AND (SELECT sst.group FROM states sst WHERE sst.id = si.state_id) IS DISTINCT FROM 'triage')`
 	case "intakes":
-		return `(SELECT COUNT(*) FROM issue_intake sii WHERE sii.project_id = p.id)`
+		return `(SELECT COUNT(*) FROM intake_issues sii WHERE sii.project_id = p.id)`
 	case "pages":
 		return `(SELECT COUNT(*) FROM project_pages spp WHERE spp.project_id = p.id)`
 	}

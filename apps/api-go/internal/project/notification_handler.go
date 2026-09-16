@@ -203,7 +203,7 @@ func notificationAnnotations() string {
 	return `n.*,
 		EXISTS (SELECT 1 FROM issues ni
 			JOIN workspaces nw ON nw.id = ni.workspace_id
-			JOIN issue_intake nii ON nii.issue_id = ni.id AND nii.status IN (0, 2, -2) AND nii.deleted_at IS NULL
+			JOIN intake_issues nii ON nii.issue_id = ni.id AND nii.status IN (0, 2, -2) AND nii.deleted_at IS NULL
 			WHERE ni.id = n.entity_identifier AND nw.slug = ? AND ni.deleted_at IS NULL) AS is_intake_issue,
 		(n.sender ILIKE '%mentioned%') AS is_mentioned_notification`
 }

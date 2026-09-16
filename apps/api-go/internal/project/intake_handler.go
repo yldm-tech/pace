@@ -203,7 +203,7 @@ func (handler *Handler) intakeDestroy(c *gin.Context, user *auth.User) {
 // intakeRows reads the intakes of a project with the pending count annotated on.
 func (handler *Handler) intakeRows(c *gin.Context, intakeID string) ([]intakeRow, error) {
 	query := handler.db.WithContext(c.Request.Context()).Table("intakes i").
-		Select(`i.*, (SELECT COUNT(*) FROM issue_intake ii
+		Select(`i.*, (SELECT COUNT(*) FROM intake_issues ii
 			WHERE ii.intake_id = i.id AND ii.status = -2 AND ii.deleted_at IS NULL) AS pending_issue_count`).
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Where("w.slug = ? AND i.project_id = ? AND i.deleted_at IS NULL", c.Param("slug"), c.Param("id"))
