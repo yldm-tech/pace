@@ -470,6 +470,8 @@ The proxy cuts traffic over by **path**, not by method. A matcher covering a pat
 
 That happened. `cycle-issues/` was cut over with only its write half implemented, so the cycle board's issue list 404'd for as long as it took to notice; and the same mistake had put `POST issues/` — creating an issue — behind a matcher that only served `GET`.
 
+The guard reads both ways the Caddyfile cuts a path over. A named `path_regexp` matcher is the obvious one; the other is a bare path on the `reverse_proxy` line itself — `reverse_proxy /auth/* api-go:8000` — which is Caddy's own path matcher and cuts over just as completely. Reading only the first kind left sixty-five routes, the whole of `/auth/` and most of `/api/users/me/`, sitting behind this guard without it ever checking that Go served them. It does now, and Caddy's matcher semantics are written out rather than approximated: a star crosses slashes, and a path without one matches only itself.
+
 `TestEveryCutOverPathIsFullyServed` compares three sources directly: every route Django serves, the paths the Caddyfile cuts over, and the routes the Go router registers. A path that is cut over must have **every** one of Django's methods. It found seven gaps the first time it ran.
 
 The Django side comes from `tools/generate_django_routes.py`, which walks the real URLconf. A viewset records its method mapping, so that one is exact; a plain `APIView` has none, so every handler it defines is reachable on every path bound to it — except one whose signature does not match the path's captured parameters, which raises before it does anything. Those are compared and left out, which is what took the first run from thirteen reported gaps down to seven real ones.
