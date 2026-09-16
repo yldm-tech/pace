@@ -67,8 +67,11 @@ func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
 	if !strings.Contains(config, matcherProxy) {
 		t.Errorf("community proxy is missing %q", matcherProxy)
 	}
-	if !strings.Contains(config, "reverse_proxy /api/* api:8000") {
-		t.Error("community proxy is missing the Django API fallback")
+	if !strings.Contains(config, "reverse_proxy /api/* api-go:8000") {
+		t.Error("community proxy is missing the API fallback")
+	}
+	if strings.Contains(config, " api:8000") {
+		t.Error("the community proxy still sends something to the Django service, which is no longer in the compose file")
 	}
 }
 

@@ -183,9 +183,7 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		externalHandler.SetSessions(sessions)
 		externalHandler.Register(router)
 		// DRF's format suffixes, which only the two viewsets mounted through a router accept. The rewrite has to happen after routing has failed, since a suffix is part of a segment rather than a whole one.
-		externalapi.RegisterFormatSuffixes(router, func(c *gin.Context) {
-			c.JSON(http.StatusNotFound, gin.H{"detail": "Not found."})
-		})
+		externalapi.RegisterFormatSuffixes(router, notFound)
 
 		instancesHandler := instancesapi.NewHandler(dependencies.Database, sessions, instancesapi.Settings{
 			AdminBaseURL:          dependencies.InstanceSettings.AdminBaseURL,
@@ -204,8 +202,23 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			instancesHandler.SetMailer(dependencies.InstanceMailer)
 		}
 		instancesHandler.RegisterRoutes(router)
+	} else {
+		// Without a database there are no API routes to fail to match, but the answer to a request that arrives anyway is still Django's rather than gin's plain-text one.
+		router.NoRoute(notFound)
 	}
 	return router
+}
+
+// djangoNotFound is the body Django writes for a path that matched no route at all: plane.app.views.error_404.custom_404_view, wired up as handler404.
+//
+// It is not DRF's. DRF answers "Not found." under the key detail, and it only ever gets the chance when a view was found and then raised Http404 — asking for a format no renderer answers to is the one way that happens here. A path that resolves to nothing never reaches a view, so Django's own handler writes it, with a different key and a different sentence.
+//
+// The bytes are written out rather than handed to c.JSON because Django's JsonResponse uses json.dumps' default separators, which put a space after the colon. c.JSON would emit the same object a byte shorter.
+var djangoNotFound = []byte(`{"error": "Page not found."}`)
+
+// notFound answers a request that matched nothing, the way the Django app does.
+func notFound(c *gin.Context) {
+	c.Data(http.StatusNotFound, "application/json", djangoNotFound)
 }
 
 func databaseHealth(db *gorm.DB, failureStatus string) gin.HandlerFunc {

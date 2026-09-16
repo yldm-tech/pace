@@ -40,11 +40,12 @@ func TestTheGuardReadsBothKindsOfProxiedPath(t *testing.T) {
 			t.Errorf("%q is proxied to Go and the guard does not see it", path)
 		}
 	}
-	// And something the proxy leaves with Django, so the guard is not matching everything.
-	// Nothing under /api/ is left with Django, so the one path checked here is a shape the proxy has never claimed.
-	for _, path := range []string{"/api/nothing-claims-this/"} {
+	// And something the proxy sends elsewhere, so the guard is not matching everything.
+	//
+	// It cannot be a path under /api/ any more. The fallback there is `reverse_proxy /api/* api-go:8000`, which claims the whole subtree, so the paths that are not cut over are the ones belonging to another service entirely.
+	for _, path := range []string{"/live/collaboration/", "/spaces/an-anchor", "/god-mode/general"} {
 		if anyMatcherCovers(matchers, path) {
-			t.Errorf("%q is still Django's and the guard thinks it is cut over", path)
+			t.Errorf("%q belongs to another service and the guard thinks the API cuts it over", path)
 		}
 	}
 }

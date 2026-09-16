@@ -8,7 +8,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api
+      - api-go
 
   admin:
     container_name: admin
@@ -19,7 +19,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api
+      - api-go
       - web
 
   space:
@@ -31,23 +31,8 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api
+      - api-go
       - web
-
-  api:
-    container_name: api
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-api.sh
-    env_file:
-      - ./apps/api/.env
-    depends_on:
-      - plane-db
-      - plane-redis
 
   api-go:
     container_name: pace-api-go
@@ -74,8 +59,7 @@ services:
     env_file:
       - ./apps/api/.env
     environment:
-      # Consumes only its own queue, so the Python worker below keeps receiving
-      # every task that has not been migrated yet.
+      # The only consumer left. Every one of the forty-six tasks is registered here, and the API and the beat route all forty-six to this queue, so nothing is published to the queue Celery would have used.
       PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
     depends_on:
       - plane-db
@@ -101,22 +85,7 @@ services:
       - plane-db
       - plane-mq
 
-  worker:
-    container_name: bgworker
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-worker.sh
-    env_file:
-      - ./apps/api/.env
-    depends_on:
-      - api
-      - plane-db
-      - plane-redis
-
+  # The last Python service, and the one that stays. Django owns the schema: every table here was created by a Django migration, Go never creates or alters one, and there is no migrate on the Go side to replace this with. It runs once and exits, so nothing is served by Python after it does.
   migrator:
     container_name: plane-migrator
     build:
@@ -151,8 +120,7 @@ services:
       API_BASE_URL: ${API_BASE_URL:-http://api-go:8000}
       LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY:-}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
-      # With no Redis it runs as a single node, and two people on one page have
-      # to reach the same server for it to converge.
+      # With no Redis it runs as a single node, and two people on one page have to reach the same server for it to converge.
       REDIS_URL: ${REDIS_URL:-redis://plane-redis:6379/}
     depends_on:
       - api-go
@@ -219,7 +187,6 @@ services:
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-uploads}
     depends_on:
       - web
-      - api
       - api-go
       - space
       - admin
