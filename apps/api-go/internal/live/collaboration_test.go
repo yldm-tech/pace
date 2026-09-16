@@ -3,6 +3,7 @@ package live
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -109,6 +110,8 @@ func liveServer(t *testing.T, api *fakeAPI) (*Server, string) {
 type client struct {
 	t      *testing.T
 	socket *websocket.Conn
+	// seen is every frame type this client has read, so a timeout can say what did arrive rather than only what did not.
+	seen []hocuspocus.MessageType
 }
 
 func dial(t *testing.T, address string) *client {
@@ -144,18 +147,33 @@ func (c *client) authenticate(page, userID string) {
 const readDeadline = 30 * time.Second
 
 // read waits for one frame and parses it.
+//
+// A timeout here reports the frames this client did receive. Without that the failure is one line about a socket, and working out whether the frame never arrived or merely arrived in a different order means guessing -- which it has cost twice.
 func (c *client) read() *hocuspocus.Incoming {
 	c.t.Helper()
 	_ = c.socket.SetReadDeadline(time.Now().Add(readDeadline))
 	_, frame, err := c.socket.ReadMessage()
 	if err != nil {
-		c.t.Fatalf("read: %v", err)
+		c.t.Fatalf("read: %v (frames seen on this client so far: %s)", err, c.seenSoFar())
 	}
 	message, err := hocuspocus.ParseIncoming(frame)
 	if err != nil {
 		c.t.Fatalf("parse: %v", err)
 	}
+	c.seen = append(c.seen, message.Type)
 	return message
+}
+
+// seenSoFar renders the frame types this client has read, in order.
+func (c *client) seenSoFar() string {
+	if len(c.seen) == 0 {
+		return "none"
+	}
+	parts := make([]string, 0, len(c.seen))
+	for _, messageType := range c.seen {
+		parts = append(parts, fmt.Sprintf("%d", messageType))
+	}
+	return strings.Join(parts, ",")
 }
 
 // readUntil waits for a frame of one of the given types, ignoring the rest.

@@ -1,11 +1,14 @@
 /**
  * Load a module from `packages/editor/src` in a plain Node process.
  *
- * The editor package cannot be imported as built output: `@plane/propel` does not compile in this
- * tree, and nothing on the schema path needs it. So the requested entry point is bundled here with
- * the workspace UI packages replaced by a proxy that answers any named import. Nothing replaced is
- * ever called — building a schema reads each extension's name, attributes and renderers, and never
- * renders a node view.
+ * The requested entry point is bundled from source with the workspace UI packages replaced by a proxy
+ * that answers any named import. Nothing replaced is ever called: building a schema reads each
+ * extension's name, attributes and renderers, and never renders a node view, so pulling in a component
+ * library to get at a schema would cost a build and buy nothing.
+ *
+ * This used to say that @plane/propel could not compile at all, which was true when it was written --
+ * its icon picker imported a directory that existed in no commit. That was fixed; the proxy stays
+ * because the reason above outlived the reason it was born with.
  */
 
 import { createRequire } from "node:module";

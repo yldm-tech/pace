@@ -51,17 +51,8 @@ pnpm-debug.log*
 # Turborepo
 .turbo
 
-## Django ##
-venv
-.venv
-*.pyc
-staticfiles
-mediafiles
-.env
-.DS_Store
+# The Django section that used to be here is gone with the Django it described: no .py file is tracked, no venv exists, and staticfiles, mediafiles, htmlcov and .coverage have nothing to match. .env and .DS_Store are kept once each, further up, where they were already listed.
 logs/
-htmlcov/
-.coverage
 
 node_modules/
 assets/dist/
@@ -75,7 +66,6 @@ pnpm-debug.log
 *.ntvs*
 *.njsproj
 *.sln
-package-lock.json
 .vscode
 
 # Sentry
@@ -107,11 +97,7 @@ storybook-static
 
 CLAUDE.md
 
-build/
-.react-router/
-
-build/
-.react-router/
+# temp/ only: build/ and .react-router/ are under Production, where they belong.
 temp/
 # Unanchored, so it matches a scripts directory at any depth rather than the build output it was meant for. Both carve-outs below are ordinary source that it swallowed.
 scripts/
