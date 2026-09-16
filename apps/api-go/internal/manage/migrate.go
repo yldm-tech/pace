@@ -13,7 +13,7 @@ import (
 // It applies what internal/migrate replays — the statements recorded from Django's own migrate — in Django's order, into Django's ledger. What it will not do is guess. A migration carrying a RunPython that has no Go counterpart is refused before anything is applied, naming the operations, because half a migration is worse than none.
 //
 // On a database with rows in it that refusal is the whole point: those operations exist to move data that is already there. On an empty one they would do nothing either way, which is why a fresh install already comes out identical to Django's — but the command does not make that distinction, because "it happens to be empty" is not something worth betting a schema on.
-func runMigrate(ctx context.Context, env Environment, _ []string) error {
+func runMigrate(ctx context.Context, env Environment, arguments []string) error {
 	db, err := database(env)
 	if err != nil {
 		return err
@@ -23,7 +23,15 @@ func runMigrate(ctx context.Context, env Environment, _ []string) error {
 		return err
 	}
 
-	unported, err := migrate.Unported()
+	// `migrate <app> <name>` stops at that migration, the way Django's does. With no arguments it runs the whole plan.
+	target := ""
+	if len(arguments) >= 2 {
+		target = arguments[0] + "." + arguments[1]
+	} else if len(arguments) == 1 {
+		return fmt.Errorf("migrate takes either no arguments or an app and a migration name, and was given %q", arguments[0])
+	}
+
+	unported, err := migrate.Unported(target)
 	if err != nil {
 		return err
 	}
@@ -35,7 +43,7 @@ func runMigrate(ctx context.Context, env Environment, _ []string) error {
 		return fmt.Errorf("refusing to migrate: %s", strings.Join(unported, ", "))
 	}
 
-	applied, err := migrate.Apply(ctx, pool, nil)
+	applied, err := migrate.ApplyThrough(ctx, pool, target, nil)
 	if err != nil {
 		return err
 	}

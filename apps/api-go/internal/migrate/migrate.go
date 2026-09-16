@@ -67,8 +67,19 @@ func Plan() ([]Migration, error) {
 	return plan, nil
 }
 
-// statements reads the recorded statements of one migration, one to a line.
-func statements(migration Migration) ([]string, error) {
+// runMarker introduces the line that says a ported operation goes here.
+const runMarker = "-- RUN "
+
+// step is one thing a migration does: a statement to execute, or a ported operation to call.
+type step struct {
+	statement string
+	operation string
+}
+
+// steps reads what one migration does, in the order Django did it.
+//
+// The order matters and cost a debugging session to learn. Django runs a migration's operations one after another, so a RunPython sits between schema changes rather than after them: db.0035 adds organization_size, fills it in from company_size, and the column it reads is dropped later. Replaying all the SQL and then all the code read a column that was no longer there.
+func steps(migration Migration) ([]step, error) {
 	contents, err := files.ReadFile(path.Join("sql", migration.App, migration.Name+".sql"))
 	if err != nil {
 		return nil, fmt.Errorf("no recorded sql for %s: %w", migration.Key(), err)
@@ -76,13 +87,17 @@ func statements(migration Migration) ([]string, error) {
 	if strings.Contains(string(contents), unrenderable) {
 		return nil, fmt.Errorf("%s carries a statement the generator could not render, so it cannot be replayed", migration.Key())
 	}
-	var found []string
+	var found []step
 	for _, line := range strings.Split(string(contents), "\n") {
 		trimmed := strings.TrimSpace(line)
-		if trimmed == "" || strings.HasPrefix(trimmed, "--") {
-			continue
+		switch {
+		case trimmed == "":
+		case strings.HasPrefix(trimmed, runMarker):
+			found = append(found, step{operation: strings.TrimSpace(strings.TrimPrefix(trimmed, runMarker))})
+		case strings.HasPrefix(trimmed, "--"):
+		default:
+			found = append(found, step{statement: trimmed})
 		}
-		found = append(found, trimmed)
 	}
 	return found, nil
 }
@@ -118,9 +133,29 @@ func Applied(ctx context.Context, db *sql.DB) (map[string]bool, error) {
 //
 // Each migration is one transaction: its statements, then whatever code it carries, then the ledger row. Postgres does DDL transactionally, so a migration that fails part way leaves the database as it was and the ledger without its row — which is what Django's own non-atomic=False default does too.
 func Apply(ctx context.Context, db *sql.DB, logger *slog.Logger) (int, error) {
+	return ApplyThrough(ctx, db, "", logger)
+}
+
+// ApplyThrough brings the database up to one named migration and stops there, the way `manage.py migrate <app> <name>` does. An empty target means the whole plan.
+//
+// Stopping part way is how a database is put into the state one migration is about to act on, which is what the differential check of the ported operations needs and what an operator bisecting a bad deploy reaches for.
+func ApplyThrough(ctx context.Context, db *sql.DB, target string, logger *slog.Logger) (int, error) {
 	plan, err := Plan()
 	if err != nil {
 		return 0, err
+	}
+	if target != "" {
+		cut := -1
+		for index, migration := range plan {
+			if migration.Key() == target {
+				cut = index
+				break
+			}
+		}
+		if cut < 0 {
+			return 0, fmt.Errorf("%s is not in the plan", target)
+		}
+		plan = plan[:cut+1]
 	}
 	if err := ensureLedger(ctx, db); err != nil {
 		return 0, err
@@ -141,6 +176,10 @@ func Apply(ctx context.Context, db *sql.DB, logger *slog.Logger) (int, error) {
 		if logger != nil {
 			logger.Info("applied a migration", "migration", migration.Key())
 		}
+	}
+	if target != "" {
+		// Halfway through the plan is not a state post_migrate would ever have left behind, and the recorded rows are the end state. A partial run gets the migrations it asked for and nothing else.
+		return ran, nil
 	}
 	if err := applySignalRows(ctx, db, logger); err != nil {
 		return ran, err
@@ -176,7 +215,7 @@ func ensureLedger(ctx context.Context, db *sql.DB) error {
 }
 
 func applyOne(ctx context.Context, db *sql.DB, migration Migration) error {
-	recorded, err := statements(migration)
+	recorded, err := steps(migration)
 	if err != nil {
 		return err
 	}
@@ -195,15 +234,8 @@ func applyOne(ctx context.Context, db *sql.DB, migration Migration) error {
 	}
 	defer tx.Rollback()
 
-	for _, statement := range recorded {
-		if _, err := tx.ExecContext(ctx, statement); err != nil {
-			return fmt.Errorf("%s: %w", statement, err)
-		}
-	}
-	for _, operation := range coded {
-		if err := operation.Run(ctx, tx); err != nil {
-			return fmt.Errorf("%s: %w", operation.Name, err)
-		}
+	if err := runSteps(ctx, tx, recorded, coded); err != nil {
+		return err
 	}
 	if err := recordApplied(ctx, tx, migration); err != nil {
 		return err
@@ -211,20 +243,45 @@ func applyOne(ctx context.Context, db *sql.DB, migration Migration) error {
 	return tx.Commit()
 }
 
+// runSteps executes a migration's steps in order against one transaction.
+func runSteps(ctx context.Context, tx *sql.Tx, recorded []step, coded map[string]Operation) error {
+	for _, current := range recorded {
+		if current.operation != "" {
+			operation, ported := coded[current.operation]
+			if !ported {
+				return fmt.Errorf("%s has no Go counterpart", current.operation)
+			}
+			if err := operation.Run(ctx, tx); err != nil {
+				return fmt.Errorf("%s: %w", current.operation, err)
+			}
+			continue
+		}
+		if _, err := tx.ExecContext(ctx, current.statement); err != nil {
+			return fmt.Errorf("%s: %w", current.statement, err)
+		}
+	}
+	return nil
+}
+
 // applyOutsideTransaction runs a migration Django marks atomic = False.
 //
 // Such a migration carries a statement Postgres refuses inside a transaction block — CREATE INDEX CONCURRENTLY is the only reason any of them are marked — so there is no transaction to roll back and a failure part way leaves the database part way. That is exactly what Django does with the same migration, and it is why so few of them are marked.
 //
-// A coded operation still needs a transaction handle, so it gets one of its own. Nothing in the plan pairs a concurrent index with ported code, but the shape is written out rather than left to chance.
-func applyOutsideTransaction(ctx context.Context, db *sql.DB, migration Migration, recorded []string, coded []Operation) error {
-	for _, statement := range recorded {
-		if _, err := db.ExecContext(ctx, statement); err != nil {
-			return fmt.Errorf("%s: %w", statement, err)
+// A ported operation still needs a transaction handle, so it gets one of its own. Nothing in the plan pairs a concurrent index with ported code, but the shape is written out rather than left to chance.
+func applyOutsideTransaction(ctx context.Context, db *sql.DB, migration Migration, recorded []step, coded map[string]Operation) error {
+	for _, current := range recorded {
+		if current.operation != "" {
+			operation, ported := coded[current.operation]
+			if !ported {
+				return fmt.Errorf("%s has no Go counterpart", current.operation)
+			}
+			if err := runInOwnTransaction(ctx, db, operation); err != nil {
+				return err
+			}
+			continue
 		}
-	}
-	for _, operation := range coded {
-		if err := runInOwnTransaction(ctx, db, operation); err != nil {
-			return err
+		if _, err := db.ExecContext(ctx, current.statement); err != nil {
+			return fmt.Errorf("%s: %w", current.statement, err)
 		}
 	}
 	tx, err := db.BeginTx(ctx, nil)

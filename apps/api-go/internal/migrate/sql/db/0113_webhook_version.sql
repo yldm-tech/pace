@@ -9,3 +9,4 @@ ALTER TABLE "api_tokens" ADD COLUMN "allowed_rate_limit" varchar(255) DEFAULT '6
 ALTER TABLE "api_tokens" ALTER COLUMN "allowed_rate_limit" DROP DEFAULT;
 ALTER TABLE "profiles" ADD COLUMN "is_subscribed_to_changelog" boolean DEFAULT false NOT NULL;
 ALTER TABLE "profiles" ALTER COLUMN "is_subscribed_to_changelog" DROP DEFAULT;
+-- RUN db.0113_webhook_version.populate_product_tour

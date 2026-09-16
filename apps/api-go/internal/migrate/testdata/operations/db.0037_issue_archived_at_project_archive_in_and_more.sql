@@ -1,0 +1,6 @@
+-- Rows for db.0037's onboarding_default_steps to act on.
+--
+-- It touches only the onboarded, so the pair here is one of each. The onboarded user already has an onboarding_step and is_tour_completed set, which is what shows that the operation overwrites rather than fills in; the other has the same values and must come out untouched.
+INSERT INTO users (password, id, username, first_name, last_name, avatar, date_joined, created_at, updated_at, last_location, created_location, is_superuser, is_managed, is_password_expired, is_active, is_staff, is_email_verified, is_password_autoset, is_onboarded, token, billing_address_country, has_billing_address, user_timezone, last_login_ip, last_logout_ip, last_login_medium, last_login_uagent, is_bot, theme) VALUES
+  ('!', '00000000-0000-4000-8000-000000000001', 'onboarded',     'On',  'Boarded', '', '2024-01-01 00:00:00+00', '2024-01-01 00:00:00+00', '2024-01-01 00:00:00+00', '', '', false, false, false, true, false, false, false, true,  'token-1', 'INDIA', false, 'UTC', '', '', '', '', false, '{}'),
+  ('!', '00000000-0000-4000-8000-000000000002', 'not-onboarded', 'Not', 'Boarded', '', '2024-01-01 00:00:00+00', '2024-01-01 00:00:00+00', '2024-01-01 00:00:00+00', '', '', false, false, false, true, false, false, false, false, 'token-2', 'INDIA', false, 'UTC', '', '', '', '', false, '{}');

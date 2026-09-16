@@ -10,6 +10,14 @@ ALTER TABLE "users" ALTER COLUMN "display_name" DROP DEFAULT;
 CREATE TABLE "exporters" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "project" uuid[] NULL, "provider" varchar(50) NOT NULL, "status" varchar(50) NOT NULL, "reason" text NOT NULL, "key" text NOT NULL, "url" varchar(800) NULL, "token" varchar(255) NOT NULL UNIQUE, "created_by_id" uuid NULL, "initiated_by_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 CREATE TABLE "project_deploy_boards" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "anchor" varchar(255) NOT NULL UNIQUE, "comments" boolean NOT NULL, "reactions" boolean NOT NULL, "votes" boolean NOT NULL, "views" jsonb NOT NULL, "created_by_id" uuid NULL, "inbox_id" uuid NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 CREATE TABLE "issue_votes" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "vote" integer NOT NULL, "actor_id" uuid NOT NULL, "created_by_id" uuid NULL, "issue_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.generate_display_name
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.rectify_field_issue_activity
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.update_assignee_issue_activity
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.update_name_activity
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.random_cycle_order
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.random_module_order
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.update_user_issue_properties
+-- RUN db.0041_cycle_sort_order_issuecomment_access_and_more.workspace_member_properties
 ALTER TABLE "exporters" ADD CONSTRAINT "exporters_created_by_id_44e1d9b3_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "exporters" ADD CONSTRAINT "exporters_initiated_by_id_d51f7552_fk_users_id" FOREIGN KEY ("initiated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "exporters" ADD CONSTRAINT "exporters_updated_by_id_d2572861_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;

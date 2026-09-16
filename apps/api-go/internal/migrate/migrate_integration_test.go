@@ -62,7 +62,7 @@ func TestGoBuildsTheSameSchemaAsDjango(t *testing.T) {
 // withStubbedOperations registers a do-nothing counterpart for every operation that has no Go port yet, and puts the registry back afterwards.
 func withStubbedOperations(t *testing.T) {
 	t.Helper()
-	missing, err := Unported()
+	missing, err := Unported("")
 	if err != nil {
 		t.Fatal(err)
 	}

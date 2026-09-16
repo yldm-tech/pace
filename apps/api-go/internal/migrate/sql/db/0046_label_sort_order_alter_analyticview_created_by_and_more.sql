@@ -2,6 +2,7 @@
 ALTER TABLE "labels" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
 ALTER TABLE "labels" ALTER COLUMN "sort_order" DROP DEFAULT;
 CREATE TABLE "issue_mentions" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "issue_id" uuid NOT NULL, "mention_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+-- RUN db.0046_label_sort_order_alter_analyticview_created_by_and_more.random_sort_ordering
 ALTER TABLE "issue_mentions" ADD CONSTRAINT "issue_mentions_issue_id_mention_id_ce91a005_uniq" UNIQUE ("issue_id", "mention_id");
 ALTER TABLE "issue_mentions" ADD CONSTRAINT "issue_mentions_created_by_id_eb44759e_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "issue_mentions" ADD CONSTRAINT "issue_mentions_issue_id_d8821107_fk_issues_id" FOREIGN KEY ("issue_id") REFERENCES "issues" ("id") DEFERRABLE INITIALLY DEFERRED;

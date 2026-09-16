@@ -3,6 +3,8 @@ CREATE TABLE "global_views" ("created_at" timestamp with time zone NOT NULL, "up
 ALTER TABLE "workspace_members" ADD COLUMN "issue_props" jsonb DEFAULT '{"subscribed": true, "assigned": true, "created": true, "all_issues": true}'::jsonb NOT NULL;
 ALTER TABLE "workspace_members" ALTER COLUMN "issue_props" DROP DEFAULT;
 ALTER TABLE "issue_activities" ADD COLUMN "epoch" double precision NULL;
+-- RUN db.0045_issueactivity_epoch_workspacemember_issue_props_and_more.update_issue_activity_priority
+-- RUN db.0045_issueactivity_epoch_workspacemember_issue_props_and_more.update_issue_activity_blocked
 ALTER TABLE "global_views" ADD CONSTRAINT "global_views_created_by_id_14b7d95c_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "global_views" ADD CONSTRAINT "global_views_updated_by_id_112e0281_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "global_views" ADD CONSTRAINT "global_views_workspace_id_3c68eca7_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
