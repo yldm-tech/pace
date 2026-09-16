@@ -518,6 +518,26 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the pdf stylesheet matches the exporter
+        run: |
+          node apps/api-go/tools/generate_pdf_styles.mjs > /tmp/pdf_styles.json
+          if ! diff -u apps/api-go/internal/pdfdoc/styles.json /tmp/pdf_styles.json; then
+            echo "::error::apps/api-go/internal/pdfdoc/styles.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_pdf_styles.mjs > apps/api-go/internal/pdfdoc/styles.json"
+            exit 1
+          fi
+
+      - name: Verify the pdf fonts match the ones the exporter registers
+        run: |
+          node apps/api-go/tools/generate_pdf_fonts.mjs
+          if ! git diff --exit-code --stat -- apps/api-go/internal/pdfdoc/fonts; then
+            echo "::error::apps/api-go/internal/pdfdoc/fonts is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_pdf_fonts.mjs"
+            exit 1
+          fi
+
       - name: Verify the parse rules match the schema
         run: |
           node apps/api-go/tools/generate_parse_rules.mjs > /tmp/parse_rules.json

@@ -72,6 +72,7 @@ func (s *Server) registerRoutes(group *gin.RouterGroup) {
 	get("/health/", s.health)
 	get("/collaboration/", s.collaboration)
 	post("/convert-document/", s.convertDocument)
+	post("/pdf-export/", s.exportPDF)
 }
 
 // health answers the liveness probe.
