@@ -2,6 +2,7 @@ package project
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"math/rand"
 	"net/http"
@@ -67,7 +68,8 @@ func (handler *Handler) projectEstimatePoints(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectRole(c, user, roleAdmin, roleMember) {
 		return
 	}
-	var estimateIDs []*string
+	// []sql.NullString rather than []*string: Pluck does not honour a pointer element type, so a null column ends the request with `converting NULL to string is unsupported` -- which is every first time, before the row has ever been set.
+	var estimateIDs []sql.NullString
 	err := handler.db.WithContext(c.Request.Context()).Table("projects p").
 		Joins("JOIN workspaces w ON w.id = p.workspace_id").
 		Where("w.slug = ? AND p.id = ?", c.Param("slug"), c.Param("id")).
@@ -81,11 +83,11 @@ func (handler *Handler) projectEstimatePoints(c *gin.Context, user *auth.User) {
 		handler.notFound(c)
 		return
 	}
-	if estimateIDs[0] == nil {
+	if !estimateIDs[0].Valid {
 		drf.Respond(c, http.StatusOK, []gin.H{})
 		return
 	}
-	points, err := handler.estimatePoints(c, *estimateIDs[0])
+	points, err := handler.estimatePoints(c, estimateIDs[0].String)
 	if err != nil {
 		handler.internalError(c, err)
 		return
