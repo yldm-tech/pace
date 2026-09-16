@@ -10,9 +10,7 @@ import (
 
 // runMigrate is manage.py migrate: bring the database up to the schema the Django app describes.
 //
-// It applies what internal/migrate replays — the statements recorded from Django's own migrate — in Django's order, into Django's ledger. What it will not do is guess. A migration carrying a RunPython that has no Go counterpart is refused before anything is applied, naming the operations, because half a migration is worse than none.
-//
-// On a database with rows in it that refusal is the whole point: those operations exist to move data that is already there. On an empty one they would do nothing either way, which is why a fresh install already comes out identical to Django's — but the command does not make that distinction, because "it happens to be empty" is not something worth betting a schema on.
+// It applies what internal/migrate replays — the statements recorded from Django's own migrate — in Django's order, into Django's ledger. All fifty-eight of the RunPython operations are ported, so nothing is refused any more; the check is kept because a migration added to the Python app arrives here with no counterpart, and refusing it by name beats applying half of it.
 func runMigrate(ctx context.Context, env Environment, arguments []string) error {
 	db, err := database(env)
 	if err != nil {

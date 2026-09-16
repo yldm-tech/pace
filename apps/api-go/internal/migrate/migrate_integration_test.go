@@ -14,7 +14,7 @@ import (
 //
 // It is opt-in because it creates a database and drops it again. The comparison is against testdata/schema.tsv, which is the same query run against a database Django migrated — so this fails if the recorded statements stop reproducing Django's schema, which is the only thing that makes replaying them safe.
 //
-// The coded operations are stubbed out. They move rows around and the database here has none, so what they would have done cannot be seen in a schema; whether they are ported correctly is a different question, answered by their own tests. What this settles is that everything Django does to the shape of the database is in the recorded files.
+// The coded operations run for real — every one of them is ported now, so the stubbing below finds nothing to stub. It is kept because it is what lets this test still mean something while a newly added migration is being worked on. Whether those operations are right is a different question, answered by tools/check_migration_operations.py; what this settles is that everything Django does to the shape of the database is in the recorded files.
 func TestGoBuildsTheSameSchemaAsDjango(t *testing.T) {
 	databaseURL := os.Getenv("MIGRATE_TEST_DATABASE_URL")
 	if databaseURL == "" {
