@@ -140,10 +140,13 @@ func (c *client) authenticate(page, userID string) {
 	c.send(encoder.Bytes())
 }
 
+// readDeadline bounds a single frame. It is generous on purpose: nothing here is asserting how quickly a server answers, only that it does, and a shared CI runner starves these goroutines long enough that five seconds was reached twice with no frame in sight. A test that never gets its frame still fails -- through go test's own timeout, with the whole suite's stacks attached, which says more than "i/o timeout" ever did.
+const readDeadline = 30 * time.Second
+
 // read waits for one frame and parses it.
 func (c *client) read() *hocuspocus.Incoming {
 	c.t.Helper()
-	_ = c.socket.SetReadDeadline(time.Now().Add(5 * time.Second))
+	_ = c.socket.SetReadDeadline(time.Now().Add(readDeadline))
 	_, frame, err := c.socket.ReadMessage()
 	if err != nil {
 		c.t.Fatalf("read: %v", err)
