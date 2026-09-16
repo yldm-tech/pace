@@ -50,7 +50,7 @@ type IntakeIssue struct {
 	Extra          []byte     `gorm:"column:extra;type:jsonb"`
 }
 
-func (IntakeIssue) TableName() string { return "issue_intake" }
+func (IntakeIssue) TableName() string { return "intake_issues" }
 
 // The five statuses an intake issue moves through.
 const (
@@ -205,7 +205,7 @@ func (handler *Handler) respondPagedIntakeIssues(c *gin.Context, results []gin.H
 
 // intakeIssueScope is the queryset the list and the detail routes read through.
 func (handler *Handler) intakeIssueScope(c *gin.Context, intakeID, projectID string) *gorm.DB {
-	return handler.db.WithContext(c.Request.Context()).Table("issue_intake ii").
+	return handler.db.WithContext(c.Request.Context()).Table("intake_issues ii").
 		Select(`ii.*,
 			COALESCE((SELECT ARRAY_AGG(DISTINCT il.label_id) FROM issue_labels il
 				WHERE il.issue_id = ii.issue_id AND il.deleted_at IS NULL), '{}') AS label_ids,

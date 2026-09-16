@@ -150,7 +150,7 @@ func (handler *Handler) searchIssues(c *gin.Context, user *auth.User, search, sl
 // searchIntakes is the twin of the issue search with two differences: it looks through the **plain** manager, so an archived, draft or triage issue is eligible, and it keeps only what is still waiting in or snoozed inside an intake.
 func (handler *Handler) searchIntakes(c *gin.Context, user *auth.User, search, slug, projectID string, scoped bool) ([]gin.H, error) {
 	query := handler.memberIssueScope(c, user, slug).Where("i.deleted_at IS NULL").
-		Where(`EXISTS (SELECT 1 FROM issue_intake ii WHERE ii.issue_id = i.id AND ii.deleted_at IS NULL AND ii.status IN (0, -2))`)
+		Where(`EXISTS (SELECT 1 FROM intake_issues ii WHERE ii.issue_id = i.id AND ii.deleted_at IS NULL AND ii.status IN (0, -2))`)
 	if search != "" {
 		query = applyIssueSearch(query, search)
 	}
