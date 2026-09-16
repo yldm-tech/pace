@@ -22,12 +22,7 @@ const linkMap = [
   {
     key: "status",
     label: "Status Page",
-    value: "https://status.pace.yldm.ai/",
-  },
-  {
-    key: "twitter_handle",
-    label: "@planepowers",
-    value: "https://x.com/planepowers",
+    value: "https://pace-status.yldm.ai/",
   },
 ];
 
