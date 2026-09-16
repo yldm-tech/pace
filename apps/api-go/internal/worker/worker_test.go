@@ -243,7 +243,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	NewModelActivityTasks(nil, nil).Register(consumer)
 	NewIssueActivityTasks(nil, nil, nil, nil).Register(consumer)
 	NewNotificationTasks(nil, nil).Register(consumer)
-	NewWebhookTasks(nil, httpsafe.Settings{}, nil, nil).Register(consumer)
+	NewWebhookTasks(nil, httpsafe.Settings{}, nil, nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true

@@ -108,7 +108,7 @@ func main() {
 	webhooks := worker.NewWebhookTasks(db, httpsafe.Settings{
 		AllowedIPs:   allowedIPs,
 		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
-	}, activityPublisher, logger)
+	}, activityPublisher, activityPublisher, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
