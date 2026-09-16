@@ -30,9 +30,10 @@ func TestPlainTextMatchesDjango(t *testing.T) {
 	}
 }
 
+// Every task name points at a module the Django app really has. Most live under plane.bgtasks; the telemetry one lives beside the licence models instead.
 func TestTaskNamesMatchDjangoModulePaths(t *testing.T) {
 	for _, name := range MigratedTaskNames() {
-		if !strings.HasPrefix(name, "plane.bgtasks.") {
+		if !strings.HasPrefix(name, "plane.bgtasks.") && !strings.HasPrefix(name, "plane.license.bgtasks.") {
 			t.Errorf("task name %q does not point at a Django task module", name)
 		}
 	}
@@ -270,6 +271,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	NewVersionSyncTasks(nil, nil, nil).Register(consumer)
 	NewDummyDataTasks(nil, nil).Register(consumer)
 	NewWorkspaceSeedTasks(nil, "", nil).Register(consumer)
+	NewTelemetryTasks(nil, "", nil).Register(consumer)
 	NewProjectInvitationTasks(nil, EmailSettings{}, nil, nil, nil).Register(consumer)
 	NewAPILogTasks(nil, nil).Register(consumer)
 	registered := map[string]bool{}

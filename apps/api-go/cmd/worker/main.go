@@ -172,6 +172,7 @@ func main() {
 	versionSync.Register(consumer)
 	worker.NewDummyDataTasks(db, logger).Register(consumer)
 	worker.NewWorkspaceSeedTasks(db, settings.Auth.WebURL, logger).Register(consumer)
+	worker.NewTelemetryTasks(db, settings.Auth.WebURL, logger).Register(consumer)
 	worker.NewProjectInvitationTasks(db, emailDefaults, repository, worker.SMTPMailer{}, logger).Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
