@@ -61,6 +61,7 @@ type TaskPublisher interface {
 	PublishAnalyticExport(ctx context.Context, email string, data map[string]any, slug string) error
 	PublishAssetObjectMetadata(ctx context.Context, assetID string) error
 	PublishIssueDescriptionVersion(ctx context.Context, updatedIssue, issueID, userID string) error
+	PublishIssueExport(ctx context.Context, provider, workspaceID string, projectIDs []string, token string, multiple bool, slug string) error
 }
 
 type Handler struct {
@@ -157,6 +158,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerWorkspaceIssueListRoutes(router)
 	handler.registerUserIssueListRoutes(router)
 	handler.registerUserRestRoutes(router)
+	handler.registerExporterRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

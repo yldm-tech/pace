@@ -183,6 +183,9 @@
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_draft_issues api-go:8000
 
+	@go_export_issues path_regexp go_export_issues ^/api/workspaces/[^/]+/export-issues/$
+	reverse_proxy @go_export_issues api-go:8000
+
 	@go_stickies path_regexp go_stickies ^/api/workspaces/[^/]+/stickies/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_stickies api-go:8000
 
