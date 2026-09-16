@@ -2589,3 +2589,28 @@ Express matches both spellings and answers both the same way; Gin would redirect
 `internal/live/hocuspocus` is the framing the client speaks. It is not plain y-websocket: every frame carries the document's name in front of it, and there are message types beyond the two y-protocols defines — authentication, stateless signals, a save acknowledgement and a heartbeat. The encoding underneath is lib0's, unsigned LEB128 for a number and a length-prefixed run of bytes for everything else.
 
 `tools/generate_hocuspocus_frames.mjs` builds sixteen frames with the real server's own encoder and records them, and the Go side has to produce the same bytes. The corpus covers the cases a hand-written varint gets wrong: a document name long enough to need a two-byte length, a name and a payload with characters outside ASCII, and an empty payload.
+
+## The live service, part four: the grammar of a document
+
+Reading HTML back into a document needs something the renderer did not: the schema's **content expressions**, the grammar that says a document holds blocks, a list holds list items, a list item holds a paragraph and then any blocks, and a table row holds cells and nothing else.
+
+ProseMirror compiles each expression into a finite automaton, and `internal/ydoc/content.go` is a port of that compiler — the tokeniser, the expression parser, the NFA, the subset construction that makes it deterministic, and the four questions the parser asks of the result.
+
+### The edge order is the behaviour
+
+The automaton is not just a membership test. The order of a state's outgoing edges is what decides which type gets *invented* when something has to be filled in: a document asked for empty comes back holding a paragraph because `block+`'s first edge is the paragraph's, and a bare list item at the top of a document is wrapped in a bullet list rather than an ordered one for the same reason.
+
+So the port is checked against ProseMirror's own dump of the automaton. `ContentMatch.toString()` prints every state, whether a node may end there, and every outgoing edge with the state it leads to — and two automatons that print alike are the same automaton. All twenty-three of the schema's types print identically, as do seventeen expressions the schema itself never contains, which are there to exercise ranges, optionals, alternation and nesting.
+
+Beside the dumps the corpus records the answers themselves, for every pair of types in the schema: 529 `matchType` answers, 529 `findWrapping` answers, and the node each type builds when asked for one empty — which is recursive, so a table arrives already holding a row.
+
+### What the four questions are for
+
+- **`MatchType`** — may this child go here? The parser asks it for every element it reads.
+- **`FindWrapping`** — what would this child have to be wrapped in to go here? This is how a `<li>` pasted at the top level becomes a list, and how a `<td>` becomes a table.
+- **`FillBefore`** — what would have to be inserted for this to be whole? This is how an empty list item ends up holding a paragraph.
+- **`DefaultType`** — what belongs here when nothing else says? This is the type a gap is filled with.
+
+### The mark set is the other half
+
+A type also says which marks its content may carry, and the rule for a type that says nothing depends on what it holds: a type holding inline content allows every mark, and a type holding blocks allows none, because the marks belong to the text inside those blocks rather than to the block itself. The code block is the one type that names its own — the empty expression, meaning no mark at all, which is why pasting bold text into one loses the bold.
