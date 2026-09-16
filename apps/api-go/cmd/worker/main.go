@@ -8,6 +8,7 @@ package main
 import (
 	"context"
 	"log/slog"
+	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -135,6 +136,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	// A nil *storage.Store has to be left out of the interface rather than put into it.
+	var copyStore worker.AssetCopyStore
+	if assetStore != nil {
+		copyStore = assetStore
+	}
+	copyAssets := worker.NewCopyAssetTasks(db, copyStore, liveURL(), logger)
+
 	// The analytics export builds its spreadsheet out of the same chart the analytics endpoint draws, and mails it with the same settings the notification emails use.
 	analyticExports := worker.NewAnalyticExportTasks(db, emailDefaults, repository, worker.SMTPMailer{}, logger)
 
@@ -158,6 +166,7 @@ func main() {
 	worker.NewAPILogTasks(db, logger).Register(consumer)
 	exports.Register(consumer)
 	analyticExports.Register(consumer)
+	copyAssets.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
@@ -195,4 +204,19 @@ func envOrDefault(name, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+// liveURL is settings.LIVE_URL: the base url joined with the base path, and nothing at all when the base url is not a url.
+func liveURL() string {
+	base := strings.TrimSpace(os.Getenv("LIVE_BASE_URL"))
+	parsed, err := url.Parse(base)
+	if err != nil || parsed.Scheme == "" || parsed.Host == "" {
+		return ""
+	}
+	path := envOrDefault("LIVE_BASE_PATH", "/live/")
+	joined, err := parsed.Parse(path)
+	if err != nil {
+		return ""
+	}
+	return joined.String()
 }

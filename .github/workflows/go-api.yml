@@ -184,6 +184,17 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the BeautifulSoup fixture matches Python
+        working-directory: apps/api
+        run: |
+          python ../api-go/tools/generate_soup_fixture.py > /tmp/soup_round_trip.json
+          if ! diff -u ../api-go/internal/soup/testdata/round_trip.json /tmp/soup_round_trip.json; then
+            echo "::error::apps/api-go/internal/soup/testdata/round_trip.json is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_soup_fixture.py > ../api-go/internal/soup/testdata/round_trip.json"
+            exit 1
+          fi
+
       - name: Verify the export format fixture matches Python
         working-directory: apps/api
         run: |
