@@ -1,0 +1,66 @@
+[
+  {
+    "name": "sync",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQA="
+  },
+  {
+    "name": "sync reply",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQQ="
+  },
+  {
+    "name": "query awareness",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQM="
+  },
+  {
+    "name": "authenticated read write",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQICCnJlYWQtd3JpdGU="
+  },
+  {
+    "name": "authenticated readonly",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQICCHJlYWRvbmx5"
+  },
+  {
+    "name": "permission denied",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQIBG0F1dGhlbnRpY2F0aW9uIHVuc3VjY2Vzc2Z1bA=="
+  },
+  {
+    "name": "stateless",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQUSeyJhY3Rpb24iOiJlcnJvciJ9"
+  },
+  {
+    "name": "stateless with unicode",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQUPaMOpbGxvIOKYgyDwn46J"
+  },
+  {
+    "name": "broadcast stateless",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQYGbG9ja2Vk"
+  },
+  {
+    "name": "sync status saved",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQgB"
+  },
+  {
+    "name": "sync status unsaved",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQgA"
+  },
+  {
+    "name": "first sync step",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQAABAGSIQE="
+  },
+  {
+    "name": "update",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQACGwEBkiEABwEHZGVmYXVsdAMJcGFyYWdyYXBoAA=="
+  },
+  {
+    "name": "long document name",
+    "frame": "rAJkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQFAXg="
+  },
+  {
+    "name": "unicode document name",
+    "frame": "C3DDoWdpbmEg4piDBQF4"
+  },
+  {
+    "name": "empty stateless payload",
+    "frame": "JDExMTExMTExLTExMTEtNDExMS04MTExLTExMTExMTExMTExMQUA"
+  }
+]
