@@ -1,6 +1,7 @@
 package project
 
 import (
+	"database/sql"
 	"errors"
 	"net/http"
 	"sort"
@@ -154,14 +155,15 @@ func stateGroupCounts(query *gorm.DB) ([]gin.H, error) {
 
 // estimateSumOf adds up the point column, which is a plain number on the issue rather than a join to an estimate. A set with nothing in it sums to null rather than to zero.
 func estimateSumOf(query *gorm.DB) (*float64, error) {
-	var sums []*float64
+	// []sql.NullFloat64 rather than []*float64. Scan honours a pointer well enough on its own -- *float64 works -- but not as the element of a slice, where it falls back to the bare type and a null sum ends the request with `converting NULL to float64 is unsupported`. Which is the empty set this function exists to describe.
+	var sums []sql.NullFloat64
 	if err := query.Select("SUM(i.point)").Scan(&sums).Error; err != nil {
 		return nil, err
 	}
-	if len(sums) == 0 {
+	if len(sums) == 0 || !sums[0].Valid {
 		return nil, nil
 	}
-	return sums[0], nil
+	return &sums[0].Float64, nil
 }
 
 // analyticsUserCounts is the three "who did the most" lists, which differ only in whose name they group by and how many they keep.

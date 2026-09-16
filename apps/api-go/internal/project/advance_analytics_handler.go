@@ -299,7 +299,8 @@ func (handler *Handler) analyticsCompletionChart(c *gin.Context, filters analyti
 	err = scope.Select(`DATE_TRUNC('month', i.created_at AT TIME ZONE 'UTC') AS month,
 		COUNT(i.id) AS created_count,
 		COUNT(i.id) FILTER (WHERE s."group" = 'completed') AS completed_count`).
-		Group("1").Order("1").Scan(&rows).Error
+		// Grouped by the alias rather than by the ordinal 1: Group quotes what it is given, so "1" reaches Postgres as an identifier and the query dies with `column "1" does not exist`. Order does not quote, which is why only half of this line was wrong.
+		Group("month").Order("1").Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}
