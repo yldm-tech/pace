@@ -24,6 +24,7 @@ CREATE UNIQUE INDEX "draft_issue_assignee_unique_issue_assignee_when_deleted_at_
 ALTER TABLE "draft_issue_assignees" ADD CONSTRAINT "draft_issue_assignees_draft_issue_id_assignee__7cd49721_uniq" UNIQUE ("draft_issue_id", "assignee_id", "deleted_at");
 ALTER TABLE "cycles" ADD COLUMN "version" integer DEFAULT 1 NOT NULL;
 ALTER TABLE "cycles" ALTER COLUMN "version" DROP DEFAULT;
+-- RUN db.0077_draftissue_cycle_user_timezone_project_user_timezone_and_more.migrate_draft_issues
 ALTER TABLE "draft_issue_modules" ADD CONSTRAINT "draft_issue_modules_created_by_id_95ec4247_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "draft_issue_modules" ADD CONSTRAINT "draft_issue_modules_draft_issue_id_eb470383_fk_draft_issues_id" FOREIGN KEY ("draft_issue_id") REFERENCES "draft_issues" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "draft_issue_modules" ADD CONSTRAINT "draft_issue_modules_module_id_4d3f477a_fk_modules_id" FOREIGN KEY ("module_id") REFERENCES "modules" ("id") DEFERRABLE INITIALLY DEFERRED;

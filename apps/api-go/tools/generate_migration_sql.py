@@ -68,7 +68,8 @@ class Recorder:
     """Collects the statements one migration runs, minus the ones that are not the Go side's to run."""
 
     def __init__(self):
-        self.statements = []
+        # Steps in the order Django ran them: ("sql", statement) or ("run", function name).
+        self.steps = []
         self.ledger_ddl = None
         self.inside_run_python = False
 
@@ -78,7 +79,7 @@ class Recorder:
             if sql.lstrip().upper().startswith("CREATE TABLE") and "django_migrations" in sql:
                 self.ledger_ddl = sql
             elif changes_something(sql, params) and not writes_rows_we_do_not_own(sql):
-                self.statements.append(as_literal_sql(sql, params))
+                self.steps.append(("sql", as_literal_sql(sql, params)))
         return execute(sql, params, many, context)
 
 
@@ -114,25 +115,41 @@ def as_literal_sql(sql, params):
     return "-- UNRENDERABLE PARAMETERS\n" + sql
 
 
-def record(app, name):
-    """Apply one migration, returning the statements it ran."""
+def record(app, name, migration):
+    """Apply one migration, returning its steps in the order Django ran them.
+
+    The order is the point. Django runs a migration's operations one after another, so a RunPython sits *between* schema changes rather than after them: db.0035 adds organization_size, fills it in from company_size, and a later migration drops company_size. Replaying all of a migration's SQL and then its code would have read a column that was no longer there — which is exactly what happened before this recorded where the code goes.
+
+    Each operation is wrapped so the statements it runs are attributed to it, and a RunPython contributes a marker instead of statements. The operation objects are class attributes of the migration module and so survive the loader rebuilding the Migration, which is what makes wrapping them here reach the ones Django is about to call.
+    """
     recorder = Recorder()
-    original = RunPython.database_forwards
+    unwrap = []
 
-    def traced(self, *args, **kwargs):
-        recorder.inside_run_python = True
-        try:
-            return original(self, *args, **kwargs)
-        finally:
-            recorder.inside_run_python = False
+    for operation in migration.operations:
+        if isinstance(operation, RunPython):
+            def make_marker(operation):
+                original = operation.database_forwards
 
-    RunPython.database_forwards = traced
+                def traced(*args, **kwargs):
+                    recorder.steps.append(("run", getattr(operation.code, "__name__", "?")))
+                    recorder.inside_run_python = True
+                    try:
+                        return original(*args, **kwargs)
+                    finally:
+                        recorder.inside_run_python = False
+                return original, traced
+
+            original, traced = make_marker(operation)
+            operation.database_forwards = traced
+            unwrap.append((operation, original))
+
     try:
         with connection.execute_wrapper(recorder):
             call_command("migrate", app, name, verbosity=0, interactive=False)
     finally:
-        RunPython.database_forwards = original
-    return recorder.statements, recorder.ledger_ddl
+        for operation, original in unwrap:
+            operation.database_forwards = original
+    return recorder.steps, recorder.ledger_ddl
 
 
 def write_signal_rows(root):
@@ -176,7 +193,7 @@ def main():
     rows = []
     for app, name in plan(loader):
         migration = loader.disk_migrations[app, name]
-        statements, ledger_ddl = record(app, name)
+        steps, ledger_ddl = record(app, name, migration)
         if ledger_ddl:
             with open(os.path.join(root, "ledger.sql"), "w") as handle:
                 handle.write("-- The ledger table, which Django's MigrationRecorder creates before the first migration runs. Recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.\n")
@@ -186,14 +203,18 @@ def main():
         os.makedirs(directory, exist_ok=True)
         with open(os.path.join(directory, name + ".sql"), "w") as handle:
             handle.write(f"-- {app}.{name}, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.\n")
-            for statement in statements:
-                one_line = statement.strip().rstrip(";")
+            for kind, value in steps:
+                if kind == "run":
+                    # Where the ported Go operation goes, in the position Django ran the Python one.
+                    handle.write(f"-- RUN {app}.{name}.{value}\n")
+                    continue
+                one_line = value.strip().rstrip(";")
                 if "\n" in one_line:
                     # The Go loader reads one statement per line, so a statement that wrapped would be split in the middle and both halves would fail. Django's schema editor builds these on one line; if that ever stops being true this has to be given a real separator rather than quietly producing something that cannot be parsed.
                     raise SystemExit(f"{app}.{name} produced a statement spanning lines, which the one-per-line format cannot carry:\n{one_line}")
                 handle.write(one_line + ";\n")
 
-        rows.append((app, name, ";".join(python_operations(migration)), "atomic" if migration.atomic else "non-atomic", len(statements)))
+        rows.append((app, name, ";".join(python_operations(migration)), "atomic" if migration.atomic else "non-atomic", len(steps)))
 
     with open(os.path.join(root, "plan.tsv"), "w") as handle:
         handle.write(
@@ -206,8 +227,8 @@ def main():
     write_signal_rows(root)
 
     coded = sum(1 for _, _, operations, _, _ in rows if operations)
-    statements = sum(count for _, _, _, _, count in rows)
-    print(f"{len(rows)} migrations, {statements} statements, {coded} carrying code to port", file=sys.stderr)
+    steps = sum(count for _, _, _, _, count in rows)
+    print(f"{len(rows)} migrations, {steps} steps, {coded} carrying code to port", file=sys.stderr)
 
 
 if __name__ == "__main__":

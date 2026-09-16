@@ -3,6 +3,7 @@ ALTER TABLE "users" ALTER COLUMN "avatar" TYPE text USING "avatar"::text;
 CREATE TABLE "sessions" ("session_data" text NOT NULL, "expire_date" timestamp with time zone NOT NULL, "device_info" jsonb NULL, "session_key" varchar(128) NOT NULL PRIMARY KEY, "user_id" varchar(50) NULL);
 CREATE TABLE "profiles" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "theme" jsonb NOT NULL, "is_tour_completed" boolean NOT NULL, "onboarding_step" jsonb NOT NULL, "use_case" text NULL, "role" varchar(300) NULL, "is_onboarded" boolean NOT NULL, "last_workspace_id" uuid NULL, "billing_address_country" varchar(255) NOT NULL, "billing_address" jsonb NULL, "has_billing_address" boolean NOT NULL, "company_name" varchar(255) NOT NULL, "user_id" uuid NOT NULL UNIQUE);
 CREATE TABLE "accounts" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "provider_account_id" varchar(255) NOT NULL, "provider" varchar NOT NULL, "access_token" text NOT NULL, "access_token_expired_at" timestamp with time zone NULL, "refresh_token" text NULL, "refresh_token_expired_at" timestamp with time zone NULL, "last_connected_at" timestamp with time zone NOT NULL, "metadata" jsonb NOT NULL, "user_id" uuid NOT NULL);
+-- RUN db.0065_auto_20240415_0937.migrate_user_profile
 ALTER TABLE "users" DROP COLUMN "billing_address" CASCADE;
 ALTER TABLE "users" DROP COLUMN "billing_address_country" CASCADE;
 ALTER TABLE "users" DROP COLUMN "has_billing_address" CASCADE;
@@ -22,6 +23,7 @@ ALTER TABLE "pages" ADD COLUMN "description_binary" bytea NULL;
 ALTER TABLE "estimates" ADD COLUMN "type" varchar(255) DEFAULT 'Categories' NOT NULL;
 ALTER TABLE "estimates" ALTER COLUMN "type" DROP DEFAULT;
 CREATE TABLE "user_favorites" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_type" varchar(100) NOT NULL, "entity_identifier" uuid NULL, "name" varchar(255) NULL, "is_folder" boolean NOT NULL, "sequence" integer NOT NULL, "created_by_id" uuid NULL, "parent_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL, "workspace_id" uuid NOT NULL);
+-- RUN db.0065_auto_20240415_0937.user_favorite_migration
 CREATE INDEX "sessions_expire_date_16e4c444" ON "sessions" ("expire_date");
 CREATE INDEX "sessions_session_key_58f9471b_like" ON "sessions" ("session_key" varchar_pattern_ops);
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_user_id_36580373_fk_users_id" FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;

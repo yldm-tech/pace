@@ -3,6 +3,7 @@ ALTER TABLE "pages" ADD COLUMN "is_global" boolean DEFAULT false NOT NULL;
 ALTER TABLE "pages" ALTER COLUMN "is_global" DROP DEFAULT;
 CREATE TABLE "project_pages" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "page_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 CREATE TABLE "team_pages" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "page_id" uuid NOT NULL, "team_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+-- RUN db.0068_remove_pagelabel_project_remove_pagelog_project_and_more.migrate_pages
 SET CONSTRAINTS "pages_project_id_272eed09_fk_projects_id" IMMEDIATE; ALTER TABLE "pages" DROP CONSTRAINT "pages_project_id_272eed09_fk_projects_id";
 ALTER TABLE "pages" DROP COLUMN "project_id" CASCADE;
 SET CONSTRAINTS "page_labels_project_id_938a63ca_fk_projects_id" IMMEDIATE; ALTER TABLE "page_labels" DROP CONSTRAINT "page_labels_project_id_938a63ca_fk_projects_id";

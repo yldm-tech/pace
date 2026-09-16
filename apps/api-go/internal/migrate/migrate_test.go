@@ -19,7 +19,7 @@ func TestEveryMigrationInThePlanHasItsStatements(t *testing.T) {
 		t.Fatalf("the plan has only %d migrations, which cannot be the whole app", len(plan))
 	}
 	for _, migration := range plan {
-		if _, err := statements(migration); err != nil {
+		if _, err := steps(migration); err != nil {
 			t.Errorf("%s: %v", migration.Key(), err)
 		}
 	}
@@ -75,8 +75,11 @@ func TestPortedOperationsAreNamedByMigration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(resolved) != 1 || resolved[0].Name != "testapp.0001_example.an_operation" {
+	if len(resolved) != 1 {
 		t.Fatalf("resolved to %+v", resolved)
+	}
+	if _, keyed := resolved["testapp.0001_example.an_operation"]; !keyed {
+		t.Fatalf("the operation is not keyed by its migration: %+v", resolved)
 	}
 	// The same function name under a different migration is a different operation, and is not ported.
 	if _, err := operationsFor(Migration{App: "testapp", Name: "0002_other", Coded: []string{"an_operation"}}); err == nil {

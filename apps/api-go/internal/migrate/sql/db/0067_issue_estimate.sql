@@ -5,6 +5,9 @@ ALTER TABLE "estimates" ALTER COLUMN "last_used" DROP DEFAULT;
 ALTER TABLE "issues" RENAME COLUMN "estimate_point" TO "point";
 ALTER TABLE "issues" ADD COLUMN "estimate_point_id" uuid NULL CONSTRAINT "issues_estimate_point_id_a6822abe_fk_estimate_points_id" REFERENCES "estimate_points"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "issues_estimate_point_id_a6822abe_fk_estimate_points_id" IMMEDIATE;
 ALTER TABLE "estimate_points" ALTER COLUMN "value" TYPE varchar(255);
+-- RUN db.0067_issue_estimate.issue_estimate_point
+-- RUN db.0067_issue_estimate.last_used_estimate
+-- RUN db.0067_issue_estimate.populate_deploy_board
 ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_entity_name_entity_identifier_e58644ac_uniq" UNIQUE ("entity_name", "entity_identifier");
 ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_created_by_id_149dff93_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_inbox_id_ebc13d44_fk_inboxes_id" FOREIGN KEY ("inbox_id") REFERENCES "inboxes" ("id") DEFERRABLE INITIALLY DEFERRED;

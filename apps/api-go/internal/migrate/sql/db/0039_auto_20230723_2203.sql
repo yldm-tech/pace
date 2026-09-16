@@ -1,4 +1,6 @@
 -- db.0039_auto_20230723_2203, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- RUN db.0039_auto_20230723_2203.rename_field
+-- RUN db.0039_auto_20230723_2203.update_workspace_member_props
 ALTER TABLE "workspace_members" ALTER COLUMN "view_props" SET DEFAULT '{"filters": {"priority": null, "state": null, "state_group": null, "assignees": null, "created_by": null, "labels": null, "start_date": null, "target_date": null, "subscriber": null}, "display_filters": {"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}, "display_properties": {"assignee": true, "attachment_count": true, "created_on": true, "due_date": true, "estimate": true, "key": true, "labels": true, "link": true, "priority": true, "start_date": true, "state": true, "sub_issue_count": true, "updated_on": true}}'::jsonb;
 UPDATE "workspace_members" SET "view_props" = '{"filters": {"priority": null, "state": null, "state_group": null, "assignees": null, "created_by": null, "labels": null, "start_date": null, "target_date": null, "subscriber": null}, "display_filters": {"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}, "display_properties": {"assignee": true, "attachment_count": true, "created_on": true, "due_date": true, "estimate": true, "key": true, "labels": true, "link": true, "priority": true, "start_date": true, "state": true, "sub_issue_count": true, "updated_on": true}}'::jsonb WHERE "view_props" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
 ALTER TABLE "workspace_members" ALTER COLUMN "view_props" SET NOT NULL;
@@ -7,3 +9,4 @@ ALTER TABLE "workspace_members" ADD COLUMN "default_props" jsonb DEFAULT '{"filt
 ALTER TABLE "workspace_members" ALTER COLUMN "default_props" DROP DEFAULT;
 ALTER TABLE "project_members" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
 ALTER TABLE "project_members" ALTER COLUMN "sort_order" DROP DEFAULT;
+-- RUN db.0039_auto_20230723_2203.update_project_member_sort_order

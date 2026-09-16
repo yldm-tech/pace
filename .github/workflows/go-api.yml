@@ -640,3 +640,10 @@ jobs:
         run: |
           psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
           go test ./internal/migrate/ -run TestGoBuildsTheSameSchemaAsDjango -v
+
+      - name: Verify the ported migration operations match Django
+        working-directory: apps/api
+        env:
+          # The checker makes two scratch databases of its own; this only tells it which server to make them on.
+          DATABASE_URL: postgresql://pace:pace@localhost:5432/postgres
+        run: python ../api-go/tools/check_migration_operations.py

@@ -6,6 +6,8 @@ ALTER TABLE "issues" ALTER COLUMN "priority" SET DEFAULT 'none';
 UPDATE "issues" SET "priority" = 'none' WHERE "priority" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
 ALTER TABLE "issues" ALTER COLUMN "priority" SET NOT NULL;
 ALTER TABLE "issues" ALTER COLUMN "priority" DROP DEFAULT;
+-- RUN db.0043_alter_analyticview_created_by_and_more.create_issue_relation
+-- RUN db.0043_alter_analyticview_created_by_and_more.update_issue_priority_choice
 ALTER TABLE "issue_relations" ADD CONSTRAINT "issue_relations_issue_id_related_issue_id_640e8062_uniq" UNIQUE ("issue_id", "related_issue_id");
 ALTER TABLE "issue_relations" ADD CONSTRAINT "issue_relations_created_by_id_854d07e7_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE "issue_relations" ADD CONSTRAINT "issue_relations_issue_id_e1db6f72_fk_issues_id" FOREIGN KEY ("issue_id") REFERENCES "issues" ("id") DEFERRABLE INITIALLY DEFERRED;

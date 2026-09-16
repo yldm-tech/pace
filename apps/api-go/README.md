@@ -2901,3 +2901,28 @@ And one result that was not expected: on a fresh database, **every `RunPython` o
 The command refuses anyway. 58 operations across 34 migrations carry Python, and until they are ported `manage migrate` names them and stops rather than applying anything.
 
 That is deliberate. "It happens to be empty" is not something to bet a schema on, and the refusal is exactly what protects the case that matters: upgrading a database that has data in it. `migrator` stays on Python until those 58 are ported.
+
+## The schema, part two: the operations that carry code
+
+The recording covers what Django does to the shape of a database. It cannot cover the 58 `RunPython` operations, because what those do depends on the rows already there, and the database they were recorded against was empty. Those are ported by hand, and the question is how to know a port is right.
+
+Not by reading. The places a `RunPython` port goes wrong are not the places it looks difficult, and two of the first six proved it:
+
+- **`is None` catches two different nulls.** `update_workspace_member_props` branches on `obj.view_props is None`. Reading that, a `view_props IS NULL` looks exact — and it is wrong. A `jsonb` column holding the JSON value `null` comes back from psycopg as Python `None` just as a SQL `NULL` does, so the ORM cannot tell them apart and both take the first branch. Written the obvious way, a member whose `view_props` was JSON null came out with `"properties": null` where Django gives it the full defaults.
+- **Two passes are not one pass.** The same operation written as "fill the nulls, then wrap the rest" rewrites rows the first pass had just written, and Postgres then refuses the `ALTER TABLE` that follows with `cannot ALTER TABLE because it has pending trigger events`. Django's `bulk_update` is a single `UPDATE` and does not provoke it. One `CASE` is both the closer reproduction and the one that works.
+
+Neither was found by argument. Both were found by running the two implementations against the same rows.
+
+### The check
+
+`tools/check_migration_operations.py` builds two databases, migrates both to the migration *before* the one under test, seeds them identically from `internal/migrate/testdata/operations/<app>.<name>.sql`, then lets Django apply the migration to one and the Go engine apply it to the other. Every row of every table is dumped from both and compared. CI runs it.
+
+Two things make that possible. `migrate.ApplyThrough` stops the Go engine at a named migration, which is also what `manage migrate <app> <name>` does and what Django's own command has always done. And the recorded files now say *where* a coded operation goes, with a `-- RUN app.name.function` line in the position Django ran the Python one — which is not a detail. `db.0035` adds `organization_size`, fills it in from `company_size`, and drops `company_size` in the same migration; replaying all the SQL and then all the code read a column that was no longer there.
+
+Four of the operations exist to scatter rows into an arbitrary order and call `random.randint` to do it. Two runs of the same Python disagree with each other, so comparing those values would only prove that random is random. A seed names them with a `-- RANDOM: table.column` line: the column is left out of the comparison, and checked separately for having been filled in at all.
+
+### Where it stands
+
+Six operations across four migrations are ported and checked: `db.0035`, `db.0037`, `db.0038` and `db.0039`. Two more are registered as doing nothing, with the reason written down — `contenttypes.0002`'s is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
+
+That leaves 50. Until they are done `manage migrate` still refuses, and `migrator` still runs Python.

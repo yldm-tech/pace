@@ -1,1 +1,2 @@
 -- db.0107_migrate_filters_to_rich_filters, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- RUN db.0107_migrate_filters_to_rich_filters.migrate_filters_to_rich_filters

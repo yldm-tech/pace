@@ -34,22 +34,23 @@ func register(app, migration, function string, run func(ctx context.Context, tx 
 // RunSQLOperation is the name plan.tsv gives a RunSQL. Its statements were recorded like any other, so there is nothing to port and nothing to look up.
 const RunSQLOperation = "RunSQL"
 
-// operationsFor resolves the coded operations of one migration, in the order the migration runs them.
+// operationsFor resolves the coded operations of one migration, keyed by the function name the recorded file's RUN markers use.
 //
 // Anything missing is reported by name, all of them at once, because a caller fixing this wants the list rather than one at a time.
-func operationsFor(migration Migration) ([]Operation, error) {
-	var resolved []Operation
+func operationsFor(migration Migration) (map[string]Operation, error) {
+	resolved := map[string]Operation{}
 	var missing []string
 	for _, function := range migration.Coded {
 		if function == RunSQLOperation {
 			continue
 		}
-		operation, ported := registry[migration.Key()+"."+function]
+		key := migration.Key() + "." + function
+		operation, ported := registry[key]
 		if !ported {
 			missing = append(missing, function)
 			continue
 		}
-		resolved = append(resolved, operation)
+		resolved[key] = operation
 	}
 	if len(missing) > 0 {
 		return nil, fmt.Errorf("these operations carry Python that has not been ported: %s", strings.Join(missing, ", "))
@@ -57,13 +58,28 @@ func operationsFor(migration Migration) ([]Operation, error) {
 	return resolved, nil
 }
 
-// Unported is every operation in the plan that still has no Go counterpart, named "app.migration.function".
+// Unported is every operation that still has no Go counterpart, named "app.migration.function".
+//
+// The target scopes it the way ApplyThrough scopes the plan: asking about a run that stops at db.0035 should not report operations in db.0120 that the run will never reach. An empty target asks about the whole plan.
 //
 // It is what the command reports when it refuses, and what the guard test in this package counts.
-func Unported() ([]string, error) {
+func Unported(target string) ([]string, error) {
 	plan, err := Plan()
 	if err != nil {
 		return nil, err
+	}
+	if target != "" {
+		cut := -1
+		for index, migration := range plan {
+			if migration.Key() == target {
+				cut = index
+				break
+			}
+		}
+		if cut < 0 {
+			return nil, fmt.Errorf("%s is not in the plan", target)
+		}
+		plan = plan[:cut+1]
 	}
 	var missing []string
 	for _, migration := range plan {

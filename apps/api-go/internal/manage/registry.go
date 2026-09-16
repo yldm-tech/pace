@@ -254,7 +254,7 @@ func allCommands() []Command {
 		{Name: "register_instance", Help: "Check if instance is registered else register", Usage: "register_instance <machine_signature>", Run: registerInstance},
 		{Name: "reactivate_workspace_member", Help: "Reactivate a workspace member given a workspace slug and user email", Usage: "reactivate_workspace_member <slug> <email>", Run: reactivateWorkspaceMember},
 		{Name: "reset_password", Help: "Reset password of the user with the given email", Usage: "reset_password <email>", Run: resetPassword},
-		{Name: "migrate", Help: "Apply the database migrations the Django app ships", Usage: "migrate", Run: runMigrate},
+		{Name: "migrate", Help: "Apply the database migrations the Django app ships", Usage: "migrate [app] [migration]", Run: runMigrate},
 		{Name: "showmigrations", Help: "List the shipped migrations and whether the database records them", Usage: "showmigrations", Run: showMigrations},
 		{Name: "sync_issue_description_version", Help: "Creates IssueDescriptionVersion records for existing Issues in batches", Usage: "sync_issue_description_version", Run: syncIssueDescriptionVersion},
 		{Name: "sync_issue_version", Help: "Creates IssueVersion records for existing Issues in batches", Usage: "sync_issue_version", Run: syncIssueVersion},
