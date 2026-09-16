@@ -22,7 +22,7 @@ const linkMap = [
   {
     key: "status",
     label: "Status Page",
-    value: "https://status.pace.yldm.ai/",
+    value: "https://pace-status.yldm.ai/",
   },
 ];
 
