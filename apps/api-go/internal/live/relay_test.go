@@ -5,6 +5,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -78,28 +79,36 @@ func TestAChangeOnOneServerReachesTheOther(t *testing.T) {
 	// The change has to cross two servers before it gets here, so several frames may arrive first.
 	mirror := crdt.New()
 	deadline := time.Now().Add(10 * time.Second)
+	// Every frame that arrives and does not carry the change is a reason this test might fail, and each of the three continues below used to discard one. Kept here so the failure can name what it saw rather than only what it wanted.
+	frames := 0
+	var rejected []string
 	for {
 		// Bounded by the deadline above rather than by read's own five seconds, which used to end the test halfway through the budget it had just set for itself.
 		message, arrived := there.readUntilBefore(deadline, hocuspocus.MessageSync, hocuspocus.MessageSyncReply)
 		if !arrived {
 			break
 		}
+		frames++
 		if _, err := ysync.ApplySyncMessage(mirror, message.Payload(), nil); err != nil {
+			rejected = append(rejected, "apply: "+err.Error())
 			continue
 		}
 		read, err := ydoc.Parse(crdt.EncodeStateAsUpdateV1(mirror, nil))
 		if err != nil {
+			rejected = append(rejected, "parse: "+err.Error())
 			continue
 		}
 		html, err := ydoc.HTML(read)
 		if err != nil {
+			rejected = append(rejected, "render: "+err.Error())
 			continue
 		}
 		if strings.Contains(html, "across the cluster") {
 			return
 		}
+		rejected = append(rejected, "document read as "+strconv.Quote(html))
 	}
-	t.Fatal("the change never crossed to the other server")
+	t.Fatalf("the change never crossed to the other server: %d sync frame(s) arrived in ten seconds, each rejected as [%s]", frames, strings.Join(rejected, "; "))
 }
 
 // TestOnlyOneServerWritesThePage covers the lock: every server serving a page holds the whole of it, so without one they would all write it.
