@@ -2614,3 +2614,21 @@ Beside the dumps the corpus records the answers themselves, for every pair of ty
 ### The mark set is the other half
 
 A type also says which marks its content may carry, and the rule for a type that says nothing depends on what it holds: a type holding inline content allows every mark, and a type holding blocks allows none, because the marks belong to the text inside those blocks rather than to the block itself. The code block is the one type that names its own — the empty expression, meaning no mark at all, which is why pasting bold text into one loses the bold.
+
+## The live service, part five: the HTML parser underneath
+
+`internal/vdom` is the document object model the editor reads HTML into. The important thing about it is what it is **not**: it is not an HTML5 tree builder.
+
+The editor parses with zeed-dom, whose parser is a scanner over the markup with a stack of open elements and none of HTML5's repair rules. That has consequences a page runs into:
+
+- **A closing tag pops whatever is open, not the tag it names.** `<b><i>both</b>italic</i>` nests by where the tags are rather than by what they say, so the italic ends up inside the bold.
+- **Nothing is implied.** A `<tr>` written straight inside a `<table>` stays there; no `<tbody>` is invented around it. Every parse rule for a table has to cope with that.
+- **An unbalanced closing tag throws the rest away.** `</div>` with nothing open pops the fragment itself off the stack, and from then on there is nothing to append to — so `<p>text</p></div>more` parses to the paragraph alone and `more` is simply gone.
+- **Markup it cannot make sense of is text.** An unterminated comment, a `<` that starts nothing, an unterminated `<script>` — all text.
+- A `<b>` answers "bold" when asked for its font weight even with no style attribute, because zeed-dom hands a handful of tags presentational defaults. Two of those defaults are misspelled — the decoration property is in the plural — and that is reproduced rather than corrected, because a rule matching the real spelling finds nothing there either.
+
+Using Go's own HTML5 parser would have repaired all of that, and repaired documents are different documents.
+
+### The corpus
+
+`tools/generate_vdom_fixture.mjs` records the tree zeed-dom builds for 75 inputs: 32 written to provoke the behaviours above, and every one of the 43 documents the renderer produces, fed back in. That second half is the input shape that matters most — a page's stored HTML is the renderer's own output, and it is exactly what gets parsed back when somebody opens a page that has no Yjs document yet.
