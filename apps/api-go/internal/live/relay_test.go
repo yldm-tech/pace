@@ -78,8 +78,12 @@ func TestAChangeOnOneServerReachesTheOther(t *testing.T) {
 	// The change has to cross two servers before it gets here, so several frames may arrive first.
 	mirror := crdt.New()
 	deadline := time.Now().Add(10 * time.Second)
-	for time.Now().Before(deadline) {
-		message := there.readUntil(hocuspocus.MessageSync, hocuspocus.MessageSyncReply)
+	for {
+		// Bounded by the deadline above rather than by read's own five seconds, which used to end the test halfway through the budget it had just set for itself.
+		message, arrived := there.readUntilBefore(deadline, hocuspocus.MessageSync, hocuspocus.MessageSyncReply)
+		if !arrived {
+			break
+		}
 		if _, err := ysync.ApplySyncMessage(mirror, message.Payload(), nil); err != nil {
 			continue
 		}

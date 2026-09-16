@@ -172,6 +172,32 @@ func (c *client) readUntil(types ...hocuspocus.MessageType) *hocuspocus.Incoming
 	return nil
 }
 
+// readUntilBefore is readUntil bounded by a deadline the caller owns. It returns false when the deadline passes instead of failing the test, so a caller waiting on something that legitimately takes a while -- a change crossing two servers, say -- reports its own failure rather than dying on read's fixed five seconds partway through its own budget.
+func (c *client) readUntilBefore(deadline time.Time, types ...hocuspocus.MessageType) (*hocuspocus.Incoming, bool) {
+	c.t.Helper()
+	wanted := map[hocuspocus.MessageType]bool{}
+	for _, messageType := range types {
+		wanted[messageType] = true
+	}
+	for time.Now().Before(deadline) {
+		if err := c.socket.SetReadDeadline(deadline); err != nil {
+			return nil, false
+		}
+		_, frame, err := c.socket.ReadMessage()
+		if err != nil {
+			return nil, false
+		}
+		message, err := hocuspocus.ParseIncoming(frame)
+		if err != nil {
+			c.t.Fatalf("parse: %v", err)
+		}
+		if wanted[message.Type] {
+			return message, true
+		}
+	}
+	return nil, false
+}
+
 // TestConnectionSyncsAPageBuiltFromItsHTML is the path a page created through the API takes the first time somebody opens it: no Yjs document exists, one is built from the page's HTML and title, and the client is synchronised against it.
 func TestConnectionSyncsAPageBuiltFromItsHTML(t *testing.T) {
 	api := newFakeAPI()
