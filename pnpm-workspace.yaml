@@ -288,6 +288,17 @@ minimumReleaseAgeExclude:
 patchedDependencies:
   react-color@2.19.3: patches/react-color@2.19.3.patch
 
+packageExtensions:
+  # tiptap-markdown 0.8.10 imports @tiptap/pm/model from its compiled bundle but declares
+  # only @tiptap/core as a peer. Under node-linker=isolated nothing links what a package
+  # does not ask for, so @tiptap/pm is absent from its directory and the space build ends
+  # with `Rolldown failed to resolve import "@tiptap/pm/model"`. Declaring the peer it
+  # actually uses is what pnpm offers for a dependency whose manifest is wrong; the version
+  # range matches the one @tiptap/core already asks for, so nothing new is resolved.
+  tiptap-markdown:
+    peerDependencies:
+      "@tiptap/pm": "^2.0.0"
+
 peerDependencyRules:
   allowedVersions:
     # react-popper 2.3.0 is unmaintained and its peer range stops at React 18, but it
