@@ -83,8 +83,20 @@ func (d *Document) broadcastError(message, kind string, connection ConnectionCon
 	d.BroadcastStateless(string(encoded))
 }
 
-// forceClose tells everybody on a page why it is being closed, gives the message a moment to leave, and then closes them.
+// forceClose tells everybody on a page why it is being closed, closes them, and lets the document go. It is for a caller that does not hold the document's guard, which is a command arriving from another server.
 func (h *Hub) forceClose(document *Document, reason string, code int) {
+	disconnectEverybody(document, reason, code)
+	h.unload(document.Name())
+}
+
+// forceCloseHeld is forceClose for a caller that already holds the guard, which is the save that has just found the page unsaveable.
+func (h *Hub) forceCloseHeld(document *Document, reason string, code int) {
+	disconnectEverybody(document, reason, code)
+	h.detach(document)
+}
+
+// disconnectEverybody sends the notice and then closes the connections, with a pause between so the notice has somewhere to arrive.
+func disconnectEverybody(document *Document, reason string, code int) {
 	notice, err := json.Marshal(map[string]any{
 		"type":      "force_close",
 		"reason":    reason,
@@ -106,5 +118,4 @@ func (h *Hub) forceClose(document *Document, reason string, code int) {
 	for _, connection := range connections {
 		connection.close(code, reason)
 	}
-	h.unload(document.Name())
 }

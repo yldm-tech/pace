@@ -19,6 +19,19 @@ type Document struct {
 	connections map[*Connection]struct{}
 	// clients records which awareness client ids each connection has claimed, so they can be removed when it goes.
 	clients map[*Connection]map[uint64]struct{}
+
+	// lifetime guards saving a document against letting it go. Everything that writes the page or takes it out of memory holds it, so a save that started as the last connection was leaving cannot find the document already destroyed and write the page out empty.
+	lifetime  sync.Mutex
+	destroyed bool
+}
+
+// destroy lets the document go, once. The caller holds the guard.
+func (d *Document) destroy() {
+	if d.destroyed {
+		return
+	}
+	d.destroyed = true
+	d.doc.Destroy()
 }
 
 func newDocument(name string) *Document {
@@ -117,7 +130,7 @@ func (d *Document) BroadcastStateless(payload string) {
 }
 
 // removeAwarenessFor tells everybody that a connection's cursors are gone, by applying an update that raises each client's clock and blanks its state — which is how y-protocols says somebody left.
-func (d *Document) removeAwarenessFor(ids []uint64) {
+func (d *Document) removeAwarenessFor(ids []uint64, relay *Relay) {
 	if len(ids) == 0 {
 		return
 	}
@@ -137,4 +150,5 @@ func (d *Document) removeAwarenessFor(ids []uint64) {
 		return
 	}
 	d.broadcast(hocuspocus.NewOutgoing(d.name).WriteAwarenessUpdate(update).Bytes(), nil)
+	relay.PublishAwareness(d, update)
 }
