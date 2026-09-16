@@ -19,17 +19,22 @@ func ToUpdate(document Node, title *Node) ([]byte, error) {
 
 // ToUpdateWithOptions is ToUpdate with the document's client id fixed rather than drawn at random. A fixed id makes the bytes repeatable, which is what the corpus needs; zero leaves the id random, which is what a running service wants so that two servers writing the same page do not claim the same identity.
 func ToUpdateWithOptions(document Node, title *Node, clientID uint64) ([]byte, error) {
+	return ToUpdateWithSchema(document, title, DocumentSchema, clientID)
+}
+
+// ToUpdateWithSchema is ToUpdateWithOptions against a schema other than the document editor's. The schema decides the order a node's attributes go in, which is part of the bytes.
+func ToUpdateWithSchema(document Node, title *Node, schema *Schema, clientID uint64) ([]byte, error) {
 	var options []crdt.DocOption
 	if clientID != 0 {
 		options = append(options, crdt.WithClientID(crdt.ClientID(clientID)))
 	}
 	doc := crdt.New(options...)
 
-	if err := writeFragment(doc, BodyFragment, document); err != nil {
+	if err := writeFragment(doc, BodyFragment, document, schema); err != nil {
 		return nil, err
 	}
 	if title != nil {
-		if err := writeFragment(doc, TitleFragment, *title); err != nil {
+		if err := writeFragment(doc, TitleFragment, *title, schema); err != nil {
 			return nil, err
 		}
 	}
@@ -46,21 +51,21 @@ func TitleDocument(title string) Node {
 	return Node{Type: "doc", Content: []Node{heading}}
 }
 
-func writeFragment(doc *crdt.Doc, name string, document Node) error {
+func writeFragment(doc *crdt.Doc, name string, document Node, schema *Schema) error {
 	fragment := doc.GetXmlFragment(name)
 	var err error
 	doc.Transact(func(txn *crdt.Transaction) {
-		err = insertChildren(txn, fragment, nil, document.Content)
+		err = insertChildren(txn, fragment, nil, document.Content, schema)
 	})
 	return err
 }
 
 // insertChildren writes a node's children. Runs of text are gathered into one text node the way the editor's own writer does, because a text node with several runs of formatting is one Yjs text with several formatting ranges rather than several texts.
-func insertChildren(txn *crdt.Transaction, fragment *crdt.YXmlFragment, element *crdt.YXmlElement, children []Node) error {
+func insertChildren(txn *crdt.Transaction, fragment *crdt.YXmlFragment, element *crdt.YXmlElement, children []Node, schema *Schema) error {
 	index := 0
 	for start := 0; start < len(children); {
 		if children[start].Type != "text" {
-			child, err := buildElement(txn, children[start])
+			child, err := buildElement(txn, children[start], schema)
 			if err != nil {
 				return err
 			}
@@ -87,7 +92,7 @@ func insertChildren(txn *crdt.Transaction, fragment *crdt.YXmlFragment, element 
 		// Written as one delta rather than as a sequence of inserts. The two produce the same text and different bytes: a delta walks a cursor to the end and appends, where an insert at a position has to point at what follows it, and the items then carry a right neighbour the editor's never do.
 		delta := make([]crdt.Delta, 0, end-start)
 		for _, run := range children[start:end] {
-			delta = append(delta, crdt.Delta{Op: crdt.DeltaOpInsert, Insert: run.Text, Attributes: marksToAttributes(run.Marks)})
+			delta = append(delta, crdt.Delta{Op: crdt.DeltaOpInsert, Insert: run.Text, Attributes: marksToAttributes(run.Marks, schema)})
 		}
 		text.ApplyDelta(txn, delta)
 		index++
@@ -97,19 +102,19 @@ func insertChildren(txn *crdt.Transaction, fragment *crdt.YXmlFragment, element 
 }
 
 // buildElement writes one node. An attribute that is null is left out entirely, which is what makes a null in the document indistinguishable from an absent attribute when it is read back.
-func buildElement(txn *crdt.Transaction, node Node) (*crdt.YXmlElement, error) {
+func buildElement(txn *crdt.Transaction, node Node, schema *Schema) (*crdt.YXmlElement, error) {
 	if node.Type == "" {
 		return nil, fmt.Errorf("ydoc: a node with no type cannot be written")
 	}
 	element := crdt.NewYXmlElement(node.Type)
-	for _, name := range attributeOrder(node) {
+	for _, name := range attributeOrder(node, schema) {
 		value := node.Attrs[name]
 		if value == nil || name == "ychange" {
 			continue
 		}
 		element.SetAttributeValue(txn, name, anyValue(value))
 	}
-	if err := insertChildren(txn, nil, element, node.Content); err != nil {
+	if err := insertChildren(txn, nil, element, node.Content, schema); err != nil {
 		return nil, err
 	}
 	return element, nil
@@ -146,8 +151,8 @@ func anyValue(value any) any {
 }
 
 // attributeOrder is the order a node's attributes are written in: the order the schema declares them, since that is the order the editor's own writer walks. An attribute the schema does not declare is written after those, in name order, so that a document from somewhere else is still written the same way twice.
-func attributeOrder(node Node) []string {
-	nodeType := DocumentSchema.NodeType(node.Type)
+func attributeOrder(node Node, schema *Schema) []string {
+	nodeType := schema.NodeType(node.Type)
 	var order []string
 	seen := map[string]bool{}
 	if nodeType != nil {
@@ -169,7 +174,7 @@ func attributeOrder(node Node) []string {
 }
 
 // marksToAttributes turns a text node's marks into the formatting the Yjs text carries. The whole of each mark's attributes goes over as one value, nulls and all, which is why a mark's null survives a round trip where a node's does not.
-func marksToAttributes(marks []Mark) crdt.Attributes {
+func marksToAttributes(marks []Mark, schema *Schema) crdt.Attributes {
 	if len(marks) == 0 {
 		return nil
 	}
@@ -178,7 +183,7 @@ func marksToAttributes(marks []Mark) crdt.Attributes {
 		if mark.Type == "ychange" {
 			continue
 		}
-		attributes[mark.Type] = orderedJSON(mark)
+		attributes[mark.Type] = orderedJSON(mark, schema)
 	}
 	return attributes
 }
@@ -206,8 +211,8 @@ func marshalJS(value any) ([]byte, error) {
 }
 
 // orderedJSON renders a mark's attributes as JSON with the keys in the order its type declares them.
-func orderedJSON(mark Mark) rawJSON {
-	markType := DocumentSchema.MarkType(mark.Type)
+func orderedJSON(mark Mark, schema *Schema) rawJSON {
+	markType := schema.MarkType(mark.Type)
 	if markType == nil || len(markType.AttrNames) == 0 {
 		return "{}"
 	}
@@ -282,7 +287,7 @@ func marksAreInNameOrder(marks []Mark) bool {
 }
 
 func markAttributesNeedEscaping(mark Mark) bool {
-	return strings.ContainsAny(string(orderedJSON(mark)), "&<>")
+	return strings.ContainsAny(string(orderedJSON(mark, DocumentSchema)), "&<>")
 }
 
 // utf16Length is how far a run of text advances the cursor, because Yjs counts positions in UTF-16 code units rather than in bytes or runes.

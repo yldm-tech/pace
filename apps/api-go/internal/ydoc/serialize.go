@@ -10,7 +10,12 @@ import (
 //
 // This is ProseMirror's DOMSerializer walking the same schema, with zeed-dom's markup rules underneath it — the two the editor reaches through @tiptap/html.
 func HTML(document Node) (string, error) {
-	return htmlWithSchema(document, DocumentSchema)
+	return HTMLWithSchema(document, DocumentSchema)
+}
+
+// HTMLWithSchema is HTML against a schema other than the document editor's.
+func HTMLWithSchema(document Node, schema *Schema) (string, error) {
+	return htmlWithSchema(document, schema)
 }
 
 // titleEscaper is what sanitize-html writes text back out with, which is a narrower set than the renderer used on the way in: a quote and an apostrophe survive as themselves, and so do the non-breaking space and the soft hyphen.

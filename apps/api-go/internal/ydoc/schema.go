@@ -15,6 +15,11 @@ import (
 //go:embed schema.json
 var schemaJSON []byte
 
+// schemaRichJSON is the rich text editor's schema — the same extensions without the work item embed, which is the only thing a page can hold that nothing else can.
+//
+//go:embed schema_rich.json
+var schemaRichJSON []byte
+
 // Attribute is one declared attribute of a node or mark type.
 //
 // Three states, not two. An attribute without a default has to be carried by the document, and ProseMirror rejects a node that omits one. An attribute defaulting to undefined is satisfied without the document carrying it, but then holds no value at all and vanishes from the node's JSON — which is not the same as defaulting to null, where a null is stored and serialised.
@@ -97,13 +102,16 @@ type Schema struct {
 	markRank    map[string]int
 }
 
-// DocumentSchema is the schema of the document editor — the one behind every page.
-var DocumentSchema = mustLoadSchema()
+// DocumentSchema is the schema of the document editor — the one behind every page. RichTextSchema is the other one, which everything that is not a page is written with.
+var (
+	DocumentSchema = mustLoadSchema(schemaJSON, "schema.json")
+	RichTextSchema = mustLoadSchema(schemaRichJSON, "schema_rich.json")
+)
 
-func mustLoadSchema() *Schema {
+func mustLoadSchema(raw []byte, name string) *Schema {
 	var schema Schema
-	if err := json.Unmarshal(schemaJSON, &schema); err != nil {
-		panic(fmt.Sprintf("ydoc: schema.json is not readable: %v", err))
+	if err := json.Unmarshal(raw, &schema); err != nil {
+		panic(fmt.Sprintf("ydoc: %s is not readable: %v", name, err))
 	}
 	schema.nodesByName = make(map[string]*NodeType, len(schema.Nodes))
 	for i := range schema.Nodes {
@@ -116,10 +124,10 @@ func mustLoadSchema() *Schema {
 		schema.markRank[schema.Marks[i].Name] = i
 	}
 	if _, ok := schema.nodesByName[schema.TopNode]; !ok {
-		panic("ydoc: schema.json has no top node")
+		panic(fmt.Sprintf("ydoc: %s has no top node", name))
 	}
 	if err := schema.compile(); err != nil {
-		panic(fmt.Sprintf("ydoc: schema.json will not compile: %v", err))
+		panic(fmt.Sprintf("ydoc: %s will not compile: %v", name, err))
 	}
 	return &schema
 }

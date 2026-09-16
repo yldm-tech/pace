@@ -12,6 +12,11 @@ import (
 //go:embed parse_rules.json
 var parseRulesJSON []byte
 
+// parseRulesRichJSON is the rich text editor's rules, generated from the same list without the work item embed.
+//
+//go:embed parse_rules_rich.json
+var parseRulesRichJSON []byte
+
 // attributeReader says how one of a type's attributes is read off an element.
 type attributeReader struct {
 	Name string `json:"name"`
@@ -77,13 +82,16 @@ type ParseRules struct {
 	styleRules []int
 }
 
-// DocumentParseRules is the document editor's rule table.
-var DocumentParseRules = mustLoadParseRules()
+// DocumentParseRules is the document editor's rule table and RichTextParseRules the rich text editor's.
+var (
+	DocumentParseRules = mustLoadParseRules(parseRulesJSON, "parse_rules.json")
+	RichTextParseRules = mustLoadParseRules(parseRulesRichJSON, "parse_rules_rich.json")
+)
 
-func mustLoadParseRules() *ParseRules {
+func mustLoadParseRules(raw []byte, name string) *ParseRules {
 	var table ParseRules
-	if err := json.Unmarshal(parseRulesJSON, &table); err != nil {
-		panic(fmt.Sprintf("ydoc: parse_rules.json is not readable: %v", err))
+	if err := json.Unmarshal(raw, &table); err != nil {
+		panic(fmt.Sprintf("ydoc: %s is not readable: %v", name, err))
 	}
 	for i := range table.Rules {
 		rule := &table.Rules[i]

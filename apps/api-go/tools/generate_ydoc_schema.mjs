@@ -7,16 +7,20 @@
  *
  *     pnpm install --filter @plane/editor...
  *     node apps/api-go/tools/generate_ydoc_schema.mjs > apps/api-go/internal/ydoc/schema.json
+ *     node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > apps/api-go/internal/ydoc/schema_rich.json
  */
 
 import { loadEditorModule } from "./ydoc_bundle.mjs";
 
-// The same extension list `getAllDocumentFormatsFromDocumentEditorBinaryData` builds its schema from.
+// The editor has two schemas: the document one a page is written with, and the rich text one everything else uses, which is the same list without the work item embed. Which is dumped is chosen with --variant.
+const variant = process.argv.includes("--variant=rich") ? "rich" : "document";
+
 const { schema } = await loadEditorModule(process.cwd(), {
   source: `
     import { getSchema } from "@tiptap/core";
     import { CoreEditorExtensionsWithoutProps, DocumentEditorExtensionsWithoutProps } from "@/extensions/core-without-props";
-    export const schema = getSchema([...CoreEditorExtensionsWithoutProps, ...DocumentEditorExtensionsWithoutProps]);
+    const extensions = ${variant === "rich" ? "[...CoreEditorExtensionsWithoutProps]" : "[...CoreEditorExtensionsWithoutProps, ...DocumentEditorExtensionsWithoutProps]"};
+    export const schema = getSchema(extensions);
   `,
 });
 
