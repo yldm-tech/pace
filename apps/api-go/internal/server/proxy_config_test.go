@@ -1437,10 +1437,22 @@ func TestCommunityProxyCutsOverOnlyTheExternalStickyAndInviteRoutes(t *testing.T
 		}
 	}
 	for _, route := range []string{
-		// The format-suffix routes a DRF router appends stay on Django: nothing here claims them.
+		// The format-suffix routes a DRF router appends are served too, by stripping the suffix and dispatching again.
 		workspace + "stickies.json",
 		workspace + "stickies/11111111-2222-3333-4444-555555555555.json",
 		workspace + "invitations.json",
+		workspace + "invitations/11111111-2222-3333-4444-555555555555.json",
+		// And the router's own root, which is the only route under /api/v1/ that a key cannot reach.
+		workspace,
+	} {
+		if !matcher.MatchString(route) {
+			t.Errorf("External route %q is not cut over to Go", route)
+		}
+	}
+	for _, route := range []string{
+		// A suffix on a path no router owns is still Django's, because nothing there ever accepted one.
+		workspace + "states.json",
+		workspace + "projects/11111111-2222-3333-4444-555555555555/states.json",
 	} {
 		if matcher.MatchString(route) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)

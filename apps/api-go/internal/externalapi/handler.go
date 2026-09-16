@@ -1,6 +1,7 @@
 package externalapi
 
 import (
+	"github.com/yldm-tech/pace/apps/api-go/internal/auth"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -26,6 +27,7 @@ type Settings struct {
 
 // Handler serves plane.api.
 type Handler struct {
+	sessions *auth.SessionManager
 	db       *gorm.DB
 	settings Settings
 	now      func() time.Time
@@ -87,6 +89,7 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueSearchRoutes(router)
 	handler.registerIssueAttachmentRoutes(router)
 	handler.registerIssueRoutes(router)
+	handler.registerAPIRoot(router)
 }
 
 // serverError is the catch-all the base view maps an unrecognised failure to. Every message the external API answers with is its own: the session API's wording appears nowhere here.

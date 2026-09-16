@@ -180,7 +180,12 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok {
 			externalHandler.SetTasks(publisher)
 		}
+		externalHandler.SetSessions(sessions)
 		externalHandler.Register(router)
+		// DRF's format suffixes, which only the two viewsets mounted through a router accept. The rewrite has to happen after routing has failed, since a suffix is part of a segment rather than a whole one.
+		externalapi.RegisterFormatSuffixes(router, func(c *gin.Context) {
+			c.JSON(http.StatusNotFound, gin.H{"detail": "Not found."})
+		})
 
 		instancesHandler := instancesapi.NewHandler(dependencies.Database, sessions, instancesapi.Settings{
 			AdminBaseURL:          dependencies.InstanceSettings.AdminBaseURL,
