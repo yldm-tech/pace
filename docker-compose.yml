@@ -164,7 +164,8 @@ services:
 
   plane-minio:
     container_name: plane-minio
-    image: minio/minio
+    # quay.io rather than Docker Hub: minio/minio was withdrawn from Docker Hub and now 404s there, while the rest of the minio namespace stayed. quay.io is MinIO's own other registry and still carries it.
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
     restart: always
     command: server /export --console-address ":9090"
     volumes:
