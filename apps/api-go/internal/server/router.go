@@ -40,6 +40,10 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "Origin", "X-API-Key", "X-CSRFToken"},
 		AllowCredentials: true,
 	}))
+	// Every request made with an api key is recorded, the same way Django's logging middleware records one. It runs before anything else so a request refused by authentication is recorded too.
+	if publisher, ok := dependencies.AuthTaskPublisher.(*auth.CeleryPublisher); ok && dependencies.AuthSettings != nil {
+		router.Use(apiActivityLog(publisher, dependencies.AuthSettings.SecretKey))
+	}
 
 	router.GET("/", func(c *gin.Context) {
 		drf.Respond(c, http.StatusOK, gin.H{"name": "pace-api", "status": "ok", "health": "/api/health", "version": "/api/version"})
