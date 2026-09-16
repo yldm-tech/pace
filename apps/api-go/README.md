@@ -1437,6 +1437,22 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the webhook fan-out
+
+`webhook_activity` now runs on the Go worker, which completes the webhook chain: the Go side now works out what changed, picks the webhooks that asked about it, serialises the object, delivers it and logs the result.
+
+It needed the v1 API's nine serializers, and two things about them decide what a receiver sees.
+
+**The annotations are absent.** The task reads each model with a plain lookup and no annotations, and DRF leaves a field out rather than failing when the attribute is not there. So a project in a webhook carries no member count, a cycle no work item counts, a module neither its counts nor its members, and a link between a cycle and a work item no sub-item count — even though all four serializers declare them. The same reading is why a work item carries no cycle and no module: both are declared through a reverse relation that has no single value.
+
+**The key order is the serializer's**, and a receiver sees the bytes. Each object is written by hand rather than through a map, which has no order; the payload's two halves are then spliced into the delivery as they were built.
+
+Two behaviours are worth knowing:
+
+**A delete carries only an id.** Every other verb reads the object back out of the database and sends it in full; a delete cannot, because the row is gone.
+
+**An intake work item reaches every webhook.** There is no switch for it — the filter narrows only for the seven events that have one — so a webhook that asked for nothing at all still hears about one.
+
 ## Migrated task: the webhook delivery
 
 `webhook_send_task` now runs on the Go worker. It is the last link in the webhook chain: one webhook, one event, delivered and logged. The middle link — `webhook_activity`, which picks the webhooks that want an event and serialises the object for them — still runs on the Python worker, because it needs the nine v1 serializers and those are the next piece.

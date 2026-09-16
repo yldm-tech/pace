@@ -38,14 +38,15 @@ type WebhookTasks struct {
 	db        *gorm.DB
 	settings  httpsafe.Settings
 	emails    WebhookDeactivationPublisher
+	sends     WebhookSendPublisher
 	logger    *slog.Logger
 	clock     func() time.Time
 	backoff   func(attempt int) time.Duration
 	scheduler func(delay time.Duration, run func())
 }
 
-func NewWebhookTasks(db *gorm.DB, settings httpsafe.Settings, emails WebhookDeactivationPublisher, logger *slog.Logger) *WebhookTasks {
-	tasks := &WebhookTasks{db: db, settings: settings, emails: emails, logger: logger, clock: time.Now}
+func NewWebhookTasks(db *gorm.DB, settings httpsafe.Settings, emails WebhookDeactivationPublisher, sends WebhookSendPublisher, logger *slog.Logger) *WebhookTasks {
+	tasks := &WebhookTasks{db: db, settings: settings, emails: emails, sends: sends, logger: logger, clock: time.Now}
 	tasks.backoff = defaultWebhookBackoff
 	tasks.scheduler = func(delay time.Duration, run func()) { time.AfterFunc(delay, run) }
 	return tasks
@@ -53,6 +54,7 @@ func NewWebhookTasks(db *gorm.DB, settings httpsafe.Settings, emails WebhookDeac
 
 func (tasks *WebhookTasks) Register(consumer *Consumer) {
 	consumer.Register(WebhookSendTask, tasks.webhookSend)
+	tasks.registerActivity(consumer)
 }
 
 // defaultWebhookBackoff is Celery's exponential backoff with full jitter, which for these settings is not exponential at all: the doubling is capped at the same ten minutes it starts from, so every wait is a uniformly random stretch of up to ten minutes.
