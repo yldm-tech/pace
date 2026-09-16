@@ -1769,11 +1769,187 @@
     "title_html": "Embed"
   },
   {
+    "name": "quoted title",
+    "source_html": "<p>body</p>",
+    "source_json": null,
+    "source_title": "Quotes \" and ' and & and   and ­",
+    "binary": "AgTAGQAHAQV0aXRsZQMHaGVhZGluZwcAwBkABgQAwBkBIlF1b3RlcyAiIGFuZCAnIGFuZCAmIGFuZCDCoCBhbmQgwq0oAMAZAAVsZXZlbAF9AQOgGQAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAZAAYEAKAZAQRib2R5AA==",
+    "content_html": "<p class=\"editor-paragraph-block\">body</p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "body"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Quotes \" and ' and & and   and ­"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Quotes \" and ' and &amp; and   and ­"
+  },
+  {
+    "name": "padded title",
+    "source_html": "<p>body</p>",
+    "source_json": null,
+    "source_title": "   leading and trailing   ",
+    "binary": "AgTAGgAHAQV0aXRsZQMHaGVhZGluZwcAwBoABgQAwBoBGiAgIGxlYWRpbmcgYW5kIHRyYWlsaW5nICAgKADAGgAFbGV2ZWwBfQEDoBoABwEHZGVmYXVsdAMJcGFyYWdyYXBoBwCgGgAGBACgGgEEYm9keQA=",
+    "content_html": "<p class=\"editor-paragraph-block\">body</p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "body"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "   leading and trailing   "
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "leading and trailing"
+  },
+  {
+    "name": "entity shaped title",
+    "source_html": "<p>body</p>",
+    "source_json": null,
+    "source_title": "literal &amp; and &notanentity; and &#1234; and a bare &",
+    "binary": "AgTAGwAHAQV0aXRsZQMHaGVhZGluZwcAwBsABgQAwBsBOGxpdGVyYWwgJmFtcDsgYW5kICZub3RhbmVudGl0eTsgYW5kICYjMTIzNDsgYW5kIGEgYmFyZSAmKADAGwAFbGV2ZWwBfQEDoBsABwEHZGVmYXVsdAMJcGFyYWdyYXBoBwCgGwAGBACgGwEEYm9keQA=",
+    "content_html": "<p class=\"editor-paragraph-block\">body</p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "body"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "literal &amp; and &notanentity; and &#1234; and a bare &"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "literal &amp;amp; and &amp;notanentity; and &amp;#1234; and a bare &amp;"
+  },
+  {
+    "name": "entities",
+    "source_html": "<p>non&nbsp;breaking and soft&shy;hyphen and an &amp; ampersand</p>",
+    "source_json": null,
+    "source_title": "Entities",
+    "binary": "AgTAHAAHAQV0aXRsZQMHaGVhZGluZwcAwBwABgQAwBwBCEVudGl0aWVzKADAHAAFbGV2ZWwBfQEDoBwABwEHZGVmYXVsdAMJcGFyYWdyYXBoBwCgHAAGBACgHAExbm9uwqBicmVha2luZyBhbmQgc29mdMKtaHlwaGVuIGFuZCBhbiAmIGFtcGVyc2FuZAA=",
+    "content_html": "<p class=\"editor-paragraph-block\">non&nbsp;breaking and soft&shy;hyphen and an &amp; ampersand</p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "non breaking and soft­hyphen and an & ampersand"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Entities"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Entities"
+  },
+  {
     "name": "escaping",
     "source_html": "<p>a &amp; b &lt; c &gt; d \"quoted\" 'single'</p>",
     "source_json": null,
     "source_title": "Escaping & <angles>",
-    "binary": "AgTAGQAHAQV0aXRsZQMHaGVhZGluZwcAwBkABgQAwBkBE0VzY2FwaW5nICYgPGFuZ2xlcz4oAMAZAAVsZXZlbAF9AQOgGQAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAZAAYEAKAZAR9hICYgYiA8IGMgPiBkICJxdW90ZWQiICdzaW5nbGUnAA==",
+    "binary": "AgTAHQAHAQV0aXRsZQMHaGVhZGluZwcAwB0ABgQAwB0BE0VzY2FwaW5nICYgPGFuZ2xlcz4oAMAdAAVsZXZlbAF9AQOgHQAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAdAAYEAKAdAR9hICYgYiA8IGMgPiBkICJxdW90ZWQiICdzaW5nbGUnAA==",
     "content_html": "<p class=\"editor-paragraph-block\">a &amp; b &lt; c &gt; d &quot;quoted&quot; &apos;single&apos;</p>",
     "content_json": {
       "type": "doc",
@@ -1817,7 +1993,7 @@
     "source_html": "<p>Ünicode ☃ and an emoji 🎉</p>",
     "source_json": null,
     "source_title": "Ünicode ☃",
-    "binary": "AgTAGgAHAQV0aXRsZQMHaGVhZGluZwcAwBoABgQAwBoBDMOcbmljb2RlIOKYgygAwBoABWxldmVsAX0BA6AaAAcBB2RlZmF1bHQDCXBhcmFncmFwaAcAoBoABgQAoBoBHsOcbmljb2RlIOKYgyBhbmQgYW4gZW1vamkg8J+OiQA=",
+    "binary": "AgTAHgAHAQV0aXRsZQMHaGVhZGluZwcAwB4ABgQAwB4BDMOcbmljb2RlIOKYgygAwB4ABWxldmVsAX0BA6AeAAcBB2RlZmF1bHQDCXBhcmFncmFwaAcAoB4ABgQAoB4BHsOcbmljb2RlIOKYgyBhbmQgYW4gZW1vamkg8J+OiQA=",
     "content_html": "<p class=\"editor-paragraph-block\">Ünicode ☃ and an emoji 🎉</p>",
     "content_json": {
       "type": "doc",
@@ -1861,7 +2037,7 @@
     "source_html": "<p>word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word</p>",
     "source_json": null,
     "source_title": "Long",
-    "binary": "AgTAGwAHAQV0aXRsZQMHaGVhZGluZwcAwBsABgQAwBsBBExvbmcoAMAbAAVsZXZlbAF9AQOgGwAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAbAAYEAKAbAecHd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkAA==",
+    "binary": "AgTAHwAHAQV0aXRsZQMHaGVhZGluZwcAwB8ABgQAwB8BBExvbmcoAMAfAAVsZXZlbAF9AQOgHwAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAfAAYEAKAfAecHd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkIHdvcmQgd29yZCB3b3JkAA==",
     "content_html": "<p class=\"editor-paragraph-block\">word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word</p>",
     "content_json": {
       "type": "doc",
@@ -1901,11 +2077,882 @@
     "title_html": "Long"
   },
   {
+    "name": "renumbered list",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "orderedList",
+          "attrs": {
+            "start": 7,
+            "type": null
+          },
+          "content": [
+            {
+              "type": "listItem",
+              "attrs": {},
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "textAlign": null
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "seventh"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Renumbered",
+    "binary": "AgTAIAAHAQV0aXRsZQMHaGVhZGluZwcAwCAABgQAwCABClJlbnVtYmVyZWQoAMAgAAVsZXZlbAF9AQagIAAHAQdkZWZhdWx0AwtvcmRlcmVkTGlzdAcAoCAAAwhsaXN0SXRlbQcAoCABAwlwYXJhZ3JhcGgHAKAgAgYEAKAgAwdzZXZlbnRoKACgIAAFc3RhcnQBfQcA",
+    "content_html": "<ol class=\"list-decimal pl-7 space-y-(--list-spacing-y)\" start=\"7\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">seventh</p></li></ol>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "orderedList",
+          "attrs": {
+            "start": 7,
+            "type": null
+          },
+          "content": [
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "textAlign": null
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "seventh"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Renumbered"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Renumbered"
+  },
+  {
+    "name": "code block with a language",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "go"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "package main"
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Highlighted",
+    "binary": "AgTAIQAHAQV0aXRsZQMHaGVhZGluZwcAwCEABgQAwCEBC0hpZ2hsaWdodGVkKADAIQAFbGV2ZWwBfQEEoCEABwEHZGVmYXVsdAMJY29kZUJsb2NrBwCgIQAGBACgIQEMcGFja2FnZSBtYWluKACgIQAIbGFuZ3VhZ2UBdwJnbwA=",
+    "content_html": "<pre><code class=\"language-go\">package main</code></pre>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "codeBlock",
+          "attrs": {
+            "language": "go"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "package main"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Highlighted"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Highlighted"
+  },
+  {
+    "name": "dangerous link",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "javascript:alert(1)",
+                    "target": "_blank",
+                    "rel": "noopener noreferrer nofollow",
+                    "class": null
+                  }
+                }
+              ],
+              "text": "plain"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "\tJaVaScRiPt:alert(1)",
+                    "target": "_blank",
+                    "rel": "noopener noreferrer nofollow",
+                    "class": null
+                  }
+                }
+              ],
+              "text": "disguised"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "data:text/html,<script>",
+                    "target": null,
+                    "rel": null,
+                    "class": null
+                  }
+                }
+              ],
+              "text": "data"
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Dangerous",
+    "binary": "AgTAIgAHAQV0aXRsZQMHaGVhZGluZwcAwCIABgQAwCIBCURhbmdlcm91cygAwCIABWxldmVsAX0BC6AiAAcBB2RlZmF1bHQDCXBhcmFncmFwaAcAoCIABgYAoCIBBGxpbmtieyJocmVmIjoiamF2YXNjcmlwdDphbGVydCgxKSIsInRhcmdldCI6Il9ibGFuayIsInJlbCI6Im5vb3BlbmVyIG5vcmVmZXJyZXIgbm9mb2xsb3ciLCJjbGFzcyI6bnVsbH2EoCICBXBsYWluhqAiBwRsaW5rBG51bGyGoCIIBGxpbmtkeyJocmVmIjoiXHRKYVZhU2NSaVB0OmFsZXJ0KDEpIiwidGFyZ2V0IjoiX2JsYW5rIiwicmVsIjoibm9vcGVuZXIgbm9yZWZlcnJlciBub2ZvbGxvdyIsImNsYXNzIjpudWxsfYSgIgkJZGlzZ3Vpc2VkhqAiEgRsaW5rBG51bGyGoCITBGxpbmtIeyJocmVmIjoiZGF0YTp0ZXh0L2h0bWwsPHNjcmlwdD4iLCJ0YXJnZXQiOm51bGwsInJlbCI6bnVsbCwiY2xhc3MiOm51bGx9hKAiFARkYXRhhqAiGARsaW5rBG51bGwA",
+    "content_html": "<p class=\"editor-paragraph-block\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">plain</a><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">disguised</a><a class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">data</a></p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "javascript:alert(1)",
+                    "target": "_blank",
+                    "rel": "noopener noreferrer nofollow",
+                    "class": null
+                  }
+                }
+              ],
+              "text": "plain"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "\tJaVaScRiPt:alert(1)",
+                    "target": "_blank",
+                    "rel": "noopener noreferrer nofollow",
+                    "class": null
+                  }
+                }
+              ],
+              "text": "disguised"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "data:text/html,<script>",
+                    "target": null,
+                    "rel": null,
+                    "class": null
+                  }
+                }
+              ],
+              "text": "data"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Dangerous"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Dangerous"
+  },
+  {
+    "name": "unpalettable colours",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "customColor",
+                  "attrs": {
+                    "color": "#ff0000",
+                    "backgroundColor": "#00ff00"
+                  }
+                }
+              ],
+              "text": "custom"
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Off palette",
+    "binary": "AgTAIwAHAQV0aXRsZQMHaGVhZGluZwcAwCMABgQAwCMBC09mZiBwYWxldHRlKADAIwAFbGV2ZWwBfQEFoCMABwEHZGVmYXVsdAMJcGFyYWdyYXBoBwCgIwAGBgCgIwELY3VzdG9tQ29sb3IveyJjb2xvciI6IiNmZjAwMDAiLCJiYWNrZ3JvdW5kQ29sb3IiOiIjMDBmZjAwIn2EoCMCBmN1c3RvbYagIwgLY3VzdG9tQ29sb3IEbnVsbAA=",
+    "content_html": "<p class=\"editor-paragraph-block\"><span data-text-color=\"#ff0000\" data-background-color=\"#00ff00\">custom</span></p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "customColor",
+                  "attrs": {
+                    "color": "#ff0000",
+                    "backgroundColor": "#00ff00"
+                  }
+                }
+              ],
+              "text": "custom"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Off palette"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Off palette"
+  },
+  {
+    "name": "unknown emoji",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "emoji",
+              "attrs": {
+                "name": "not_an_emoji"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Unknown",
+    "binary": "AgTAJAAHAQV0aXRsZQMHaGVhZGluZwcAwCQABgQAwCQBB1Vua25vd24oAMAkAAVsZXZlbAF9AQOgJAAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAkAAMFZW1vamkoAKAkAQRuYW1lAXcMbm90X2FuX2Vtb2ppAA==",
+    "content_html": "<p class=\"editor-paragraph-block\"><span data-name=\"not_an_emoji\" data-type=\"emoji\">:not_an_emoji:</span></p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "emoji",
+              "attrs": {
+                "name": "not_an_emoji"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Unknown"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Unknown"
+  },
+  {
+    "name": "marks across text runs",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "before "
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                },
+                {
+                  "type": "italic"
+                }
+              ],
+              "text": "middle"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": " after"
+            },
+            {
+              "type": "text",
+              "text": " plain"
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Runs",
+    "binary": "AgTAJQAHAQV0aXRsZQMHaGVhZGluZwcAwCUABgQAwCUBBFJ1bnMoAMAlAAVsZXZlbAF9AQ6gJQAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKAlAAYGAKAlAQRib2xkAnt9hKAlAgdiZWZvcmUghqAlCQRib2xkBG51bGyGoCUKBGJvbGQCe32GoCULBml0YWxpYwJ7fYSgJQwGbWlkZGxlhqAlEgRib2xkBG51bGyGoCUTBml0YWxpYwRudWxshqAlFARib2xkAnt9hKAlFQYgYWZ0ZXKGoCUbBGJvbGQEbnVsbISgJRwGIHBsYWluAA==",
+    "content_html": "<p class=\"editor-paragraph-block\"><strong>before <em>middle</em> after</strong> plain</p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "before "
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                },
+                {
+                  "type": "italic"
+                }
+              ],
+              "text": "middle"
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": " after"
+            },
+            {
+              "type": "text",
+              "text": " plain"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Runs"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Runs"
+  },
+  {
+    "name": "marks in the other order",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "italic"
+                },
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "both"
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Order",
+    "binary": "AgTAJgAHAQV0aXRsZQMHaGVhZGluZwcAwCYABgQAwCYBBU9yZGVyKADAJgAFbGV2ZWwBfQEHoCYABwEHZGVmYXVsdAMJcGFyYWdyYXBoBwCgJgAGBgCgJgEEYm9sZAJ7fYagJgIGaXRhbGljAnt9hKAmAwRib3RohqAmBwRib2xkBG51bGyGoCYIBml0YWxpYwRudWxsAA==",
+    "content_html": "<p class=\"editor-paragraph-block\"><strong><em>both</em></strong></p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                },
+                {
+                  "type": "italic"
+                }
+              ],
+              "text": "both"
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Order"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Order"
+  },
+  {
+    "name": "sized image",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "image",
+          "attrs": {
+            "src": "https://example.test/a.png",
+            "alt": null,
+            "title": null,
+            "width": "50%",
+            "height": "120px",
+            "aspectRatio": "1.5",
+            "alignment": "center"
+          }
+        }
+      ]
+    },
+    "source_title": "Sized",
+    "binary": "AgTAJwAHAQV0aXRsZQMHaGVhZGluZwcAwCcABgQAwCcBBVNpemVkKADAJwAFbGV2ZWwBfQEGoCcABwEHZGVmYXVsdAMFaW1hZ2UoAKAnAANzcmMBdxpodHRwczovL2V4YW1wbGUudGVzdC9hLnBuZygAoCcABXdpZHRoAXcDNTAlKACgJwAGaGVpZ2h0AXcFMTIwcHgoAKAnAAthc3BlY3RSYXRpbwF3AzEuNSgAoCcACWFsaWdubWVudAF3BmNlbnRlcgA=",
+    "content_html": "<img src=\"https://example.test/a.png\" width=\"50%\" height=\"120px\" aspectRatio=\"1.5\" alignment=\"center\">",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "image",
+          "attrs": {
+            "src": "https://example.test/a.png",
+            "alt": null,
+            "title": null,
+            "width": "50%",
+            "height": "120px",
+            "aspectRatio": "1.5",
+            "alignment": "center"
+          }
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Sized"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Sized"
+  },
+  {
+    "name": "coloured row",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "table",
+          "content": [
+            {
+              "type": "tableRow",
+              "attrs": {
+                "background": "#eee",
+                "textColor": null
+              },
+              "content": [
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1,
+                    "colwidth": null,
+                    "background": "#fff",
+                    "textColor": "#111"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "textAlign": null
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "cell"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Coloured",
+    "binary": "AgTAKAAHAQV0aXRsZQMHaGVhZGluZwcAwCgABgQAwCgBCENvbG91cmVkKADAKAAFbGV2ZWwBfQELoCgABwEHZGVmYXVsdAMFdGFibGUHAKAoAAMIdGFibGVSb3cHAKAoAQMJdGFibGVDZWxsBwCgKAIDCXBhcmFncmFwaAcAoCgDBgQAoCgEBGNlbGwoAKAoAgdjb2xzcGFuAX0BKACgKAIHcm93c3BhbgF9ASgAoCgCCmJhY2tncm91bmQBdwQjZmZmKACgKAIJdGV4dENvbG9yAXcEIzExMSgAoCgBCmJhY2tncm91bmQBdwQjZWVlAA==",
+    "content_html": "<table><tbody><tr background=\"#eee\"><td colspan=\"1\" rowspan=\"1\" colwidth=\"150\" background=\"#fff\" textColor=\"#111\"><p class=\"editor-paragraph-block\">cell</p></td></tr></tbody></table>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "table",
+          "content": [
+            {
+              "type": "tableRow",
+              "attrs": {
+                "background": "#eee",
+                "textColor": null
+              },
+              "content": [
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1,
+                    "colwidth": [
+                      150
+                    ],
+                    "background": "#fff",
+                    "textColor": "#111"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "textAlign": null
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "cell"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Coloured"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Coloured"
+  },
+  {
+    "name": "identified mention",
+    "source_html": null,
+    "source_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "mention",
+              "attrs": {
+                "id": "44444444-4444-4444-8444-444444444444",
+                "entity_identifier": "55555555-5555-4555-8555-555555555555",
+                "entity_name": "user_mention"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "source_title": "Identified",
+    "binary": "AgTAKQAHAQV0aXRsZQMHaGVhZGluZwcAwCkABgQAwCkBCklkZW50aWZpZWQoAMApAAVsZXZlbAF9AQWgKQAHAQdkZWZhdWx0AwlwYXJhZ3JhcGgHAKApAAMHbWVudGlvbigAoCkBAmlkAXckNDQ0NDQ0NDQtNDQ0NC00NDQ0LTg0NDQtNDQ0NDQ0NDQ0NDQ0KACgKQERZW50aXR5X2lkZW50aWZpZXIBdyQ1NTU1NTU1NS01NTU1LTQ1NTUtODU1NS01NTU1NTU1NTU1NTUoAKApAQtlbnRpdHlfbmFtZQF3DHVzZXJfbWVudGlvbgA=",
+    "content_html": "<p class=\"editor-paragraph-block\"><mention-component id=\"44444444-4444-4444-8444-444444444444\" entity_identifier=\"55555555-5555-4555-8555-555555555555\" entity_name=\"user_mention\"></mention-component></p>",
+    "content_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": null
+          },
+          "content": [
+            {
+              "type": "mention",
+              "attrs": {
+                "id": "44444444-4444-4444-8444-444444444444",
+                "entity_identifier": "55555555-5555-4555-8555-555555555555",
+                "entity_name": "user_mention"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "title_json": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "textAlign": null,
+            "level": 1
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Identified"
+            }
+          ]
+        }
+      ]
+    },
+    "title_html": "Identified"
+  },
+  {
     "name": "mixed document",
     "source_html": "<h1>Title</h1><p>Some <strong>bold</strong> text.</p><ul><li><p>a point</p></li></ul><blockquote><p>a quote</p></blockquote><p>done</p>",
     "source_json": null,
     "source_title": "Everything",
-    "binary": "AgTAHAAHAQV0aXRsZQMHaGVhZGluZwcAwBwABgQAwBwBCkV2ZXJ5dGhpbmcoAMAcAAVsZXZlbAF9ARegHAAHAQdkZWZhdWx0AwdoZWFkaW5nBwCgHAAGBACgHAEFVGl0bGUoAKAcAAVsZXZlbAF9AYegHAADCXBhcmFncmFwaAcAoBwIBgQAoBwJBVNvbWUghqAcDgRib2xkAnt9hKAcDwRib2xkhqAcEwRib2xkBG51bGyEoBwUBiB0ZXh0LoegHAgDCmJ1bGxldExpc3QHAKAcGwMIbGlzdEl0ZW0HAKAcHAMJcGFyYWdyYXBoBwCgHB0GBACgHB4HYSBwb2ludIegHBsDCmJsb2NrcXVvdGUHAKAcJgMJcGFyYWdyYXBoBwCgHCcGBACgHCgHYSBxdW90ZYegHCYDCXBhcmFncmFwaAcAoBwwBgQAoBwxBGRvbmUA",
+    "binary": "AgTAKgAHAQV0aXRsZQMHaGVhZGluZwcAwCoABgQAwCoBCkV2ZXJ5dGhpbmcoAMAqAAVsZXZlbAF9ARegKgAHAQdkZWZhdWx0AwdoZWFkaW5nBwCgKgAGBACgKgEFVGl0bGUoAKAqAAVsZXZlbAF9AYegKgADCXBhcmFncmFwaAcAoCoIBgQAoCoJBVNvbWUghqAqDgRib2xkAnt9hKAqDwRib2xkhqAqEwRib2xkBG51bGyEoCoUBiB0ZXh0LoegKggDCmJ1bGxldExpc3QHAKAqGwMIbGlzdEl0ZW0HAKAqHAMJcGFyYWdyYXBoBwCgKh0GBACgKh4HYSBwb2ludIegKhsDCmJsb2NrcXVvdGUHAKAqJgMJcGFyYWdyYXBoBwCgKicGBACgKigHYSBxdW90ZYegKiYDCXBhcmFncmFwaAcAoCowBgQAoCoxBGRvbmUA",
     "content_html": "<h1 class=\"editor-heading-block\">Title</h1><p class=\"editor-paragraph-block\">Some <strong>bold</strong> text.</p><ul class=\"list-disc pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">a point</p></li></ul><blockquote><p class=\"editor-paragraph-block\">a quote</p></blockquote><p class=\"editor-paragraph-block\">done</p>",
     "content_json": {
       "type": "doc",

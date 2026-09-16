@@ -23,17 +23,20 @@ type Attribute struct {
 	Default          any  `json:"default"`
 }
 
-// NodeType is one node type in the schema.
+// NodeType is one node type in the schema. A leaf node may not have a content hole in its rendered spec, and an inline one is told so when a mark wraps it.
 type NodeType struct {
-	Name   string               `json:"name"`
-	IsText bool                 `json:"is_text"`
-	Attrs  map[string]Attribute `json:"attrs"`
+	Name     string               `json:"name"`
+	IsText   bool                 `json:"is_text"`
+	IsLeaf   bool                 `json:"is_leaf"`
+	IsInline bool                 `json:"is_inline"`
+	Attrs    map[string]Attribute `json:"attrs"`
 }
 
-// MarkType is one mark type in the schema. Its position in Schema.Marks is its rank, which is the order ProseMirror sorts a text node's marks into.
+// MarkType is one mark type in the schema. Its position in Schema.Marks is its rank, which is the order ProseMirror sorts a text node's marks into. A mark that is not spanning opens a fresh element for each text node rather than wrapping a run of them.
 type MarkType struct {
-	Name  string               `json:"name"`
-	Attrs map[string]Attribute `json:"attrs"`
+	Name     string               `json:"name"`
+	Spanning bool                 `json:"spanning"`
+	Attrs    map[string]Attribute `json:"attrs"`
 }
 
 // Schema is the document editor's ProseMirror schema, reduced to what rebuilding a document needs: the attributes of every type, and the order the marks were registered in.
@@ -84,14 +87,15 @@ func (s *Schema) MarkType(name string) *MarkType {
 // computeAttrs fills in the attributes a type declares, taking each one from the document when it carries it and from the schema otherwise. It mirrors ProseMirror's computeAttrs, including the parts that matter most here: an attribute the document does not carry is not absent, it is the schema's default, and attributes the document carries but the type does not declare are dropped.
 //
 // A nil result means the type declares no attributes and the node carries no attrs object at all. An empty non-nil result means it declares attributes but every one of them came out undefined, which still serialises as an empty object.
-func computeAttrs(declared map[string]Attribute, given map[string]any, owner string) (map[string]any, error) {
+//
+// nilIsAbsent says whether a value that decodes to nothing counts as absent. It does for a node, whose attributes are Yjs element attributes and are never written when null — so nothing there means JavaScript's undefined, and ProseMirror reads undefined as "not supplied". It does not for a mark, whose attributes are stored as one object handed over whole, nulls and all.
+func computeAttrs(declared map[string]Attribute, given map[string]any, owner string, nilIsAbsent bool) (map[string]any, error) {
 	if len(declared) == 0 {
 		return nil, nil
 	}
 	built := make(map[string]any, len(declared))
 	for name, attr := range declared {
-		// A nil value counts as absent rather than as null. y-prosemirror never writes a null attribute — both of its write paths skip the key instead — so a Yjs attribute that decodes to nothing was JavaScript's undefined, and ProseMirror reads undefined as "not supplied" and reaches for the default.
-		if value, ok := given[name]; ok && value != nil {
+		if value, ok := given[name]; ok && !(nilIsAbsent && value == nil) {
 			built[name] = value
 			continue
 		}

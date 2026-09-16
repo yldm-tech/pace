@@ -2502,7 +2502,7 @@ A declared attribute with no default has to be carried by the document; ProseMir
 
 The same distinction shows up one level out. A node type that declares no attributes at all produces no `attrs` key; a type that declares attributes always produces the key, even when every one of them came out undefined and it is left empty. So `Node.Attrs` distinguishes nil from empty, and marshals accordingly.
 
-A third rule follows from the writers rather than the readers: **a Yjs attribute is never null**. Both of y-prosemirror's write paths skip the key instead of writing one, so anything that decodes to nothing was JavaScript's `undefined`, and is read as "not supplied" — which is why a table cell that was handed `colwidth: null` comes back carrying the schema's `[150]`.
+A third rule follows from the writers rather than the readers, and it holds for a node but not for a mark. **A node's Yjs attribute is never null**: both of y-prosemirror's write paths skip the key rather than write one, so anything that decodes to nothing was JavaScript's `undefined` and is read as "not supplied" — which is why a table cell handed `colwidth: null` comes back carrying the schema's `[150]`. A mark is not stored that way at all. It is a formatting attribute on the text, and its whole attribute object is handed over as one value, nulls and all, so a link with `class: null` comes back with `class: null` rather than with the class the schema defaults to.
 
 ### The title is a document, not a string
 
@@ -2510,9 +2510,9 @@ A page's title lives in a second fragment of the same update, and it is not text
 
 ### What the corpus is
 
-`internal/ydoc/testdata/documents.json` is twenty-nine documents run through the real editor by `tools/generate_ydoc_fixture.mjs`, recording for each one the Yjs update bytes, the ProseMirror JSON, and the HTML. Every node type and every mark type in the schema appears in at least one of them, and a test fails if one stops appearing.
+`internal/ydoc/testdata/documents.json` is forty-three documents run through the real editor by `tools/generate_ydoc_fixture.mjs`, recording for each one the Yjs update bytes, the ProseMirror JSON, the title document and the HTML. Every node type and every mark type in the schema appears in at least one of them, and a test fails if one stops appearing.
 
-Most cases are written as the HTML a user would paste. Four are written as ProseMirror JSON instead, for the shapes no HTML parses back into: an emoji only ever enters a document through the `:shortcode:` input rule, and `colspan` and `rowspan` only ever become non-default through the table toolbar.
+Thirty-one cases are written as the HTML a user would paste. Twelve are written as ProseMirror JSON instead, for the shapes no HTML parses back into: an emoji only ever enters a document through the `:shortcode:` input rule, `colspan` and `rowspan` only ever become non-default through the table toolbar, and a `javascript:` href cannot be pasted in because the parser refuses it on the way through.
 
 Yjs draws a random client id for every document it creates, so the same input produced different update bytes on every run and the fixture could not be diffed. The generator replaces lib0's randomness with a counter, which touches client ids and generated element ids and nothing the fixture exists to pin down. CI regenerates the file and diffs it.
 
@@ -2520,4 +2520,40 @@ Yjs draws a random client id for every document it creates, so the same input pr
 
 ProseMirror validates a node's children against its content expression, and y-prosemirror responds to a failure by **deleting the offending element from the document** and carrying on. That is not implemented here: this package checks that a node type exists, that a mark type exists, and that every attribute without a default was supplied, and returns an error rather than dropping anything. The difference is only reachable with a document whose structure the editor could not have produced.
 
-The HTML and the title HTML are not produced here either — that is the renderer, and it is the next piece. The corpus already records both, so the renderer arrives with its truth table already written.
+## The live service, part two: rendering the page back to HTML
+
+The other two columns a page keeps, `description_html` and the page's title, are the same document rendered. The renderer is ProseMirror's `DOMSerializer` over the same schema, with zeed-dom's markup rules underneath it — the two the editor reaches through `@tiptap/html` — and every extension's `renderHTML` ported beside them. Twenty-three node types, eight mark types, checked against a corpus that has now grown to forty-three documents.
+
+### Every style attribute is silently dropped
+
+This is the finding worth reading twice.
+
+ProseMirror's `renderSpec` treats `style` differently from every other attribute: rather than `setAttribute`, it assigns `dom.style.cssText`. The DOM this pipeline runs against is zeed-dom, whose `style` property is a getter that builds a fresh object out of the current attribute and returns it. Assigning to that object writes to something nobody will read, and the attribute is never set.
+
+So **no style survives into `description_html`**. Text alignment does not: a centred paragraph is stored as a plain `<p>`. A coloured table row does not, nor a cell background, nor a custom text colour outside the editor's named palette. Each of those extensions computes a style declaration on every render, and each declaration goes nowhere.
+
+The port reproduces it, dropping `style` at the point ProseMirror does and building the declarations anyway, because that is what the extensions write and a change upstream should show up as a corpus diff rather than as silence.
+
+### The rest of what the corpus pinned down
+
+- **Escaping is zeed-dom's, not Go's.** An apostrophe is `&apos;` where Go's `html` package writes `&#39;`, a non-breaking space is `&nbsp;` and a soft hyphen is `&shy;`. The same escaping covers text and attribute values.
+- **A boolean attribute is a bare name or nothing at all.** A ticked task item carries `data-checked` with no value; an unticked one carries no `data-checked`.
+- **A self-closing tag has no closing tag.** `<br>` and `<img>` are written open and left that way, which is zeed-dom's list rather than HTML's.
+- **The nesting of marks follows the schema, not the document.** A text node listing `italic` before `bold` still renders `<strong><em>`, because ProseMirror sorts a mark set by the order the types were registered in. A mark shared by adjacent text nodes opens once and wraps them all.
+- **A `null` attribute beats the extension's default.** A link mark carrying `target: null` renders with no `target`, even though the extension's options supply one, because Tiptap's `mergeAttributes` lets the later value win. A `null` *class* is the exception: the class branch merges lists and an empty one leaves the existing classes alone.
+- **A list starting at one loses its `start`.** Every other start is written out.
+- **A heading's level and a code block's language are never attributes.** The level picks the tag, the language picks the inner `<code>`'s class.
+
+### A dangerous href is emptied, not dropped
+
+The link extension refuses `javascript:`, `data:` and `vbscript:` by rewriting the href to the empty string, leaving the text as a link that goes nowhere. The check normalises first, the way a browser does — the WHATWG URL parser strips tab, newline and carriage return from anywhere in a url and strips leading C0 controls and whitespace before the scheme — so a leading tab does not slip a `javascript:` past it.
+
+### The title is rendered, not read
+
+`titleHTML` is not the title's text. The editor renders the title document to HTML and runs the result through a sanitiser with every tag disallowed, and that round trip is not the identity: the sanitiser decodes the entities the renderer just wrote and escapes a narrower set on the way back out, then trims.
+
+What comes out is the title with `&`, `<` and `>` escaped and nothing else — a quote and an apostrophe survive as themselves, and so do a non-breaking space and a soft hyphen, all of which the renderer had escaped. A title somebody typed `&amp;` into comes back as `&amp;amp;`.
+
+### The emoji table is generated
+
+An emoji node stores a shortcode and nothing else; the character comes from a lookup against the list the editor is configured with, which is GitHub's set minus the entries that have no character. `tools/generate_ydoc_emoji.mjs` flattens that list into `internal/ydoc/emoji.tsv` — 2,832 keys, since a name and each of its aliases both resolve — and CI diffs it. A shortcode the table does not know renders back between colons.

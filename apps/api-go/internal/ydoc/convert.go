@@ -48,7 +48,7 @@ func fragmentToNode(fragment *crdt.YXmlFragment, schema *Schema) (Node, error) {
 		return Node{}, err
 	}
 	top := schema.NodeType(schema.TopNode)
-	attrs, err := computeAttrs(top.Attrs, nil, top.Name)
+	attrs, err := computeAttrs(top.Attrs, nil, top.Name, true)
 	if err != nil {
 		return Node{}, err
 	}
@@ -90,7 +90,7 @@ func elementToNode(element *crdt.YXmlElement, schema *Schema) (Node, error) {
 	if err != nil {
 		return Node{}, err
 	}
-	attrs, err := computeAttrs(nodeType.Attrs, element.GetAttributeValues(), nodeType.Name)
+	attrs, err := computeAttrs(nodeType.Attrs, element.GetAttributeValues(), nodeType.Name, true)
 	if err != nil {
 		return Node{}, err
 	}
@@ -129,7 +129,7 @@ func marksFrom(attributes crdt.Attributes, schema *Schema) ([]Mark, error) {
 			return nil, fmt.Errorf("ydoc: schema has no mark type %q", name)
 		}
 		given, _ := value.(map[string]any)
-		attrs, err := computeAttrs(markType.Attrs, given, markType.Name)
+		attrs, err := computeAttrs(markType.Attrs, given, markType.Name, false)
 		if err != nil {
 			return nil, err
 		}

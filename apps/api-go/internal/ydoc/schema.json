@@ -4,6 +4,8 @@
     {
       "name": "paragraph",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "textAlign": {
           "has_default": true,
@@ -14,6 +16,8 @@
     {
       "name": "mention",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": true,
       "attrs": {
         "id": {
           "has_default": true,
@@ -32,21 +36,29 @@
     {
       "name": "bulletList",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "doc",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "hardBreak",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": true,
       "attrs": {}
     },
     {
       "name": "heading",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "textAlign": {
           "has_default": true,
@@ -61,11 +73,15 @@
     {
       "name": "listItem",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "orderedList",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "start": {
           "has_default": true,
@@ -80,11 +96,15 @@
     {
       "name": "text",
       "is_text": true,
+      "is_leaf": true,
+      "is_inline": true,
       "attrs": {}
     },
     {
       "name": "emoji",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": true,
       "attrs": {
         "name": {
           "has_default": true,
@@ -95,16 +115,22 @@
     {
       "name": "blockquote",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "horizontalRule",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "image",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": false,
       "attrs": {
         "src": {
           "has_default": true,
@@ -139,6 +165,8 @@
     {
       "name": "imageComponent",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": false,
       "attrs": {
         "src": {
           "has_default": true,
@@ -181,11 +209,15 @@
     {
       "name": "taskList",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "taskItem",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "checked": {
           "has_default": true,
@@ -196,6 +228,8 @@
     {
       "name": "codeBlock",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "language": {
           "has_default": true,
@@ -206,11 +240,15 @@
     {
       "name": "table",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {}
     },
     {
       "name": "tableHeader",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "colspan": {
           "has_default": true,
@@ -235,6 +273,8 @@
     {
       "name": "tableCell",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "colspan": {
           "has_default": true,
@@ -263,6 +303,8 @@
     {
       "name": "tableRow",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "background": {
           "has_default": true,
@@ -277,6 +319,8 @@
     {
       "name": "calloutComponent",
       "is_text": false,
+      "is_leaf": false,
+      "is_inline": false,
       "attrs": {
         "id": {
           "has_default": true,
@@ -315,6 +359,8 @@
     {
       "name": "issue-embed-component",
       "is_text": false,
+      "is_leaf": true,
+      "is_inline": false,
       "attrs": {
         "entity_identifier": {
           "has_default": true,
@@ -342,6 +388,7 @@
   "marks": [
     {
       "name": "link",
+      "spanning": true,
       "attrs": {
         "href": {
           "has_default": true,
@@ -363,30 +410,37 @@
     },
     {
       "name": "textStyle",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "bold",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "italic",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "strike",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "underline",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "code",
+      "spanning": true,
       "attrs": {}
     },
     {
       "name": "customColor",
+      "spanning": true,
       "attrs": {
         "color": {
           "has_default": true,
