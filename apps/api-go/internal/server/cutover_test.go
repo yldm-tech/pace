@@ -68,21 +68,28 @@ func readDjangoRoutes(t *testing.T) []djangoRoute {
 	return routes
 }
 
-// communityProxyMatchers compiles every path_regexp the community proxy cuts over to Go, rewritten to match the star shape the fixture uses.
+// communityProxyMatchers compiles every path the community proxy cuts over to Go, rewritten to match the star shape the fixture uses.
+//
+// The Caddyfile cuts a path over in two ways, and both have to be read. A named `path_regexp` matcher is the obvious one. The other is a bare path on the `reverse_proxy` line itself — `reverse_proxy /auth/* api-go:8000` — which is Caddy's own path matcher and cuts over just as completely. Reading only the first kind is what let sixty-seven routes sit behind this guard without it ever checking that Go serves them.
 func communityProxyMatchers(t *testing.T) []*regexp.Regexp {
 	t.Helper()
 	config := communityProxyConfig(t)
 	// Only the matchers that are actually reverse proxied to the Go service count.
 	proxied := map[string]bool{}
+	matchers := []*regexp.Regexp{}
 	for _, line := range strings.Split(config, "\n") {
 		fields := strings.Fields(line)
-		if len(fields) >= 3 && fields[0] == "reverse_proxy" && strings.HasSuffix(fields[len(fields)-1], "api-go:8000") {
-			proxied[strings.TrimPrefix(fields[1], "@")] = true
+		if len(fields) < 3 || fields[0] != "reverse_proxy" || !strings.HasSuffix(fields[len(fields)-1], "api-go:8000") {
+			continue
 		}
+		if strings.HasPrefix(fields[1], "@") {
+			proxied[strings.TrimPrefix(fields[1], "@")] = true
+			continue
+		}
+		matchers = append(matchers, caddyPathMatcher(t, fields[1]))
 	}
 
 	declaration := regexp.MustCompile(`^\s*@(\w+)\s+path_regexp\s+\w+\s+(\S+)$`)
-	matchers := []*regexp.Regexp{}
 	for _, line := range strings.Split(config, "\n") {
 		groups := declaration.FindStringSubmatch(line)
 		if groups == nil || !proxied[groups[1]] {
@@ -103,6 +110,28 @@ func communityProxyMatchers(t *testing.T) []*regexp.Regexp {
 		t.Fatal("no proxied path matchers were found, so this guard would pass vacuously")
 	}
 	return matchers
+}
+
+// caddyPathMatcher compiles one of Caddy's own path matchers against the star shape the fixture uses.
+//
+// Caddy's `*` matches any characters, slashes included, and a path with no star at all matches only itself. Both are written out here rather than approximated, because the difference decides whether a whole subtree is cut over or a single route is.
+func caddyPathMatcher(t *testing.T, path string) *regexp.Regexp {
+	t.Helper()
+	var pattern strings.Builder
+	pattern.WriteString("^")
+	for index, segment := range strings.Split(path, "*") {
+		if index > 0 {
+			// Caddy's star crosses slashes, and so does the fixture's.
+			pattern.WriteString(`.*`)
+		}
+		pattern.WriteString(regexp.QuoteMeta(segment))
+	}
+	pattern.WriteString("$")
+	compiled, err := regexp.Compile(pattern.String())
+	if err != nil {
+		t.Fatalf("proxy path %s does not compile: %v", path, err)
+	}
+	return compiled
 }
 
 func anyMatcherCovers(matchers []*regexp.Regexp, path string) bool {
