@@ -213,6 +213,7 @@ func TestCleanupTaskNamesMatchTheBeatSchedule(t *testing.T) {
 		"plane.bgtasks.file_asset_task.delete_unuploaded_file_asset",
 		"plane.bgtasks.exporter_expired_task.delete_old_s3_link",
 		"plane.bgtasks.issue_automation_task.archive_and_close_old_issues",
+		"plane.bgtasks.email_notification_task.stack_email_notification",
 	} {
 		found := false
 		for _, migrated := range MigratedTaskNames() {
@@ -244,6 +245,7 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	NewIssueActivityTasks(nil, nil, nil, nil).Register(consumer)
 	NewNotificationTasks(nil, nil).Register(consumer)
 	NewWebhookTasks(nil, httpsafe.Settings{}, nil, nil, nil).Register(consumer)
+	NewEmailStackTasks(nil, nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true
