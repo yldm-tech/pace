@@ -207,6 +207,8 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerTimezoneRoutes(router)
 	handler.registerExternalRoutes(router)
 	handler.registerWorkspaceEstimateRoutes(router)
+	handler.registerLegacyAssetRoutes(router)
+	handler.registerLegacyIssueAttachmentRoutes(router)
 }
 
 func (handler *Handler) authenticated(next func(*gin.Context, *auth.User)) gin.HandlerFunc {

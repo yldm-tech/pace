@@ -183,6 +183,12 @@
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$
 	reverse_proxy @go_draft_issues api-go:8000
 
+	@go_legacy_assets path_regexp go_legacy_assets ^/api/(users/file-assets/([^/]+/)?|workspaces/[^/]+/file-assets/|workspaces/file-assets/[0-9A-Fa-f-]+/[^/]+/(restore/)?)$
+	reverse_proxy @go_legacy_assets api-go:8000
+
+	@go_legacy_attachments path_regexp go_legacy_attachments ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/issue-attachments/([0-9A-Fa-f-]+/)?$
+	reverse_proxy @go_legacy_attachments api-go:8000
+
 	reverse_proxy /api/timezones/ api-go:8000
 	reverse_proxy /api/unsplash/ api-go:8000
 

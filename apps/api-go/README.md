@@ -2421,3 +2421,23 @@ All three providers are called through the same OpenAI-shaped endpoint, because 
 ### Workspace estimates
 
 `GET /api/workspaces/<slug>/estimates/` starts from the projects rather than from the scales, so a scale nobody has selected is left out even though it exists, and a scale two projects share is listed once. Any active member may read it, guests included: the permission only narrows on the unsafe methods and this route has none.
+
+## Migrated module: the v1 asset routes
+
+Ten routes that upload *through* the API rather than handing the browser a signed policy. Everything the editor writes today goes through the v2 routes, where the browser posts straight at the bucket; these take the bytes themselves, and they are still here because older clients still call them.
+
+Seven of them are the general file assets — a workspace's, and a person's own — and three are the work item attachments under their old path.
+
+The order inside an upload is upstream's and worth knowing: the object is written to the bucket first and the row second. An upload that fails at the row therefore leaves an orphan in the bucket that nothing will ever point at, and there is no sweep for those — the sweep that exists looks for rows without objects, not objects without rows.
+
+The two paths differ from their v2 neighbours in more than the transport:
+
+- The v1 attachment list shows **every** attachment; the v2 one narrows to the ones that finished uploading. A row whose upload was started and abandoned appears in one and not the other.
+- The v1 attachment delete **really removes** the row, and takes the object out of the bucket on the way. The v2 one flags the row and leaves the object for the storage sweep. A mistaken delete on the old path cannot be undone.
+- A v1 row is marked uploaded on the way in, because the bytes are already there. A v2 row waits for the browser to say so.
+
+Two things about the general file assets are worth stating plainly. Looking one up by key names nothing but the key, so any member of any workspace can read the row of an asset in another as long as they know its key — that is the route as it stands. And not finding one is a `200` carrying `{"status": false}` rather than a `404`, which is what the client reads.
+
+`GET /api/users/file-assets/<key>/` answers one object rather than a list even though it filters a queryset, because the serializer is handed the queryset without `many` — Django renders that as the first row's fields, which is what this answers.
+
+The delete and restore routes set `is_deleted` rather than `deleted_at`, so the row stays where it is and the object stays in the bucket. That is what the restore route depends on.
