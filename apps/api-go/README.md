@@ -2774,3 +2774,20 @@ Only two of the three go back. The caller keeps the HTML it sent, even though co
 ### The binary is different every time
 
 A Yjs update carries the client id of whoever wrote it and the route draws a fresh one on every call, deliberately, so that two servers converting the same content do not claim the same identity. So the corpus compares the update as the document it holds rather than as bytes, and compares the JSON and the HTML exactly.
+
+## The live service, part eleven: drawing a page as a PDF
+
+`POST /live/pdf-export/` draws a page. It is the one piece of the whole migration whose output **cannot** be reproduced exactly, and the reason is worth stating plainly rather than discovering later.
+
+The original lays a page out with react-pdf, which is a flexbox engine. `internal/pdfdoc` flows blocks down the page instead. The same six faces of Inter are embedded — unpacked from the very WOFF files the exporter registers, because where a line breaks depends on the width of every character — and every measurement, colour and spacing is read out of the exporter's own stylesheet rather than transcribed. A page therefore looks like the same page. It is not the same bytes, and a long document may break across pages differently.
+
+Every other piece of this migration is checked against the original's own output. This one cannot be, so what is checked instead is that **every document the editor can produce draws**: all forty-three of the corpus, plus the six page sizes and two orientations, a document long enough to run onto a second page, a mention with and without a name for it, an image that will not decode, and the asset scan that decides what has to be fetched first.
+
+### Two things it had to work around
+
+- **A character outside the basic multilingual plane brings the PDF writer down.** It keeps one entry per character code in a table of sixty-five thousand and indexes it directly, so an emoji walks off the end of it. The font has no glyph for one either, so the text is folded to that range before it is drawn: nothing is lost that would have been drawn, and a page with an emoji in it exports rather than crashing the process.
+- **A request naming no project gets a 500, not a 400.** The request schema says the project is optional and the page service it reaches throws without one; upstream that throw is a defect rather than a failure, so it lands on the same five hundred any unexpected failure gets. Reproduced rather than turned into the four hundred it looks like it should be.
+
+### Nothing in this repository calls it
+
+The web app renders its PDFs in the browser with react-pdf, and no other caller exists here. The route is ported because it is part of the service being replaced and something outside this repository may reach for it — not because anything inside it does.
