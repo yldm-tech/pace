@@ -2632,3 +2632,35 @@ Using Go's own HTML5 parser would have repaired all of that, and repaired docume
 ### The corpus
 
 `tools/generate_vdom_fixture.mjs` records the tree zeed-dom builds for 75 inputs: 32 written to provoke the behaviours above, and every one of the 43 documents the renderer produces, fed back in. That second half is the input shape that matters most — a page's stored HTML is the renderer's own output, and it is exactly what gets parsed back when somebody opens a page that has no Yjs document yet.
+
+## The live service, part six: reading HTML back into a document
+
+`internal/ydoc`'s parser is ProseMirror's `DOMParser` over the schema's own rules, with the HTML scanner above underneath it. It closes the loop: a page's stored HTML goes in and the document the editor would have made of it comes out.
+
+### What is generated and what is written
+
+The rules are data and are generated. `tools/generate_parse_rules.mjs` dumps all 46 of them — the selector, the priority, what each produces, the flags that change how its content is read, and the ordered list of attributes each type reads off an element.
+
+What is not data is the code a rule may carry. Eleven rules have a `getAttrs` of their own and eleven attributes have their own reader, and each of those is ported by hand. The generated file records the **JavaScript source of every one of them** beside the entry, so the port can be read against the original and a change upstream lands as a diff. Three tests keep the two halves in step: every rule shape has to be one the parser implements, every hand-written function has to still have a rule, and every attribute the editor reads with code has to have a reader here.
+
+### Three upstream behaviours, reproduced
+
+The corpus found these; none of them is what the code looks like it does.
+
+- **Every `<span>` becomes a colour mark.** The two `customColor` rules are written as `node.getAttribute("data-text-color") && null`, which is meant to refuse a span that carries no colour. The DOM the editor runs on answers `undefined` rather than `null` for a missing attribute, `undefined && null` is `undefined`, and Tiptap only treats a literal `false` as a refusal. So both rules match every span unconditionally, and a plain span in a page's HTML comes back carrying a `customColor` mark with both colours null.
+- **A code block's language is never read back.** The reader looks for a `language-` class on the element's `firstElementChild`, and that DOM has no such property. The lookup yields nothing every time, so a code block whose HTML says `language-go` returns with no language and the highlighting is lost the first time a page is read back from its HTML.
+- **An empty `<span data-type="emoji">` is dropped.** It is a consequence of the first one: the colour rule matches the span first, a mark rule parses the element's *children*, and an emoji span has none.
+
+### The editor is not idempotent
+
+Reading a page's HTML and rendering it back does not always give the same HTML. `<span style="font-weight: bold">` is read into a bold mark plus a colour mark; those render as `<span><strong>`; and reading *that* gives the marks in the other order, which renders as `<strong><span>`. The second pass is stable.
+
+The corpus records both renderings and both readings for all 96 documents, so the port is checked to be un-idempotent in exactly the same way rather than merely checked to be stable.
+
+### The corpus
+
+96 documents: 52 written to work the parser — content in the wrong place, elements with no rule, whitespace, overlapping tags, styles that cancel marks — and every one of the 43 the renderer produces, read back in. Each records the document it parses to, the HTML that renders to, the document *that* parses to, and the HTML that renders to.
+
+### The selector subset
+
+Parse rules match with CSS selectors, and the ones this schema uses need a tag name, `[attr]`, `[attr="value"]`, `[attr^="value"]` and `:not(...)`. Exactly that is implemented, and anything else is refused at load rather than silently matching nothing — so a rule added upstream with a selector this does not understand fails where somebody will see it.

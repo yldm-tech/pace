@@ -488,6 +488,26 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the parse rules match the schema
+        run: |
+          node apps/api-go/tools/generate_parse_rules.mjs > /tmp/parse_rules.json
+          if ! diff -u apps/api-go/internal/ydoc/parse_rules.json /tmp/parse_rules.json; then
+            echo "::error::apps/api-go/internal/ydoc/parse_rules.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_parse_rules.mjs > apps/api-go/internal/ydoc/parse_rules.json"
+            exit 1
+          fi
+
+      - name: Verify the parsed documents match the editor
+        run: |
+          node apps/api-go/tools/generate_parse_fixture.mjs > /tmp/parsed.json
+          if ! diff -u apps/api-go/internal/ydoc/testdata/parsed.json /tmp/parsed.json; then
+            echo "::error::apps/api-go/internal/ydoc/testdata/parsed.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_parse_fixture.mjs > apps/api-go/internal/ydoc/testdata/parsed.json"
+            exit 1
+          fi
+
       - name: Verify the parsed trees match zeed-dom
         run: |
           node apps/api-go/tools/generate_vdom_fixture.mjs > /tmp/trees.json
