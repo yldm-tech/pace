@@ -41,7 +41,7 @@ func (handler *Handler) workspaceViewList(c *gin.Context, user *auth.User) {
 	}
 
 	var rows []viewRow
-	err = query.Order("v." + sanitizeOrderBy(c.Query("order_by"), viewOrderByAllowlist, "-created_at")).
+	err = query.Order(orderClause("v.", sanitizeOrderBy(c.Query("order_by"), viewOrderByAllowlist, "-created_at"))).
 		Scan(&rows).Error
 	if err != nil {
 		handler.internalError(c, err)
@@ -68,6 +68,15 @@ func (handler *Handler) workspaceViewScope(c *gin.Context, user *auth.User, slug
 var viewOrderByAllowlist = map[string]bool{"created_at": true, "updated_at": true, "name": true}
 
 // sanitizeOrderBy is plane.utils.order_queryset.sanitize_order_by. It strips at most one leading dash, so a doubled one is rejected rather than reaching the ORM.
+// orderClause turns what sanitizeOrderBy returns into SQL. Its result is Django's ordering syntax, where a leading minus means descending -- "-created_at" -- and that is not something a database understands: concatenating it after a table alias produces `p.-created_at`, which Postgres rejects with `syntax error at or near "-"` and the request answers 500.
+func orderClause(alias, order string) string {
+	column := strings.TrimPrefix(order, "-")
+	if strings.HasPrefix(order, "-") {
+		return alias + column + " DESC"
+	}
+	return alias + column + " ASC"
+}
+
 func sanitizeOrderBy(value string, allowed map[string]bool, fallback string) string {
 	if value == "" {
 		return fallback
