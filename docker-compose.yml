@@ -85,16 +85,18 @@ services:
       - plane-db
       - plane-mq
 
-  # The last Python service, and the one that stays. Django owns the schema: every table here was created by a Django migration, Go never creates or alters one, and there is no migrate on the Go side to replace this with. It runs once and exits, so nothing is served by Python after it does.
+  # The schema, now applied by Go. It runs the same 164 migrations in the same order and writes the same django_migrations rows, because the statements it runs were recorded from Django doing it.
+  #
+  # The entrypoint waits for the database first, which is what the shell script it replaces did. Reverting is putting ./apps/api back with command: ./bin/docker-entrypoint-migrator.sh.
   migrator:
     container_name: plane-migrator
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile.api
+      context: ./apps/api-go
+      dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
     restart: no
-    command: ./bin/docker-entrypoint-migrator.sh
+    entrypoint: ["/bin/sh", "-c", "pace-manage wait_for_db && pace-manage migrate"]
     env_file:
       - ./apps/api/.env
     depends_on:

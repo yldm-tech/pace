@@ -2937,8 +2937,41 @@ The same operation shows why the id has to be generated once and used twice: a m
 
 Two operations wrap everything in `try: ... except Exception as e: print(e)`, and carry on as though nothing had been asked of them. In Postgres an error inside a transaction poisons the whole thing, so reproducing that needs a savepoint.
 
+### Six upstream bugs, reproduced
+
+Reading these closely turns up things that are plainly not what was meant. They are reproduced rather than corrected, because a database that has been through the Python is in the state the Python left it in.
+
+- **`update_cycle_props` and `update_module_props` test for a key that does not exist.** The condition is `if "filter" in obj.view_props`; the key the rewrite then reads, and the one every other props object uses, is `filters`. Nothing writes a `filter`, so in practice these two rewrite nothing.
+- **`generate_display_name`'s random fallback is unreachable.** `str.split` always returns at least one element — `"".split("@")` is `[""]` — so the length it tests is never zero and the six random letters are never generated.
+- **`random_sort_ordering` uses a different range from its four siblings.** The others are `randint(1, 65536)`; this one is `randint(0, 65535)`.
+- **`populate_deploy_board` passes `created_at` and `updated_at` and they are ignored.** Both fields are `auto_now_add` and `auto_now`, which override whatever a caller supplies, so the new rows are stamped with now despite the code reading as though the old timestamps carry over.
+- **`migrate_user_profile` selects `onboarding_step` and `role` and then passes neither.** The profile gets the model's default onboarding step rather than the user's own.
+- **`populate_product_tour` defines its own `get_default_product_tour` rather than importing the model's, and the two differ.** The model's has every value false; the migration's has every value true.
+
+Two more are not bugs but places where a database can be stuck. `populate_views_owned_by` is followed immediately by making the column `NOT NULL`, so a view with no creator stops Django's own migration; and `move_attachment_to_fileasset` reads `size` with a default that only covers a missing key, so an attachment whose stored size is null stops it too. Both implementations fail identically, and neither can get such a database past that point.
+
+### What the differential check caught
+
+Two divergences that reading could not have settled, and one that only appears with rows in the table:
+
+- **`is None` catches two different nulls.** `update_workspace_member_props` branches on `obj.view_props is None`, and a `view_props IS NULL` looks exact. It is not: a `jsonb` column holding the JSON value `null` comes back from psycopg as Python `None` just as a SQL `NULL` does, so both take the first branch.
+- **Two passes are not one pass.** The same operation written as "fill the nulls, then wrap the rest" rewrites rows the first pass had just written, and Postgres then refuses the `ALTER TABLE` that follows with `cannot ALTER TABLE because it has pending trigger events`. Django's `bulk_update` is a single `UPDATE`.
+- **A nullable column with a default is easy to miss.** `move_attachment_to_fileasset` leaves `storage_metadata` unset, and Django writes `{}` where an insert that simply omits it leaves null.
+
+### Masking, for an identifier that cannot match
+
+`db.0049`'s `update_pages` writes a fresh `uuid4().hex` into the middle of a page's HTML as well as into a column of its own. Excluding the whole column would leave the operation's real output unchecked — which blocks were embedded, in what order, with what titles. A seed instead says `-- MASK-HEX32: pages.description_html`, which blanks the thirty-two hex characters and leaves the rest of the markup in the comparison.
+
+The same operation shows why the id has to be generated once and used twice: a materialised CTE holds the blocks, the aggregate builds the HTML from it and the insert writes the log rows from it. It is also written in two forms — Python hands the undashed hex to the f-string and the same string to a `UUIDField`, which parses it and stores the canonical dashed form.
+
+Two operations wrap everything in `try: ... except Exception as e: print(e)` and carry on as though nothing had been asked of them. In Postgres an error inside a transaction poisons the whole thing, so reproducing that needs a savepoint.
+
+### The one place the port is narrower
+
+`db.0107` converts legacy filters to rich ones, and part of that is deciding whether a value is a date. Upstream asks `dateutil.parser.parse`, which accepts far more than any fixed list of layouts — it is a general-purpose parser. `internal/migrate/richfilters.go` checks a list of the shapes these values actually take, which are ISO dates written by the web app's date picker. A value that list rejects and dateutil would have accepted is skipped rather than converted, leaving that one field out of the row's rich filters. It is the only place in this package where the Go is narrower than the Python rather than identical to it.
+
 ### Where it stands
 
-26 operations across 12 migrations are ported and checked: `db.0035` through `db.0050`. Two more are registered as doing nothing, with the reason written down — `contenttypes.0002`'s is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
+**All 58 operations are ported, and all 32 migrations that carry one agree with Django when both are run against the same rows.** Two of the 58 are registered as doing nothing, with the reason written down: `contenttypes.0002`'s forwards half is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
 
-That leaves 29. Until they are done `manage migrate` still refuses, and `migrator` still runs Python.
+So `migrator` runs `pace-manage migrate` now, and no Python service is left in the compose file. Building a database from nothing with it applies all 164 migrations and produces the same 2885 columns, constraints, indexes and sequences as `manage.py migrate`, the same 164 ledger rows, and the same 121 content types and 512 permissions down to their ids.

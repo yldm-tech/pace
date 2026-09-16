@@ -56,6 +56,14 @@ def recreate(database):
                     "-c", f'CREATE DATABASE "{database}"'], check=True, capture_output=True, text=True)
 
 
+def copy_database(source, destination):
+    """A byte-for-byte copy of a database, which is how both sides start from the same rows."""
+    subprocess.run(["psql", url_for("postgres"), "-v", "ON_ERROR_STOP=1",
+                    "-c", f'DROP DATABASE IF EXISTS "{destination}"',
+                    "-c", f'CREATE DATABASE "{destination}" TEMPLATE "{source}"'],
+                   check=True, capture_output=True, text=True)
+
+
 def previous(app, name):
     """The migration Django applies immediately before this one, which is the state the operation acts on."""
     from django.db import connection
@@ -77,8 +85,11 @@ def previous(app, name):
 
 def migrate_with_django(database, app, name):
     environment = dict(os.environ, DATABASE_URL=url_for(database))
-    subprocess.run([sys.executable, "manage.py", "migrate", app, name, "--noinput", "-v", "0"],
-                   check=True, env=environment, capture_output=True, text=True)
+    result = subprocess.run([sys.executable, "manage.py", "migrate", app, name, "--noinput", "-v", "0"],
+                            env=environment, capture_output=True, text=True)
+    if result.returncode != 0:
+        # Django's own message, rather than a traceback about the subprocess that carried it.
+        raise SystemExit(f"Django refused {app}.{name} on {database}:\n{result.stdout}{result.stderr}")
 
 
 def migrate_with_go(database, app, name):
@@ -175,10 +186,13 @@ def check(app, name):
         raise SystemExit(f"no seed for {app}.{name}; write {seed} first")
     before_app, before_name = previous(app, name)
 
-    for database in (DJANGO_DB, GO_DB):
-        recreate(database)
-        migrate_with_django(database, before_app, before_name)
-        psql(database, "-q", "-f", seed)
+    # One database is built and seeded, and the other is copied from it.
+    #
+    # Migrating both separately does not work: every migration between the start and here that creates rows of its own gives them a fresh uuid and the current time, so the two would differ before the operation under test had run at all. Copying makes the starting point identical by construction, and leaves the comparison afterwards about the operation and nothing else.
+    recreate(DJANGO_DB)
+    migrate_with_django(DJANGO_DB, before_app, before_name)
+    psql(DJANGO_DB, "-q", "-f", seed)
+    copy_database(DJANGO_DB, GO_DB)
 
     migrate_with_django(DJANGO_DB, app, name)
     migrate_with_go(GO_DB, app, name)
