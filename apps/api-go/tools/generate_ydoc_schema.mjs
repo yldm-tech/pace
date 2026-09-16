@@ -30,15 +30,19 @@ const attributes = (attrs) =>
     })
   );
 
+// is_leaf and is_inline are the two facts the serializer branches on: a leaf node may not have a content hole in its spec, and a mark wrapping inline content is told so.
 const nodes = Object.values(schema.nodes).map((type) => ({
   name: type.name,
   is_text: type.isText,
+  is_leaf: type.isLeaf,
+  is_inline: type.isInline,
   attrs: attributes(type.attrs),
 }));
 
-// Emitted in registration order, which is the rank ProseMirror assigns each mark type.
+// Emitted in registration order, which is the rank ProseMirror assigns each mark type. A mark declared non-spanning is never reused across adjacent text nodes, so it opens a fresh element for each.
 const marks = Object.values(schema.marks).map((type) => ({
   name: type.name,
+  spanning: type.spec.spanning !== false,
   attrs: attributes(type.attrs),
 }));
 

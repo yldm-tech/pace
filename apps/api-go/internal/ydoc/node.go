@@ -53,7 +53,7 @@ func (n Node) JSON() ([]byte, error) {
 	return json.Marshal(n)
 }
 
-// TextContent is the node's text with every bit of structure dropped, which is how a page's title is reduced to a string.
+// TextContent is the node's text with every bit of structure dropped. It is not how a page's title becomes a string — see TitleHTML, which goes through the rendered HTML because the editor does.
 func (n Node) TextContent() string {
 	if n.Text != "" {
 		return n.Text

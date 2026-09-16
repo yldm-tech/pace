@@ -61,6 +61,15 @@ func TestParseMatchesEditor(t *testing.T) {
 			if !reflect.DeepEqual(decodeJSON(t, got), decodeJSON(t, testCase.ContentJSON)) {
 				t.Errorf("document differs\n go: %s\nwant: %s", got, testCase.ContentJSON)
 			}
+
+			// The HTML is a string the API stores verbatim, so it is compared as one.
+			rendered, err := HTML(node)
+			if err != nil {
+				t.Fatalf("html: %v", err)
+			}
+			if rendered != testCase.ContentHTML {
+				t.Errorf("html differs\n go: %s\nwant: %s", rendered, testCase.ContentHTML)
+			}
 		})
 	}
 }
@@ -80,8 +89,12 @@ func TestTitleMatchesEditor(t *testing.T) {
 			if !reflect.DeepEqual(decodeJSON(t, got), decodeJSON(t, testCase.TitleJSON)) {
 				t.Errorf("title differs\n go: %s\nwant: %s", got, testCase.TitleJSON)
 			}
-			if text := node.TextContent(); text != testCase.SourceTitle {
-				t.Errorf("title text = %q, want %q", text, testCase.SourceTitle)
+			rendered, err := TitleHTML(node)
+			if err != nil {
+				t.Fatalf("title html: %v", err)
+			}
+			if rendered != testCase.TitleHTML {
+				t.Errorf("title html = %q, want %q", rendered, testCase.TitleHTML)
 			}
 		})
 	}

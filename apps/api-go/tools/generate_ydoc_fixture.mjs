@@ -87,9 +87,106 @@ const DOCUMENTS = [
   },
   { name: "text style", title: "Styled", html: '<p><span style="font-size: 12px">styled</span></p>' },
   { name: "work item embed", title: "Embed", html: '<issue-embed-component entity_identifier="33333333-3333-4333-8333-333333333333" entity_name="issue_mention"></issue-embed-component>' },
+  { name: "quoted title", title: `Quotes " and ' and & and \u00a0 and \u00ad`, html: "<p>body</p>" },
+  { name: "padded title", title: "   leading and trailing   ", html: "<p>body</p>" },
+  { name: "entity shaped title", title: "literal &amp; and &notanentity; and &#1234; and a bare &", html: "<p>body</p>" },
+  { name: "entities", title: "Entities", html: '<p>non&nbsp;breaking and soft&shy;hyphen and an &amp; ampersand</p>' },
   { name: "escaping", title: "Escaping & <angles>", html: '<p>a &amp; b &lt; c &gt; d "quoted" \'single\'</p>' },
   { name: "unicode", title: "Ünicode ☃", html: "<p>Ünicode ☃ and an emoji 🎉</p>" },
   { name: "long paragraph", title: "Long", html: `<p>${"word ".repeat(200).trim()}</p>` },
+  {
+    name: "renumbered list",
+    title: "Renumbered",
+    // A list that does not start at one keeps its start attribute, which a list that does loses.
+    json: { type: "doc", content: [{ type: "orderedList", attrs: { start: 7, type: null }, content: [{ type: "listItem", attrs: {}, content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text: "seventh" }] }] }] }] },
+  },
+  {
+    name: "code block with a language",
+    title: "Highlighted",
+    json: { type: "doc", content: [{ type: "codeBlock", attrs: { language: "go" }, content: [{ type: "text", text: "package main" }] }] },
+  },
+  {
+    name: "dangerous link",
+    title: "Dangerous",
+    // The href is emptied rather than the link dropped, and the check sees through a leading tab because a browser would.
+    json: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          attrs: { textAlign: null },
+          content: [
+            { type: "text", marks: [{ type: "link", attrs: { href: "javascript:alert(1)", target: "_blank", rel: "noopener noreferrer nofollow", class: null } }], text: "plain" },
+            { type: "text", marks: [{ type: "link", attrs: { href: "\tJaVaScRiPt:alert(1)", target: "_blank", rel: "noopener noreferrer nofollow", class: null } }], text: "disguised" },
+            { type: "text", marks: [{ type: "link", attrs: { href: "data:text/html,<script>", target: null, rel: null, class: null } }], text: "data" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    name: "unpalettable colours",
+    title: "Off palette",
+    // A colour outside the editor's palette adds a style declaration, which this pipeline then drops.
+    json: { type: "doc", content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", marks: [{ type: "customColor", attrs: { color: "#ff0000", backgroundColor: "#00ff00" } }], text: "custom" }] }] },
+  },
+  {
+    name: "unknown emoji",
+    title: "Unknown",
+    json: { type: "doc", content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "emoji", attrs: { name: "not_an_emoji" } }] }] },
+  },
+  {
+    name: "marks across text runs",
+    title: "Runs",
+    // One mark wrapping several runs opens once; the inner mark opens and closes inside it.
+    json: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          attrs: { textAlign: null },
+          content: [
+            { type: "text", marks: [{ type: "bold" }], text: "before " },
+            { type: "text", marks: [{ type: "bold" }, { type: "italic" }], text: "middle" },
+            { type: "text", marks: [{ type: "bold" }], text: " after" },
+            { type: "text", text: " plain" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    name: "marks in the other order",
+    title: "Order",
+    // The marks are listed italic first, and the output still nests bold outside, because the nesting follows the schema's registration order rather than the document's.
+    json: { type: "doc", content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", marks: [{ type: "italic" }, { type: "bold" }], text: "both" }] }] },
+  },
+  {
+    name: "sized image",
+    title: "Sized",
+    json: { type: "doc", content: [{ type: "image", attrs: { src: "https://example.test/a.png", alt: null, title: null, width: "50%", height: "120px", aspectRatio: "1.5", alignment: "center" } }] },
+  },
+  {
+    name: "coloured row",
+    title: "Coloured",
+    // A row with a background but no text colour still builds a style, and the style is dropped along with every other.
+    json: {
+      type: "doc",
+      content: [
+        {
+          type: "table",
+          content: [
+            { type: "tableRow", attrs: { background: "#eee", textColor: null }, content: [{ type: "tableCell", attrs: { colspan: 1, rowspan: 1, colwidth: null, background: "#fff", textColor: "#111" }, content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text: "cell" }] }] }] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    name: "identified mention",
+    title: "Identified",
+    json: { type: "doc", content: [{ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "mention", attrs: { id: "44444444-4444-4444-8444-444444444444", entity_identifier: "55555555-5555-4555-8555-555555555555", entity_name: "user_mention" } }] }] },
+  },
   { name: "mixed document", title: "Everything", html: "<h1>Title</h1><p>Some <strong>bold</strong> text.</p><ul><li><p>a point</p></li></ul><blockquote><p>a quote</p></blockquote><p>done</p>" },
 ];
 
