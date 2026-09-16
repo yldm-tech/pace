@@ -269,6 +269,8 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	NewCopyAssetTasks(nil, nil, "", nil).Register(consumer)
 	NewVersionSyncTasks(nil, nil, nil).Register(consumer)
 	NewDummyDataTasks(nil, nil).Register(consumer)
+	NewWorkspaceSeedTasks(nil, "", nil).Register(consumer)
+	NewProjectInvitationTasks(nil, EmailSettings{}, nil, nil, nil).Register(consumer)
 	NewAPILogTasks(nil, nil).Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {

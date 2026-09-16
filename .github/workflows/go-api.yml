@@ -184,6 +184,30 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the seed data matches the one apps/api ships
+        working-directory: apps/api
+        run: |
+          for seed in cycles issues labels modules pages projects states views; do
+            target=../api-go/internal/worker/seeds/$seed.json
+            if ! diff -u "$target" plane/seeds/data/$seed.json; then
+              echo "::error::$target is not the seed apps/api ships, so a new workspace would be seeded differently."
+              echo "Copy it across with:"
+              echo "  cp plane/seeds/data/$seed.json $target"
+              exit 1
+            fi
+          done
+
+      - name: Verify the project invitation template matches the one apps/api ships
+        working-directory: apps/api
+        run: |
+          target=../api-go/internal/worker/templates/emails/invitations/project_invitation.html
+          if ! diff -u "$target" templates/emails/invitations/project_invitation.html; then
+            echo "::error::$target is not the template apps/api ships."
+            echo "Copy it across with:"
+            echo "  cp templates/emails/invitations/project_invitation.html $target"
+            exit 1
+          fi
+
       - name: Verify the migration list matches Django
         working-directory: apps/api
         run: |
