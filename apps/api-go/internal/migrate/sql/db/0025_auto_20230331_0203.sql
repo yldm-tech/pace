@@ -1,0 +1,22 @@
+-- db.0025_auto_20230331_0203, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+ALTER TABLE "pages" ADD COLUMN "color" varchar(255) DEFAULT '' NOT NULL;
+ALTER TABLE "pages" ALTER COLUMN "color" DROP DEFAULT;
+ALTER TABLE "page_blocks" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
+ALTER TABLE "page_blocks" ALTER COLUMN "sort_order" DROP DEFAULT;
+ALTER TABLE "page_blocks" ADD COLUMN "sync" boolean DEFAULT true NOT NULL;
+ALTER TABLE "page_blocks" ALTER COLUMN "sync" DROP DEFAULT;
+ALTER TABLE "projects" ADD COLUMN "page_view" boolean DEFAULT true NOT NULL;
+ALTER TABLE "projects" ALTER COLUMN "page_view" DROP DEFAULT;
+CREATE TABLE "page_labels" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "created_by_id" uuid NULL, "label_id" uuid NOT NULL, "page_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_created_by_id_fbd942c0_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_label_id_05958e53_fk_labels_id" FOREIGN KEY ("label_id") REFERENCES "labels" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_page_id_0e6cdb3d_fk_pages_id" FOREIGN KEY ("page_id") REFERENCES "pages" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_project_id_938a63ca_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_updated_by_id_d9fddbff_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "page_labels" ADD CONSTRAINT "page_labels_workspace_id_078bb01c_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "page_labels_created_by_id_fbd942c0" ON "page_labels" ("created_by_id");
+CREATE INDEX "page_labels_label_id_05958e53" ON "page_labels" ("label_id");
+CREATE INDEX "page_labels_page_id_0e6cdb3d" ON "page_labels" ("page_id");
+CREATE INDEX "page_labels_project_id_938a63ca" ON "page_labels" ("project_id");
+CREATE INDEX "page_labels_updated_by_id_d9fddbff" ON "page_labels" ("updated_by_id");
+CREATE INDEX "page_labels_workspace_id_078bb01c" ON "page_labels" ("workspace_id");

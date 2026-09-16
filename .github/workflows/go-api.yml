@@ -9,6 +9,7 @@ on:
       - "packages/editor/**"
       - "apps/live/**"
       - "apps/api/plane/db/migrations/**"
+      - "apps/api/plane/license/migrations/**"
       - "apps/proxy/Caddyfile.ce"
 
 concurrency:
@@ -597,3 +598,45 @@ jobs:
             echo "  node apps/api-go/tools/generate_ydoc_fixture.mjs > apps/api-go/internal/ydoc/testdata/documents.json"
             exit 1
           fi
+
+      - name: Verify the recorded migrations match Django
+        working-directory: apps/api
+        env:
+          # The generator has to start from nothing: it records what each migration does to the state the one before it left behind. The job's own database has already been migrated, so it gets one of its own.
+          DATABASE_URL: postgresql://pace:pace@localhost:5432/pace_migration_record
+        run: |
+          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_record OWNER pace'
+          python ../api-go/tools/generate_migration_sql.py /tmp/migrate
+          if ! diff -ur ../api-go/internal/migrate/sql /tmp/migrate/sql; then
+            echo "::error::apps/api-go/internal/migrate/sql is stale."
+            echo "Regenerate it from apps/api with:"
+            echo "  python ../api-go/tools/generate_migration_sql.py ../api-go/internal/migrate"
+            exit 1
+          fi
+          for file in plan.tsv ledger.sql signal_rows.sql; do
+            if ! diff -u "../api-go/internal/migrate/$file" "/tmp/migrate/$file"; then
+              echo "::error::apps/api-go/internal/migrate/$file is stale."
+              echo "Regenerate it from apps/api with:"
+              echo "  python ../api-go/tools/generate_migration_sql.py ../api-go/internal/migrate"
+              exit 1
+            fi
+          done
+
+      - name: Verify the recorded schema fixture matches Django
+        run: |
+          psql "postgresql://pace:pace@localhost:5432/pace_migration_record" -qtAF$'\t' \
+            -f apps/api-go/internal/migrate/testdata/schema_query.sql > /tmp/schema.tsv
+          if ! diff -u apps/api-go/internal/migrate/testdata/schema.tsv /tmp/schema.tsv; then
+            echo "::error::apps/api-go/internal/migrate/testdata/schema.tsv is stale."
+            echo "Regenerate it against a Django-migrated database with:"
+            echo "  psql \"\$DATABASE_URL\" -qtAF'\t' -f apps/api-go/internal/migrate/testdata/schema_query.sql > apps/api-go/internal/migrate/testdata/schema.tsv"
+            exit 1
+          fi
+
+      - name: Verify Go builds the same schema as Django
+        working-directory: apps/api-go
+        env:
+          MIGRATE_TEST_DATABASE_URL: postgresql://pace:pace@localhost:5432/pace_migration_replay?sslmode=disable
+        run: |
+          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
+          go test ./internal/migrate/ -run TestGoBuildsTheSameSchemaAsDjango -v

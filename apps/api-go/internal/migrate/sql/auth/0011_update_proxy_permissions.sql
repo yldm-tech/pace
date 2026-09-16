@@ -1,0 +1,1 @@
+-- auth.0011_update_proxy_permissions, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

@@ -2861,3 +2861,43 @@ Django served it through whitenoise, out of `static-assets/collected-static`. No
 ### Why migrator stays
 
 Django owns the schema. Every table was created by a Django migration, Go never creates or alters one — `internal/manage` asks the database whether `django_migrations` holds every migration the Python app ships, and refuses to start until it does — and there is no `migrate` on the Go side to put in its place. `migrator` runs once and exits, so no Python process serves anything once it has.
+
+## The schema, part one: recording what Django's migrations do
+
+`migrator` is the last Python service, and this is the first half of taking it. The Django app ships 164 migrations — 122 in `db`, six in `license`, and 36 more from Django and django-celery-beat — and Go has to leave a database in exactly the state they leave it in.
+
+None of them are rewritten here. Django is the only authority on what its own migrations do, and it will tell you: `internal/migrate/sql/<app>/<name>.sql` holds the statements a real `migrate` executed, captured through `connection.execute_wrapper` as they ran. The schema half of the port is therefore faithful by construction rather than by transcription, and CI regenerates all of it and diffs it, so a migration added to the Python app cannot be forgotten here.
+
+### Why the statements are recorded and not rendered
+
+`sqlmigrate` is the obvious tool and it is not good enough. It renders a migration without executing it, so an operation that asks the database the name of a constraint an earlier operation in the same migration was supposed to have created finds nothing there. `db.0074` drops a unique_together, alters the field and puts it back; rendering it raises `Found wrong number (0) of constraints` rather than printing anything.
+
+Recording a real run has no such problem, and three things had to be got right to make it usable:
+
+- **The filter is about reads, not first words.** Most of what a migration runs is Django reading the catalogue to decide what DDL to emit — 3140 of the first 5082 statements captured were `SELECT`s against `pg_class` and `pg_constraint`, and they are also the only statements carrying bound parameters. Skipping them is right. Skipping by first word was not: Django drops a foreign key with a compound statement beginning `SET CONSTRAINTS ... ; ALTER TABLE ... DROP CONSTRAINT`, so excluding anything starting with `SET` threw the drop away, and `db.0002` then tried to add a constraint that was still there.
+- **Two tables' rows are not a migration's to write.** `django_content_type` and `auth_permission` are filled in by `post_migrate` handlers rather than by any operation. Their *tables* are created by ordinary migrations and are recorded like anything else; their contents are written out separately, as the end state rather than the incremental inserts. Nothing in Plane reads either one — there is no `GenericForeignKey` in the app, and its permission classes are DRF's rather than Django's — but a database this builds and a database Django builds have to be the same thing, or comparing them stops meaning anything.
+- **`Migration.atomic` is carried in the plan.** Two migrations set it false, and they have to: `CREATE INDEX CONCURRENTLY` is refused inside a transaction block, so `db.0103` cannot be wrapped in one. Every other migration is one transaction — its statements, its code, and its ledger row together.
+
+The ledger is Django's own `django_migrations`, unchanged, because both sides read it: this package to know what is applied, and `wait_for_migrations` to know whether anything is outstanding. Its table is created by Django's `MigrationRecorder` before the first migration runs and so belongs to none of them, which is why its definition is recorded into `ledger.sql` of its own.
+
+### What is proven
+
+`TestGoBuildsTheSameSchemaAsDjango` applies the whole plan to an empty database and compares the result against `testdata/schema.tsv`, which is the same query run against a database Django migrated. The query asks for every column, constraint, index and sequence, sorted — rather than `pg_dump`, whose output carries the order objects happen to sit in the catalogue.
+
+All 2885 rows match. So do the other three things worth comparing:
+
+| | Django | Go |
+| --- | --- | --- |
+| schema facts | 2885 | identical |
+| tables | 110 | 110 |
+| `django_migrations` rows | 164 | identical, same names |
+| `django_content_type` rows | 121 | identical, same ids |
+| `auth_permission` rows | 512 | identical, same ids |
+
+And one result that was not expected: on a fresh database, **every `RunPython` operation is a no-op**. A Django-migrated empty database has rows in exactly three tables, all of them bookkeeping, and Go's has the same rows. The data migrations exist to move data that is already there, so a fresh install built by Go is already indistinguishable from one built by Django.
+
+### What is not done
+
+The command refuses anyway. 58 operations across 34 migrations carry Python, and until they are ported `manage migrate` names them and stops rather than applying anything.
+
+That is deliberate. "It happens to be empty" is not something to bet a schema on, and the refusal is exactly what protects the case that matters: upgrading a database that has data in it. `migrator` stays on Python until those 58 are ported.

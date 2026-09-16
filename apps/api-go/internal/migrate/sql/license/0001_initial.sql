@@ -1,0 +1,23 @@
+-- license.0001_initial, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "instances" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "instance_name" varchar(255) NOT NULL, "whitelist_emails" text NULL, "instance_id" varchar(25) NOT NULL UNIQUE, "license_key" varchar(256) NULL, "api_key" varchar(16) NOT NULL, "version" varchar(10) NOT NULL, "last_checked_at" timestamp with time zone NOT NULL, "namespace" varchar(50) NULL, "is_telemetry_enabled" boolean NOT NULL, "is_support_required" boolean NOT NULL, "is_setup_done" boolean NOT NULL, "is_signup_screen_visited" boolean NOT NULL, "user_count" bigint NOT NULL CHECK ("user_count" >= 0), "is_verified" boolean NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL);
+CREATE TABLE "instance_configurations" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "key" varchar(100) NOT NULL UNIQUE, "value" text NULL, "category" text NOT NULL, "is_encrypted" boolean NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL);
+CREATE TABLE "instance_admins" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "role" integer NOT NULL CHECK ("role" >= 0), "is_verified" boolean NOT NULL, "created_by_id" uuid NULL, "instance_id" uuid NOT NULL, "updated_by_id" uuid NULL, "user_id" uuid NULL);
+ALTER TABLE "instances" ADD CONSTRAINT "instances_created_by_id_c76e92ef_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "instances" ADD CONSTRAINT "instances_updated_by_id_cce8fcdf_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "instances_instance_id_cf688621_like" ON "instances" ("instance_id" varchar_pattern_ops);
+CREATE INDEX "instances_created_by_id_c76e92ef" ON "instances" ("created_by_id");
+CREATE INDEX "instances_updated_by_id_cce8fcdf" ON "instances" ("updated_by_id");
+ALTER TABLE "instance_configurations" ADD CONSTRAINT "instance_configurations_created_by_id_e683f3e5_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "instance_configurations" ADD CONSTRAINT "instance_configurations_updated_by_id_f0d7542e_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "instance_configurations_key_3eb64d36_like" ON "instance_configurations" ("key" varchar_pattern_ops);
+CREATE INDEX "instance_configurations_created_by_id_e683f3e5" ON "instance_configurations" ("created_by_id");
+CREATE INDEX "instance_configurations_updated_by_id_f0d7542e" ON "instance_configurations" ("updated_by_id");
+ALTER TABLE "instance_admins" ADD CONSTRAINT "instance_admins_instance_id_user_id_2e80a466_uniq" UNIQUE ("instance_id", "user_id");
+ALTER TABLE "instance_admins" ADD CONSTRAINT "instance_admins_created_by_id_7f4e03b4_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "instance_admins" ADD CONSTRAINT "instance_admins_instance_id_66d1ba73_fk_instances_id" FOREIGN KEY ("instance_id") REFERENCES "instances" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "instance_admins" ADD CONSTRAINT "instance_admins_updated_by_id_b7800403_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "instance_admins" ADD CONSTRAINT "instance_admins_user_id_cc6e9b62_fk_users_id" FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "instance_admins_created_by_id_7f4e03b4" ON "instance_admins" ("created_by_id");
+CREATE INDEX "instance_admins_instance_id_66d1ba73" ON "instance_admins" ("instance_id");
+CREATE INDEX "instance_admins_updated_by_id_b7800403" ON "instance_admins" ("updated_by_id");
+CREATE INDEX "instance_admins_user_id_cc6e9b62" ON "instance_admins" ("user_id");

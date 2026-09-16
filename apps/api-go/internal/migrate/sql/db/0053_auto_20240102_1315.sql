@@ -1,0 +1,1 @@
+-- db.0053_auto_20240102_1315, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

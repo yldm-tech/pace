@@ -1,0 +1,1 @@
+-- auth.0012_alter_user_first_name_max_length, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

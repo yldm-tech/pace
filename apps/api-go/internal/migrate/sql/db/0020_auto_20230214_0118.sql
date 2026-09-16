@@ -1,0 +1,25 @@
+-- db.0020_auto_20230214_0118, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+ALTER TABLE "labels" RENAME COLUMN "colour" TO "color";
+ALTER TABLE "api_tokens" ADD COLUMN "workspace_id" uuid NULL CONSTRAINT "api_tokens_workspace_id_6791c7bd_fk_workspaces_id" REFERENCES "workspaces"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "api_tokens_workspace_id_6791c7bd_fk_workspaces_id" IMMEDIATE;
+ALTER TABLE "issues" ADD COLUMN "completed_at" timestamp with time zone NULL;
+ALTER TABLE "issues" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
+ALTER TABLE "issues" ALTER COLUMN "sort_order" DROP DEFAULT;
+ALTER TABLE "projects" ADD COLUMN "cycle_view" boolean DEFAULT true NOT NULL;
+ALTER TABLE "projects" ALTER COLUMN "cycle_view" DROP DEFAULT;
+ALTER TABLE "projects" ADD COLUMN "module_view" boolean DEFAULT true NOT NULL;
+ALTER TABLE "projects" ALTER COLUMN "module_view" DROP DEFAULT;
+ALTER TABLE "states" ADD COLUMN "default" boolean DEFAULT false NOT NULL;
+ALTER TABLE "states" ALTER COLUMN "default" DROP DEFAULT;
+ALTER TABLE "issues" ALTER COLUMN "description" SET DEFAULT '{}'::jsonb;
+UPDATE "issues" SET "description" = '{}'::jsonb WHERE "description" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
+ALTER TABLE "issues" ALTER COLUMN "description" SET NOT NULL;
+ALTER TABLE "issues" ALTER COLUMN "description" DROP DEFAULT;
+ALTER TABLE "issues" ALTER COLUMN "description_html" SET DEFAULT '<p></p>';
+UPDATE "issues" SET "description_html" = '<p></p>' WHERE "description_html" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
+ALTER TABLE "issues" ALTER COLUMN "description_html" SET NOT NULL;
+ALTER TABLE "issues" ALTER COLUMN "description_html" DROP DEFAULT;
+ALTER TABLE "issue_comments" ALTER COLUMN "comment_json" SET DEFAULT '{}'::jsonb;
+UPDATE "issue_comments" SET "comment_json" = '{}'::jsonb WHERE "comment_json" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
+ALTER TABLE "issue_comments" ALTER COLUMN "comment_json" SET NOT NULL;
+ALTER TABLE "issue_comments" ALTER COLUMN "comment_json" DROP DEFAULT;
+CREATE INDEX "api_tokens_workspace_id_6791c7bd" ON "api_tokens" ("workspace_id");

@@ -1,0 +1,21 @@
+-- db.0101_description_descriptionversion, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "descriptions" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "description_json" jsonb NOT NULL, "description_html" text NOT NULL, "description_binary" bytea NULL, "description_stripped" text NULL, "created_by_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+CREATE TABLE "description_versions" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "description_json" jsonb NOT NULL, "description_html" text NOT NULL, "description_binary" bytea NULL, "description_stripped" text NULL, "created_by_id" uuid NULL, "description_id" uuid NOT NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+ALTER TABLE "descriptions" ADD CONSTRAINT "descriptions_created_by_id_b88ab399_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "descriptions" ADD CONSTRAINT "descriptions_project_id_8f46180b_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "descriptions" ADD CONSTRAINT "descriptions_updated_by_id_af519c4d_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "descriptions" ADD CONSTRAINT "descriptions_workspace_id_767279bf_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "descriptions_created_by_id_b88ab399" ON "descriptions" ("created_by_id");
+CREATE INDEX "descriptions_project_id_8f46180b" ON "descriptions" ("project_id");
+CREATE INDEX "descriptions_updated_by_id_af519c4d" ON "descriptions" ("updated_by_id");
+CREATE INDEX "descriptions_workspace_id_767279bf" ON "descriptions" ("workspace_id");
+ALTER TABLE "description_versions" ADD CONSTRAINT "description_versions_created_by_id_6633a3de_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "description_versions" ADD CONSTRAINT "description_versions_description_id_dc7f19b6_fk_descriptions_id" FOREIGN KEY ("description_id") REFERENCES "descriptions" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "description_versions" ADD CONSTRAINT "description_versions_project_id_1a6c9aa9_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "description_versions" ADD CONSTRAINT "description_versions_updated_by_id_8b5179ae_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "description_versions" ADD CONSTRAINT "description_versions_workspace_id_52857186_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "description_versions_created_by_id_6633a3de" ON "description_versions" ("created_by_id");
+CREATE INDEX "description_versions_description_id_dc7f19b6" ON "description_versions" ("description_id");
+CREATE INDEX "description_versions_project_id_1a6c9aa9" ON "description_versions" ("project_id");
+CREATE INDEX "description_versions_updated_by_id_8b5179ae" ON "description_versions" ("updated_by_id");
+CREATE INDEX "description_versions_workspace_id_52857186" ON "description_versions" ("workspace_id");

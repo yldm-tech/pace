@@ -1,0 +1,27 @@
+-- db.0083_device_workspace_timezone_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "devices" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "device_id" varchar(255) NULL, "device_type" varchar(255) NOT NULL, "push_token" varchar(255) NULL, "is_active" boolean NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL);
+ALTER TABLE "issue_types" ADD COLUMN "is_epic" boolean DEFAULT false NOT NULL;
+ALTER TABLE "issue_types" ALTER COLUMN "is_epic" DROP DEFAULT;
+ALTER TABLE "workspaces" ADD COLUMN "timezone" varchar(255) DEFAULT 'UTC' NOT NULL;
+ALTER TABLE "workspaces" ALTER COLUMN "timezone" DROP DEFAULT;
+ALTER TABLE "issue_types" DROP CONSTRAINT "issue_types_level_check";
+ALTER TABLE "issue_types" ALTER COLUMN "level" TYPE double precision USING "level"::double precision;
+SET CONSTRAINTS "label_project_id_90e0f1a2_fk_project_id" IMMEDIATE; ALTER TABLE "labels" DROP CONSTRAINT "label_project_id_90e0f1a2_fk_project_id";
+ALTER TABLE "labels" ALTER COLUMN "project_id" DROP NOT NULL;
+ALTER TABLE "labels" ADD CONSTRAINT "labels_project_id_cf57a802_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE TABLE "device_sessions" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "is_active" boolean NOT NULL, "user_agent" varchar(255) NULL, "ip_address" inet NULL, "start_time" timestamp with time zone NOT NULL, "end_time" timestamp with time zone NULL, "created_by_id" uuid NULL, "device_id" uuid NOT NULL, "session_id" varchar(128) NOT NULL, "updated_by_id" uuid NULL);
+ALTER TABLE "devices" ADD CONSTRAINT "devices_created_by_id_410a755b_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "devices" ADD CONSTRAINT "devices_updated_by_id_ee20dc3c_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "devices" ADD CONSTRAINT "devices_user_id_9a5cca49_fk_users_id" FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "devices_created_by_id_410a755b" ON "devices" ("created_by_id");
+CREATE INDEX "devices_updated_by_id_ee20dc3c" ON "devices" ("updated_by_id");
+CREATE INDEX "devices_user_id_9a5cca49" ON "devices" ("user_id");
+ALTER TABLE "device_sessions" ADD CONSTRAINT "device_sessions_created_by_id_920a3bd5_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "device_sessions" ADD CONSTRAINT "device_sessions_device_id_a42b2ada_fk_devices_id" FOREIGN KEY ("device_id") REFERENCES "devices" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "device_sessions" ADD CONSTRAINT "device_sessions_session_id_5382b02b_fk_sessions_session_key" FOREIGN KEY ("session_id") REFERENCES "sessions" ("session_key") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "device_sessions" ADD CONSTRAINT "device_sessions_updated_by_id_d0bd0c76_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "device_sessions_created_by_id_920a3bd5" ON "device_sessions" ("created_by_id");
+CREATE INDEX "device_sessions_device_id_a42b2ada" ON "device_sessions" ("device_id");
+CREATE INDEX "device_sessions_session_id_5382b02b" ON "device_sessions" ("session_id");
+CREATE INDEX "device_sessions_session_id_5382b02b_like" ON "device_sessions" ("session_id" varchar_pattern_ops);
+CREATE INDEX "device_sessions_updated_by_id_d0bd0c76" ON "device_sessions" ("updated_by_id");

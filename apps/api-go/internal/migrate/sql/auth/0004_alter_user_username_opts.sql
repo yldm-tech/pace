@@ -1,0 +1,1 @@
+-- auth.0004_alter_user_username_opts, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

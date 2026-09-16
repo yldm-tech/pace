@@ -1,0 +1,1 @@
+-- auth.0006_require_contenttypes_0002, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

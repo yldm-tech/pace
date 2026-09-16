@@ -1,0 +1,1 @@
+-- auth.0007_alter_validators_add_error_messages, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.

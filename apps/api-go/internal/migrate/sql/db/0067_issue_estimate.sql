@@ -1,0 +1,20 @@
+-- db.0067_issue_estimate, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+CREATE TABLE "deploy_boards" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_identifier" uuid NULL, "entity_name" varchar(30) NOT NULL, "anchor" varchar(255) NOT NULL UNIQUE, "is_comments_enabled" boolean NOT NULL, "is_reactions_enabled" boolean NOT NULL, "is_votes_enabled" boolean NOT NULL, "view_props" jsonb NOT NULL, "created_by_id" uuid NULL, "inbox_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
+ALTER TABLE "estimates" ADD COLUMN "last_used" boolean DEFAULT false NOT NULL;
+ALTER TABLE "estimates" ALTER COLUMN "last_used" DROP DEFAULT;
+ALTER TABLE "issues" RENAME COLUMN "estimate_point" TO "point";
+ALTER TABLE "issues" ADD COLUMN "estimate_point_id" uuid NULL CONSTRAINT "issues_estimate_point_id_a6822abe_fk_estimate_points_id" REFERENCES "estimate_points"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "issues_estimate_point_id_a6822abe_fk_estimate_points_id" IMMEDIATE;
+ALTER TABLE "estimate_points" ALTER COLUMN "value" TYPE varchar(255);
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_entity_name_entity_identifier_e58644ac_uniq" UNIQUE ("entity_name", "entity_identifier");
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_created_by_id_149dff93_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_inbox_id_ebc13d44_fk_inboxes_id" FOREIGN KEY ("inbox_id") REFERENCES "inboxes" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_project_id_cfc792a1_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_updated_by_id_db7ae24f_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "deploy_boards" ADD CONSTRAINT "deploy_boards_workspace_id_fcf03158_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "deploy_boards_anchor_fe87f323_like" ON "deploy_boards" ("anchor" varchar_pattern_ops);
+CREATE INDEX "deploy_boards_created_by_id_149dff93" ON "deploy_boards" ("created_by_id");
+CREATE INDEX "deploy_boards_inbox_id_ebc13d44" ON "deploy_boards" ("inbox_id");
+CREATE INDEX "deploy_boards_project_id_cfc792a1" ON "deploy_boards" ("project_id");
+CREATE INDEX "deploy_boards_updated_by_id_db7ae24f" ON "deploy_boards" ("updated_by_id");
+CREATE INDEX "deploy_boards_workspace_id_fcf03158" ON "deploy_boards" ("workspace_id");
+CREATE INDEX "issues_estimate_point_id_a6822abe" ON "issues" ("estimate_point_id");

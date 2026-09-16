@@ -1,0 +1,21 @@
+-- db.0072_issueattachment_external_id_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+ALTER TABLE "issue_attachments" ADD COLUMN "external_id" varchar(255) NULL;
+ALTER TABLE "issue_attachments" ADD COLUMN "external_source" varchar(255) NULL;
+CREATE TABLE "user_recent_visits" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_identifier" uuid NULL, "entity_name" varchar(30) NOT NULL, "visited_at" timestamp with time zone NOT NULL, "created_by_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL, "workspace_id" uuid NOT NULL);
+ALTER TABLE "projects" DROP COLUMN "start_date" CASCADE;
+ALTER TABLE "projects" DROP COLUMN "target_date" CASCADE;
+CREATE INDEX "issue_sequences_sequence_2c9458d4" ON "issue_sequences" ("sequence");
+CREATE INDEX "projects_identifier_3267ade8" ON "projects" ("identifier");
+CREATE INDEX "projects_identifier_3267ade8_like" ON "projects" ("identifier" varchar_pattern_ops);
+CREATE INDEX "project_identifiers_name_6ca8a4b0" ON "project_identifiers" ("name");
+CREATE INDEX "project_identifiers_name_6ca8a4b0_like" ON "project_identifiers" ("name" varchar_pattern_ops);
+ALTER TABLE "user_recent_visits" ADD CONSTRAINT "user_recent_visits_created_by_id_a655b75f_fk_users_id" FOREIGN KEY ("created_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_recent_visits" ADD CONSTRAINT "user_recent_visits_project_id_e5eecf27_fk_projects_id" FOREIGN KEY ("project_id") REFERENCES "projects" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_recent_visits" ADD CONSTRAINT "user_recent_visits_updated_by_id_42b12ef2_fk_users_id" FOREIGN KEY ("updated_by_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_recent_visits" ADD CONSTRAINT "user_recent_visits_user_id_f5153288_fk_users_id" FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "user_recent_visits" ADD CONSTRAINT "user_recent_visits_workspace_id_362a4e80_fk_workspaces_id" FOREIGN KEY ("workspace_id") REFERENCES "workspaces" ("id") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "user_recent_visits_created_by_id_a655b75f" ON "user_recent_visits" ("created_by_id");
+CREATE INDEX "user_recent_visits_project_id_e5eecf27" ON "user_recent_visits" ("project_id");
+CREATE INDEX "user_recent_visits_updated_by_id_42b12ef2" ON "user_recent_visits" ("updated_by_id");
+CREATE INDEX "user_recent_visits_user_id_f5153288" ON "user_recent_visits" ("user_id");
+CREATE INDEX "user_recent_visits_workspace_id_362a4e80" ON "user_recent_visits" ("workspace_id");

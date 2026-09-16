@@ -1,0 +1,5 @@
+-- db.0026_alter_projectmember_view_props, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+ALTER TABLE "project_members" ALTER COLUMN "view_props" SET DEFAULT '{"filters": {"priority": null, "state": null, "state_group": null, "assignees": null, "created_by": null, "labels": null, "start_date": null, "target_date": null, "subscriber": null}, "display_filters": {"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}}'::jsonb;
+UPDATE "project_members" SET "view_props" = '{"filters": {"priority": null, "state": null, "state_group": null, "assignees": null, "created_by": null, "labels": null, "start_date": null, "target_date": null, "subscriber": null}, "display_filters": {"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}}'::jsonb WHERE "view_props" IS NULL; SET CONSTRAINTS ALL IMMEDIATE;
+ALTER TABLE "project_members" ALTER COLUMN "view_props" SET NOT NULL;
+ALTER TABLE "project_members" ALTER COLUMN "view_props" DROP DEFAULT;
