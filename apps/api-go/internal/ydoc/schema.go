@@ -35,9 +35,11 @@ type NodeType struct {
 	Groups   []string `json:"groups"`
 	Content  string   `json:"content"`
 	// Whitespace is "pre" for a type whose content keeps its spacing exactly as written, which is what tells the parser not to collapse it.
-	Whitespace string               `json:"whitespace"`
-	Marks      *string              `json:"marks"`
-	Attrs      map[string]Attribute `json:"attrs"`
+	Whitespace string  `json:"whitespace"`
+	Marks      *string `json:"marks"`
+	// AttrNames is the attributes in the order the type declares them, which is the order they are written into a Yjs document — and two documents whose attributes went in in different orders are different bytes.
+	AttrNames []string             `json:"attr_names"`
+	Attrs     map[string]Attribute `json:"attrs"`
 
 	// ContentMatch is the compiled Content, and MarkSet the compiled Marks: nil when every mark is allowed, empty when none is.
 	ContentMatch *ContentMatch `json:"-"`
@@ -67,11 +69,12 @@ func (t *NodeType) hasRequiredAttrs() bool {
 //
 // Excludes names the marks this one cannot sit beside: absent means it excludes only itself, "_" means it excludes every other mark, and a list names them.
 type MarkType struct {
-	Name     string               `json:"name"`
-	Spanning bool                 `json:"spanning"`
-	Groups   []string             `json:"groups"`
-	Excludes *string              `json:"excludes"`
-	Attrs    map[string]Attribute `json:"attrs"`
+	Name      string               `json:"name"`
+	Spanning  bool                 `json:"spanning"`
+	Groups    []string             `json:"groups"`
+	Excludes  *string              `json:"excludes"`
+	AttrNames []string             `json:"attr_names"`
+	Attrs     map[string]Attribute `json:"attrs"`
 }
 
 func (t *MarkType) inGroup(name string) bool {

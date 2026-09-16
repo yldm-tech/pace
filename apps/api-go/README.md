@@ -2664,3 +2664,25 @@ The corpus records both renderings and both readings for all 96 documents, so th
 ### The selector subset
 
 Parse rules match with CSS selectors, and the ones this schema uses need a tag name, `[attr]`, `[attr="value"]`, `[attr^="value"]` and `:not(...)`. Exactly that is implemented, and anything else is refused at load rather than silently matching nothing — so a rule added upstream with a selector this does not understand fails where somebody will see it.
+
+## The live service, part seven: writing a document back out as Yjs
+
+`ToUpdate` is the last direction: a document goes in and the Yjs update a page is stored as comes out. With it the loop closes — a page that has HTML and no Yjs document gets one, and every client that connects afterwards synchronises against it.
+
+### What is checked, and what cannot be
+
+The corpus records the update the editor writes for all 97 documents, with both sides fixing the document's client id so the bytes are comparable at all. Every one of them reads back to the same document. Most of them are also **byte for byte** the same update.
+
+The ones that are not differ for three reasons, all of them in the Yjs port underneath rather than in anything above it, and none of them changing the document that comes back. `EncodesLikeTheEditor` names all three, and the test checks both halves: a document that should match has to, and one that should not has to actually differ, so the exemption cannot quietly grow.
+
+- **An attribute whose value is JavaScript's `undefined`.** The editor writes one for every attribute a type declares with an undefined default that the document does not carry, because `if (val !== null)` lets `undefined` through where it stops `null`. The port has `null` and nothing else. Reading back maps both to nothing, the schema's default applies, and the default is `undefined` again.
+- **A run of text whose marks are not in alphabetical order.** The editor opens the formatting markers in the order the marks are in, which is the schema's; the port sorts them by name, deliberately, because the order they are linked in is observable.
+- **A mark attribute holding `&`, `<` or `>`.** A mark's attributes travel as JSON and the port writes that JSON with Go's encoder, which escapes those three so its output is safe to drop into a page. JavaScript's leaves them. A link whose address carries a query string is where this shows up.
+
+### Three things the port had to get right
+
+Each of these was found by the corpus rather than by reading.
+
+- **A whole number is written as an integer, not as a float.** JavaScript has one number type and Yjs writes a whole one as a varint; Go has both, and a number that arrived through JSON is a float whatever it holds. Handing a whole one over as an integer is done at the boundary where the two languages meet.
+- **A run of text is written as one delta, not as a sequence of inserts.** The two produce the same text and different bytes: a delta walks a cursor to the end and appends, where an insert at a position points at what follows it, and the items then carry a right neighbour the editor's never do.
+- **A node's attributes go in in the schema's declared order.** The order is not decoration — two documents whose attributes went in in different orders are different bytes — so the schema dump now carries the order and the writer follows it.
