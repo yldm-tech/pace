@@ -162,6 +162,8 @@ func (tasks *VersionTasks) pageTransaction(ctx context.Context, arguments []any,
 
 // trackPageVersion reproduces track_page_version: an edit within ten minutes of the last version, by the same person, rewrites that version rather than adding one.
 //
+// It reads description_json. The column is not called description -- Page has never had one, which is its own story: page_version_task.py assigns page.description into description_json on both of its write branches, so upstream raises AttributeError into log_exception every time and page_versions stays empty. That is not reproduced here, because the port had already gone further than Django gets: naming the column description made Postgres refuse the select outright, the error met a bare return, and the task then logged itself completed. A version is written now where Django would have written one had its attribute resolved.
+//
 // The rewrite does not move last_saved_at, so a run of quick edits keeps folding into the version the first of them made and the window is measured from that first edit rather than the last. The work item's copy of this task does move it, which is the one place the two differ.
 func (tasks *VersionTasks) trackPageVersion(ctx context.Context, arguments []any, keywords map[string]any) error {
 	pageID := stringArgument(arguments, keywords, 0, "page_id")
@@ -170,15 +172,17 @@ func (tasks *VersionTasks) trackPageVersion(ctx context.Context, arguments []any
 
 	var page struct {
 		WorkspaceID         string  `gorm:"column:workspace_id"`
-		Description         []byte  `gorm:"column:description"`
+		DescriptionJSON     []byte  `gorm:"column:description_json"`
 		DescriptionHTML     string  `gorm:"column:description_html"`
 		DescriptionStripped *string `gorm:"column:description_stripped"`
 		DescriptionBinary   []byte  `gorm:"column:description_binary"`
 	}
 	err := tasks.db.WithContext(ctx).Table("pages").
-		Select("workspace_id, description, description_html, description_stripped, description_binary").
+		Select("workspace_id, description_json, description_html, description_stripped, description_binary").
 		Where("id = ? AND deleted_at IS NULL", pageID).Take(&page).Error
 	if err != nil {
+		// Django's except catches the page that is not there and logs it. A bare return said nothing, which is how a select that could not run at all went unnoticed while the task reported itself completed.
+		tasks.logger.Warn("track page version: the page could not be read", "page", pageID, "error", err)
 		return nil
 	}
 
@@ -212,7 +216,7 @@ func (tasks *VersionTasks) trackPageVersion(ctx context.Context, arguments []any
 		err = tasks.db.WithContext(ctx).Table("page_versions").Where("id = ?", latest.ID).
 			Updates(map[string]any{
 				"description_html": page.DescriptionHTML, "description_binary": page.DescriptionBinary,
-				"description_json": jsonOrEmpty(page.Description), "description_stripped": strippedHTML(page.DescriptionHTML),
+				"description_json": jsonOrEmpty(page.DescriptionJSON), "description_stripped": strippedHTML(page.DescriptionHTML),
 				"sub_pages_data": "{}", "updated_at": now,
 			}).Error
 		if err != nil {
@@ -228,7 +232,7 @@ func (tasks *VersionTasks) trackPageVersion(ctx context.Context, arguments []any
 			"id": versionID, "created_at": now, "updated_at": now,
 			"created_by_id": nil, "updated_by_id": nil,
 			"page_id": pageID, "workspace_id": page.WorkspaceID,
-			"description_json": jsonOrEmpty(page.Description), "description_html": page.DescriptionHTML,
+			"description_json": jsonOrEmpty(page.DescriptionJSON), "description_html": page.DescriptionHTML,
 			"description_binary": page.DescriptionBinary, "description_stripped": strippedHTML(page.DescriptionHTML),
 			"owned_by_id": userID, "last_saved_at": now, "sub_pages_data": "{}",
 		}).Error
