@@ -2256,3 +2256,23 @@ The originals are looked up by workspace and project as well as by id, so a desc
 `get_entity_id_field` does not name every entity type. `DRAFT_ISSUE_ATTACHMENT` is missing from it, so a copy of one is owned by nothing at all — none of the owner columns is written.
 
 The live server is the one piece of this that reaches outside the installation, and it is still the Node service. With no `LIVE_BASE_URL` configured the call is skipped and the copy keeps whatever json and binary it already had, which is what upstream does too — the copy then opens with the original's content until somebody edits it. Any status other than 200 is treated the same way, since `requests` only raises when the call itself fails.
+
+## Migrated service: the version backfill
+
+`internal/worker/version_sync.go` is `plane.bgtasks.issue_version_sync` and `plane.bgtasks.issue_description_version_sync` — five task names between them. Nothing in the running application queues any of them. They are what the two management commands start, and they exist here so that an installation that runs those commands still gets its backfill once the queue has moved to Go.
+
+Each backfill reads the work items in created order, writes one version row per work item, and asks for the next slice after a countdown. The whole batch is one transaction and the task swallows its own failure, so a backfill that breaks halfway stops there rather than skipping past it. A work item with no workspace or project is left out, and so is one with nobody to own its version — the owner is whoever last touched it, then whoever made it, and failing both any admin of its project.
+
+**`IssueVersion.log_issue_version` always fails, and that is not a translation error.** It builds the row with `cls.objects.create(issue=issue, ...)` and never gives it a project. `ProjectBaseModel.save` then reads `self.project.workspace` off it, and an unsaved row whose `project_id` is None raises `RelatedObjectDoesNotExist` before anything reaches the database — which `log_issue_version`'s own `except` swallows and answers `False` to a caller that does not look. This was confirmed against the real model rather than read off the code.
+
+That matters for `issue_task`, the third task in the module. It keeps one version row per person per ten minutes: an edit that lands within ten minutes of that person's last version is folded into it, and anything else calls `log_issue_version`. So the first edit after a gap records nothing at all, and only the folding branch has ever written anything. Reproduced rather than corrected. Nothing in this edition queues `issue_task` either.
+
+The bulk writes differ between the two backfills for no reason anyone left behind: the work item one asks for a thousand rows at a time and the description one asks for all of them. Both are kept.
+
+### Holding a task until its eta
+
+The backfill is the first thing here to queue another task with a delay, so `Consumer` now honours the `eta` header and `CeleryPublisher.PublishAfter` writes it. Celery holds an eta task in the worker rather than at the broker and acknowledges it on receipt, so a restart loses it; this does the same. The wait happens out of the way of the messages behind it, and a shutdown waits for anything already running through `Consumer.Wait`.
+
+### Still on Django: the management commands
+
+Eighteen `manage.py` commands have no Go equivalent yet, including the two that start these backfills. The tasks are ready for them; the commands themselves are the next piece.

@@ -284,10 +284,25 @@ func (publisher *CeleryPublisher) publishKeywords(ctx context.Context, taskName 
 	return publisher.send(ctx, taskName, nil, keywords)
 }
 
+// PublishAfter queues a task to run once a delay has passed, which is apply_async(countdown=...).
+//
+// Celery carries the moment in the message's own eta header rather than holding the message at the broker, and the worker is what waits. A delay of zero is an ordinary publish.
+func (publisher *CeleryPublisher) PublishAfter(ctx context.Context, taskName string, keywords map[string]any, delay time.Duration) error {
+	return publisher.sendAt(ctx, taskName, nil, keywords, delay)
+}
+
 func (publisher *CeleryPublisher) send(ctx context.Context, taskName string, arguments []any, keywords map[string]any) error {
+	return publisher.sendAt(ctx, taskName, arguments, keywords, 0)
+}
+
+func (publisher *CeleryPublisher) sendAt(ctx context.Context, taskName string, arguments []any, keywords map[string]any, delay time.Duration) error {
 	message, err := celeryMessage(taskName, arguments, keywords)
 	if err != nil {
 		return err
+	}
+	if delay > 0 {
+		// The same shape Celery writes: an aware ISO 8601 moment with microseconds.
+		message.Headers["eta"] = time.Now().UTC().Add(delay).Format("2006-01-02T15:04:05.000000-07:00")
 	}
 	connection, err := amqp.Dial(publisher.brokerURL)
 	if err != nil {
