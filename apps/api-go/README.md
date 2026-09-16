@@ -2921,8 +2921,24 @@ Two things make that possible. `migrate.ApplyThrough` stops the Go engine at a n
 
 Four of the operations exist to scatter rows into an arbitrary order and call `random.randint` to do it. Two runs of the same Python disagree with each other, so comparing those values would only prove that random is random. A seed names them with a `-- RANDOM: table.column` line: the column is left out of the comparison, and checked separately for having been filled in at all.
 
+### Three upstream bugs, reproduced
+
+Reading these closely turns up things that are plainly not what was meant, and they are reproduced rather than corrected, because a database that has been through the Python is in the state the Python left it in.
+
+- **`update_cycle_props` and `update_module_props` test for a key that does not exist.** The condition is `if "filter" in obj.view_props`; the key the rewrite then reads, and the one every other props object in the codebase uses, is `filters`. Nothing writes a `filter`, so in practice these two rewrite nothing at all.
+- **`generate_display_name`'s random fallback is unreachable.** It reads `obj.email.split("@")[0] if len(obj.email.split("@")) else "".join(random.choice(...) for _ in range(6))`. `str.split` always returns at least one element — `"".split("@")` is `[""]` — so the length is never zero and the six random letters are never generated.
+- **`random_sort_ordering` uses a different range from its four siblings.** The other scatterings are `randint(1, 65536)`; this one is `randint(0, 65535)`.
+
+### Masking, for an identifier that cannot match
+
+`db.0049`'s `update_pages` writes a fresh `uuid4().hex` into the middle of a page's HTML as well as into a column of its own. Excluding the whole column would leave the operation's real output unchecked — which blocks were embedded, in what order, with what titles. A seed can instead say `-- MASK-HEX32: pages.description_html`, which blanks the thirty-two hex characters and leaves the rest of the markup in the comparison.
+
+The same operation shows why the id has to be generated once and used twice: a materialised CTE holds the blocks, the aggregate builds the HTML from it and the insert writes the log rows from it. It is also written in two forms — Python hands the undashed hex to the f-string and the same string to a `UUIDField`, which parses it and stores the canonical dashed form.
+
+Two operations wrap everything in `try: ... except Exception as e: print(e)`, and carry on as though nothing had been asked of them. In Postgres an error inside a transaction poisons the whole thing, so reproducing that needs a savepoint.
+
 ### Where it stands
 
-Six operations across four migrations are ported and checked: `db.0035`, `db.0037`, `db.0038` and `db.0039`. Two more are registered as doing nothing, with the reason written down — `contenttypes.0002`'s is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
+26 operations across 12 migrations are ported and checked: `db.0035` through `db.0050`. Two more are registered as doing nothing, with the reason written down — `contenttypes.0002`'s is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
 
-That leaves 50. Until they are done `manage migrate` still refuses, and `migrator` still runs Python.
+That leaves 29. Until they are done `manage migrate` still refuses, and `migrator` still runs Python.

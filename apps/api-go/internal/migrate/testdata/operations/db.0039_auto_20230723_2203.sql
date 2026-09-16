@@ -2,7 +2,7 @@
 --
 -- rename_field only moves activities whose field is exactly "assignee", so there is one of those, one already plural, and one naming something else. update_workspace_member_props branches on `is None`, which is the SQL null and not the JSON one — so there is a member with a null view_props, one with an object, and one holding the JSON value null, which takes the other branch and ends up nested under "properties". update_project_member_sort_order fills every row with a random number, so its column is compared for being filled rather than for what it holds.
 --
--- RANDOM: project_members.sort_order
+-- UNSTABLE: project_members.sort_order
 
 -- A workspace member is unique per (workspace, member) and a project member per (project, member), so each row below needs a member of its own.
 INSERT INTO users (password, id, username, first_name, last_name, avatar, date_joined, created_at, updated_at, last_location, created_location, is_superuser, is_managed, is_password_expired, is_active, is_staff, is_email_verified, is_password_autoset, is_onboarded, token, billing_address_country, has_billing_address, user_timezone, last_login_ip, last_logout_ip, last_login_medium, last_login_uagent, is_bot, theme, is_tour_completed, onboarding_step) VALUES
