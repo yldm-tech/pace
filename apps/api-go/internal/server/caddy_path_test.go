@@ -35,13 +35,13 @@ func TestTheCaddyPathMatcher(t *testing.T) {
 func TestTheGuardReadsBothKindsOfProxiedPath(t *testing.T) {
 	matchers := communityProxyMatchers(t)
 	// One of each: a bare path on the reverse_proxy line, and a named path_regexp matcher.
-	for _, path := range []string{"/auth/sign-in/", "/api/users/me/", "/api/workspaces/*/export-issues/", "/api/instances/"} {
+	for _, path := range []string{"/auth/sign-in/", "/api/users/me/", "/api/workspaces/*/export-issues/", "/api/instances/", "/api/timezones/"} {
 		if !anyMatcherCovers(matchers, path) {
 			t.Errorf("%q is proxied to Go and the guard does not see it", path)
 		}
 	}
 	// And something the proxy leaves with Django, so the guard is not matching everything.
-	for _, path := range []string{"/api/unsplash/", "/api/timezones/"} {
+	for _, path := range []string{"/api/workspaces/*/file-assets/", "/api/users/file-assets/"} {
 		if anyMatcherCovers(matchers, path) {
 			t.Errorf("%q is still Django's and the guard thinks it is cut over", path)
 		}

@@ -91,6 +91,7 @@ func main() {
 				IsSelfManaged:        cfg.Auth.IsSelfManaged,
 			},
 			InstanceMailer: instanceMailer(connection.GORM, cfg),
+			LLMBaseURL:     os.Getenv("LLM_BASE_URL"),
 		}),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
