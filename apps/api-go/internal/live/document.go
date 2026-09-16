@@ -17,8 +17,6 @@ type Document struct {
 	mu sync.RWMutex
 	// connections is keyed by the connection itself, because a page open twice in one browser is two connections on one socket.
 	connections map[*Connection]struct{}
-	// loading is true until the document has been read out of the API. A document that never finished loading is never stored, so a failed read cannot overwrite a page with an empty one.
-	loading bool
 	// clients records which awareness client ids each connection has claimed, so they can be removed when it goes.
 	clients map[*Connection]map[uint64]struct{}
 }
@@ -29,9 +27,8 @@ func newDocument(name string) *Document {
 		doc:         crdt.New(),
 		connections: map[*Connection]struct{}{},
 		clients:     map[*Connection]map[uint64]struct{}{},
-		loading:     true,
 	}
-	document.awareness = awareness.New(document.doc.ClientID())
+	document.awareness = awareness.New(uint64(document.doc.ClientID()))
 	return document
 }
 
@@ -108,7 +105,7 @@ func (d *Document) broadcast(frame []byte, except *Connection) {
 		if connection == except {
 			continue
 		}
-		connection.send(frame)
+		connection.sendFrame(frame)
 	}
 }
 

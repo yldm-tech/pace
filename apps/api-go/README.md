@@ -2686,3 +2686,35 @@ Each of these was found by the corpus rather than by reading.
 - **A whole number is written as an integer, not as a float.** JavaScript has one number type and Yjs writes a whole one as a varint; Go has both, and a number that arrived through JSON is a float whatever it holds. Handing a whole one over as an integer is done at the boundary where the two languages meet.
 - **A run of text is written as one delta, not as a sequence of inserts.** The two produce the same text and different bytes: a delta walks a cursor to the end and appends, where an insert at a position points at what follows it, and the items then carry a right neighbour the editor's never do.
 - **A node's attributes go in in the schema's declared order.** The order is not decoration — two documents whose attributes went in in different orders are different bytes — so the schema dump now carries the order and the writer follows it.
+
+## The live service, part eight: the collaboration endpoint
+
+`/live/collaboration` is the websocket every open page is connected to, and the reason the service exists. With the four content directions in place it is mostly bookkeeping — but the bookkeeping is where the behaviour is.
+
+### One socket, several documents, and nothing known until the first frame
+
+The page's id travels in the frames rather than in the url: a client connects to one endpoint and puts the document's name in front of every message. So a connection is not for anything until its first frame arrives, and a socket may end up carrying several documents at once.
+
+That is also why authentication is a message rather than a header. A client sends its token and its first sync step back to back without waiting, so **everything that arrives before the token is queued** and replayed once the document is open. Getting that wrong looks like a page that never loads for exactly the clients that are fastest.
+
+### It runs as the user
+
+Every read and write of a page is made with the editing user's session cookie, so the API decides who may open what. The service's own check is only that the cookie belongs to the user the token names. A refusal is sent back as a permission-denied message and **the socket is left open**, which is what the client expects: it shows the failure and decides for itself whether to retry.
+
+### A page with no document is built from its HTML
+
+Every page created through the API has HTML and no Yjs document. The first person to open one gets it built from the page's HTML and title, and the result is **written straight back** — so the conversion happens once rather than on every open.
+
+### Saving
+
+A change schedules a save ten seconds out, and because the maximum wait is also ten seconds a page being typed into continuously is written on a fixed cadence rather than never. The last connection off a page writes it immediately rather than leaving it on a timer, and a page nobody changed is simply let go.
+
+A failed save is **told to the people editing**, not just logged, because the alternative is somebody typing into a page that is no longer being saved. A page the API refuses as too large is the one failure there is no way forward from: everybody on it is told why, given a moment to read it, and disconnected, and the document is released rather than left collecting changes nothing will ever write.
+
+### Cursors leave with the people they belong to
+
+An awareness update names the client ids it speaks for, and those are remembered against the connection that sent them. When the connection goes, an update is broadcast that raises each of those clients' clocks and blanks its state — which is how y-protocols says somebody left, and what takes their cursor off everybody else's screen.
+
+### What is not here yet
+
+This is a single server. Two people on the same page must reach the same one, because nothing is relayed between servers yet — the Redis relay and the cross-server force-close are the next piece.

@@ -14,6 +14,7 @@ import (
 type Server struct {
 	config Config
 	api    *APIClient
+	hub    *Hub
 	logger *slog.Logger
 	engine *gin.Engine
 	http   *http.Server
@@ -21,9 +22,11 @@ type Server struct {
 
 // NewServer wires the router. It does not listen; Run does that.
 func NewServer(config Config, logger *slog.Logger) *Server {
+	api := NewAPIClient(config.APIBaseURL)
 	server := &Server{
 		config: config,
-		api:    NewAPIClient(config.APIBaseURL),
+		api:    api,
+		hub:    NewHub(api, logger),
 		logger: logger,
 	}
 	server.engine = server.newRouter()
@@ -54,6 +57,7 @@ func (s *Server) registerRoutes(group *gin.RouterGroup) {
 		group.GET(strings.TrimSuffix(path, "/"), handler)
 	}
 	get("/health/", s.health)
+	get("/collaboration/", s.collaboration)
 }
 
 // health answers the liveness probe.
@@ -89,5 +93,7 @@ func (s *Server) Run(ctx context.Context) error {
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	return s.http.Shutdown(shutdownCtx)
+	err := s.http.Shutdown(shutdownCtx)
+	s.hub.Stop()
+	return err
 }
