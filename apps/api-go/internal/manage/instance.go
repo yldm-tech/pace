@@ -136,16 +136,8 @@ func registerInstance(ctx context.Context, env Environment, arguments []string) 
 		if err != nil {
 			return err
 		}
-		err = db.WithContext(ctx).Table("instances").Create(map[string]any{
-			"id": uuid.NewString(), "created_at": now, "updated_at": now,
-			"created_by_id": nil, "updated_by_id": nil,
-			"instance_name": "Plane Community Edition", "instance_id": identifier,
-			"current_version": current, "latest_version": latest, "last_checked_at": now,
-			"is_test": isTest, "edition": "PLANE_COMMUNITY",
-			"is_telemetry_enabled": true, "is_support_required": true,
-			"is_setup_done": false, "is_signup_screen_visited": false,
-			"is_verified": false, "is_current_version_deprecated": false,
-		}).Error
+		err = db.WithContext(ctx).Table("instances").Create(
+			newInstanceRow(identifier, current, latest, now, isTest)).Error
 		if err != nil {
 			return err
 		}
@@ -169,6 +161,23 @@ func registerInstance(ctx context.Context, env Environment, arguments []string) 
 		return nil
 	}
 	return Queue().PublishAfter(ctx, worker.PushInstanceMetricsTask, map[string]any{}, 0)
+}
+
+// newInstanceRow is the row register_instance writes for an installation that has never been recorded.
+//
+// It is a function of its own so that a test can check it against the schema. Django fills a column the command does not mention from the field's default, and for a text field that allows empty strings and has no explicit default that means the empty string — not null. domain is such a column, and omitting it here made the insert fail on its NOT NULL constraint the first time this command was ever run.
+func newInstanceRow(identifier, current, latest string, now time.Time, isTest bool) map[string]any {
+	return map[string]any{
+		"id": uuid.NewString(), "created_at": now, "updated_at": now,
+		"created_by_id": nil, "updated_by_id": nil,
+		"instance_name": "Plane Community Edition", "instance_id": identifier,
+		"domain":          "",
+		"current_version": current, "latest_version": latest, "last_checked_at": now,
+		"is_test": isTest, "edition": "PLANE_COMMUNITY",
+		"is_telemetry_enabled": true, "is_support_required": true,
+		"is_setup_done": false, "is_signup_screen_visited": false,
+		"is_verified": false, "is_current_version_deprecated": false,
+	}
 }
 
 // instanceIdentifier is secrets.token_hex(12): twenty-four hex characters.

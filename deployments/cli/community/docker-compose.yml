@@ -44,13 +44,13 @@ x-mq-env: &mq-env # RabbitMQ Settings
 
 x-live-env: &live-env
   API_BASE_URL: ${API_BASE_URL:-http://api:8000}
+  CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
   LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY}
 
 x-app-env: &app-env
   WEB_URL: ${WEB_URL:-http://localhost}
   DEBUG: ${DEBUG:-0}
   CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
-  GUNICORN_WORKERS: 1
   USE_MINIO: ${USE_MINIO:-1}
   DATABASE_URL: ${DATABASE_URL:-postgresql://plane:plane@plane-db/plane}
   SECRET_KEY: ${SECRET_KEY}
@@ -107,13 +107,11 @@ services:
 
   api:
     image: makeplane/plane-backend:${APP_RELEASE:-stable}
-    command: ./bin/docker-entrypoint-api.sh
+    entrypoint: ["pace-entrypoint-api"]
     deploy:
       replicas: ${API_REPLICAS:-1}
       restart_policy:
         condition: any
-    volumes:
-      - logs_api:/code/plane/logs
     environment:
       <<: [*app-env, *db-env, *redis-env, *minio-env, *aws-s3-env, *proxy-env]
     depends_on:
@@ -123,13 +121,11 @@ services:
 
   worker:
     image: makeplane/plane-backend:${APP_RELEASE:-stable}
-    command: ./bin/docker-entrypoint-worker.sh
+    entrypoint: ["pace-entrypoint-worker"]
     deploy:
       replicas: ${WORKER_REPLICAS:-1}
       restart_policy:
         condition: any
-    volumes:
-      - logs_worker:/code/plane/logs
     environment:
       <<: [*app-env, *db-env, *redis-env, *minio-env, *aws-s3-env, *proxy-env]
     depends_on:
@@ -140,13 +136,11 @@ services:
 
   beat-worker:
     image: makeplane/plane-backend:${APP_RELEASE:-stable}
-    command: ./bin/docker-entrypoint-beat.sh
+    entrypoint: ["pace-entrypoint-beat"]
     deploy:
       replicas: ${BEAT_WORKER_REPLICAS:-1}
       restart_policy:
         condition: any
-    volumes:
-      - logs_beat-worker:/code/plane/logs
     environment:
       <<: [*app-env, *db-env, *redis-env, *minio-env, *aws-s3-env, *proxy-env]
     depends_on:
@@ -157,13 +151,11 @@ services:
 
   migrator:
     image: makeplane/plane-backend:${APP_RELEASE:-stable}
-    command: ./bin/docker-entrypoint-migrator.sh
+    entrypoint: ["pace-entrypoint-migrator"]
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
-    volumes:
-      - logs_migrator:/code/plane/logs
     environment:
       <<: [*app-env, *db-env, *redis-env, *minio-env, *aws-s3-env, *proxy-env]
     depends_on:
@@ -248,6 +240,7 @@ volumes:
   pgdata:
   redisdata:
   uploads:
+  # Nothing mounts these any more. The Go services log to stdout rather than to a file under /code, and the path they were mounted at does not exist in the image. They stay declared so that an upgrade leaves whatever is already in them alone rather than orphaning it.
   logs_api:
   logs_worker:
   logs_beat-worker:

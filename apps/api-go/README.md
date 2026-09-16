@@ -2975,3 +2975,30 @@ Two operations wrap everything in `try: ... except Exception as e: print(e)` and
 **All 58 operations are ported, and all 32 migrations that carry one agree with Django when both are run against the same rows.** Two of the 58 are registered as doing nothing, with the reason written down: `contenttypes.0002`'s forwards half is Django's own `RunPython.noop`, and `auth.0011` only touches the two tables whose contents come from the recorded end state.
 
 So `migrator` runs `pace-manage migrate` now, and no Python service is left in the compose file. Building a database from nothing with it applies all 164 migrations and produces the same 2885 columns, constraints, indexes and sequences as `manage.py migrate`, the same 164 ledger rows, and the same 121 content types and 512 permissions down to their ids.
+
+## The release, cut over
+
+The compose file had been Go for a while before anything published was. `build-branch.yml` still built `makeplane/plane-backend` from `apps/api/Dockerfile.api` and `makeplane/plane-live` from `apps/live/Dockerfile.live`, and both `deployments/cli/community` and `deployments/aio/community` consume those by name — so anyone deploying the documented way was still running Django and Node.
+
+Both images now build from `apps/api-go`. The backend one is the existing Dockerfile; the live one is `Dockerfile.live`, a second image rather than the same one with a different entrypoint, because the published tags have always been two and the all-in-one image pulls both by name. Building only `cmd/live` also makes it the smaller of the two rather than a copy of the larger.
+
+### The entrypoints, which were doing more than starting a server
+
+`apps/api/bin/docker-entrypoint-api.sh` ran eight things before gunicorn: wait for the database, wait for migrations, register the instance, configure it, make the bucket, clear the cache, collect static files, and only then serve. The worker and the beat waited for the database and for migrations. **None of that survived the cutover**: when the Python `api` service was removed from the compose file, the Go service beside it was a bare `pace-api` and the chores stopped happening — the beat and the worker never waited for anything either.
+
+`apps/api-go/bin` now mirrors `apps/api/bin`, one script per service, shipped into the image as `pace-entrypoint-*`. The compose file, the CLI deployment and the all-in-one image all call those rather than each restating the sequence. `collectstatic` has no counterpart: Django ran it to lay out what whitenoise serves under `/static/`, and the Go service has none.
+
+Running them for the first time turned up two things:
+
+- **`register_instance` had never worked.** It left `domain` out of the insert, and the column is NOT NULL. Django does not pass a domain either and does not have to — the field is a `TextField` that allows empty strings with no explicit default, so `get_default()` returns `""` and that is what lands in the column. This is the second bug of exactly that shape, after `profiles.company_name` in `db.0065`, so `TestTheInstanceRowFillsEveryRequiredColumn` now reads the recorded schema and fails if the insert omits any NOT NULL column that has no database default.
+- **The API ignored `PORT`.** It read `PACE_API_ADDRESS` and nothing else. Django's entrypoint ran gunicorn with `--bind 0.0.0.0:"${PORT:-8000}"`, and the all-in-one image relies on it: supervisor puts the API on 3004 and the proxy sends `/api/` there. A Go service answering only to a name of its own would have come up on 8000 and been unreachable. `PORT` is read now, with `PACE_API_ADDRESS` still winning when both are set, since it can name an interface as well as a port.
+
+### What the deployments lost
+
+`/code/plane/logs` does not exist in the Go image, so the four log volume mounts are gone — the services log to stdout, which is where `docker logs` reads from. The volumes stay declared so an upgrade leaves what is already in them alone. `GUNICORN_WORKERS` is gone from both `variables.env` files and the CLI compose, since nothing reads it. The all-in-one image drops `libpq`, `libxslt` and `xmlsec`, which were there for psycopg and the SAML stack; what remains in it is supervisor, caddy, node for the space app, and six static binaries.
+
+### What could not be verified here
+
+The all-in-one image is built `FROM makeplane/plane-backend` and `FROM makeplane/plane-live`, so it cannot be built until those two are published with Go in them. Its Dockerfile and `supervisor.conf` are changed to match what the new images contain — binaries on the path instead of a Django tree at `/app/backend` and a Node app at `/app/live` — but the first real build of it will be the first time that is exercised.
+
+Everything else was run: both images build, and against a throwaway Postgres, RabbitMQ and Valkey the migrator applies all 164 migrations, the api entrypoint waits, registers the instance, writes 36 configuration rows and serves `/api/health` on the port `PORT` names, the worker comes up with its 46 tasks, the beat syncs its schedule, and the live image answers `/live/health`.

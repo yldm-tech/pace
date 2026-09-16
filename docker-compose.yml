@@ -54,7 +54,7 @@ services:
     build:
       context: ./apps/api-go
       dockerfile: Dockerfile
-    entrypoint: ["pace-worker"]
+    entrypoint: ["pace-entrypoint-worker"]
     restart: always
     env_file:
       - ./apps/api/.env
@@ -74,7 +74,7 @@ services:
     build:
       context: ./apps/api-go
       dockerfile: Dockerfile
-    entrypoint: ["pace-beat"]
+    entrypoint: ["pace-entrypoint-beat"]
     restart: always
     env_file:
       - ./apps/api/.env
@@ -87,7 +87,7 @@ services:
 
   # The schema, now applied by Go. It runs the same 164 migrations in the same order and writes the same django_migrations rows, because the statements it runs were recorded from Django doing it.
   #
-  # The entrypoint waits for the database first, which is what the shell script it replaces did. Reverting is putting ./apps/api back with command: ./bin/docker-entrypoint-migrator.sh.
+  # The entrypoint is the Go counterpart of ./bin/docker-entrypoint-migrator.sh, step for step. Reverting is putting ./apps/api back with command: ./bin/docker-entrypoint-migrator.sh.
   migrator:
     container_name: plane-migrator
     build:
@@ -96,7 +96,7 @@ services:
       args:
         DOCKER_BUILDKIT: 1
     restart: no
-    entrypoint: ["/bin/sh", "-c", "pace-manage wait_for_db && pace-manage migrate"]
+    entrypoint: ["pace-entrypoint-migrator"]
     env_file:
       - ./apps/api/.env
     depends_on:
@@ -113,7 +113,7 @@ services:
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
-    entrypoint: ["pace-live"]
+    entrypoint: ["pace-entrypoint-live"]
     restart: always
     env_file:
       - ./apps/api/.env
