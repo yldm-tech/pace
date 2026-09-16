@@ -69,7 +69,7 @@
 	@go_external_intake path_regexp go_external_intake ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/intake-issues/([0-9A-Fa-f-]+/)?$
 	reverse_proxy @go_external_intake api-go:8000
 
-	@go_external_stickies path_regexp go_external_stickies ^/api/v1/workspaces/[^/]+/(stickies|invitations)/([0-9A-Fa-f-]+/)?$
+	@go_external_stickies path_regexp go_external_stickies ^/api/v1/workspaces/[^/]+/((stickies|invitations)(\.[a-z0-9]+/?|/([0-9A-Fa-f-]+(\.[a-z0-9]+)?/?)?)|(\.[a-z0-9]+)?/?)$
 	reverse_proxy @go_external_stickies api-go:8000
 
 	@go_external_labels path_regexp go_external_labels ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/labels/([0-9A-Fa-f-]+/)?$

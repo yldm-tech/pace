@@ -2441,3 +2441,17 @@ Two things about the general file assets are worth stating plainly. Looking one 
 `GET /api/users/file-assets/<key>/` answers one object rather than a list even though it filters a queryset, because the serializer is handed the queryset without `many` — Django renders that as the first row's fields, which is what this answers.
 
 The delete and restore routes set `is_deleted` rather than `deleted_at`, so the row stays where it is and the object stays in the bucket. That is what the restore route depends on.
+
+## Migrated: the DRF format suffixes and the router root
+
+Thirteen routes that were listed as deliberate omissions and are now served.
+
+Two of the external API's viewsets — the workspace invitations and the stickies — are mounted through a `DefaultRouter` rather than with plain paths, and a router appends a format suffix to everything it registers. So `stickies.json` and `stickies/<id>.json` are real routes while `states.json` is a 404, and that asymmetry is DRF's rather than anything about the resources.
+
+A suffix cannot be a path parameter in this router, because a parameter is a whole segment and a suffix is part of one. So the rewrite happens where a request has already failed to match: the suffix is stripped, the path is dispatched again, and it lands on the route that was always there. A second pass cannot rewrite again, because the suffix is gone.
+
+A suffix other than `json` is a `404` rather than a `406`, which is what content negotiation raises when no renderer answers to it — and `JSONRenderer` is the only one configured.
+
+The router's own root, `GET /api/v1/workspaces/<slug>/`, answers one key and one absolute url. Two routers are mounted at the same prefix, so only the first one's root ever resolves — and the first is the invitations one, which is why the stickies are not listed beside it. It is also **the one route under `/api/v1/` that an api key cannot reach**: DRF's own `APIRootView` takes the project's default authentication, which is the session, rather than the key authentication every view in that package declares for itself.
+
+The cutover guard is taught these shapes explicitly, because they really are served but not by a route of their own.

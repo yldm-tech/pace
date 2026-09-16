@@ -151,10 +151,38 @@ func goRouteShapes(t *testing.T) map[string]bool {
 	for _, route := range newTestRouter(t).Routes() {
 		shapes[route.Method+" "+collapseWildcardSegments(parameter.ReplaceAllString(route.Path, "*"))] = true
 	}
+	// DRF's format suffixes are served by a rewrite rather than by a route of their own: a suffix is part of a segment and this router's parameters are whole segments, so the path is stripped and dispatched again after routing has failed. They are named here because they really are served, and the guard compares registered shapes.
+	for _, shape := range formatSuffixShapes(shapes) {
+		shapes[shape] = true
+	}
 	if len(shapes) == 0 {
 		t.Fatal("the router registered no routes")
 	}
 	return shapes
+}
+
+// formatSuffixShapes is every route the suffix rewrite reaches: the two router-mounted collections and their details, plus the router root. A suffix on anything else is a 404, which is what DRF does with it too.
+func formatSuffixShapes(shapes map[string]bool) []string {
+	suffixed := []string{}
+	for _, prefix := range []string{"invitations", "stickies"} {
+		collection := "/api/v1/workspaces/*/" + prefix + "/"
+		detail := collection + "*/"
+		for _, method := range []string{"GET", "POST", "PATCH", "PUT", "DELETE"} {
+			if shapes[method+" "+collection] {
+				// `stickies.json` keeps the dot, which the fixture writes as `stickies.*`.
+				suffixed = append(suffixed, method+" /api/v1/workspaces/*/"+prefix+".*")
+			}
+			if shapes[method+" "+detail] {
+				// `stickies/<pk>.json` has an optional trailing slash, so the fixture writes it without one — two wildcards and no slash on the end.
+				suffixed = append(suffixed, method+" /api/v1/workspaces/*/"+prefix+"/*")
+			}
+		}
+	}
+	// The router root with a suffix, which is the one shape that looks like a bare parameter.
+	if shapes["GET /api/v1/workspaces/*/"] {
+		suffixed = append(suffixed, "GET /api/v1/workspaces/*/*")
+	}
+	return suffixed
 }
 
 // newTestRouter builds the router with its API routes registered. The database handle never connects — the guard reads which routes exist, not what they return — but it has to be non-nil, since that is what gates the registration.
