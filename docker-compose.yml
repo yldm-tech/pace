@@ -187,6 +187,8 @@ services:
     environment:
       FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-uploads}
+      # The address Caddy listens on. It has no default in the Caddyfile, and with nothing supplying it the site block reads as `{ import plane_proxy }` -- a block with no key, which Caddy rejects as a global options block that is not first. The proxy could not start at all, so nothing in this stack was reachable. The other Caddyfile variables are left alone deliberately: CERT_ACME_CA and TRUSTED_PROXIES carry their own defaults, and passing them empty here would blank those defaults rather than fall back to them.
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
     depends_on:
       - web
       - api-go

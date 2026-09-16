@@ -51,7 +51,9 @@ func main() {
 	}
 
 	// The connection is opened without being used, because wait_for_db has to run against a database that is not answering yet. Everything else finds out the moment it asks.
-	db, err := gorm.Open(postgres.Open(settings.DatabaseURL), &gorm.Config{})
+	//
+	// DisableAutomaticPing is what makes that true. Without it gorm.Open pings before returning, so the process died here with "failed to initialize database" and wait_for_db never ran -- which is exactly the case it exists to handle, and why the migrator lost the race against Postgres on every cold start.
+	db, err := gorm.Open(postgres.Open(settings.DatabaseURL), &gorm.Config{DisableAutomaticPing: true})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 		os.Exit(1)

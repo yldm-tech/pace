@@ -36,6 +36,10 @@ pnpm-debug.log*
 
 # Local env files
 .env
+# The templates are not local env files, and a broad `.env.*` rule in a contributor global ignore file swallows them. That is how the five .env.example files setup.sh copies came to be missing from every commit, leaving the documented first step of CONTRIBUTING.md failing for everyone.
+!.env.example
+!.env.sample
+!.env.template
 .env.local
 .env.development.local
 .env.test.local
