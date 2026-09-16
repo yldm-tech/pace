@@ -97,7 +97,8 @@ func communityProxyMatchers(t *testing.T) []*regexp.Regexp {
 		}
 		// A parameter in the proxy's regexp becomes the star the fixture uses, so the two shapes can be compared.
 		pattern := groups[2]
-		for _, parameter := range []string{`[^/]+`, `[0-9A-Fa-f-]+`} {
+		// A work item is reached by its identifier — a project prefix, a dash and a number — which the fixture writes as one star like any other parameter.
+		for _, parameter := range []string{`[^/]+-[^/-]*`, `[^/]+`, `[0-9A-Fa-f-]+`} {
 			pattern = strings.ReplaceAll(pattern, parameter, `\*`)
 		}
 		compiled, err := regexp.Compile(pattern)
@@ -153,7 +154,9 @@ func goRouteShapes(t *testing.T) map[string]bool {
 	}
 	// DRF's format suffixes are served by a rewrite rather than by a route of their own: a suffix is part of a segment and this router's parameters are whole segments, so the path is stripped and dispatched again after routing has failed. They are named here because they really are served, and the guard compares registered shapes.
 	for _, shape := range formatSuffixShapes(shapes) {
-		shapes[shape] = true
+		// The fixture collapses a segment that merely contains a star into a bare one, so `stickies.json` and the router root with a suffix are the same shape to it.
+		method, path, _ := strings.Cut(shape, " ")
+		shapes[method+" "+collapseWildcardSegments(path)] = true
 	}
 	if len(shapes) == 0 {
 		t.Fatal("the router registered no routes")

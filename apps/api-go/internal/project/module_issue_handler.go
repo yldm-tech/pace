@@ -18,6 +18,12 @@ func (handler *Handler) registerModuleIssueRoutes(router gin.IRouter) {
 	router.GET("/api/workspaces/:slug/projects/:id/modules/:module/issues/", handler.authenticated(handler.moduleIssueList))
 	router.POST("/api/workspaces/:slug/projects/:id/modules/:module/issues/", handler.authenticated(handler.moduleIssueCreate))
 	router.POST("/api/workspaces/:slug/projects/:id/issues/:issue/modules/", handler.authenticatedIssueUUID(handler.issueModulesUpdate))
+	// The same four methods as the cycle's detail path, and the same three that cannot work.
+	const detail = "/api/workspaces/:slug/projects/:id/modules/:module/issues/:issue/"
+	router.DELETE(detail, handler.authenticated(handler.moduleIssueDestroy))
+	router.GET(detail, handler.authenticated(handler.genericActionMisconfigured))
+	router.PUT(detail, handler.authenticated(handler.genericActionMisconfigured))
+	router.PATCH(detail, handler.authenticated(handler.genericActionMisconfigured))
 }
 
 // moduleIssueListPredicate is the issue_objects manager narrowed to one module. Both halves of the link condition sit inside one EXISTS, the way the cycle's does.
@@ -197,7 +203,7 @@ func (handler *Handler) issueModulesUpdate(c *gin.Context, user *auth.User) {
 	drf.Respond(c, http.StatusCreated, gin.H{"message": "success"})
 }
 
-// moduleIssueDestroy takes one issue out of one module. It is written but left unregistered, and the proxy leaves the whole detail path on Django, for the reason the README gives: Django binds GET, PUT and PATCH on that same path to generic actions whose serializer does not match the queryset's model, and cutting the path over means owning all four.
+// moduleIssueDestroy takes one issue out of one module.
 func (handler *Handler) moduleIssueDestroy(c *gin.Context, user *auth.User) {
 	if !handler.requireProjectRole(c, user, roleAdmin, roleMember) {
 		return

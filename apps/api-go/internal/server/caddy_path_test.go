@@ -41,7 +41,8 @@ func TestTheGuardReadsBothKindsOfProxiedPath(t *testing.T) {
 		}
 	}
 	// And something the proxy leaves with Django, so the guard is not matching everything.
-	for _, path := range []string{"/api/workspaces/*/projects/*/modules/*/issues/*/", "/api/workspaces/*/projects/*/cycles/*/cycle-issues/*/"} {
+	// Nothing under /api/ is left with Django, so the one path checked here is a shape the proxy has never claimed.
+	for _, path := range []string{"/api/nothing-claims-this/"} {
 		if anyMatcherCovers(matchers, path) {
 			t.Errorf("%q is still Django's and the guard thinks it is cut over", path)
 		}
