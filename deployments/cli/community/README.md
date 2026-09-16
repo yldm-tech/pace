@@ -66,7 +66,7 @@ cd plane-selfhost
 #### For *Docker Compose* based setup
 
 ```
-curl -fsSL -o setup.sh https://github.com/makeplane/plane/releases/latest/download/setup.sh
+curl -fsSL -o setup.sh https://github.com/yldm-tech/pace/releases/latest/download/setup.sh
 
 chmod +x setup.sh
 ```
@@ -74,7 +74,7 @@ chmod +x setup.sh
 #### For *Docker Swarm* based setup
 
 ```
-curl -fsSL -o setup.sh https://github.com/makeplane/plane/releases/latest/download/swarm.sh
+curl -fsSL -o setup.sh https://github.com/yldm-tech/pace/releases/latest/download/swarm.sh
 
 chmod +x setup.sh
 ```
@@ -486,7 +486,7 @@ When you want to restore the previously backed-up data, follow the instructions 
 1. Download the restore script using the command below. We suggest downloading it in the same folder as `setup.sh`.
 
    ```bash
-   curl -fsSL -o restore.sh https://github.com/makeplane/plane/releases/latest/download/restore.sh
+   curl -fsSL -o restore.sh https://github.com/yldm-tech/pace/releases/latest/download/restore.sh
    chmod +x restore.sh
    ```
 
@@ -536,7 +536,7 @@ When you want to restore the previously backed-up data on Plane Commercial Air-G
 1. Download the restore script using the command below
 
    ```bash
-   curl -fsSL -o restore-airgapped.sh https://github.com/makeplane/plane/releases/latest/download/restore-airgapped.sh
+   curl -fsSL -o restore-airgapped.sh https://github.com/yldm-tech/pace/releases/latest/download/restore-airgapped.sh
    chmod +x restore-airgapped.sh
    ```
 
@@ -567,7 +567,7 @@ Begin with downloading the migration script using below command
 
 ```
 
-curl -fsSL -o migrate.sh https://raw.githubusercontent.com/makeplane/plane/master/deploy/selfhost/migration-0.13-0.14.sh
+curl -fsSL -o migrate.sh https://raw.githubusercontent.com/yldm-tech/pace/main/deployments/cli/community/migration-0.13-0.14.sh
 
 chmod +x migrate.sh
 

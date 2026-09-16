@@ -109,8 +109,10 @@ build/
 build/
 .react-router/
 temp/
+# Unanchored, so it matches a scripts directory at any depth rather than the build output it was meant for. Both carve-outs below are ordinary source that it swallowed.
 scripts/
 !packages/i18n/scripts/
+!.github/actions/scripts/
 
 # i18n auto-generated types (regenerated on every build)
 packages/i18n/src/types/keys.generated.ts

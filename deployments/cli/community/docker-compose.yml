@@ -61,10 +61,10 @@ x-app-env: &app-env
   WEBHOOK_ALLOWED_IPS: ${WEBHOOK_ALLOWED_IPS:-}
   WEBHOOK_ALLOWED_HOSTS: ${WEBHOOK_ALLOWED_HOSTS:-}
 
-# The images come from this fork's namespace, not upstream's. makeplane/plane-backend and makeplane/plane-live are Django and Node; the ones built from this repository are Go. Set DOCKERHUB_USER to point somewhere else.
+# The images come from this fork's namespace, not upstream's. makeplane/plane-backend and makeplane/plane-live are Django and Node; the ones built from this repository are Go. Set PLANE_IMAGE_OWNER to point somewhere else, registry included.
 services:
   web:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-frontend:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-frontend:${APP_RELEASE:-stable}
     deploy:
       replicas: ${WEB_REPLICAS:-1}
       restart_policy:
@@ -74,7 +74,7 @@ services:
       - worker
 
   space:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-space:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-space:${APP_RELEASE:-stable}
     deploy:
       replicas: ${SPACE_REPLICAS:-1}
       restart_policy:
@@ -85,7 +85,7 @@ services:
       - web
 
   admin:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-admin:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-admin:${APP_RELEASE:-stable}
     deploy:
       replicas: ${ADMIN_REPLICAS:-1}
       restart_policy:
@@ -95,7 +95,7 @@ services:
       - web
 
   live:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-live:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-live:${APP_RELEASE:-stable}
     environment:
       <<: [*live-env, *redis-env]
     deploy:
@@ -107,7 +107,7 @@ services:
       - web
 
   api:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-backend:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-backend:${APP_RELEASE:-stable}
     entrypoint: ["pace-entrypoint-api"]
     deploy:
       replicas: ${API_REPLICAS:-1}
@@ -121,7 +121,7 @@ services:
       - plane-mq
 
   worker:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-backend:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-backend:${APP_RELEASE:-stable}
     entrypoint: ["pace-entrypoint-worker"]
     deploy:
       replicas: ${WORKER_REPLICAS:-1}
@@ -136,7 +136,7 @@ services:
       - plane-mq
 
   beat-worker:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-backend:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-backend:${APP_RELEASE:-stable}
     entrypoint: ["pace-entrypoint-beat"]
     deploy:
       replicas: ${BEAT_WORKER_REPLICAS:-1}
@@ -151,7 +151,7 @@ services:
       - plane-mq
 
   migrator:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-backend:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-backend:${APP_RELEASE:-stable}
     entrypoint: ["pace-entrypoint-migrator"]
     deploy:
       replicas: 1
@@ -212,7 +212,7 @@ services:
 
   # Comment this if you already have a reverse proxy running
   proxy:
-    image: ${DOCKERHUB_USER:-yldm-tech}/plane-proxy:${APP_RELEASE:-stable}
+    image: ${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-proxy:${APP_RELEASE:-stable}
     deploy:
       replicas: 1
       restart_policy:

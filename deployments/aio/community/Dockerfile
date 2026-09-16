@@ -1,6 +1,6 @@
 ARG PLANE_VERSION=v0.27.1
-# The namespace the per-service images are pulled from. It was makeplane, which is upstream's: those images are Django and Node, and this one is assembled out of Go binaries.
-ARG PLANE_IMAGE_OWNER=yldm-tech
+# Where the per-service images are pulled from. It was makeplane, which is upstream's: those images are Django and Node, and this one is assembled out of Go binaries. The registry is ghcr because that is the one the release workflow can push to without a secret anybody has to create.
+ARG PLANE_IMAGE_OWNER=ghcr.io/yldm-tech
 FROM --platform=$BUILDPLATFORM tonistiigi/binfmt AS binfmt
 
 # **************************************************

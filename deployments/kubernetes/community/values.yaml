@@ -1,0 +1,33 @@
+# Image overrides for upstream's plane-ce Helm chart, so it deploys what this repository builds.
+#
+# The chart is fine as it stands -- workloads, services, ingress, dependencies are all reusable. Only the images differ: upstream's plane-backend is Django and its plane-live is Node, while everything in this tree is Go. Each key below is the value the corresponding workload template reads, verified against plane-ce 1.8.1.
+#
+#   helm repo add plane-ce https://helm.plane.so/
+#   helm install plane plane-ce/plane-ce -f values.yaml
+#
+# planeVersion is the tag applied to every image above, so it has to name a release this repository has actually published. Check https://github.com/yldm-tech/pace/releases, or the package listing on ghcr, before installing.
+#
+# There is no proxy entry: the chart routes through an ingress instead, so plane-proxy has no counterpart here.
+
+planeVersion: stable
+
+web:
+  image: ghcr.io/yldm-tech/plane-frontend
+
+space:
+  image: ghcr.io/yldm-tech/plane-space
+
+admin:
+  image: ghcr.io/yldm-tech/plane-admin
+
+live:
+  image: ghcr.io/yldm-tech/plane-live
+
+api:
+  image: ghcr.io/yldm-tech/plane-backend
+
+worker:
+  image: ghcr.io/yldm-tech/plane-backend
+
+beatworker:
+  image: ghcr.io/yldm-tech/plane-backend
