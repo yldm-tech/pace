@@ -9,6 +9,7 @@ import (
 	"unicode/utf16"
 
 	"github.com/xuri/excelize/v2"
+	"github.com/yldm-tech/pace/apps/api-go/internal/drf"
 )
 
 // orderedMap is one exported row. The order of the keys is the order of the columns, so it cannot be a Go map.
@@ -179,7 +180,10 @@ func pythonString(value any) string {
 	case int:
 		return strconv.Itoa(typed)
 	case float64:
-		return strconv.FormatFloat(typed, 'g', -1, 64)
+		// str() of a float is its repr, which always leaves a decimal point behind: 4.0 rather than 4.
+		return drf.FormatFloat(typed)
+	case int64:
+		return strconv.FormatInt(typed, 10)
 	case nil:
 		return "None"
 	default:

@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"embed"
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"net"
@@ -38,19 +39,29 @@ type ConfigurationReader interface {
 // dialing a server.
 type Mailer interface {
 	Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error
+	// SendAttachment sends a message whose body is plain text and which carries one file. It is a second method rather than an option on the first because Django builds the two differently: the notification emails are multipart/alternative with an html part, and the export emails are multipart/mixed with no html part at all.
+	SendAttachment(ctx context.Context, settings EmailSettings, to, subject, text, filename, contentType string, content []byte) error
 }
 
 type SMTPMailer struct{}
 
 // Send reproduces Django's get_connection plus EmailMultiAlternatives: a plain
 // text body with an HTML alternative, over TLS, SSL, or neither.
-func (SMTPMailer) Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error {
+func (mailer SMTPMailer) Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error {
+	return mailer.deliver(ctx, settings, to, buildMultipartMessage(settings.From, to, subject, text, html))
+}
+
+// SendAttachment reproduces EmailMultiAlternatives with one attached file and no html alternative, which is what the export emails are.
+func (mailer SMTPMailer) SendAttachment(ctx context.Context, settings EmailSettings, to, subject, text, filename, contentType string, content []byte) error {
+	return mailer.deliver(ctx, settings, to, buildAttachmentMessage(settings.From, to, subject, text, filename, contentType, content))
+}
+
+func (SMTPMailer) deliver(ctx context.Context, settings EmailSettings, to, message string) error {
 	port := settings.Port
 	if port == "" {
 		port = "587"
 	}
 	address := net.JoinHostPort(settings.Host, port)
-	message := buildMultipartMessage(settings.From, to, subject, text, html)
 
 	dialer := &net.Dialer{}
 	var connection net.Conn
@@ -126,6 +137,45 @@ func buildMultipartMessage(from, to, subject, text, html string) string {
 	builder.WriteString("Content-Type: text/html; charset=\"utf-8\"\r\n\r\n")
 	builder.WriteString(html + "\r\n")
 	builder.WriteString("--" + boundary + "--\r\n")
+	return builder.String()
+}
+
+// buildAttachmentMessage is a plain text body with one file beside it, which is what Django's attach() produces when nothing was attached as an alternative.
+func buildAttachmentMessage(from, to, subject, text, filename, contentType string, content []byte) string {
+	boundary := "pace-go-mixed-0f2a1c"
+	var builder strings.Builder
+	builder.WriteString("From: " + from + "\r\n")
+	builder.WriteString("To: " + to + "\r\n")
+	builder.WriteString("Subject: " + encodeHeader(subject) + "\r\n")
+	builder.WriteString("MIME-Version: 1.0\r\n")
+	builder.WriteString("Content-Type: multipart/mixed; boundary=\"" + boundary + "\"\r\n\r\n")
+	builder.WriteString("--" + boundary + "\r\n")
+	builder.WriteString("Content-Type: text/plain; charset=\"utf-8\"\r\n\r\n")
+	builder.WriteString(text + "\r\n")
+	builder.WriteString("--" + boundary + "\r\n")
+	builder.WriteString("Content-Type: " + contentType + "; charset=\"utf-8\"\r\n")
+	builder.WriteString("MIME-Version: 1.0\r\n")
+	builder.WriteString("Content-Transfer-Encoding: base64\r\n")
+	builder.WriteString("Content-Disposition: attachment; filename=\"" + filename + "\"\r\n\r\n")
+	builder.WriteString(wrapBase64(content) + "\r\n")
+	builder.WriteString("--" + boundary + "--\r\n")
+	return builder.String()
+}
+
+// wrapBase64 breaks the encoded attachment at the line length a mail transport expects.
+func wrapBase64(content []byte) string {
+	encoded := base64.StdEncoding.EncodeToString(content)
+	var builder strings.Builder
+	for start := 0; start < len(encoded); start += 76 {
+		end := start + 76
+		if end > len(encoded) {
+			end = len(encoded)
+		}
+		if start > 0 {
+			builder.WriteString("\r\n")
+		}
+		builder.WriteString(encoded[start:end])
+	}
 	return builder.String()
 }
 

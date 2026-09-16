@@ -119,7 +119,8 @@ func main() {
 		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
 	}, activityPublisher, activityPublisher, logger)
 	emailStack := worker.NewEmailStackTasks(db, activityPublisher, logger)
-	emailSend, err := worker.NewEmailSendTasks(db, redisClient, worker.EmailSettings{
+	// The environment is only the fallback; get_email_configuration reads the instance configuration rows first.
+	emailDefaults := worker.EmailSettings{
 		Host:     os.Getenv("EMAIL_HOST"),
 		User:     os.Getenv("EMAIL_HOST_USER"),
 		Password: os.Getenv("EMAIL_HOST_PASSWORD"),
@@ -127,11 +128,15 @@ func main() {
 		UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
 		UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
 		From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
-	}, repository, nil, logger)
+	}
+	emailSend, err := worker.NewEmailSendTasks(db, redisClient, emailDefaults, repository, nil, logger)
 	if err != nil {
 		logger.Error("prepare the notification email", "error", err)
 		os.Exit(1)
 	}
+
+	// The analytics export builds its spreadsheet out of the same chart the analytics endpoint draws, and mails it with the same settings the notification emails use.
+	analyticExports := worker.NewAnalyticExportTasks(db, emailDefaults, repository, worker.SMTPMailer{}, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -152,6 +157,7 @@ func main() {
 	emailSend.Register(consumer)
 	worker.NewAPILogTasks(db, logger).Register(consumer)
 	exports.Register(consumer)
+	analyticExports.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {
