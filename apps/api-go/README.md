@@ -2321,3 +2321,28 @@ Three more things the shape carries:
 - The sort order the work items start from is read off a *randomly chosen* state rather than off each work item's own, so the ordering it hands out means nothing.
 
 `manage create_dummy_data` asks its questions in the order the command asks them, writes the workspace before the first project is asked about — so an answer given up halfway leaves a workspace behind — and splits the member emails on commas without trimming, so a space after a comma stays part of the address and matches nobody. All reproduced.
+
+## Migrated service: seeding a new workspace
+
+`plane.bgtasks.workspace_seed_task.workspace_seed` runs on every workspace anybody makes, and fills it with the demo project. `internal/worker/workspace_seed.go` is the port; the eight seed files are copied into `internal/worker/seeds/` and CI diffs them against `plane/seeds/data`, because a seed changed upstream and not here would seed a different workspace.
+
+Everything it writes is created by a bot account it makes first: username `bot_user_<workspace id>`, display name Plane, an email built from `WEB_URL`'s host so two installations do not hand out the same address, and an administrator's membership of the workspace. The demo project takes the workspace's name, and its identifier is that name's letters and digits cut to five — spaces and punctuation are dropped rather than replaced, so "Acme Corp" gives "AcmeC".
+
+The task does not run in a transaction and it re-raises rather than swallowing, so a failure part of the way through leaves everything written up to that point behind. That is kept: the errors on this path are returned.
+
+Most of what a reader would get wrong here is in the models rather than in the task, because the seed calls each model's own `save` where a normal bulk load would not:
+
+- **The states do not get the sequence the seed file asks for.** `State.save` throws it away when the project already has a state and uses fifteen thousand past the last one instead, so the file's 15000/25000/35000/45000/55000 land as 15000/30000/45000/60000/75000. It also fills in the slug, which a normal project's states — written with `bulk_create` — never get.
+- **The cycles and the modules come out in the opposite order to the one the file numbers them in.** `Cycle.save` and `Module.save` both put a new one ten thousand *below* everything already in the project, so the file's 1, 2, 3 land as 1, −9999, −19999.
+- **A work item's sequence number and sort order are both taken from the project rather than from the file**, which is what any other work item would get too.
+- **Every seeded work item ends up with two sequence rows.** `Issue.save` writes one carrying the real number, and the task then writes another of its own that names no number at all, so it falls back to the column default of one. Reproduced rather than corrected.
+- **The seeded pages open blank.** The file carries the editor's json document under `description`, and the task reads `description_json` — a key the file does not have — so every page stores an empty document. Its `logo_props` is never read either, so the emoji beside the page's name is lost.
+- The display settings written for everybody are the task's own literals rather than the model's defaults, and they differ: the seed hides labels, modules, the cycle, the due date, the start date, the sub-issue count and the attachment count.
+
+One thing that looks broken and is not: `IssueView.query` is a not-null column and the view seed never names it. `IssueView.save` fills it in from the view's own filters, and an empty filter set gives an empty object rather than running the filter translation, so the insert goes through.
+
+## Migrated service: the leftover project invitation
+
+`project_invitation_task` emails somebody an invitation to a project. Nothing in this edition queues it — invitations go out through `project_add_user_email_task` — and it is ported so that a message carrying its name does not sit unconsumed, and an installation with an older release still in flight is not left with a dead letter.
+
+Its one side effect worth knowing is that the plain text of the email is written onto the invitation row before the message is sent, so an email that never goes out still leaves the copy behind. The invitor is named in the subject by whichever of their first name, display name and email address is set first.
