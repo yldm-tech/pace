@@ -488,6 +488,16 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the parsed trees match zeed-dom
+        run: |
+          node apps/api-go/tools/generate_vdom_fixture.mjs > /tmp/trees.json
+          if ! diff -u apps/api-go/internal/vdom/testdata/trees.json /tmp/trees.json; then
+            echo "::error::apps/api-go/internal/vdom/testdata/trees.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_vdom_fixture.mjs > apps/api-go/internal/vdom/testdata/trees.json"
+            exit 1
+          fi
+
       - name: Verify the collaboration frames match Hocuspocus
         run: |
           node apps/api-go/tools/generate_hocuspocus_frames.mjs > /tmp/frames.json

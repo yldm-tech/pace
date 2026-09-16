@@ -1,0 +1,3195 @@
+[
+  {
+    "name": "plain text",
+    "html": "just some words",
+    "tree": [
+      {
+        "type": "text",
+        "text": "just some words"
+      }
+    ]
+  },
+  {
+    "name": "one element",
+    "html": "<p>hello</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "hello"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "nested elements",
+    "html": "<div><p>a<strong>b</strong>c</p></div>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "div",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "p",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "a"
+              },
+              {
+                "type": "element",
+                "tag": "strong",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "b"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "c"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "attributes",
+    "html": "<a href=\"https://example.test/?a=1&amp;b=2\" target='_blank' download data-x=bare>link</a>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "a",
+        "attrs": [
+          {
+            "name": "href",
+            "value": "https://example.test/?a=1&b=2",
+            "bare": false
+          },
+          {
+            "name": "target",
+            "value": "_blank",
+            "bare": false
+          },
+          {
+            "name": "download",
+            "value": "",
+            "bare": true
+          },
+          {
+            "name": "data-x",
+            "value": "bare",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "link"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "empty attribute values",
+    "html": "<p title=\"\" data-a=''>x</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "title",
+            "value": "",
+            "bare": false
+          },
+          {
+            "name": "data-a",
+            "value": "",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "x"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "repeated attribute",
+    "html": "<p class=\"one\" class=\"two\">x</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "two",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "x"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "uppercase tags",
+    "html": "<DIV><P>Mixed</P></DIV>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "DIV",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "P",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "Mixed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "void element",
+    "html": "<p>before<br>after</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "before"
+          },
+          {
+            "type": "element",
+            "tag": "br",
+            "attrs": [],
+            "children": []
+          },
+          {
+            "type": "text",
+            "text": "after"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "self closing syntax",
+    "html": "<p>a<span />b</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "a"
+          },
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [],
+            "children": []
+          },
+          {
+            "type": "text",
+            "text": "b"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "image",
+    "html": "<img src=\"a.png\" alt=\"an image\">",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "img",
+        "attrs": [
+          {
+            "name": "src",
+            "value": "a.png",
+            "bare": false
+          },
+          {
+            "name": "alt",
+            "value": "an image",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "overlapping tags",
+    "html": "<b><i>both</b>italic</i>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "b",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "i",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "both"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "italic"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "stray closing tag",
+    "html": "<p>text</p></div>more",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "text"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "unclosed elements",
+    "html": "<div><p>never closed",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "div",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "p",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "never closed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "comment",
+    "html": "<p>a<!-- hidden -->b</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "ab"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "unterminated comment",
+    "html": "<p>a<!-- never ends",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "a<!-- never ends"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "doctype",
+    "html": "<!DOCTYPE html><p>after</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "after"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "entities in text",
+    "html": "<p>a &amp; b &lt; c &gt; d &quot;e&quot; &apos;f&apos; &nbsp; &shy; &#65; &#x42;</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "a & b < c > d \"e\" 'f'   ­ A B"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "entity without a semicolon",
+    "html": "<p>a &amp b &notanentity; c</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "a & b ¬anentity; c"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "lone angle bracket",
+    "html": "<p>a < b</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "a < b"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "unmatched angle bracket at the start",
+    "html": "< not a tag <p>real</p>",
+    "tree": [
+      {
+        "type": "text",
+        "text": "< not a tag "
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "real"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "script body",
+    "html": "<script>if (a < b) { x(); }</script><p>after</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "script",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "if (a < b) { x(); }"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "after"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "style body",
+    "html": "<style>p > a { color: red }</style><p>after</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "style",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "p > a { color: red }"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "after"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "unterminated script",
+    "html": "<script>if (a < b) {",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "script",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "if (a < b) {"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "table without a tbody",
+    "html": "<table><tr><td>cell</td></tr></table>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "table",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "tr",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "td",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "cell"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "table with a tbody",
+    "html": "<table><tbody><tr><th>head</th></tr></tbody></table>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "table",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "tbody",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "th",
+                    "attrs": [],
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "head"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "adjacent text runs",
+    "html": "<p>a<!--x-->b</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "ab"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "whitespace",
+    "html": "<p>  spaced  out  </p>\n<p>\tnext\n</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "  spaced  out  "
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": "\n"
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "\tnext\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "style attribute",
+    "html": "<p style=\"text-align: center; color: red\">x</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "style",
+            "value": "text-align: center; color: red",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "x"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "style attribute with a url",
+    "html": "<div style=\"background: url(a.png?a=1;b=2) no-repeat; color: blue\">x</div>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "div",
+        "attrs": [
+          {
+            "name": "style",
+            "value": "background: url(a.png?a=1;b=2) no-repeat; color: blue",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "x"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "custom element",
+    "html": "<image-component src=\"abc\" width=\"35%\"></image-component>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "image-component",
+        "attrs": [
+          {
+            "name": "src",
+            "value": "abc",
+            "bare": false
+          },
+          {
+            "name": "width",
+            "value": "35%",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "unicode",
+    "html": "<p>Ünicode ☃ 🎉</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [],
+        "children": [
+          {
+            "type": "text",
+            "text": "Ünicode ☃ 🎉"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "empty string",
+    "html": "",
+    "tree": []
+  },
+  {
+    "name": "rendered: empty",
+    "html": "<p class=\"editor-paragraph-block\"></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "rendered: paragraph",
+    "html": "<p class=\"editor-paragraph-block\">hello there</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "hello there"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: marks",
+    "html": "<p class=\"editor-paragraph-block\"><strong>bold</strong> <em>italic</em> <u>under</u> <s>struck</s> <code class=\"rounded-sm bg-layer-3 px-[6px] py-[1.5px] font-code font-medium text-(--extended-color-orange-600) border-[0.5px] border-subtle\" spellcheck=\"false\">code</code></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "strong",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "element",
+            "tag": "em",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "italic"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "element",
+            "tag": "u",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "under"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "element",
+            "tag": "s",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "struck"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "element",
+            "tag": "code",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "rounded-sm bg-layer-3 px-[6px] py-[1.5px] font-code font-medium text-(--extended-color-orange-600) border-[0.5px] border-subtle",
+                "bare": false
+              },
+              {
+                "name": "spellcheck",
+                "value": "false",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "code"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: nested marks",
+    "html": "<p class=\"editor-paragraph-block\"><strong>bold <em>and italic</em></strong></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "strong",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "bold "
+              },
+              {
+                "type": "element",
+                "tag": "em",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "and italic"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: headings",
+    "html": "<h1 class=\"editor-heading-block\">One</h1><h2 class=\"editor-heading-block\">Two</h2><h3 class=\"editor-heading-block\">Three</h3><h4 class=\"editor-heading-block\">Four</h4><h5 class=\"editor-heading-block\">Five</h5><h6 class=\"editor-heading-block\">Six</h6>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "h1",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "One"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "h2",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Two"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "h3",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Three"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "h4",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Four"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "h5",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Five"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "h6",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Six"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: bullet list",
+    "html": "<ul class=\"list-disc pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">one</p></li><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">two</p></li></ul>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "ul",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "list-disc pl-7 space-y-(--list-spacing-y)",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "one"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "two"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: ordered list",
+    "html": "<ol class=\"list-decimal pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">one</p></li><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">two</p></li></ol>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "ol",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "list-decimal pl-7 space-y-(--list-spacing-y)",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "one"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "two"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: nested list",
+    "html": "<ul class=\"list-disc pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">one</p><ul class=\"list-disc pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">deeper</p></li></ul></li></ul>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "ul",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "list-disc pl-7 space-y-(--list-spacing-y)",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "one"
+                  }
+                ]
+              },
+              {
+                "type": "element",
+                "tag": "ul",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "list-disc pl-7 space-y-(--list-spacing-y)",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "li",
+                    "attrs": [
+                      {
+                        "name": "class",
+                        "value": "not-prose space-y-2",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "deeper"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: task list",
+    "html": "<ul class=\"not-prose pl-2 space-y-2\" data-type=\"taskList\"><li class=\"flex\" data-checked data-type=\"taskItem\"><label><input type=\"checkbox\" checked=\"checked\"><span></span></label><div><p class=\"editor-paragraph-block\">done</p></div></li><li class=\"flex\" data-type=\"taskItem\"><label><input type=\"checkbox\"><span></span></label><div><p class=\"editor-paragraph-block\">not done</p></div></li></ul>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "ul",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "not-prose pl-2 space-y-2",
+            "bare": false
+          },
+          {
+            "name": "data-type",
+            "value": "taskList",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "flex",
+                "bare": false
+              },
+              {
+                "name": "data-checked",
+                "value": "",
+                "bare": true
+              },
+              {
+                "name": "data-type",
+                "value": "taskItem",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "label",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "input",
+                    "attrs": [
+                      {
+                        "name": "type",
+                        "value": "checkbox",
+                        "bare": false
+                      },
+                      {
+                        "name": "checked",
+                        "value": "checked",
+                        "bare": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "element",
+                    "tag": "span",
+                    "attrs": [],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "element",
+                "tag": "div",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "p",
+                    "attrs": [
+                      {
+                        "name": "class",
+                        "value": "editor-paragraph-block",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "done"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "flex",
+                "bare": false
+              },
+              {
+                "name": "data-type",
+                "value": "taskItem",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "label",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "input",
+                    "attrs": [
+                      {
+                        "name": "type",
+                        "value": "checkbox",
+                        "bare": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "element",
+                    "tag": "span",
+                    "attrs": [],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "element",
+                "tag": "div",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "p",
+                    "attrs": [
+                      {
+                        "name": "class",
+                        "value": "editor-paragraph-block",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "not done"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: quote",
+    "html": "<blockquote><p class=\"editor-paragraph-block\">quoted</p></blockquote>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "blockquote",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "p",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "editor-paragraph-block",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "quoted"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: code block",
+    "html": "<pre><code>a := 1\nb := 2</code></pre>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "pre",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "code",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "a := 1\nb := 2"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: horizontal rule",
+    "html": "<p class=\"editor-paragraph-block\">before</p><div class=\"py-4 border-strong-1\" data-type=\"horizontalRule\"><div></div></div><p class=\"editor-paragraph-block\">after</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "before"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "div",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "py-4 border-strong-1",
+            "bare": false
+          },
+          {
+            "name": "data-type",
+            "value": "horizontalRule",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "div",
+            "attrs": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "after"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: link",
+    "html": "<p class=\"editor-paragraph-block\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"https://example.test/?a=1&amp;b=2\">a link</a></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "a",
+            "attrs": [
+              {
+                "name": "target",
+                "value": "_blank",
+                "bare": false
+              },
+              {
+                "name": "rel",
+                "value": "noopener noreferrer nofollow",
+                "bare": false
+              },
+              {
+                "name": "class",
+                "value": "text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer",
+                "bare": false
+              },
+              {
+                "name": "href",
+                "value": "https://example.test/?a=1&b=2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "a link"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: hard break",
+    "html": "<p class=\"editor-paragraph-block\">line<br>break</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "line"
+          },
+          {
+            "type": "element",
+            "tag": "br",
+            "attrs": [],
+            "children": []
+          },
+          {
+            "type": "text",
+            "text": "break"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: text align",
+    "html": "<p class=\"editor-paragraph-block\">centred</p><p class=\"editor-paragraph-block\">right</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "centred"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "right"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: colours",
+    "html": "<p class=\"editor-paragraph-block\"><span data-text-color=\"red\">red text</span> <span data-background-color=\"peach\">peach behind</span></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [
+              {
+                "name": "data-text-color",
+                "value": "red",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "red text"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " "
+          },
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [
+              {
+                "name": "data-background-color",
+                "value": "peach",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "peach behind"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: table",
+    "html": "<table><tbody><tr><th colspan=\"1\" rowspan=\"1\" colwidth=\"150\" background=\"none\"><p class=\"editor-paragraph-block\">head</p></th><th colspan=\"1\" rowspan=\"1\" colwidth=\"150\" background=\"none\"><p class=\"editor-paragraph-block\">two</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\" colwidth=\"150\"><p class=\"editor-paragraph-block\">cell</p></td><td colspan=\"1\" rowspan=\"1\" colwidth=\"150\"><p class=\"editor-paragraph-block\">other</p></td></tr></tbody></table>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "table",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "tbody",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "th",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      },
+                      {
+                        "name": "background",
+                        "value": "none",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "head"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "element",
+                    "tag": "th",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      },
+                      {
+                        "name": "background",
+                        "value": "none",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "two"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "td",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "cell"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "element",
+                    "tag": "td",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "other"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: image",
+    "html": "<image-component src=\"11111111-1111-4111-8111-111111111111\" width=\"35%\" height=\"auto\" alignment=\"left\" status=\"pending\"></image-component>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "image-component",
+        "attrs": [
+          {
+            "name": "src",
+            "value": "11111111-1111-4111-8111-111111111111",
+            "bare": false
+          },
+          {
+            "name": "width",
+            "value": "35%",
+            "bare": false
+          },
+          {
+            "name": "height",
+            "value": "auto",
+            "bare": false
+          },
+          {
+            "name": "alignment",
+            "value": "left",
+            "bare": false
+          },
+          {
+            "name": "status",
+            "value": "pending",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "rendered: mention",
+    "html": "<p class=\"editor-paragraph-block\"><mention-component entity_identifier=\"22222222-2222-4222-8222-222222222222\" entity_name=\"user_mention\"></mention-component></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "mention-component",
+            "attrs": [
+              {
+                "name": "entity_identifier",
+                "value": "22222222-2222-4222-8222-222222222222",
+                "bare": false
+              },
+              {
+                "name": "entity_name",
+                "value": "user_mention",
+                "bare": false
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: callout",
+    "html": "<div data-emoji-unicode=\"128161\" data-emoji-url=\"https://example.test/bulb.png\" data-logo-in-use=\"emoji\" data-background=\"#eef\" data-block-type=\"callout-component\"><p class=\"editor-paragraph-block\">a callout</p></div>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "div",
+        "attrs": [
+          {
+            "name": "data-emoji-unicode",
+            "value": "128161",
+            "bare": false
+          },
+          {
+            "name": "data-emoji-url",
+            "value": "https://example.test/bulb.png",
+            "bare": false
+          },
+          {
+            "name": "data-logo-in-use",
+            "value": "emoji",
+            "bare": false
+          },
+          {
+            "name": "data-background",
+            "value": "#eef",
+            "bare": false
+          },
+          {
+            "name": "data-block-type",
+            "value": "callout-component",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "p",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "editor-paragraph-block",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "a callout"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: legacy image",
+    "html": "<img src=\"https://example.test/picture.png\" alt=\"a picture\" title=\"hover text\" width=\"35%\" alignment=\"left\">",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "img",
+        "attrs": [
+          {
+            "name": "src",
+            "value": "https://example.test/picture.png",
+            "bare": false
+          },
+          {
+            "name": "alt",
+            "value": "a picture",
+            "bare": false
+          },
+          {
+            "name": "title",
+            "value": "hover text",
+            "bare": false
+          },
+          {
+            "name": "width",
+            "value": "35%",
+            "bare": false
+          },
+          {
+            "name": "alignment",
+            "value": "left",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "rendered: emoji",
+    "html": "<p class=\"editor-paragraph-block\"><span data-name=\"tada\" data-type=\"emoji\">🎉</span></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [
+              {
+                "name": "data-name",
+                "value": "tada",
+                "bare": false
+              },
+              {
+                "name": "data-type",
+                "value": "emoji",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "🎉"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: merged table cells",
+    "html": "<table><tbody><tr><th colspan=\"2\" rowspan=\"1\" colwidth=\"200,300\" background=\"none\"><p class=\"editor-paragraph-block\">wide</p></th></tr><tr background=\"#fee\" textColor=\"#900\"><td colspan=\"1\" rowspan=\"2\" colwidth=\"150\"><p class=\"editor-paragraph-block\">tall</p></td><td colspan=\"1\" rowspan=\"1\" colwidth=\"150\"><p class=\"editor-paragraph-block\">plain</p></td></tr></tbody></table>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "table",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "tbody",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "th",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "2",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "200,300",
+                        "bare": false
+                      },
+                      {
+                        "name": "background",
+                        "value": "none",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "wide"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [
+                  {
+                    "name": "background",
+                    "value": "#fee",
+                    "bare": false
+                  },
+                  {
+                    "name": "textColor",
+                    "value": "#900",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "td",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "2",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "tall"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "element",
+                    "tag": "td",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "plain"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: text style",
+    "html": "<p class=\"editor-paragraph-block\"><span>styled</span></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "styled"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: work item embed",
+    "html": "<issue-embed-component entity_identifier=\"33333333-3333-4333-8333-333333333333\" entity_name=\"issue_mention\"></issue-embed-component>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "issue-embed-component",
+        "attrs": [
+          {
+            "name": "entity_identifier",
+            "value": "33333333-3333-4333-8333-333333333333",
+            "bare": false
+          },
+          {
+            "name": "entity_name",
+            "value": "issue_mention",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "rendered: quoted title",
+    "html": "<p class=\"editor-paragraph-block\">body</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "body"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: padded title",
+    "html": "<p class=\"editor-paragraph-block\">body</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "body"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: entity shaped title",
+    "html": "<p class=\"editor-paragraph-block\">body</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "body"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: entities",
+    "html": "<p class=\"editor-paragraph-block\">non&nbsp;breaking and soft&shy;hyphen and an &amp; ampersand</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "non breaking and soft­hyphen and an & ampersand"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: escaping",
+    "html": "<p class=\"editor-paragraph-block\">a &amp; b &lt; c &gt; d &quot;quoted&quot; &apos;single&apos;</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "a & b < c > d \"quoted\" 'single'"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: unicode",
+    "html": "<p class=\"editor-paragraph-block\">Ünicode ☃ and an emoji 🎉</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Ünicode ☃ and an emoji 🎉"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: long paragraph",
+    "html": "<p class=\"editor-paragraph-block\">word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: renumbered list",
+    "html": "<ol class=\"list-decimal pl-7 space-y-(--list-spacing-y)\" start=\"7\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">seventh</p></li></ol>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "ol",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "list-decimal pl-7 space-y-(--list-spacing-y)",
+            "bare": false
+          },
+          {
+            "name": "start",
+            "value": "7",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "seventh"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: code block with a language",
+    "html": "<pre><code class=\"language-go\">package main</code></pre>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "pre",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "code",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "language-go",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "package main"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: dangerous link",
+    "html": "<p class=\"editor-paragraph-block\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">plain</a><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">disguised</a><a class=\"text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer\" href=\"\">data</a></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "a",
+            "attrs": [
+              {
+                "name": "target",
+                "value": "_blank",
+                "bare": false
+              },
+              {
+                "name": "rel",
+                "value": "noopener noreferrer nofollow",
+                "bare": false
+              },
+              {
+                "name": "class",
+                "value": "text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer",
+                "bare": false
+              },
+              {
+                "name": "href",
+                "value": "",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "plain"
+              }
+            ]
+          },
+          {
+            "type": "element",
+            "tag": "a",
+            "attrs": [
+              {
+                "name": "target",
+                "value": "_blank",
+                "bare": false
+              },
+              {
+                "name": "rel",
+                "value": "noopener noreferrer nofollow",
+                "bare": false
+              },
+              {
+                "name": "class",
+                "value": "text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer",
+                "bare": false
+              },
+              {
+                "name": "href",
+                "value": "",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "disguised"
+              }
+            ]
+          },
+          {
+            "type": "element",
+            "tag": "a",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "text-accent-secondary underline underline-offset-[3px] hover:text-accent-primary transition-colors cursor-pointer",
+                "bare": false
+              },
+              {
+                "name": "href",
+                "value": "",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "data"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: unpalettable colours",
+    "html": "<p class=\"editor-paragraph-block\"><span data-text-color=\"#ff0000\" data-background-color=\"#00ff00\">custom</span></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [
+              {
+                "name": "data-text-color",
+                "value": "#ff0000",
+                "bare": false
+              },
+              {
+                "name": "data-background-color",
+                "value": "#00ff00",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "custom"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: unknown emoji",
+    "html": "<p class=\"editor-paragraph-block\"><span data-name=\"not_an_emoji\" data-type=\"emoji\">:not_an_emoji:</span></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "span",
+            "attrs": [
+              {
+                "name": "data-name",
+                "value": "not_an_emoji",
+                "bare": false
+              },
+              {
+                "name": "data-type",
+                "value": "emoji",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": ":not_an_emoji:"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: marks across text runs",
+    "html": "<p class=\"editor-paragraph-block\"><strong>before <em>middle</em> after</strong> plain</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "strong",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "before "
+              },
+              {
+                "type": "element",
+                "tag": "em",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "middle"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": " after"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " plain"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: marks in the other order",
+    "html": "<p class=\"editor-paragraph-block\"><strong><em>both</em></strong></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "strong",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "em",
+                "attrs": [],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "both"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: sized image",
+    "html": "<img src=\"https://example.test/a.png\" width=\"50%\" height=\"120px\" aspectRatio=\"1.5\" alignment=\"center\">",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "img",
+        "attrs": [
+          {
+            "name": "src",
+            "value": "https://example.test/a.png",
+            "bare": false
+          },
+          {
+            "name": "width",
+            "value": "50%",
+            "bare": false
+          },
+          {
+            "name": "height",
+            "value": "120px",
+            "bare": false
+          },
+          {
+            "name": "aspectRatio",
+            "value": "1.5",
+            "bare": false
+          },
+          {
+            "name": "alignment",
+            "value": "center",
+            "bare": false
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "rendered: coloured row",
+    "html": "<table><tbody><tr background=\"#eee\"><td colspan=\"1\" rowspan=\"1\" colwidth=\"150\" background=\"#fff\" textColor=\"#111\"><p class=\"editor-paragraph-block\">cell</p></td></tr></tbody></table>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "table",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "tbody",
+            "attrs": [],
+            "children": [
+              {
+                "type": "element",
+                "tag": "tr",
+                "attrs": [
+                  {
+                    "name": "background",
+                    "value": "#eee",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "element",
+                    "tag": "td",
+                    "attrs": [
+                      {
+                        "name": "colspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "rowspan",
+                        "value": "1",
+                        "bare": false
+                      },
+                      {
+                        "name": "colwidth",
+                        "value": "150",
+                        "bare": false
+                      },
+                      {
+                        "name": "background",
+                        "value": "#fff",
+                        "bare": false
+                      },
+                      {
+                        "name": "textColor",
+                        "value": "#111",
+                        "bare": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "element",
+                        "tag": "p",
+                        "attrs": [
+                          {
+                            "name": "class",
+                            "value": "editor-paragraph-block",
+                            "bare": false
+                          }
+                        ],
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "cell"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: identified mention",
+    "html": "<p class=\"editor-paragraph-block\"><mention-component id=\"44444444-4444-4444-8444-444444444444\" entity_identifier=\"55555555-5555-4555-8555-555555555555\" entity_name=\"user_mention\"></mention-component></p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "mention-component",
+            "attrs": [
+              {
+                "name": "id",
+                "value": "44444444-4444-4444-8444-444444444444",
+                "bare": false
+              },
+              {
+                "name": "entity_identifier",
+                "value": "55555555-5555-4555-8555-555555555555",
+                "bare": false
+              },
+              {
+                "name": "entity_name",
+                "value": "user_mention",
+                "bare": false
+              }
+            ],
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "rendered: mixed document",
+    "html": "<h1 class=\"editor-heading-block\">Title</h1><p class=\"editor-paragraph-block\">Some <strong>bold</strong> text.</p><ul class=\"list-disc pl-7 space-y-(--list-spacing-y)\"><li class=\"not-prose space-y-2\"><p class=\"editor-paragraph-block\">a point</p></li></ul><blockquote><p class=\"editor-paragraph-block\">a quote</p></blockquote><p class=\"editor-paragraph-block\">done</p>",
+    "tree": [
+      {
+        "type": "element",
+        "tag": "h1",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-heading-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Title"
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "Some "
+          },
+          {
+            "type": "element",
+            "tag": "strong",
+            "attrs": [],
+            "children": [
+              {
+                "type": "text",
+                "text": "bold"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": " text."
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "ul",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "list-disc pl-7 space-y-(--list-spacing-y)",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "element",
+            "tag": "li",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "not-prose space-y-2",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "element",
+                "tag": "p",
+                "attrs": [
+                  {
+                    "name": "class",
+                    "value": "editor-paragraph-block",
+                    "bare": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "a point"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "blockquote",
+        "attrs": [],
+        "children": [
+          {
+            "type": "element",
+            "tag": "p",
+            "attrs": [
+              {
+                "name": "class",
+                "value": "editor-paragraph-block",
+                "bare": false
+              }
+            ],
+            "children": [
+              {
+                "type": "text",
+                "text": "a quote"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "element",
+        "tag": "p",
+        "attrs": [
+          {
+            "name": "class",
+            "value": "editor-paragraph-block",
+            "bare": false
+          }
+        ],
+        "children": [
+          {
+            "type": "text",
+            "text": "done"
+          }
+        ]
+      }
+    ]
+  }
+]
