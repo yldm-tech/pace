@@ -108,7 +108,7 @@ func (handler *Handler) projectLiteList(c *gin.Context, user *auth.User, _ APITo
 	}
 
 	var projects []Project
-	if err := query.Select("p.*").Distinct().Order("p." + order).Scan(&projects).Error; err != nil {
+	if err := query.Select("p.*").Distinct().Order(orderClause("p.", order)).Scan(&projects).Error; err != nil {
 		handler.serverError(c, err)
 		return
 	}
@@ -127,6 +127,15 @@ type orderError struct{ message string }
 func (err *orderError) Error() string { return err.message }
 
 // sanitizeOrderBy is plane.utils.order_queryset.sanitize_order_by: at most one leading dash is stripped, and anything the allowlist does not name falls back.
+// orderClause turns what sanitizeOrderBy returns into SQL. Its result is Django's ordering syntax, where a leading minus means descending, and concatenating that after a table alias produces `p.-created_at` -- which Postgres rejects with `syntax error at or near "-"`.
+func orderClause(alias, order string) string {
+	column := strings.TrimPrefix(order, "-")
+	if strings.HasPrefix(order, "-") {
+		return alias + column + " DESC"
+	}
+	return alias + column + " ASC"
+}
+
 func sanitizeOrderBy(value string, allowed map[string]bool, fallback string) string {
 	if value == "" {
 		return fallback
