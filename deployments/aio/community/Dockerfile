@@ -16,6 +16,7 @@ FROM makeplane/plane-proxy:${PLANE_VERSION} AS proxy-img
 # **************************************************
 #  STAGE 1: Runner
 # **************************************************
+# Still a Python image, and now for one reason only: supervisor, which is installed with pip below and is what runs everything else. The backend it used to host is five Go binaries.
 FROM python:3.12.12-alpine AS runner
 
 WORKDIR /app
@@ -34,9 +35,6 @@ RUN echo "apk-security-patch ${APK_SECURITY_PATCH}" && apk update && apk upgrade
 # repair itself because apk is the broken binary. So the runtime tools that used
 # to be installed further down are folded in here.
 RUN apk add --no-cache \
-    "libpq" \
-    "libxslt" \
-    "xmlsec" \
     "nss-tools" \
     "bash" \
     "curl" \
@@ -61,15 +59,16 @@ RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 COPY --from=web-img /usr/share/caddy/html /app/web
 COPY --from=space-img /app /app/space
 COPY --from=admin-img /usr/share/caddy/html/god-mode /app/admin
-COPY --from=live-img /app /app/live
+# The collaborative editor is a binary too, and comes with its own entrypoint script.
+COPY --from=live-img /usr/local/bin/pace-live /usr/local/bin/pace-live
+COPY --from=live-img /usr/local/bin/pace-entrypoint-live /usr/local/bin/pace-entrypoint-live
 
 RUN rm -rf /app/space/apps/space/.next/cache
 
 COPY --from=proxy-img /usr/bin/caddy /usr/bin/caddy
 COPY dist/Caddyfile /app/proxy/Caddyfile
 
-COPY --from=backend-img /code /app/backend
-COPY --from=backend-img /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
+# The backend is five static binaries and the five entrypoint scripts beside them, so this copies /usr/local/bin and nothing else. What used to be here — /code, the Django tree, and the whole of site-packages — has no counterpart: a Go binary carries its dependencies inside it.
 COPY --from=backend-img /usr/local/bin/ /usr/local/bin/
 
 RUN pip install supervisor

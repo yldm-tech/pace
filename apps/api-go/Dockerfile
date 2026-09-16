@@ -17,7 +17,13 @@ COPY --from=build /pace-worker /usr/local/bin/pace-worker
 COPY --from=build /pace-beat /usr/local/bin/pace-beat
 COPY --from=build /pace-manage /usr/local/bin/pace-manage
 COPY --from=build /pace-live /usr/local/bin/pace-live
+# The entrypoint scripts, one per service, mirroring apps/api/bin. They are what carry the work each service used to do before its server started — waiting for the database, waiting for migrations, and for the api registering the instance and making the bucket — so that the compose file, the CLI deployment and the all-in-one image all get it without each repeating it.
+COPY bin/docker-entrypoint-api.sh /usr/local/bin/pace-entrypoint-api
+COPY bin/docker-entrypoint-worker.sh /usr/local/bin/pace-entrypoint-worker
+COPY bin/docker-entrypoint-beat.sh /usr/local/bin/pace-entrypoint-beat
+COPY bin/docker-entrypoint-migrator.sh /usr/local/bin/pace-entrypoint-migrator
+COPY bin/docker-entrypoint-live.sh /usr/local/bin/pace-entrypoint-live
 USER pace
 # 8000 is the api's; the live service listens on 3000.
 EXPOSE 8000 3000
-ENTRYPOINT ["pace-api"]
+ENTRYPOINT ["pace-entrypoint-api"]

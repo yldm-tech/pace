@@ -104,3 +104,29 @@ func TestLoadRequiresSecretKey(t *testing.T) {
 		t.Fatal("Load() should reject a missing SECRET_KEY")
 	}
 }
+
+// TestTheListenAddressFollowsTheDjangoEntrypoint pins where the server binds.
+//
+// The Django entrypoint ran gunicorn with --bind 0.0.0.0:"${PORT:-8000}", and deployments rely on that: the all-in-one image puts the API on 3004 and its proxy sends /api/ there. Answering only to a name of this service's own would have come up on 8000 and been unreachable.
+func TestTheListenAddressFollowsTheDjangoEntrypoint(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		address string
+		port    string
+		want    string
+	}{
+		{name: "neither set", want: ":8000"},
+		{name: "port alone", port: "3004", want: ":3004"},
+		{name: "address alone", address: "127.0.0.1:9000", want: "127.0.0.1:9000"},
+		{name: "address wins over port", address: "127.0.0.1:9000", port: "3004", want: "127.0.0.1:9000"},
+		{name: "blank port is not a port", port: "  ", want: ":8000"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Setenv("PACE_API_ADDRESS", test.address)
+			t.Setenv("PORT", test.port)
+			if got := listenAddress(); got != test.want {
+				t.Fatalf("listenAddress() = %q, want %q", got, test.want)
+			}
+		})
+	}
+}

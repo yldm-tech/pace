@@ -1,0 +1,19 @@
+# The collaborative editor on its own, replacing apps/live/Dockerfile.live.
+#
+# It is a second image rather than the main one with a different entrypoint because that is what the published tags are: makeplane/plane-live has always been a separate image from makeplane/plane-backend, the all-in-one Dockerfile pulls both by name, and keeping one of them would have meant changing what every deployment refers to as well as what it contains. Building only cmd/live also makes it the smaller of the two rather than a copy of the larger.
+#
+# The tag has to keep up with the go line in go.mod: the image pins GOTOOLCHAIN=local, so a module asking for a newer toolchain than the image carries fails the download outright rather than fetching one.
+FROM golang:1.26-alpine AS build
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /pace-live ./cmd/live
+
+FROM alpine:3.22
+RUN apk add --no-cache ca-certificates && adduser -D -H pace
+COPY --from=build /pace-live /usr/local/bin/pace-live
+COPY bin/docker-entrypoint-live.sh /usr/local/bin/pace-entrypoint-live
+USER pace
+EXPOSE 3000
+ENTRYPOINT ["pace-entrypoint-live"]

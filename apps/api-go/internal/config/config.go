@@ -81,7 +81,7 @@ func Load() (Config, error) {
 	webhookAllowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
 
 	config := Config{
-		Address:         envOrDefault("PACE_API_ADDRESS", defaultAddress),
+		Address:         listenAddress(),
 		DatabaseURL:     strings.TrimSpace(os.Getenv("DATABASE_URL")),
 		CORSOrigins:     corsOrigins,
 		ShutdownTimeout: durationOrDefault(os.Getenv("SHUTDOWN_TIMEOUT"), defaultShutdownTimeout),
@@ -138,6 +138,21 @@ func Load() (Config, error) {
 		return Config{}, fmt.Errorf("SECRET_KEY is required")
 	}
 	return config, nil
+}
+
+// listenAddress is where the API server binds.
+//
+// PORT is read because the Django entrypoint read it: it ran gunicorn with --bind 0.0.0.0:"${PORT:-8000}", and deployments set it — the all-in-one image puts the API on 3004 and its proxy sends /api/ there. A Go service that only answered to a name of its own would have come up on 8000 and been unreachable behind that proxy.
+//
+// PACE_API_ADDRESS wins when both are set, because it says more: it can name an interface as well as a port.
+func listenAddress() string {
+	if address := strings.TrimSpace(os.Getenv("PACE_API_ADDRESS")); address != "" {
+		return address
+	}
+	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+		return ":" + port
+	}
+	return defaultAddress
 }
 
 func envOrDefault(name, fallback string) string {
