@@ -127,7 +127,7 @@ func (handler *Handler) pageList(c *gin.Context, user *auth.User) {
 	}
 
 	var rows []pageRow
-	err = query.Order("is_favorite DESC, p." + sanitizeOrderBy(c.Query("order_by"), pageOrderByAllowlist, "-created_at") + ", p.id").
+	err = query.Order("is_favorite DESC, " + orderClause("p.", sanitizeOrderBy(c.Query("order_by"), pageOrderByAllowlist, "-created_at")) + ", p.id").
 		Scan(&rows).Error
 	if err != nil {
 		handler.internalError(c, err)
