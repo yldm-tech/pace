@@ -246,6 +246,11 @@ func TestMaintenanceTasksRegisterEveryName(t *testing.T) {
 	NewNotificationTasks(nil, nil).Register(consumer)
 	NewWebhookTasks(nil, httpsafe.Settings{}, nil, nil, nil).Register(consumer)
 	NewEmailStackTasks(nil, nil, nil).Register(consumer)
+	emailSend, err := NewEmailSendTasks(nil, nil, EmailSettings{}, nil, &recordingMailer{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	emailSend.Register(consumer)
 	registered := map[string]bool{}
 	for _, name := range consumer.TaskNames() {
 		registered[name] = true

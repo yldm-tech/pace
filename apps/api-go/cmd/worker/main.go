@@ -110,6 +110,19 @@ func main() {
 		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
 	}, activityPublisher, activityPublisher, logger)
 	emailStack := worker.NewEmailStackTasks(db, activityPublisher, logger)
+	emailSend, err := worker.NewEmailSendTasks(db, redisClient, worker.EmailSettings{
+		Host:     os.Getenv("EMAIL_HOST"),
+		User:     os.Getenv("EMAIL_HOST_USER"),
+		Password: os.Getenv("EMAIL_HOST_PASSWORD"),
+		Port:     envOrDefault("EMAIL_PORT", "587"),
+		UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
+		UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
+		From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+	}, repository, nil, logger)
+	if err != nil {
+		logger.Error("prepare the notification email", "error", err)
+		os.Exit(1)
+	}
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -127,6 +140,7 @@ func main() {
 	notifications.Register(consumer)
 	webhooks.Register(consumer)
 	emailStack.Register(consumer)
+	emailSend.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

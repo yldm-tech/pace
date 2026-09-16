@@ -149,12 +149,15 @@ jobs:
       - name: Verify the notification email rendering matches Django
         working-directory: apps/api
         run: |
-          if ! diff -u ../api-go/internal/djangotemplate/testdata/issue-updates.html templates/emails/notifications/issue-updates.html; then
-            echo "::error::apps/api-go/internal/djangotemplate/testdata/issue-updates.html is not the template apps/api ships."
-            echo "Copy it across with:"
-            echo "  cp templates/emails/notifications/issue-updates.html ../api-go/internal/djangotemplate/testdata/issue-updates.html"
-            exit 1
-          fi
+          for copy in ../api-go/internal/djangotemplate/testdata ../api-go/internal/worker/templates/emails/notifications; do
+            target="$copy/issue-updates.html"
+            if ! diff -u "$target" templates/emails/notifications/issue-updates.html; then
+              echo "::error::$target is not the template apps/api ships."
+              echo "Copy it across with:"
+              echo "  cp templates/emails/notifications/issue-updates.html $target"
+              exit 1
+            fi
+          done
           python ../api-go/tools/generate_django_template_fixture.py > /tmp/issue_updates.txt
           if ! diff -u ../api-go/internal/djangotemplate/testdata/issue_updates.txt /tmp/issue_updates.txt; then
             echo "::error::apps/api-go/internal/djangotemplate/testdata/issue_updates.txt is stale."

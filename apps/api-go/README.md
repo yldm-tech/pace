@@ -1437,6 +1437,22 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the notification email
+
+`send_email_notification` now runs on the Go worker, which finishes the notification chain: the history is written, the notifications are made, the batches are stacked and the email is rendered and sent, all on the Go side.
+
+**It sends nothing unless somebody looked at the work item recently.** Every link in the email is built from an origin the activity task parks in Redis for ten minutes. With no origin there is nothing to link to and the task returns — so a change made by a client that sent no origin, or one whose email is stacked more than ten minutes later, is silently not emailed. Reproduced rather than corrected.
+
+**The lock names the whole batch.** It is built from every notification id the stacking handed over, sorted, which is why two emails to the same person in one sweep take the same lock and only the first goes out.
+
+Two more reproduced rather than corrected:
+
+**The time of day is written on the twenty-four hour clock with an am or pm after it**, so an afternoon change reads `14:05 PM`.
+
+**The avatar url is the origin and the stored value glued together**, so somebody whose avatar is a full url elsewhere gets a broken image in the email.
+
+And one that is upstream's and quietly costs a message: a failure to send releases the lock so the batch could be tried again, but the stacking has already marked it processed, so nothing ever will.
+
 ## Migrated module: the Django template subset
 
 `internal/djangotemplate` renders the notification emails' templates, and the templates themselves are **copied from `apps/api` unchanged**.
