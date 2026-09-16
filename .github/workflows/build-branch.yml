@@ -59,6 +59,7 @@ jobs:
       gh_build_matrix: ${{ steps.set_env_variables.outputs.BUILD_MATRIX }}
       gh_expected_platforms: ${{ steps.set_env_variables.outputs.EXPECTED_PLATFORMS }}
 
+      dh_owner: ${{ steps.set_env_variables.outputs.DH_OWNER }}
       dh_img_web: ${{ steps.set_env_variables.outputs.DH_IMG_WEB }}
       dh_img_space: ${{ steps.set_env_variables.outputs.DH_IMG_SPACE }}
       dh_img_admin: ${{ steps.set_env_variables.outputs.DH_IMG_ADMIN }}
@@ -95,6 +96,8 @@ jobs:
           BR_NAME=$( echo "${{ env.TARGET_BRANCH }}" |sed 's/[^a-zA-Z0-9.-]//g')
           echo "TARGET_BRANCH=$BR_NAME" >> $GITHUB_OUTPUT
 
+          # Where the images are pushed. It was makeplane, which is upstream's namespace and not this fork's — pushing there needs credentials this repository does not have, and would put this fork's images under upstream's name if it did. Set the DOCKERHUB_USER repository variable to override the default.
+          echo "DH_OWNER=${{ vars.DOCKERHUB_USER || 'yldm-tech' }}" >> $GITHUB_OUTPUT
           echo "DH_IMG_WEB=plane-frontend" >> $GITHUB_OUTPUT
           echo "DH_IMG_SPACE=plane-space" >> $GITHUB_OUTPUT
           echo "DH_IMG_ADMIN=plane-admin" >> $GITHUB_OUTPUT
@@ -172,7 +175,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_admin }}
           build-context: .
           dockerfile-path: ./apps/admin/Dockerfile.admin
@@ -200,7 +203,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_admin }}
           digest-artifact-pattern: digest-admin-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -223,7 +226,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_web }}
           build-context: .
           dockerfile-path: ./apps/web/Dockerfile.web
@@ -251,7 +254,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_web }}
           digest-artifact-pattern: digest-web-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -274,7 +277,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_space }}
           build-context: .
           dockerfile-path: ./apps/space/Dockerfile.space
@@ -302,7 +305,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_space }}
           digest-artifact-pattern: digest-space-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -325,7 +328,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_live }}
           build-context: ./apps/api-go
           dockerfile-path: ./apps/api-go/Dockerfile.live
@@ -353,7 +356,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_live }}
           digest-artifact-pattern: digest-live-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -376,7 +379,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_backend }}
           build-context: ./apps/api-go
           dockerfile-path: ./apps/api-go/Dockerfile
@@ -404,7 +407,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_backend }}
           digest-artifact-pattern: digest-api-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -427,7 +430,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_proxy }}
           build-context: ./apps/proxy
           dockerfile-path: ./apps/proxy/Dockerfile.ce
@@ -455,7 +458,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_proxy }}
           digest-artifact-pattern: digest-proxy-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}
@@ -524,7 +527,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_aio }}
           build-context: ./deployments/aio/community
           dockerfile-path: ./deployments/aio/community/Dockerfile
@@ -554,7 +557,7 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          docker-image-owner: makeplane
+          docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_aio }}
           digest-artifact-pattern: digest-aio-*
           expected-platforms: ${{ needs.branch_build_setup.outputs.gh_expected_platforms }}

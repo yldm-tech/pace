@@ -3077,3 +3077,34 @@ While it could not be pulled, nothing that touches object storage had ever been 
 The second is the same shape as a dozen already fixed, and it is the shape the source-reading guards cannot see: a work item is written from a map built at runtime out of the request, so nothing static can tell which columns it ends up with. What can be checked is coverage, and now is: `issues.CreateDefaults` and `issues.CreateAssigned` between them have to account for every NOT NULL column of `issues` with no database default, and `TestCreateDefaultsCoverTheRequiredColumns` fails if one is missing from both.
 
 The upload path end to end: presign, POST the form to MinIO (204), the completion callback (204), the attachment listed, the object on MinIO's disk, the file downloaded back with its contents, and `get_asset_object_metadata` run by the worker.
+
+## Owning the release
+
+The code was all Go before any of it was published under this fork's name. Every deployment path still pointed at upstream:
+
+- `build-branch.yml` pushed to the `makeplane` namespace, which this repository has no credentials for and which is upstream's regardless.
+- `deployments/cli/community` and the all-in-one image pulled `makeplane/plane-backend` and `makeplane/plane-live` — Django and Node.
+- `deployments/swarm/community/swarm.sh` downloaded its compose file from `makeplane/plane`'s **releases**, so anyone installing that way stood up upstream's Plane and none of this tree. It also defaulted to `BRANCH=master`, and this repository's default branch is `main`.
+- `deployments/kubernetes/community` was a link to upstream's Helm chart.
+
+All of it now resolves through `DOCKERHUB_USER`, defaulting to `yldm-tech` — the name this repository's GitHub organisation uses, and a guess worth confirming. It was already the variable `build.yml` and `swarm.sh` used for exactly this, so there is one name for it rather than two. `uses: makeplane/actions/...` stays: those are published reusable actions, not a deployment target.
+
+The Kubernetes README now says what it actually takes. The chart is upstream's and fine — only the images differ — so it documents the override rather than pretending a chart exists here.
+
+### The all-in-one image, finally built
+
+It had been changed twice without being built, because it is assembled `FROM` images that had never been published with Go in them. Building the two base images locally, tagging the admin and proxy from this repository beside them and passing `PLANE_IMAGE_OWNER` closes that:
+
+- it builds
+- `/usr/local/bin` holds the five binaries and the five entrypoint scripts, `/app/backend` is gone, and site-packages has nothing Django in it
+- `libpq`, `libxslt` and `xmlsec` are gone, which is what the earlier change claimed and could not show
+- run against Postgres, RabbitMQ and Valkey, the migrator applies 164 migrations, the API, worker, beat and live all start, and the internal Caddy answers `/api/health` and `/live/health` with 200
+- the live server listens on the 3005 supervisor names, which is the `PORT` that was read and then ignored until it was fixed
+
+Two of its six base images could not be built from this repository, so the web and space layers were stubbed. That is not the image's fault, and it is the next section.
+
+### What is still broken, and is not this migration's
+
+`packages/propel` does not build, on `main` as much as anywhere: `emoji-picker.tsx` imports `./icon/icon-root` and that file has never been committed — it is in no branch and no commit. `apps/web` and `apps/space` both depend on propel, so neither builds either.
+
+Writing the missing component means designing an icon picker with search and colour selection over the two icon lists sitting beside it. That is a frontend feature, not a port of one, so it is left alone rather than invented.
