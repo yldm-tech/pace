@@ -2,9 +2,15 @@ package manage
 
 import (
 	"context"
+	"crypto/rand"
+	"fmt"
+	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/yldm-tech/pace/apps/api-go/internal/worker"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // Mail is how test_email reaches a mail server, and how the settings it uses are resolved. A binary that does not set it answers that mail is not configured.
@@ -84,11 +90,154 @@ func asNumber(value string) int {
 	return number
 }
 
-// createDummyData is manage.py create_dummy_data, which is not here yet.
+// createDummyData is manage.py create_dummy_data: a whole workspace of made-up work, asked for on the terminal one answer at a time.
 //
-// It queues plane.bgtasks.dummy_data_task, and that task has not been ported. Rather than half-run — making the workspace and then queueing something nothing will consume — it says so and stops.
-func createDummyData(_ context.Context, _ Environment, _ []string) error {
-	return commandError("create_dummy_data is not available yet: it queues plane.bgtasks.dummy_data_task, which has not been ported.")
+// The workspace is made here and the projects are queued, one message per project. Everything that goes wrong is reported and swallowed, which is what the command's own try does — including a half-made workspace, since the workspace is written before the first project is asked about.
+func createDummyData(ctx context.Context, env Environment, _ []string) error {
+	db, err := database(env)
+	if err != nil {
+		return err
+	}
+	name, err := env.Prompt("Workspace Name: ")
+	if err != nil {
+		return err
+	}
+	slug, err := env.Prompt("Workspace slug: ")
+	if err != nil {
+		return err
+	}
+	if slug == "" {
+		write(env, "Command errored out Workspace slug is required")
+		return nil
+	}
+	var existing int64
+	if err := db.WithContext(ctx).Table("workspaces").Where("slug = ? AND deleted_at IS NULL", slug).Count(&existing).Error; err != nil {
+		return err
+	}
+	if existing > 0 {
+		write(env, "Command errored out Workspace already exists")
+		return nil
+	}
+
+	creator, err := env.Prompt("Your email: ")
+	if err != nil {
+		return err
+	}
+	var owners []string
+	if creator != "" {
+		if err := db.WithContext(ctx).Table("users").Where("email = ?", creator).Limit(1).Pluck("id", &owners).Error; err != nil {
+			return err
+		}
+	}
+	if len(owners) == 0 {
+		write(env, "Command errored out User email is required and should have signed in plane")
+		return nil
+	}
+
+	memberLine, err := env.Prompt("Enter Member emails (comma separated): ")
+	if err != nil {
+		return err
+	}
+	members := []string{}
+	if memberLine != "" {
+		// The line is split on commas and nothing is trimmed, so a space after a comma stays part of the address — which is what then fails to match anybody.
+		members = strings.Split(memberLine, ",")
+	}
+
+	if err := createSeedWorkspace(ctx, db, name, slug, owners[0], members); err != nil {
+		write(env, "Command errored out %s", err)
+		return nil
+	}
+
+	projectCount, err := promptNumber(env, "Number of projects to be created: ")
+	if err != nil {
+		return err
+	}
+	if Queue == nil || Queue() == nil {
+		write(env, "Command errored out No task queue is configured")
+		return nil
+	}
+	publisher := Queue()
+	for index := 0; index < projectCount; index++ {
+		write(env, "Please provide the following details for project %d:", index+1)
+		counts := map[string]any{"slug": slug, "email": creator, "members": members}
+		// The five are asked in the order the command asks them in.
+		for _, question := range []struct{ label, key string }{
+			{"Number of issues to be created: ", "issue_count"},
+			{"Number of cycles to be created: ", "cycle_count"},
+			{"Number of modules to be created: ", "module_count"},
+			{"Number of pages to be created: ", "pages_count"},
+			{"Number of intake issues to be created: ", "intake_issue_count"},
+		} {
+			value, err := promptNumber(env, question.label)
+			if err != nil {
+				return err
+			}
+			counts[question.key] = value
+		}
+		if err := publisher.PublishAfter(ctx, worker.CreateDummyDataTask, counts, 0); err != nil {
+			write(env, "Command errored out %s", err)
+			return nil
+		}
+	}
+	write(env, "Data is pushed to the queue")
+	return nil
+}
+
+func promptNumber(env Environment, label string) (int, error) {
+	value, err := env.Prompt(label)
+	if err != nil {
+		return 0, err
+	}
+	return asNumber(value), nil
+}
+
+// createSeedWorkspace writes the workspace and its first two memberships: the person who asked, and anybody they named who has already signed in.
+func createSeedWorkspace(ctx context.Context, db *gorm.DB, name, slug, ownerID string, members []string) error {
+	now := time.Now().UTC()
+	workspaceID := uuid.NewString()
+	err := db.WithContext(ctx).Table("workspaces").Create(map[string]any{
+		"id": workspaceID, "created_at": now, "updated_at": now,
+		"created_by_id": nil, "updated_by_id": nil,
+		"name": name, "slug": slug, "owner_id": ownerID, "organization_size": nil,
+		"timezone": "UTC", "background_color": randomHexColor(),
+	}).Error
+	if err != nil {
+		return err
+	}
+	err = db.WithContext(ctx).Table("workspace_members").Create(map[string]any{
+		"id": uuid.NewString(), "created_at": now, "updated_at": now,
+		"created_by_id": nil, "updated_by_id": nil,
+		"workspace_id": workspaceID, "member_id": ownerID, "role": 20, "is_active": true,
+		"view_props": "{}", "default_props": "{}", "issue_props": "{}", "company_role": nil,
+		"getting_started_checklist": "{}", "tips": "{}", "explored_features": "{}",
+	}).Error
+	if err != nil {
+		return err
+	}
+	if len(members) == 0 {
+		return nil
+	}
+	var memberIDs []string
+	if err := db.WithContext(ctx).Table("users").Where("email IN ?", members).Pluck("id", &memberIDs).Error; err != nil {
+		return err
+	}
+	rows := make([]map[string]any, 0, len(memberIDs))
+	for _, memberID := range memberIDs {
+		rows = append(rows, map[string]any{
+			"id": uuid.NewString(), "created_at": now, "updated_at": now,
+			"created_by_id": nil, "updated_by_id": nil,
+			"workspace_id": workspaceID, "member_id": memberID, "role": 20, "is_active": true,
+			"view_props": "{}", "default_props": "{}", "issue_props": "{}", "company_role": nil,
+			"getting_started_checklist": "{}", "tips": "{}", "explored_features": "{}",
+		})
+	}
+	if len(rows) == 0 {
+		return nil
+	}
+	// ignore_conflicts, so the person who asked is not written twice when they name themselves.
+	return db.WithContext(ctx).Table("workspace_members").
+		Clauses(clause.OnConflict{DoNothing: true}).Create(rows).Error
 }
 
 func allCommands() []Command {
@@ -118,3 +267,12 @@ var pollInterval = struct {
 	database   time.Duration
 	migrations time.Duration
 }{database: time.Second, migrations: 10 * time.Second}
+
+// randomHexColor is get_random_color, the column default a workspace gets when nobody picks one.
+func randomHexColor() string {
+	value := make([]byte, 3)
+	if _, err := rand.Read(value); err != nil {
+		return "#3f76ff"
+	}
+	return fmt.Sprintf("#%x", value)
+}

@@ -170,6 +170,7 @@ func main() {
 	analyticExports.Register(consumer)
 	copyAssets.Register(consumer)
 	versionSync.Register(consumer)
+	worker.NewDummyDataTasks(db, logger).Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

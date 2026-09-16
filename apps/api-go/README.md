@@ -2281,7 +2281,7 @@ Eighteen `manage.py` commands have no Go equivalent yet, including the two that 
 
 `cmd/manage` is the `manage.py` commands an operator runs by hand — one binary with a subcommand per command, named exactly as `manage.py` names them. A runbook that says `python manage.py activate_user ada@example.test` becomes `pace-manage activate_user ada@example.test` and nothing else changes: the same arguments, the same wording on stdout, and the same non-zero exit when something was wrong. `internal/manage` holds the commands themselves.
 
-Sixteen of the seventeen are here. The seventeenth, `create_dummy_data`, refuses rather than half-running: it queues `plane.bgtasks.dummy_data_task`, which has not been ported, and making the workspace and then queueing something nothing will consume would be worse than saying so.
+All seventeen are here.
 
 Two of them gate a deploy, and they are the reason this piece exists at all — the worker and the beat wait on them before they start.
 
@@ -2300,3 +2300,24 @@ Everything else follows the original, quirks included:
 - `fix_duplicate_sequences` asks for the workspace slug on the terminal rather than taking it as an argument, and takes the project's advisory lock before handing out numbers.
 
 The email template `test_email` renders is a copy of the one `apps/api` ships, and CI diffs the two.
+
+## Migrated service: the dummy project
+
+`plane.bgtasks.dummy_data_task.create_dummy_data` fills a project with made-up work so somebody can see what a busy workspace looks like. `internal/worker/dummy_data.go` is the port, and `manage create_dummy_data` is what queues it.
+
+What it writes is random by design, so this does not reproduce Faker's output: a name here is not the name Faker would have picked. What it does reproduce is the shape — how many rows of what, which columns are filled, which are left alone, and every place the original writes less than it looks like it does. `internal/worker/dummy_faker.go` holds the made-up values, kept to the same kinds and sizes: a person's name, a colour's name, a hex colour, a paragraph cut to a length, a date inside this year.
+
+Four of those "writes less than it looks like" places are worth naming, because a reader of the Python would not spot them:
+
+- **`create_issue_parent` writes nothing at all.** It builds an empty list, sets a parent on each sub-issue inside the loop, never appends any of them to that list, and hands the empty list to `bulk_update`. Not one parent is ever saved. Reproduced rather than corrected: a dummy project with a quarter of its work items suddenly parented would not be the project this task has always made.
+- **The cycle count is one more than you ask for**, because the loop runs while the count is less than *or equal to* what was asked.
+- **Intake work items are extra work items.** `create_intake_issues` calls `create_issues` again rather than filing any of the ones already made, so asking for a hundred and ten intake ones leaves a hundred and ten.
+- **Labels and modules go on every work item, not half.** The line that picked half is commented out in both, while the assignees and the cycle links still pick half.
+
+Three more things the shape carries:
+
+- The five states it writes are not the six a real project starts with. The colours differ and there is no triage state at all, so a project made this way has nothing for its intake to file into.
+- `bulk_create` skips the models' own `save`, so a state's slug and a page's stripped description are both left empty even though the html beside them is filled in.
+- The sort order the work items start from is read off a *randomly chosen* state rather than off each work item's own, so the ordering it hands out means nothing.
+
+`manage create_dummy_data` asks its questions in the order the command asks them, writes the workspace before the first project is asked about — so an answer given up halfway leaves a workspace behind — and splits the member emails on commas without trimming, so a space after a comma stays part of the address and matches nobody. All reproduced.

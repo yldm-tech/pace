@@ -286,7 +286,7 @@ func MigratedTaskNames() []string {
 		AssetObjectMetadataTask, DeleteUnuploadedFileAssetTask, CrawlLinkTitleTask,
 		DeleteOldExportLinksTask, ArchiveAndCloseTask, ModelActivityTask, IssueActivityTask, NotificationsTask, WebhookSendTask, WebhookActivityTask, StackEmailNotificationTask, SendEmailNotificationTask, ProcessLogsTask, IssueExportTask, AnalyticExportTask, ExportAnalyticsToCSVEmailTask, CopyAssetsTask,
 		IssueVersionTask, SyncIssueVersionTask, ScheduleIssueVersionTask,
-		SyncIssueDescriptionVersionTask, ScheduleIssueDescriptionVersionTask,
+		SyncIssueDescriptionVersionTask, ScheduleIssueDescriptionVersionTask, CreateDummyDataTask,
 	}
 }
 
