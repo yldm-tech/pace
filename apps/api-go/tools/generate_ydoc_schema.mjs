@@ -38,6 +38,7 @@ const nodes = Object.values(schema.nodes).map((type) => ({
   is_inline: type.isInline,
   groups: type.groups,
   content: type.spec.content ?? "",
+  whitespace: type.spec.whitespace ?? "",
   marks: type.spec.marks ?? null,
   attrs: attributes(type.attrs),
 }));

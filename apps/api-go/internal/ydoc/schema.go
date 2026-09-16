@@ -28,14 +28,16 @@ type Attribute struct {
 //
 // Content is the grammar for what the type may hold, compiled into ContentMatch when the schema is loaded. Groups are the names the expression of another type may refer to it by, so that "block+" reaches every type in the block group.
 type NodeType struct {
-	Name     string               `json:"name"`
-	IsText   bool                 `json:"is_text"`
-	IsLeaf   bool                 `json:"is_leaf"`
-	IsInline bool                 `json:"is_inline"`
-	Groups   []string             `json:"groups"`
-	Content  string               `json:"content"`
-	Marks    *string              `json:"marks"`
-	Attrs    map[string]Attribute `json:"attrs"`
+	Name     string   `json:"name"`
+	IsText   bool     `json:"is_text"`
+	IsLeaf   bool     `json:"is_leaf"`
+	IsInline bool     `json:"is_inline"`
+	Groups   []string `json:"groups"`
+	Content  string   `json:"content"`
+	// Whitespace is "pre" for a type whose content keeps its spacing exactly as written, which is what tells the parser not to collapse it.
+	Whitespace string               `json:"whitespace"`
+	Marks      *string              `json:"marks"`
+	Attrs      map[string]Attribute `json:"attrs"`
 
 	// ContentMatch is the compiled Content, and MarkSet the compiled Marks: nil when every mark is allowed, empty when none is.
 	ContentMatch *ContentMatch `json:"-"`

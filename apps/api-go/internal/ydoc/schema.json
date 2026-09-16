@@ -10,6 +10,7 @@
         "block"
       ],
       "content": "inline*",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "textAlign": {
@@ -27,6 +28,7 @@
         "inline"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "id": {
@@ -53,6 +55,7 @@
         "list"
       ],
       "content": "listItem+",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -63,6 +66,7 @@
       "is_inline": false,
       "groups": [],
       "content": "block+",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -75,6 +79,7 @@
         "inline"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -87,6 +92,7 @@
         "block"
       ],
       "content": "inline*",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "textAlign": {
@@ -106,6 +112,7 @@
       "is_inline": false,
       "groups": [],
       "content": "paragraph block*",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -119,6 +126,7 @@
         "list"
       ],
       "content": "listItem+",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "start": {
@@ -140,6 +148,7 @@
         "inline"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -152,6 +161,7 @@
         "inline"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "name": {
@@ -169,6 +179,7 @@
         "block"
       ],
       "content": "block+",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -181,6 +192,7 @@
         "block"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -193,6 +205,7 @@
         "block"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "src": {
@@ -234,6 +247,7 @@
         "block"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "src": {
@@ -284,6 +298,7 @@
         "list"
       ],
       "content": "taskItem+",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -294,6 +309,7 @@
       "is_inline": false,
       "groups": [],
       "content": "paragraph block*",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "checked": {
@@ -311,6 +327,7 @@
         "block"
       ],
       "content": "text*",
+      "whitespace": "",
       "marks": "",
       "attrs": {
         "language": {
@@ -328,6 +345,7 @@
         "block"
       ],
       "content": "tableRow+",
+      "whitespace": "",
       "marks": null,
       "attrs": {}
     },
@@ -338,6 +356,7 @@
       "is_inline": false,
       "groups": [],
       "content": "block+",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "colspan": {
@@ -367,6 +386,7 @@
       "is_inline": false,
       "groups": [],
       "content": "block+",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "colspan": {
@@ -400,6 +420,7 @@
       "is_inline": false,
       "groups": [],
       "content": "(tableCell | tableHeader)*",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "background": {
@@ -421,6 +442,7 @@
         "block"
       ],
       "content": "block+",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "id": {
@@ -466,6 +488,7 @@
         "block"
       ],
       "content": "",
+      "whitespace": "",
       "marks": null,
       "attrs": {
         "entity_identifier": {
