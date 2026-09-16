@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -163,12 +164,13 @@ func (handler *Handler) userAssetMarkUploaded(c *gin.Context, user *auth.User) {
 		if column == "" {
 			return nil
 		}
-		var previous []*string
+		// []sql.NullString rather than []*string: Pluck does not honour a pointer element type, so a null column ends the request with `converting NULL to string is unsupported` -- which is every first time, before the row has ever been set.
+		var previous []sql.NullString
 		if err := tx.Table("users").Where("id = ?", user.ID).Limit(1).Pluck(column, &previous).Error; err != nil {
 			return err
 		}
-		if len(previous) > 0 && previous[0] != nil {
-			err := tx.Table("file_assets").Where("id = ?", *previous[0]).
+		if len(previous) > 0 && previous[0].Valid {
+			err := tx.Table("file_assets").Where("id = ?", previous[0].String).
 				Updates(map[string]any{"is_deleted": true, "deleted_at": now}).Error
 			if err != nil {
 				return err

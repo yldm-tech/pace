@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -254,13 +255,14 @@ func (handler *Handler) attachAssetToEntity(tx *gorm.DB, asset FileAsset, now ti
 		if asset.WorkspaceID == nil {
 			return nil
 		}
-		var previous []*string
+		// []sql.NullString rather than []*string: Pluck does not honour a pointer element type, so a null column ends the request with `converting NULL to string is unsupported` -- which is every first time, before the row has ever been set.
+		var previous []sql.NullString
 		err := tx.Table("workspaces").Where("id = ?", *asset.WorkspaceID).Limit(1).Pluck("logo_asset_id", &previous).Error
 		if err != nil || len(previous) == 0 {
 			return err
 		}
-		if previous[0] != nil {
-			if err := markAssetDeleted(tx, *previous[0], now); err != nil {
+		if previous[0].Valid {
+			if err := markAssetDeleted(tx, previous[0].String, now); err != nil {
 				return err
 			}
 		}
@@ -270,13 +272,13 @@ func (handler *Handler) attachAssetToEntity(tx *gorm.DB, asset FileAsset, now ti
 		if asset.ProjectID == nil {
 			return nil
 		}
-		var previous []*string
+		var previous []sql.NullString
 		err := tx.Table("projects").Where("id = ?", *asset.ProjectID).Limit(1).Pluck("cover_image_asset_id", &previous).Error
 		if err != nil || len(previous) == 0 {
 			return err
 		}
-		if previous[0] != nil {
-			if err := markAssetDeleted(tx, *previous[0], now); err != nil {
+		if previous[0].Valid {
+			if err := markAssetDeleted(tx, previous[0].String, now); err != nil {
 				return err
 			}
 		}
