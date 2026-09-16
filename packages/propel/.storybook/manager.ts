@@ -9,7 +9,7 @@ import { create } from "storybook/theming";
 
 const planeTheme = create({
   base: "dark",
-  brandTitle: "Plane UI",
+  brandTitle: "Pace UI",
   brandUrl: "https://pace.yldm.ai",
   brandImage: "plane-lockup-light.svg",
   brandTarget: "_self",

@@ -33,7 +33,7 @@ export const Default: Story = {
     return (
       <Accordion.Root className="w-96">
         <Accordion.Item value="item-1">
-          <Accordion.Trigger>What is Plane?</Accordion.Trigger>
+          <Accordion.Trigger>What is Pace?</Accordion.Trigger>
           <Accordion.Content>
             Plane is an open-source project management tool designed for developers and teams to plan, track, and manage
             their work efficiently.
