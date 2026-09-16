@@ -1,0 +1,6286 @@
+{
+  "automatons": [
+    {
+      "type": "paragraph",
+      "expression": "inline*",
+      "automaton": "0* mention->0, hardBreak->0, text->0, emoji->0"
+    },
+    {
+      "type": "mention",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "bulletList",
+      "expression": "listItem+",
+      "automaton": "0  listItem->1\n1* listItem->1"
+    },
+    {
+      "type": "doc",
+      "expression": "block+",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "hardBreak",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "heading",
+      "expression": "inline*",
+      "automaton": "0* mention->0, hardBreak->0, text->0, emoji->0"
+    },
+    {
+      "type": "listItem",
+      "expression": "paragraph block*",
+      "automaton": "0  paragraph->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "orderedList",
+      "expression": "listItem+",
+      "automaton": "0  listItem->1\n1* listItem->1"
+    },
+    {
+      "type": "text",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "emoji",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "blockquote",
+      "expression": "block+",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "horizontalRule",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "image",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "imageComponent",
+      "expression": "",
+      "automaton": "0* "
+    },
+    {
+      "type": "taskList",
+      "expression": "taskItem+",
+      "automaton": "0  taskItem->1\n1* taskItem->1"
+    },
+    {
+      "type": "taskItem",
+      "expression": "paragraph block*",
+      "automaton": "0  paragraph->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "codeBlock",
+      "expression": "text*",
+      "automaton": "0* text->0"
+    },
+    {
+      "type": "table",
+      "expression": "tableRow+",
+      "automaton": "0  tableRow->1\n1* tableRow->1"
+    },
+    {
+      "type": "tableHeader",
+      "expression": "block+",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "tableCell",
+      "expression": "block+",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "tableRow",
+      "expression": "(tableCell | tableHeader)*",
+      "automaton": "0* tableCell->0, tableHeader->0"
+    },
+    {
+      "type": "calloutComponent",
+      "expression": "block+",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1"
+    },
+    {
+      "type": "issue-embed-component",
+      "expression": "",
+      "automaton": "0* "
+    }
+  ],
+  "matches": [
+    {
+      "in": "paragraph",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "mention",
+      "matches": true
+    },
+    {
+      "in": "paragraph",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "hardBreak",
+      "matches": true
+    },
+    {
+      "in": "paragraph",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "text",
+      "matches": true
+    },
+    {
+      "in": "paragraph",
+      "type": "emoji",
+      "matches": true
+    },
+    {
+      "in": "paragraph",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "paragraph",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "mention",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "listItem",
+      "matches": true
+    },
+    {
+      "in": "bulletList",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "bulletList",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "bulletList",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "heading",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "orderedList",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "blockquote",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "horizontalRule",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "image",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "imageComponent",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "taskList",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "codeBlock",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "table",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "doc",
+      "type": "calloutComponent",
+      "matches": true
+    },
+    {
+      "in": "doc",
+      "type": "issue-embed-component",
+      "matches": true
+    },
+    {
+      "in": "hardBreak",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "hardBreak",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "mention",
+      "matches": true
+    },
+    {
+      "in": "heading",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "hardBreak",
+      "matches": true
+    },
+    {
+      "in": "heading",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "text",
+      "matches": true
+    },
+    {
+      "in": "heading",
+      "type": "emoji",
+      "matches": true
+    },
+    {
+      "in": "heading",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "heading",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "listItem",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "listItem",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "listItem",
+      "matches": true
+    },
+    {
+      "in": "orderedList",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "orderedList",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "text",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "emoji",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "bulletList",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "heading",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "orderedList",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "blockquote",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "horizontalRule",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "image",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "imageComponent",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "taskList",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "codeBlock",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "table",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "blockquote",
+      "type": "calloutComponent",
+      "matches": true
+    },
+    {
+      "in": "blockquote",
+      "type": "issue-embed-component",
+      "matches": true
+    },
+    {
+      "in": "horizontalRule",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "horizontalRule",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "image",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "imageComponent",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "taskItem",
+      "matches": true
+    },
+    {
+      "in": "taskList",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "taskList",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "taskItem",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "taskItem",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "text",
+      "matches": true
+    },
+    {
+      "in": "codeBlock",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "codeBlock",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "tableRow",
+      "matches": true
+    },
+    {
+      "in": "table",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "table",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "bulletList",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "heading",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "orderedList",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "blockquote",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "horizontalRule",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "image",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "imageComponent",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "taskList",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "codeBlock",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "table",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "tableHeader",
+      "type": "calloutComponent",
+      "matches": true
+    },
+    {
+      "in": "tableHeader",
+      "type": "issue-embed-component",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "bulletList",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "heading",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "orderedList",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "blockquote",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "horizontalRule",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "image",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "imageComponent",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "taskList",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "codeBlock",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "table",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "tableCell",
+      "type": "calloutComponent",
+      "matches": true
+    },
+    {
+      "in": "tableCell",
+      "type": "issue-embed-component",
+      "matches": true
+    },
+    {
+      "in": "tableRow",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "tableHeader",
+      "matches": true
+    },
+    {
+      "in": "tableRow",
+      "type": "tableCell",
+      "matches": true
+    },
+    {
+      "in": "tableRow",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "tableRow",
+      "type": "issue-embed-component",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "paragraph",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "bulletList",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "heading",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "orderedList",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "blockquote",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "horizontalRule",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "image",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "imageComponent",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "taskList",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "codeBlock",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "table",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "calloutComponent",
+      "type": "calloutComponent",
+      "matches": true
+    },
+    {
+      "in": "calloutComponent",
+      "type": "issue-embed-component",
+      "matches": true
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "paragraph",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "mention",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "bulletList",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "doc",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "hardBreak",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "heading",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "listItem",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "orderedList",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "text",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "emoji",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "blockquote",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "horizontalRule",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "image",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "imageComponent",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "taskList",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "taskItem",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "codeBlock",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "table",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableHeader",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableCell",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableRow",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "calloutComponent",
+      "matches": false
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "issue-embed-component",
+      "matches": false
+    }
+  ],
+  "wrappings": [
+    {
+      "in": "paragraph",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "mention",
+      "wrapping": []
+    },
+    {
+      "in": "paragraph",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "hardBreak",
+      "wrapping": []
+    },
+    {
+      "in": "paragraph",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "text",
+      "wrapping": []
+    },
+    {
+      "in": "paragraph",
+      "type": "emoji",
+      "wrapping": []
+    },
+    {
+      "in": "paragraph",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "paragraph",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "mention",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "paragraph",
+      "wrapping": [
+        "listItem"
+      ]
+    },
+    {
+      "in": "bulletList",
+      "type": "mention",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "bulletList",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "hardBreak",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "bulletList",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "listItem",
+      "wrapping": []
+    },
+    {
+      "in": "bulletList",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "text",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "bulletList",
+      "type": "emoji",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "bulletList",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "bulletList",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "doc",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "bulletList",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "doc",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "heading",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "listItem",
+      "wrapping": [
+        "bulletList"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "orderedList",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "blockquote",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "horizontalRule",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "image",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "imageComponent",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "taskList",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "taskItem",
+      "wrapping": [
+        "taskList"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "codeBlock",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "table",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "tableHeader",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "tableCell",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "tableRow",
+      "wrapping": [
+        "table"
+      ]
+    },
+    {
+      "in": "doc",
+      "type": "calloutComponent",
+      "wrapping": []
+    },
+    {
+      "in": "doc",
+      "type": "issue-embed-component",
+      "wrapping": []
+    },
+    {
+      "in": "hardBreak",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "hardBreak",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "mention",
+      "wrapping": []
+    },
+    {
+      "in": "heading",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "hardBreak",
+      "wrapping": []
+    },
+    {
+      "in": "heading",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "text",
+      "wrapping": []
+    },
+    {
+      "in": "heading",
+      "type": "emoji",
+      "wrapping": []
+    },
+    {
+      "in": "heading",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "heading",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "listItem",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "listItem",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "listItem",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "listItem",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "listItem",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "listItem",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "paragraph",
+      "wrapping": [
+        "listItem"
+      ]
+    },
+    {
+      "in": "orderedList",
+      "type": "mention",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "orderedList",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "hardBreak",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "orderedList",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "listItem",
+      "wrapping": []
+    },
+    {
+      "in": "orderedList",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "text",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "orderedList",
+      "type": "emoji",
+      "wrapping": [
+        "listItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "orderedList",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "orderedList",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "text",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "emoji",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "blockquote",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "bulletList",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "blockquote",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "heading",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "listItem",
+      "wrapping": [
+        "bulletList"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "orderedList",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "blockquote",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "horizontalRule",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "image",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "imageComponent",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "taskList",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "taskItem",
+      "wrapping": [
+        "taskList"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "codeBlock",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "table",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "tableHeader",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "tableCell",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "tableRow",
+      "wrapping": [
+        "table"
+      ]
+    },
+    {
+      "in": "blockquote",
+      "type": "calloutComponent",
+      "wrapping": []
+    },
+    {
+      "in": "blockquote",
+      "type": "issue-embed-component",
+      "wrapping": []
+    },
+    {
+      "in": "horizontalRule",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "horizontalRule",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "image",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "imageComponent",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "paragraph",
+      "wrapping": [
+        "taskItem"
+      ]
+    },
+    {
+      "in": "taskList",
+      "type": "mention",
+      "wrapping": [
+        "taskItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskList",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "hardBreak",
+      "wrapping": [
+        "taskItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskList",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "text",
+      "wrapping": [
+        "taskItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskList",
+      "type": "emoji",
+      "wrapping": [
+        "taskItem",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskList",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "taskItem",
+      "wrapping": []
+    },
+    {
+      "in": "taskList",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "taskList",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "taskItem",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskItem",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskItem",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskItem",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "taskItem",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "taskItem",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "text",
+      "wrapping": []
+    },
+    {
+      "in": "codeBlock",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "codeBlock",
+      "type": "issue-embed-component",
+      "wrapping": null
+    },
+    {
+      "in": "table",
+      "type": "paragraph",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "mention",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "bulletList",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "table",
+      "type": "hardBreak",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "heading",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "listItem",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "bulletList"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "orderedList",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "text",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "emoji",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "blockquote",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "horizontalRule",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "image",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "imageComponent",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "taskList",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "taskItem",
+      "wrapping": [
+        "tableRow",
+        "tableCell",
+        "taskList"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "codeBlock",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "table",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "tableHeader",
+      "wrapping": [
+        "tableRow"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "tableCell",
+      "wrapping": [
+        "tableRow"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "tableRow",
+      "wrapping": []
+    },
+    {
+      "in": "table",
+      "type": "calloutComponent",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "table",
+      "type": "issue-embed-component",
+      "wrapping": [
+        "tableRow",
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "bulletList",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "tableHeader",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "heading",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "listItem",
+      "wrapping": [
+        "bulletList"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "orderedList",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "blockquote",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "horizontalRule",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "image",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "imageComponent",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "taskList",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "taskItem",
+      "wrapping": [
+        "taskList"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "codeBlock",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "table",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableHeader",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableCell",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "tableRow",
+      "wrapping": [
+        "table"
+      ]
+    },
+    {
+      "in": "tableHeader",
+      "type": "calloutComponent",
+      "wrapping": []
+    },
+    {
+      "in": "tableHeader",
+      "type": "issue-embed-component",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "bulletList",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "tableCell",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "heading",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "listItem",
+      "wrapping": [
+        "bulletList"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "orderedList",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "blockquote",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "horizontalRule",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "image",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "imageComponent",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "taskList",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "taskItem",
+      "wrapping": [
+        "taskList"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "codeBlock",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "table",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "tableHeader",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "tableCell",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "tableRow",
+      "wrapping": [
+        "table"
+      ]
+    },
+    {
+      "in": "tableCell",
+      "type": "calloutComponent",
+      "wrapping": []
+    },
+    {
+      "in": "tableCell",
+      "type": "issue-embed-component",
+      "wrapping": []
+    },
+    {
+      "in": "tableRow",
+      "type": "paragraph",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "mention",
+      "wrapping": [
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "bulletList",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "tableRow",
+      "type": "hardBreak",
+      "wrapping": [
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "heading",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "listItem",
+      "wrapping": [
+        "tableCell",
+        "bulletList"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "orderedList",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "text",
+      "wrapping": [
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "emoji",
+      "wrapping": [
+        "tableCell",
+        "paragraph"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "blockquote",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "horizontalRule",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "image",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "imageComponent",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "taskList",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "taskItem",
+      "wrapping": [
+        "tableCell",
+        "taskList"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "codeBlock",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "table",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "tableHeader",
+      "wrapping": []
+    },
+    {
+      "in": "tableRow",
+      "type": "tableCell",
+      "wrapping": []
+    },
+    {
+      "in": "tableRow",
+      "type": "tableRow",
+      "wrapping": [
+        "tableCell",
+        "table"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "calloutComponent",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "tableRow",
+      "type": "issue-embed-component",
+      "wrapping": [
+        "tableCell"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "paragraph",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "mention",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "bulletList",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "calloutComponent",
+      "type": "hardBreak",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "heading",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "listItem",
+      "wrapping": [
+        "bulletList"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "orderedList",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "text",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "emoji",
+      "wrapping": [
+        "paragraph"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "blockquote",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "horizontalRule",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "image",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "imageComponent",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "taskList",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "taskItem",
+      "wrapping": [
+        "taskList"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "codeBlock",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "table",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableHeader",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableCell",
+      "wrapping": [
+        "table",
+        "tableRow"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "tableRow",
+      "wrapping": [
+        "table"
+      ]
+    },
+    {
+      "in": "calloutComponent",
+      "type": "calloutComponent",
+      "wrapping": []
+    },
+    {
+      "in": "calloutComponent",
+      "type": "issue-embed-component",
+      "wrapping": []
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "paragraph",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "mention",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "bulletList",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "doc",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "hardBreak",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "heading",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "listItem",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "orderedList",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "text",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "emoji",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "blockquote",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "horizontalRule",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "image",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "imageComponent",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "taskList",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "taskItem",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "codeBlock",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "table",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableHeader",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableCell",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "tableRow",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "calloutComponent",
+      "wrapping": null
+    },
+    {
+      "in": "issue-embed-component",
+      "type": "issue-embed-component",
+      "wrapping": null
+    }
+  ],
+  "fills": [
+    {
+      "type": "paragraph",
+      "fill": []
+    },
+    {
+      "type": "mention",
+      "fill": []
+    },
+    {
+      "type": "bulletList",
+      "fill": [
+        "listItem"
+      ]
+    },
+    {
+      "type": "doc",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "hardBreak",
+      "fill": []
+    },
+    {
+      "type": "heading",
+      "fill": []
+    },
+    {
+      "type": "listItem",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "orderedList",
+      "fill": [
+        "listItem"
+      ]
+    },
+    {
+      "type": "text",
+      "fill": []
+    },
+    {
+      "type": "emoji",
+      "fill": []
+    },
+    {
+      "type": "blockquote",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "horizontalRule",
+      "fill": []
+    },
+    {
+      "type": "image",
+      "fill": []
+    },
+    {
+      "type": "imageComponent",
+      "fill": []
+    },
+    {
+      "type": "taskList",
+      "fill": [
+        "taskItem"
+      ]
+    },
+    {
+      "type": "taskItem",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "fill": []
+    },
+    {
+      "type": "table",
+      "fill": [
+        "tableRow"
+      ]
+    },
+    {
+      "type": "tableHeader",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "tableCell",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "tableRow",
+      "fill": []
+    },
+    {
+      "type": "calloutComponent",
+      "fill": [
+        "paragraph"
+      ]
+    },
+    {
+      "type": "issue-embed-component",
+      "fill": []
+    }
+  ],
+  "created": [
+    {
+      "type": "paragraph",
+      "node": {
+        "type": "paragraph",
+        "attrs": {
+          "textAlign": null
+        }
+      }
+    },
+    {
+      "type": "mention",
+      "node": {
+        "type": "mention",
+        "attrs": {
+          "id": null,
+          "entity_identifier": null,
+          "entity_name": null
+        }
+      }
+    },
+    {
+      "type": "bulletList",
+      "node": {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "attrs": {
+                  "textAlign": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "doc",
+      "node": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "hardBreak",
+      "node": {
+        "type": "hardBreak"
+      }
+    },
+    {
+      "type": "heading",
+      "node": {
+        "type": "heading",
+        "attrs": {
+          "textAlign": null,
+          "level": 1
+        }
+      }
+    },
+    {
+      "type": "listItem",
+      "node": {
+        "type": "listItem",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "orderedList",
+      "node": {
+        "type": "orderedList",
+        "attrs": {
+          "start": 1,
+          "type": null
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "attrs": {
+                  "textAlign": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "text",
+      "node": {
+        "type": "text"
+      }
+    },
+    {
+      "type": "emoji",
+      "node": {
+        "type": "emoji",
+        "attrs": {
+          "name": null
+        }
+      }
+    },
+    {
+      "type": "blockquote",
+      "node": {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "horizontalRule",
+      "node": {
+        "type": "horizontalRule"
+      }
+    },
+    {
+      "type": "image",
+      "node": {
+        "type": "image",
+        "attrs": {
+          "src": null,
+          "alt": null,
+          "title": null,
+          "width": "35%",
+          "height": null,
+          "aspectRatio": null,
+          "alignment": "left"
+        }
+      }
+    },
+    {
+      "type": "imageComponent",
+      "node": {
+        "type": "imageComponent",
+        "attrs": {
+          "src": null,
+          "alt": null,
+          "title": null,
+          "id": null,
+          "width": "35%",
+          "height": "auto",
+          "aspectRatio": null,
+          "alignment": "left",
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "type": "taskList",
+      "node": {
+        "type": "taskList",
+        "content": [
+          {
+            "type": "taskItem",
+            "attrs": {
+              "checked": false
+            },
+            "content": [
+              {
+                "type": "paragraph",
+                "attrs": {
+                  "textAlign": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "taskItem",
+      "node": {
+        "type": "taskItem",
+        "attrs": {
+          "checked": false
+        },
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "codeBlock",
+      "node": {
+        "type": "codeBlock",
+        "attrs": {
+          "language": null
+        }
+      }
+    },
+    {
+      "type": "table",
+      "node": {
+        "type": "table",
+        "content": [
+          {
+            "type": "tableRow",
+            "attrs": {
+              "background": null,
+              "textColor": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "tableHeader",
+      "node": {
+        "type": "tableHeader",
+        "attrs": {
+          "colspan": 1,
+          "rowspan": 1,
+          "colwidth": [
+            150
+          ],
+          "background": "none"
+        },
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "tableCell",
+      "node": {
+        "type": "tableCell",
+        "attrs": {
+          "colspan": 1,
+          "rowspan": 1,
+          "colwidth": [
+            150
+          ],
+          "background": null,
+          "textColor": null
+        },
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "tableRow",
+      "node": {
+        "type": "tableRow",
+        "attrs": {
+          "background": null,
+          "textColor": null
+        }
+      }
+    },
+    {
+      "type": "calloutComponent",
+      "node": {
+        "type": "calloutComponent",
+        "attrs": {
+          "id": null,
+          "data-emoji-unicode": "128161",
+          "data-emoji-url": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4a1.png",
+          "data-logo-in-use": "emoji",
+          "data-block-type": "callout-component"
+        },
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "issue-embed-component",
+      "node": {
+        "type": "issue-embed-component",
+        "attrs": {}
+      }
+    }
+  ],
+  "markSets": [
+    {
+      "type": "paragraph",
+      "marks": null
+    },
+    {
+      "type": "mention",
+      "marks": []
+    },
+    {
+      "type": "bulletList",
+      "marks": []
+    },
+    {
+      "type": "doc",
+      "marks": []
+    },
+    {
+      "type": "hardBreak",
+      "marks": []
+    },
+    {
+      "type": "heading",
+      "marks": null
+    },
+    {
+      "type": "listItem",
+      "marks": []
+    },
+    {
+      "type": "orderedList",
+      "marks": []
+    },
+    {
+      "type": "text",
+      "marks": []
+    },
+    {
+      "type": "emoji",
+      "marks": []
+    },
+    {
+      "type": "blockquote",
+      "marks": []
+    },
+    {
+      "type": "horizontalRule",
+      "marks": []
+    },
+    {
+      "type": "image",
+      "marks": []
+    },
+    {
+      "type": "imageComponent",
+      "marks": []
+    },
+    {
+      "type": "taskList",
+      "marks": []
+    },
+    {
+      "type": "taskItem",
+      "marks": []
+    },
+    {
+      "type": "codeBlock",
+      "marks": []
+    },
+    {
+      "type": "table",
+      "marks": []
+    },
+    {
+      "type": "tableHeader",
+      "marks": []
+    },
+    {
+      "type": "tableCell",
+      "marks": []
+    },
+    {
+      "type": "tableRow",
+      "marks": []
+    },
+    {
+      "type": "calloutComponent",
+      "marks": []
+    },
+    {
+      "type": "issue-embed-component",
+      "marks": []
+    }
+  ],
+  "extras": [
+    {
+      "expression": "paragraph",
+      "automaton": "0  paragraph->1\n1* "
+    },
+    {
+      "expression": "paragraph?",
+      "automaton": "0* paragraph->1\n1* "
+    },
+    {
+      "expression": "paragraph*",
+      "automaton": "0* paragraph->0"
+    },
+    {
+      "expression": "paragraph+",
+      "automaton": "0  paragraph->1\n1* paragraph->1"
+    },
+    {
+      "expression": "paragraph{2}",
+      "automaton": "0  paragraph->1\n1  paragraph->2\n2* "
+    },
+    {
+      "expression": "paragraph{1,3}",
+      "automaton": "0  paragraph->1\n1* paragraph->2\n2* paragraph->3\n3* "
+    },
+    {
+      "expression": "paragraph{2,}",
+      "automaton": "0  paragraph->1\n1  paragraph->2\n2* paragraph->2"
+    },
+    {
+      "expression": "paragraph heading",
+      "automaton": "0  paragraph->1\n1  heading->2\n2* "
+    },
+    {
+      "expression": "paragraph | heading",
+      "automaton": "0  paragraph->1, heading->1\n1* "
+    },
+    {
+      "expression": "(paragraph | heading)+",
+      "automaton": "0  paragraph->1, heading->1\n1* paragraph->1, heading->1"
+    },
+    {
+      "expression": "paragraph (heading | blockquote)* paragraph",
+      "automaton": "0  paragraph->1\n1  paragraph->2, heading->1, blockquote->1\n2* "
+    },
+    {
+      "expression": "block",
+      "automaton": "0  paragraph->1, bulletList->1, heading->1, orderedList->1, blockquote->1, horizontalRule->1, image->1, imageComponent->1, taskList->1, codeBlock->1, table->1, calloutComponent->1, issue-embed-component->1\n1* "
+    },
+    {
+      "expression": "text*",
+      "automaton": "0* text->0"
+    },
+    {
+      "expression": "inline*",
+      "automaton": "0* mention->0, hardBreak->0, text->0, emoji->0"
+    },
+    {
+      "expression": "listItem+",
+      "automaton": "0  listItem->1\n1* listItem->1"
+    },
+    {
+      "expression": "(paragraph heading){2}",
+      "automaton": "0  paragraph->1\n1  heading->2\n2  paragraph->3\n3  heading->4\n4* "
+    },
+    {
+      "expression": "paragraph? heading? blockquote?",
+      "automaton": "0* blockquote->1, heading->2, paragraph->3\n1* \n2* blockquote->1\n3* blockquote->1, heading->2"
+    }
+  ]
+}

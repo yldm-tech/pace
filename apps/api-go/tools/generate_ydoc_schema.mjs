@@ -30,12 +30,15 @@ const attributes = (attrs) =>
     })
   );
 
-// is_leaf and is_inline are the two facts the serializer branches on: a leaf node may not have a content hole in its spec, and a mark wrapping inline content is told so.
+// is_leaf and is_inline are the two facts the serializer branches on: a leaf node may not have a content hole in its spec, and a mark wrapping inline content is told so. The content and marks expressions are what the parser matches against — they are the grammar that says a list item holds blocks and a table row holds cells, and nothing else.
 const nodes = Object.values(schema.nodes).map((type) => ({
   name: type.name,
   is_text: type.isText,
   is_leaf: type.isLeaf,
   is_inline: type.isInline,
+  groups: type.groups,
+  content: type.spec.content ?? "",
+  marks: type.spec.marks ?? null,
   attrs: attributes(type.attrs),
 }));
 
@@ -43,6 +46,8 @@ const nodes = Object.values(schema.nodes).map((type) => ({
 const marks = Object.values(schema.marks).map((type) => ({
   name: type.name,
   spanning: type.spec.spanning !== false,
+  groups: type.spec.group ? type.spec.group.split(" ") : [],
+  excludes: type.spec.excludes ?? null,
   attrs: attributes(type.attrs),
 }));
 

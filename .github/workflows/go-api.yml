@@ -468,6 +468,16 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the content expressions match ProseMirror
+        run: |
+          node apps/api-go/tools/generate_content_match_fixture.mjs > /tmp/content_match.json
+          if ! diff -u apps/api-go/internal/ydoc/testdata/content_match.json /tmp/content_match.json; then
+            echo "::error::apps/api-go/internal/ydoc/testdata/content_match.json is stale."
+            echo "Regenerate it from the repository root with:"
+            echo "  node apps/api-go/tools/generate_content_match_fixture.mjs > apps/api-go/internal/ydoc/testdata/content_match.json"
+            exit 1
+          fi
+
       - name: Verify the emoji table matches the editor
         run: |
           node apps/api-go/tools/generate_ydoc_emoji.mjs > /tmp/emoji.tsv
