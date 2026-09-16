@@ -1,1 +1,1 @@
--- db.0119_alter_estimatepoint_key, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0119_alter_estimatepoint_key, recorded from the Django app this replaced.

@@ -1,4 +1,4 @@
--- db.0078_fileasset_comment_fileasset_entity_type_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0078_fileasset_comment_fileasset_entity_type_and_more, recorded from the Django app this replaced.
 ALTER TABLE "file_assets" ADD COLUMN "comment_id" uuid NULL CONSTRAINT "file_assets_comment_id_35d4ecaf_fk_issue_comments_id" REFERENCES "issue_comments"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "file_assets_comment_id_35d4ecaf_fk_issue_comments_id" IMMEDIATE;
 ALTER TABLE "file_assets" ADD COLUMN "entity_type" varchar(255) NULL;
 ALTER TABLE "file_assets" ADD COLUMN "external_id" varchar(255) NULL;

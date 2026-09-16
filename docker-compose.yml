@@ -43,7 +43,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - plane-db
       - plane-redis
@@ -57,7 +57,7 @@ services:
     entrypoint: ["pace-entrypoint-worker"]
     restart: always
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       # The only consumer left. Every one of the forty-six tasks is registered here, and the API and the beat route all forty-six to this queue, so nothing is published to the queue Celery would have used.
       PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
@@ -77,7 +77,7 @@ services:
     entrypoint: ["pace-entrypoint-beat"]
     restart: always
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       # The queue it routes the twelve periodic tasks to, which is the one worker-go consumes.
       PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
@@ -98,14 +98,14 @@ services:
     restart: no
     entrypoint: ["pace-entrypoint-migrator"]
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - plane-db
       - plane-redis
 
   # The collaborative editor, now the Go one. It replaces the Node service rather than running beside it: the proxy sends /live/* to one host, and two servers holding the same page without a relay between them would not converge.
   #
-  # The service keeps the name live so that the proxy and LIVE_URL are unchanged. Reverting is switching the build back to ./apps/live/Dockerfile.live, which is still in the tree.
+  # The service keeps the name live so that the proxy and LIVE_URL are unchanged.
   live:
     container_name: plane-live
     build:
@@ -116,7 +116,7 @@ services:
     entrypoint: ["pace-entrypoint-live"]
     restart: always
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     environment:
       # The API it reads and writes pages through, as the editing user.
       API_BASE_URL: ${API_BASE_URL:-http://api-go:8000}

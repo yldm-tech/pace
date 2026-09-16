@@ -1,4 +1,4 @@
--- db.0044_auto_20230913_0709, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0044_auto_20230913_0709, recorded from the Django app this replaced.
 -- RUN db.0044_auto_20230913_0709.update_workspace_member_view_props
 -- RUN db.0044_auto_20230913_0709.update_project_member_view_props
 -- RUN db.0044_auto_20230913_0709.update_cycle_props

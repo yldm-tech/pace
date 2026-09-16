@@ -1,4 +1,4 @@
--- db.0077_draftissue_cycle_user_timezone_project_user_timezone_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0077_draftissue_cycle_user_timezone_project_user_timezone_and_more, recorded from the Django app this replaced.
 CREATE TABLE "draft_issues" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "name" varchar(255) NULL, "description" jsonb NOT NULL, "description_html" text NOT NULL, "description_stripped" text NULL, "description_binary" bytea NULL, "priority" varchar(30) NOT NULL, "start_date" date NULL, "target_date" date NULL, "sort_order" double precision NOT NULL, "completed_at" timestamp with time zone NULL, "external_source" varchar(255) NULL, "external_id" varchar(255) NULL);
 ALTER TABLE "cycles" ADD COLUMN "timezone" varchar(255) DEFAULT 'UTC' NOT NULL;
 ALTER TABLE "cycles" ALTER COLUMN "timezone" DROP DEFAULT;

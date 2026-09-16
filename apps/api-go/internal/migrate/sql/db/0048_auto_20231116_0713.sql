@@ -1,4 +1,4 @@
--- db.0048_auto_20231116_0713, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0048_auto_20231116_0713, recorded from the Django app this replaced.
 CREATE TABLE "page_logs" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "transaction" uuid NOT NULL, "entity_identifier" uuid NULL, "entity_name" varchar(30) NOT NULL, "created_by_id" uuid NULL, "page_id" uuid NOT NULL, "project_id" uuid NOT NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "pages" ADD COLUMN "archived_at" date NULL;
 ALTER TABLE "pages" ADD COLUMN "is_locked" boolean DEFAULT false NOT NULL;

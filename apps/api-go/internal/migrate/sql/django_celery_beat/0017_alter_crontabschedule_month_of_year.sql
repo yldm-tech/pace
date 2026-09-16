@@ -1,1 +1,1 @@
--- django_celery_beat.0017_alter_crontabschedule_month_of_year, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- django_celery_beat.0017_alter_crontabschedule_month_of_year, recorded from the Django app this replaced.

@@ -1,3 +1,3 @@
--- db.0115_auto_20260105_1406, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0115_auto_20260105_1406, recorded from the Django app this replaced.
 -- RUN db.0115_auto_20260105_1406.move_issue_user_properties_to_project_user_properties
 -- RUN db.0115_auto_20260105_1406.migrate_existing_api_tokens

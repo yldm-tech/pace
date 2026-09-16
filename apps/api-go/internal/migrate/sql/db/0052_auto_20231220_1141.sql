@@ -1,4 +1,4 @@
--- db.0052_auto_20231220_1141, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0052_auto_20231220_1141, recorded from the Django app this replaced.
 ALTER TABLE "issue_views" RENAME COLUMN "query_data" TO "filters";
 ALTER TABLE "issue_properties" RENAME COLUMN "properties" TO "display_properties";
 ALTER TABLE "issue_properties" ADD COLUMN "display_filters" jsonb DEFAULT '{"group_by": null, "order_by": "-created_at", "type": null, "sub_issue": true, "show_empty_groups": true, "layout": "list", "calendar_date_range": ""}'::jsonb NOT NULL;

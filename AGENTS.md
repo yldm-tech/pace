@@ -25,12 +25,12 @@
 
 ## Backend tests (Docker)
 
-The Django/pytest suite for `apps/api` runs in an isolated stack defined by `docker-compose-test.yml` at the repo root.
+The Go suite for `apps/api-go` runs against real services in an isolated stack defined by `docker-compose-test.yml` at the repo root. The schema is built by the Go migrator before the tests run, so a broken migration fails before anything else gets the chance.
 
-Prereq (once): `./setup.sh` — generates `apps/api/.env` from `.env.example`.
+Prereq (once): `./setup.sh` — generates `apps/api-go/.env`.
 
 - Full suite: `docker compose -f docker-compose-test.yml up --build --abort-on-container-exit --exit-code-from api-tests`
-- Subset: `docker compose -f docker-compose-test.yml run --rm api-tests pytest -m unit`
+- Subset: `docker compose -f docker-compose-test.yml run --rm api-tests go test ./internal/beat/ -run Schema`
 - Teardown: `docker compose -f docker-compose-test.yml down -v`
 
-See `apps/api/tests/RUNNING_TESTS.md` for the full walkthrough and troubleshooting; see `apps/api/tests/TESTING_GUIDE.md` for test conventions and fixtures.
+Most of the suite needs nothing but Go. The parts that want a database are opt-in on one environment variable each, and the stack sets all of them; running `go test ./...` without them skips those rather than failing.

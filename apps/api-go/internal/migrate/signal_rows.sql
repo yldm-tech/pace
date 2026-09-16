@@ -1,4 +1,4 @@
--- The rows post_migrate leaves behind, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- The rows post_migrate leaves behind, recorded from the Django app this replaced, which is gone; it does not change.
 INSERT INTO "django_content_type" ("id", "app_label", "model") VALUES (1, 'contenttypes', 'contenttype');
 INSERT INTO "django_content_type" ("id", "app_label", "model") VALUES (2, 'auth', 'permission');
 INSERT INTO "django_content_type" ("id", "app_label", "model") VALUES (3, 'auth', 'group');

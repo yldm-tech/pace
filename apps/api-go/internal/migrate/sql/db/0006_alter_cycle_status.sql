@@ -1,1 +1,1 @@
--- db.0006_alter_cycle_status, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0006_alter_cycle_status, recorded from the Django app this replaced.

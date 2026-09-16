@@ -1,2 +1,2 @@
--- db.0049_auto_20231116_0713, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0049_auto_20231116_0713, recorded from the Django app this replaced.
 -- RUN db.0049_auto_20231116_0713.update_pages

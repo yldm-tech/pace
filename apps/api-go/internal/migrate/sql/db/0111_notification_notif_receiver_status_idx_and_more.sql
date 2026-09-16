@@ -1,4 +1,4 @@
--- db.0111_notification_notif_receiver_status_idx_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0111_notification_notif_receiver_status_idx_and_more, recorded from the Django app this replaced.
 CREATE INDEX CONCURRENTLY "notif_receiver_status_idx" ON "notifications" ("receiver_id", "workspace_id", "read_at", "created_at");
 CREATE INDEX CONCURRENTLY "notif_receiver_entity_idx" ON "notifications" ("receiver_id", "workspace_id", "entity_name", "read_at");
 CREATE INDEX CONCURRENTLY "notif_receiver_state_idx" ON "notifications" ("receiver_id", "workspace_id", "snoozed_till", "archived_at");

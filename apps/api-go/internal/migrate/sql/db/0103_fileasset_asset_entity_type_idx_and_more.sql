@@ -1,4 +1,4 @@
--- db.0103_fileasset_asset_entity_type_idx_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0103_fileasset_asset_entity_type_idx_and_more, recorded from the Django app this replaced.
 CREATE INDEX CONCURRENTLY "asset_entity_type_idx" ON "file_assets" ("entity_type");
 CREATE INDEX CONCURRENTLY "asset_entity_identifier_idx" ON "file_assets" ("entity_identifier");
 CREATE INDEX CONCURRENTLY "asset_entity_idx" ON "file_assets" ("entity_type", "entity_identifier");

@@ -1,4 +1,4 @@
--- db.0073_alter_commentreaction_unique_together_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0073_alter_commentreaction_unique_together_and_more, recorded from the Django app this replaced.
 ALTER TABLE "comment_reactions" DROP CONSTRAINT "comment_reactions_comment_id_actor_id_reaction_523d21ad_uniq";
 ALTER TABLE "cycle_user_properties" DROP CONSTRAINT "cycle_user_properties_cycle_id_user_id_1b8597f8_uniq";
 ALTER TABLE "dashboard_widgets" DROP CONSTRAINT "dashboard_widgets_widget_id_dashboard_id_149a0e15_uniq";

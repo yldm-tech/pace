@@ -1,4 +1,4 @@
--- db.0029_auto_20230502_0126, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0029_auto_20230502_0126, recorded from the Django app this replaced.
 ALTER TABLE "cycles" ADD COLUMN "view_props" jsonb DEFAULT '{}'::jsonb NOT NULL;
 ALTER TABLE "cycles" ALTER COLUMN "view_props" DROP DEFAULT;
 ALTER TABLE "importers" ADD COLUMN "imported_data" jsonb NULL;

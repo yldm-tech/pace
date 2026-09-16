@@ -1,4 +1,4 @@
--- db.0113_webhook_version, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0113_webhook_version, recorded from the Django app this replaced.
 ALTER TABLE "webhooks" ADD COLUMN "version" varchar(50) DEFAULT 'v1' NOT NULL;
 ALTER TABLE "webhooks" ALTER COLUMN "version" DROP DEFAULT;
 ALTER TABLE "profiles" ADD COLUMN "is_navigation_tour_completed" boolean DEFAULT false NOT NULL;

@@ -1,4 +1,4 @@
--- db.0028_auto_20230414_1703, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0028_auto_20230414_1703, recorded from the Django app this replaced.
 ALTER TABLE "users" ADD COLUMN "theme" jsonb DEFAULT '{}'::jsonb NOT NULL;
 ALTER TABLE "users" ALTER COLUMN "theme" DROP DEFAULT;
 ALTER TABLE "issues" ALTER COLUMN "estimate_point" DROP NOT NULL;

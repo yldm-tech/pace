@@ -1,1 +1,1 @@
--- auth.0003_alter_user_email_max_length, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- auth.0003_alter_user_email_max_length, recorded from the Django app this replaced.

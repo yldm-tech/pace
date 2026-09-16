@@ -1,4 +1,4 @@
--- db.0070_apitoken_is_service_exporterhistory_filters_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0070_apitoken_is_service_exporterhistory_filters_and_more, recorded from the Django app this replaced.
 ALTER TABLE "api_tokens" ADD COLUMN "is_service" boolean DEFAULT false NOT NULL;
 ALTER TABLE "api_tokens" ALTER COLUMN "is_service" DROP DEFAULT;
 ALTER TABLE "exporters" ADD COLUMN "filters" jsonb NULL;

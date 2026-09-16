@@ -1,4 +1,4 @@
--- db.0072_issueattachment_external_id_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0072_issueattachment_external_id_and_more, recorded from the Django app this replaced.
 ALTER TABLE "issue_attachments" ADD COLUMN "external_id" varchar(255) NULL;
 ALTER TABLE "issue_attachments" ADD COLUMN "external_source" varchar(255) NULL;
 CREATE TABLE "user_recent_visits" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_identifier" uuid NULL, "entity_name" varchar(30) NOT NULL, "visited_at" timestamp with time zone NOT NULL, "created_by_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL, "workspace_id" uuid NOT NULL);

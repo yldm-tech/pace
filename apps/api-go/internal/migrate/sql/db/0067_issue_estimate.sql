@@ -1,4 +1,4 @@
--- db.0067_issue_estimate, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0067_issue_estimate, recorded from the Django app this replaced.
 CREATE TABLE "deploy_boards" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "id" uuid NOT NULL PRIMARY KEY, "entity_identifier" uuid NULL, "entity_name" varchar(30) NOT NULL, "anchor" varchar(255) NOT NULL UNIQUE, "is_comments_enabled" boolean NOT NULL, "is_reactions_enabled" boolean NOT NULL, "is_votes_enabled" boolean NOT NULL, "view_props" jsonb NOT NULL, "created_by_id" uuid NULL, "inbox_id" uuid NULL, "project_id" uuid NULL, "updated_by_id" uuid NULL, "workspace_id" uuid NOT NULL);
 ALTER TABLE "estimates" ADD COLUMN "last_used" boolean DEFAULT false NOT NULL;
 ALTER TABLE "estimates" ALTER COLUMN "last_used" DROP DEFAULT;

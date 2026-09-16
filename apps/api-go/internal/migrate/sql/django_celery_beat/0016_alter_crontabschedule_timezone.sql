@@ -1,1 +1,1 @@
--- django_celery_beat.0016_alter_crontabschedule_timezone, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- django_celery_beat.0016_alter_crontabschedule_timezone, recorded from the Django app this replaced.

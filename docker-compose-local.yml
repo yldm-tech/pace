@@ -65,7 +65,7 @@ services:
 
   api:
     build:
-      context: ./apps/api
+      context: ./apps/api-go
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -73,10 +73,11 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
-    command: ./bin/docker-entrypoint-api-local.sh
+      - ./apps/api-go:/src
+    environment:
+      AIR_TARGET: api
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - plane-db
       - plane-redis
@@ -86,7 +87,7 @@ services:
 
   worker:
     build:
-      context: ./apps/api
+      context: ./apps/api-go
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -94,10 +95,11 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
-    command: ./bin/docker-entrypoint-worker.sh
+      - ./apps/api-go:/src
+    environment:
+      AIR_TARGET: worker
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - api
       - plane-db
@@ -105,7 +107,7 @@ services:
 
   beat-worker:
     build:
-      context: ./apps/api
+      context: ./apps/api-go
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
@@ -113,10 +115,11 @@ services:
     networks:
       - dev_env
     volumes:
-      - ./apps/api:/code
-    command: ./bin/docker-entrypoint-beat.sh
+      - ./apps/api-go:/src
+    environment:
+      AIR_TARGET: beat
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - api
       - plane-db
@@ -124,18 +127,16 @@ services:
 
   migrator:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile.dev
+      context: ./apps/api-go
+      dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
     restart: "no"
     networks:
       - dev_env
-    volumes:
-      - ./apps/api:/code
-    command: ./bin/docker-entrypoint-migrator.sh --settings=plane.settings.local
+    entrypoint: ["pace-entrypoint-migrator"]
     env_file:
-      - ./apps/api/.env
+      - ./apps/api-go/.env
     depends_on:
       - plane-db
       - plane-redis

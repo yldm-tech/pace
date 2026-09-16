@@ -1,4 +1,4 @@
--- db.0041_cycle_sort_order_issuecomment_access_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0041_cycle_sort_order_issuecomment_access_and_more, recorded from the Django app this replaced.
 ALTER TABLE "cycles" ADD COLUMN "sort_order" double precision DEFAULT 65535.0 NOT NULL;
 ALTER TABLE "cycles" ALTER COLUMN "sort_order" DROP DEFAULT;
 ALTER TABLE "issue_comments" ADD COLUMN "access" varchar(100) DEFAULT 'INTERNAL' NOT NULL;

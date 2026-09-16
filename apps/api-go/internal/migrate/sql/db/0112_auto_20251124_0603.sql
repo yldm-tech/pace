@@ -1,2 +1,2 @@
--- db.0112_auto_20251124_0603, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0112_auto_20251124_0603, recorded from the Django app this replaced.
 -- RUN db.0112_auto_20251124_0603.create_triage_state

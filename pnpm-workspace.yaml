@@ -74,8 +74,6 @@ catalog:
   "@types/chroma-js": "^3.1.2"
   "@types/compression": "1.8.1"
   "@types/cors": "^2.8.17"
-  "@types/express": "4.17.23"
-  "@types/express-ws": "^3.0.5"
   "@types/hast": "^3.0.4"
   "@types/jscodeshift": "^17.3.0"
   "@types/lodash-es": "4.17.12"
@@ -105,9 +103,6 @@ catalog:
   "emoji-picker-react": "^4.5.16"
   "emoji-regex": "^10.3.0"
   "export-to-csv": "^1.4.0"
-  "express": "4.22.0"
-  "express-winston": "^4.2.0"
-  "express-ws": "^5.0.2"
   "file-type": "^21.3.1"
   "framer-motion": "^12.23.0"
   "frimousse": "^0.3.0"
@@ -201,10 +196,7 @@ overrides:
   react-is: "catalog:"
   "@types/react": "catalog:"
   "@types/react-dom": "catalog:"
-  express: "catalog:"
-  # @react-router/serve v8 needs Express 5 — it mounts with the Express 5 path syntax
-  # `app.all("/{*splat}")`, which Express 4 silently fails to match, 404ing every route.
-  # The catalog stays on Express 4 for apps/live, which depends on express-ws (Express 4 only).
+  # @react-router/serve v8 needs Express 5 — it mounts with the Express 5 path syntax `app.all("/{*splat}")`, which Express 4 silently fails to match, 404ing every route. It is the only thing left that pulls express in; the catalog pin that used to hold everything at 4 was there for the collaborative editor, which is Go now.
   "@react-router/serve>express": "^5.2.1"
   mdast-util-to-hast: 13.2.1
   valibot: 1.4.2
@@ -219,7 +211,6 @@ overrides:
   "@babel/runtime": 7.29.7
   chokidar: 3.6.0
   prosemirror-view: 1.40.0
-  "@types/express": 4.17.23
   typescript: "catalog:"
   vite: "catalog:"
   qs: 6.15.2
@@ -239,10 +230,7 @@ overrides:
   picomatch: 2.3.2
   "yaml@1": 1.10.3
   "yaml@2": 2.8.3
-  # Pinned for Express 4 (apps/live), which needs path-to-regexp ~0.1.12.
-  path-to-regexp: 0.1.13
-  # Express 5's router needs path-to-regexp 8; the pin above would otherwise reach it
-  # and break route matching at startup with `pathRegexp.match is not a function`.
+  # Express 5's router needs path-to-regexp 8. The 0.1.13 pin that used to sit above this was Express 4's requirement, held there for the collaborative editor, and this line existed to keep it away from the router.
   "router>path-to-regexp": "^8.4.2"
   defu: 6.1.5
   postcss: 8.5.25

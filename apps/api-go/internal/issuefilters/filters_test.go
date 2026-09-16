@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// frozenFilterToday is the day the fixture's relative date terms were generated from. It has to match the constant in tools/generate_issue_filters_fixture.py.
+// frozenFilterToday is the day the fixture's relative date terms were generated from. It was the constant in the generator that produced the fixture, and it has to stay this day: every relative term in issue_filters.tsv was resolved against it.
 var frozenFilterToday = time.Date(2026, 6, 15, 0, 0, 0, 0, time.UTC)
 
 // TestIssueFiltersMatchDjango diffs the port against the real function over a thousand query strings. The mapping is full of asymmetries that only show up side by side — GET splits on commas while POST takes the value whole, some filters drop invalid uuids and others keep anything, a literal None becomes an isnull lookup on some and nothing on others — and two of the rows it pins are upstream bugs rather than design.

@@ -1,1 +1,1 @@
--- db.0108_alter_issueactivity_issue_comment, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0108_alter_issueactivity_issue_comment, recorded from the Django app this replaced.

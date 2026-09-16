@@ -1,1 +1,1 @@
--- auth.0005_alter_user_last_login_null, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- auth.0005_alter_user_last_login_null, recorded from the Django app this replaced.

@@ -1,4 +1,4 @@
--- db.0083_device_workspace_timezone_and_more, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0083_device_workspace_timezone_and_more, recorded from the Django app this replaced.
 CREATE TABLE "devices" ("created_at" timestamp with time zone NOT NULL, "updated_at" timestamp with time zone NOT NULL, "deleted_at" timestamp with time zone NULL, "id" uuid NOT NULL PRIMARY KEY, "device_id" varchar(255) NULL, "device_type" varchar(255) NOT NULL, "push_token" varchar(255) NULL, "is_active" boolean NOT NULL, "created_by_id" uuid NULL, "updated_by_id" uuid NULL, "user_id" uuid NOT NULL);
 ALTER TABLE "issue_types" ADD COLUMN "is_epic" boolean DEFAULT false NOT NULL;
 ALTER TABLE "issue_types" ALTER COLUMN "is_epic" DROP DEFAULT;

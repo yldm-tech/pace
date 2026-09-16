@@ -1,4 +1,4 @@
--- db.0053_auto_20240102_1315, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0053_auto_20240102_1315, recorded from the Django app this replaced.
 -- RUN db.0053_auto_20240102_1315.workspace_user_properties
 -- RUN db.0053_auto_20240102_1315.project_user_properties
 -- RUN db.0053_auto_20240102_1315.issue_view

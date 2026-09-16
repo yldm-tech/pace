@@ -1,4 +1,4 @@
--- db.0066_account_id_token_cycle_logo_props_module_logo_props, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0066_account_id_token_cycle_logo_props_module_logo_props, recorded from the Django app this replaced.
 ALTER TABLE "accounts" ADD COLUMN "id_token" text DEFAULT '' NOT NULL;
 ALTER TABLE "accounts" ALTER COLUMN "id_token" DROP DEFAULT;
 ALTER TABLE "cycles" ADD COLUMN "logo_props" jsonb DEFAULT '{}'::jsonb NOT NULL;

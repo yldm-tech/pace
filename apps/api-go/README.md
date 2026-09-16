@@ -2,8 +2,6 @@
 
 This directory contains the incremental Gin, GORM, and PostgreSQL replacement for the Django API. Business modules are migrated in separate pull requests; Django remains the behavioral reference until a module passes its contract and integration tests.
 
-
-
 ## The space app is a third application
 
 `internal/space` serves the published half of a project: what a person sees who has a link and no account. It is a third application beside the session API and the external API, with its own package, its own base view and its own idea of who is asking.
@@ -48,7 +46,7 @@ The list and the detail read an annotated queryset and answer with twenty-nine f
 
 A name that is taken is refused twice over, in two shapes: the create answers four flat keys (`id`, `code`, `error`, `message`) and the update answers one, both flat rather than the lists a field error carries, because the serializer raises them from `create()` and `update()` where nothing wraps them. The member list is **narrowed** rather than refused — an id that is not a member of the project is dropped and nobody is told — and the narrowing asks only for a membership row, not an active one, so somebody removed from the project can still be put on a module.
 
-The work item routes under a module differ from the cycle's in three ways. The **detail** answers with a page holding one work item rather than with the link. The create only ever **adds**: the loop meant to move a work item out of another module compares a string against a queryset of UUIDs, which is never equal, so the branch that would move one is dead — a work item already in another module ends up in both, and the unique index is what keeps one already in *this* module from being added twice. And the ids it acts on come from the plain manager, so an archived, draft or triage work item can be put into a module even though the module's own list will not show it afterwards.
+The work item routes under a module differ from the cycle's in three ways. The **detail** answers with a page holding one work item rather than with the link. The create only ever **adds**: the loop meant to move a work item out of another module compares a string against a queryset of UUIDs, which is never equal, so the branch that would move one is dead — a work item already in another module ends up in both, and the unique index is what keeps one already in _this_ module from being added twice. And the ids it acts on come from the plain manager, so an archived, draft or triage work item can be put into a module even though the module's own list will not show it afterwards.
 
 The activity that create queues carries `requested_data` as the **repr of a queryset** rather than as a list — `<QuerySet [UUID('…')]>`, truncated after twenty entries the way Python truncates one — because Django builds it with `str()` over a queryset. Nothing parses it, and reproducing it is cheaper than explaining a difference in a log.
 
@@ -773,7 +771,7 @@ The seven routes under `webhooks/` and `webhook-logs/`. Admin only, at the works
 
 On creation and on a regenerate. Everywhere else it is dropped, and the **only** thing dropping it is a context flag.
 
-The `fields=` allowlists the views pass are dead on two independent levels — `DynamicBaseSerializer` discards the caller's list and overwrites it with `expand`, and the filter never *removes* anything even when it does receive one. So every route renders the whole model, and fixing either level alone would not make those allowlists confidential. The Go port renders the whole model too, with one flag for the secret, which is the behaviour rather than the intent.
+The `fields=` allowlists the views pass are dead on two independent levels — `DynamicBaseSerializer` discards the caller's list and overwrites it with `expand`, and the filter never _removes_ anything even when it does receive one. So every route renders the whole model, and fixing either level alone would not make those allowlists confidential. The Go port renders the whole model too, with one flag for the secret, which is the behaviour rather than the intent.
 
 ### The url has to pass three checks, and they report differently
 
@@ -913,7 +911,7 @@ And the pair is looked up in a two-key dictionary rather than tested, so `snooze
 
 ### A guest asking about what they created gets nothing
 
-Not nothing *from that set* — nothing at all. The branch replaces the whole queryset, so the other types the caller asked for go with it.
+Not nothing _from that set_ — nothing at all. The branch replaces the whole queryset, so the other types the caller asked for go with it.
 
 The `type` parameter is a comma-separated **set** on the list, unioned; on mark-all-read it is a single choice, and its name for the subscribed set is `watching` rather than `subscribed`. That is also the one place the subscription is counted without first asking whether the person made or was given the issue.
 
@@ -1189,7 +1187,7 @@ The manager the list reads through is now a parameter of the shared scope, which
 
 Its projection is not the paginated list's. It carries `deleted_at`, which that one does not, and has no `state__group`, which that one does. It also adds one predicate the paginated list lacks: the issue's state must not be soft deleted.
 
-The `fields` parameter has no effect on either endpoint. `DynamicBaseSerializer` pops it and then overwrites it with `expand`, so only `expand` changes the shape — and since `expand` only ever *adds* nested serializers, a request with `fields` alone gets the plain twenty-five field serializer. The expansion serializers are not ported, so a request that does name `expand` is an error rather than a body of the wrong shape; the only caller in the web client sends neither.
+The `fields` parameter has no effect on either endpoint. `DynamicBaseSerializer` pops it and then overwrites it with `expand`, so only `expand` changes the shape — and since `expand` only ever _adds_ nested serializers, a request with `fields` alone gets the plain twenty-five field serializer. The expansion serializers are not ported, so a request that does name `expand` is an error rather than a body of the wrong shape; the only caller in the web client sends neither.
 
 ## Migrated module: creating an issue
 
@@ -1515,11 +1513,11 @@ One difference in where the waiting happens: Celery publishes a new message with
 
 **Thirteen activity types pass through silently.** Being added to a cycle or a module, a reaction, a vote and anything to do with a draft produce history but never a notification.
 
-**It corrects a gap this migration opened.** The activity task publishes the rows it wrote, and until now it published them without `issue_detail`. The notification task reads `issue_detail.id` to tell a line about *this* work item from a line about the other side of a relation, so reading it off nothing raised and the Python task quietly wrote no notifications at all. The activity task now carries that object; only its id is read, which is why the serializer's other nested details are not built.
+**It corrects a gap this migration opened.** The activity task publishes the rows it wrote, and until now it published them without `issue_detail`. The notification task reads `issue_detail.id` to tell a line about _this_ work item from a line about the other side of a relation, so reading it off nothing raised and the Python task quietly wrote no notifications at all. The activity task now carries that object; only its id is read, which is why the serializer's other nested details are not built.
 
 Three upstream bugs are reproduced rather than corrected, and all three are worth knowing because they otherwise read as faults in this port:
 
-**A mention email goes to the wrong reader.** The loop that emails the people named in a description reads `subscriber` — the variable the *subscriber* loop left behind — rather than the person it is writing about. So the email about somebody being mentioned is addressed to the last subscriber who was notified.
+**A mention email goes to the wrong reader.** The loop that emails the people named in a description reads `subscriber` — the variable the _subscriber_ loop left behind — rather than the person it is writing about. So the email about somebody being mentioned is addressed to the last subscriber who was notified.
 
 **And when there were no subscribers, nothing is written at all.** In that case the leftover variable still holds the task's own `subscriber` flag, which is a boolean, and writing a boolean into a uuid column fails the whole insert. Since both inserts happen at the end, the notifications are lost with the emails.
 
@@ -1533,7 +1531,7 @@ One more: the people named in a description become subscribers, but the check th
 
 **Three things happen before any history is written.** A project id that is not a uuid ends the task silently. The request's origin is parked in Redis beside the work item for ten minutes, which is what lets the notification emails build their links. And the work item's `updated_at` is touched, so a change to something hanging off it still counts as touching it.
 
-**A failure loses the whole batch, not the line that failed.** Django lets a missing row reach the task's own except, which throws away every activity the request would have written. Four places reach it, and all four are reproduced: a label or an assignee that has since been deleted, a cycle in a create record that has gone, a comment reaction whose row is not there, and — the one worth knowing — **clearing an estimate**. The field name is built from the *new* estimate's type, and with nothing to move to there is no new estimate to ask; so clearing an estimate writes no history at all, not even for the other fields that changed in the same request.
+**A failure loses the whole batch, not the line that failed.** Django lets a missing row reach the task's own except, which throws away every activity the request would have written. Four places reach it, and all four are reproduced: a label or an assignee that has since been deleted, a cycle in a create record that has gone, a comment reaction whose row is not there, and — the one worth knowing — **clearing an estimate**. The field name is built from the _new_ estimate's type, and with nothing to move to there is no new estimate to ask; so clearing an estimate writes no history at all, not even for the other fields that changed in the same request.
 
 **The first line of a history is never the one that was queued.** The create row is written on its own and then rewritten: its timestamp becomes the work item's own and its actor becomes whoever raised it, whoever queued the task and whenever it ran.
 
@@ -1653,11 +1651,11 @@ It was built against a truth table generated from the real backend rather than f
 
 The three project-scoped routes are implemented and cut over. They read the same filters as the workspace ones and the same chart builder, and then differ in ways worth knowing.
 
-**Naming a cycle or a module replaces the project rather than narrowing it.** On the two totals routes the work items become whichever ones that cycle or module holds, and the project in the url stops mattering — as do the analytics filters on the work items themselves, which move onto the link table instead. The cycle is only checked against the workspace, so a cycle belonging to a different project of the same workspace is accepted and its work items are counted. The custom chart makes the opposite choice: there the cycle or module *narrows* a set that is already the project's.
+**Naming a cycle or a module replaces the project rather than narrowing it.** On the two totals routes the work items become whichever ones that cycle or module holds, and the project in the url stops mattering — as do the analytics filters on the work items themselves, which move onto the link table instead. The cycle is only checked against the workspace, so a cycle belonging to a different project of the same workspace is accepted and its work items are counted. The custom chart makes the opposite choice: there the cycle or module _narrows_ a set that is already the project's.
 
 **The per-assignee split includes a row for nobody.** The assignee join is an outer one, so work items with no assignee group together under an empty name and an empty id. The join also does not check whether the assignment was taken back, so a deleted assignee link still puts that person in the list.
 
-**The completion chart is two different charts wearing one name.** For a project it is monthly, its count is what was created, and it runs to the current month whatever the caller asked for. For a cycle or a module it is **daily**, it counts *links* rather than work items — so the created curve is when work items were put into the cycle rather than when they were raised — and its count is the created and the completed added together rather than the created alone.
+**The completion chart is two different charts wearing one name.** For a project it is monthly, its count is what was created, and it runs to the current month whatever the caller asked for. For a cycle or a module it is **daily**, it counts _links_ rather than work items — so the created curve is when work items were put into the cycle rather than when they were raised — and its count is the created and the completed added together rather than the created alone.
 
 Three ways it reaches a 500, all of them upstream's: a cycle with a start date and no end date, a module with a start date and no target date, and a project id that does not exist. A cycle or module with **no** start date is different — that answers with an empty chart rather than failing.
 
@@ -1667,7 +1665,7 @@ The three workspace-level routes are implemented and cut over: the totals across
 
 **Two date shapes, and they do not overlap.** The totals route asks for a pair of timestamps compared against `created_at`; the chart routes ask for a pair of dates compared against `created_at`'s date. A route asks for one and gets nothing for the other, and a `date_filter` neither of them recognises is not an error — it simply leaves the numbers unnarrowed.
 
-**Naming projects changes what "users" means.** Without `project_ids` the overview counts the people in the workspace; with them it counts the *memberships* of those projects, so somebody in two of the named projects is counted twice. The projects chart's member total is a third thing again: it counts every active workspace member including the bots, and ignores `project_ids` entirely.
+**Naming projects changes what "users" means.** Without `project_ids` the overview counts the people in the workspace; with them it counts the _memberships_ of those projects, so somebody in two of the named projects is counted twice. The projects chart's member total is a third thing again: it counts every active workspace member including the bots, and ignores `project_ids` entirely.
 
 **The per-project split ignores the dates.** It asks for the chart range and then calls the method that does not use it; the one that does is unreachable. So those rows are the whole history however the caller narrows the dates.
 
@@ -1675,7 +1673,7 @@ The three workspace-level routes are implemented and cut over: the totals across
 
 The **completion chart** draws one point per month from the workspace's first month to this one. Narrowing the dates moves the first month but not the last: the loop always runs to the current month, so a range ending last year still draws every month since as an empty one.
 
-The **custom chart** counts *distinct* work items, so a work item with three labels adds one to each of three bars rather than three to any of them. The SQL for all thirteen axes was taken from the real ORM rather than written from the field names, which settled the question the field map raises — whether the soft-delete rule on a relation gets its own join or shares the one the key is read from. It shares it.
+The **custom chart** counts _distinct_ work items, so a work item with three labels adds one to each of three bars rather than three to any of them. The SQL for all thirteen axes was taken from the real ORM rather than written from the field names, which settled the question the field map raises — whether the soft-delete rule on a relation gets its own join or shares the one the key is read from. It shares it.
 
 ## Migrated module: the intake cutover and the intake's description versions
 
@@ -1913,7 +1911,7 @@ The eight invitation routes are implemented and cut over: the project's invitati
 
 The two join routes carry **no session**: the token in the payload stands in for one. The token is checked first and the session second, so a caller with the right token and no session is told to sign in rather than that the token is wrong; the signed-in person then has to be the one the invitation names. The public view reports only what an invitee needs to decide — the project, the workspace, the role, whether it has been answered — and never the token or the email.
 
-Accepting puts the invitee into the workspace and then into the project, and two details there are upstream's. A workspace membership made this way is capped at **member** however high the project role is, so an invitation to administer a project does not hand out the workspace. And the project membership is looked up by workspace and member rather than by project, so somebody already in *another* project of the same workspace is reactivated there rather than added to this one.
+Accepting puts the invitee into the workspace and then into the project, and two details there are upstream's. A workspace membership made this way is capped at **member** however high the project role is, so an invitation to administer a project does not hand out the workspace. And the project membership is looked up by workspace and member rather than by project, so somebody already in _another_ project of the same workspace is reactivated there rather than added to this one.
 
 `users/me/workspaces/<slug>/projects/invitations/` is not scoped to the workspace in its own url, so it reports every project invitation the caller has anywhere. Joining narrows the ids to the workspace **before** the secret-project check runs, so an id from another workspace is dropped rather than refused.
 
@@ -2041,11 +2039,11 @@ keep theirs, and the generated graph records which is which.
 ## Migrated service: Celery beat
 
 `cmd/beat` replaces the Python beat worker. Django sets `beat_scheduler` to
-django_celery_beat's `DatabaseScheduler`, so the schedule lives in the
-`django_celery_beat_*` tables and can be added to or retimed at runtime. Reading
-only the twelve static entries from `celery.py` would silently drop everything
+django*celery_beat's `DatabaseScheduler`, so the schedule lives in the
+`django_celery_beat*\*`tables and can be added to or retimed at runtime. Reading
+only the twelve static entries from`celery.py`would silently drop everything
 an operator configured through the admin, so the Go beat reads the tables and
-syncs the static entries into them on startup exactly as `setup_schedule` does.
+syncs the static entries into them on startup exactly as`setup_schedule` does.
 
 Crontab evaluation follows celery's own parser, including the details that
 differ from ordinary cron: a step slices the expanded range rather than testing
@@ -2167,7 +2165,7 @@ The two responses are different shapes. The read route returns `values()`, which
 
 `group_by=assignees__ids` fans an issue out across each of its assignees and files an unassigned one under the literal string `None`. Any other `group_by` is looked up straight in the `values()` dict, so a name that is not one of its keys raises `KeyError`, which `BaseAPIView.handle_exception` turns into a `400` rather than a `500`.
 
-`internal/project/issue_ordering.go` is `order_issue_queryset`. Its fixture, `testdata/issue_order_by.tsv`, is the `ORDER BY` Django renders for each of the fourteen allowlisted fields in both directions, extracted from Django rather than written by hand — which is what caught three divergences that reading the Python did not. No clause pins a `NULLS` position, because Django emits a bare `ASC`/`DESC` and leaves Postgres to apply its defaults. The priority `Case` has no default, so a priority outside the list sorts as null. And Django orders by that `Case` ascending in *both* directions — only the string handed back to the paginator flips — so `priority` and `-priority` return the same order, which is reproduced rather than corrected. State group is the one that really does reverse, by reversing the list the `Case` is built from.
+`internal/project/issue_ordering.go` is `order_issue_queryset`. Its fixture, `testdata/issue_order_by.tsv`, is the `ORDER BY` Django renders for each of the fourteen allowlisted fields in both directions, extracted from Django rather than written by hand — which is what caught three divergences that reading the Python did not. No clause pins a `NULLS` position, because Django emits a bare `ASC`/`DESC` and leaves Postgres to apply its defaults. The priority `Case` has no default, so a priority outside the list sorts as null. And Django orders by that `Case` ascending in _both_ directions — only the string handed back to the paginator flips — so `priority` and `-priority` return the same order, which is reproduced rather than corrected. State group is the one that really does reverse, by reversing the list the `Case` is built from.
 
 The assign route scopes both the parent lookup and the sub-issue ids to the URL workspace and project, and fires `issue_activity` only for the ids that were really re-parented, so a foreign id cannot reach the task and bump `updated_at` on an issue the caller cannot see.
 
@@ -2183,7 +2181,7 @@ The key itself is never written down. What goes into `token_identifier` is `hmac
 
 Bodies follow `_safe_decode_body` exactly, quirks included. An empty body is null rather than an empty string. A body starting with the PNG, JPEG or PDF signature is recorded as `[Binary Content]` without being decoded, even though a PDF's first bytes decode fine. Anything else that is not valid UTF-8 becomes `[Could not decode content]`. A body carrying a null byte decodes and is kept, and it is the worker's insert that then fails on it, since Postgres will not take a null byte in a text column — the record is lost, which is what happens upstream and is reproduced rather than corrected.
 
-`ip_address` is `get_client_ip`, which takes the first address `X-Forwarded-For` names without trimming it: a header written with a space after each comma leaves the space on the *second* address, not the first, so the value stored is clean by accident rather than by design. With no such header it is the address that connected.
+`ip_address` is `get_client_ip`, which takes the first address `X-Forwarded-For` names without trimming it: a header written with a space after each comma leaves the space on the _second_ address, not the first, so the value stored is clean by accident rather than by design. With no such header it is the address that connected.
 
 The task takes whatever keywords it is given and ignores the ones it does not know, which is what the upstream `**_` is for — a record queued by an older release, which passed a `mongo_log` argument, still writes its row rather than failing. Neither half fails the request: a record that cannot be queued is dropped after the response has already gone out, and a row that cannot be written is logged and abandoned, which is `log_to_postgres` returning `False` to a caller that never looks.
 
@@ -2199,7 +2197,7 @@ The serializer declares twenty-eight fields and renders twenty-five. `sub_issues
 
 The three formatters are ported in `internal/worker/export_format.go` and checked against the real ones. `testdata/export_format.json` is what `CSVFormatter`, `JSONFormatter` and `XLSXFormatter` produce for three rows chosen to break an encoder — formula triggers, embedded quotes and newlines, non-ASCII text, an apostrophe inside a nested object — and CI regenerates it. The csv and the json are compared byte for byte; the spreadsheet is compared cell for cell, since two writers never produce the same zip.
 
-That corpus is what caught the parts nobody would have got right by reading. Go's own csv writer rewrites a newline *inside* a field as CRLF along with the one between records, and a work item whose name has a line break in it is not unusual, so the writer here is hand-rolled — python leaves the one in the field alone. Python's `json.dumps` escapes every non-ASCII character as `\uXXXX` and leaves `<`, `>` and `&` alone, where Go's encoder does the opposite on both counts.
+That corpus is what caught the parts nobody would have got right by reading. Go's own csv writer rewrites a newline _inside_ a field as CRLF along with the one between records, and a work item whose name has a line break in it is not unusual, so the writer here is hand-rolled — python leaves the one in the field alone. Python's `json.dumps` escapes every non-ASCII character as `\uXXXX` and leaves `<`, `>` and `&` alone, where Go's encoder does the opposite on both counts.
 
 The same list reaches the two formats differently, which is a difference between the formatters rather than a mistake in either. The csv flattens and writes a list as json, so the links column reads `[{"url": "...", "title": "..."}]`. The spreadsheet does not flatten and joins a list with `", "` through `str()`, so the same column reads `{'url': '...', 'title': "..."}` — a python dict repr, apostrophe quoting rule included. Every cell in both, header row included, goes through `sanitize_csv_value` first, which prefixes a value starting with `=`, `+`, `-`, `@`, a tab, a carriage return or a newline with an apostrophe so a spreadsheet reads it as text.
 
@@ -2224,7 +2222,7 @@ The exported grid carries several things worth knowing before reading one:
 
 The segment columns are the one place this deliberately differs. Upstream builds their headings out of a python `set`, so their order is whatever that set happens to iterate in — which changes between runs, since python randomises string hashing. They are sorted here. The columns are the same columns; only their order is decided rather than left to chance.
 
-`generate_csv_from_rows` asks for `QUOTE_ALL`, where the work item export's formatter takes the default `QUOTE_MINIMAL`, so the same value is written two different ways depending on which export produced it. Both run every cell through `sanitize_csv_value` first, and both sanitise *before* rendering — which is why a negative count keeps its minus sign while a string that merely starts with one is prefixed with an apostrophe.
+`generate_csv_from_rows` asks for `QUOTE_ALL`, where the work item export's formatter takes the default `QUOTE_MINIMAL`, so the same value is written two different ways depending on which export produced it. Both run every cell through `sanitize_csv_value` first, and both sanitise _before_ rendering — which is why a negative count keeps its minus sign while a string that merely starts with one is prefixed with an apostrophe.
 
 The email itself has no html part. Django renders `emails/exports/analytics.html` only to turn it into plain text and never attaches it, so what arrives is a text body with a spreadsheet beside it. The template is a copy of the one `apps/api` ships and CI diffs the two, the same way it does for the notification email.
 
@@ -2312,7 +2310,7 @@ What it writes is random by design, so this does not reproduce Faker's output: a
 Four of those "writes less than it looks like" places are worth naming, because a reader of the Python would not spot them:
 
 - **`create_issue_parent` writes nothing at all.** It builds an empty list, sets a parent on each sub-issue inside the loop, never appends any of them to that list, and hands the empty list to `bulk_update`. Not one parent is ever saved. Reproduced rather than corrected: a dummy project with a quarter of its work items suddenly parented would not be the project this task has always made.
-- **The cycle count is one more than you ask for**, because the loop runs while the count is less than *or equal to* what was asked.
+- **The cycle count is one more than you ask for**, because the loop runs while the count is less than _or equal to_ what was asked.
 - **Intake work items are extra work items.** `create_intake_issues` calls `create_issues` again rather than filing any of the ones already made, so asking for a hundred and ten intake ones leaves a hundred and ten.
 - **Labels and modules go on every work item, not half.** The line that picked half is commented out in both, while the assignees and the cycle links still pick half.
 
@@ -2320,7 +2318,7 @@ Three more things the shape carries:
 
 - The five states it writes are not the six a real project starts with. The colours differ and there is no triage state at all, so a project made this way has nothing for its intake to file into.
 - `bulk_create` skips the models' own `save`, so a state's slug and a page's stripped description are both left empty even though the html beside them is filled in.
-- The sort order the work items start from is read off a *randomly chosen* state rather than off each work item's own, so the ordering it hands out means nothing.
+- The sort order the work items start from is read off a _randomly chosen_ state rather than off each work item's own, so the ordering it hands out means nothing.
 
 `manage create_dummy_data` asks its questions in the order the command asks them, writes the workspace before the first project is asked about — so an answer given up halfway leaves a workspace behind — and splits the member emails on commas without trimming, so a space after a comma stays part of the address and matches nobody. All reproduced.
 
@@ -2335,7 +2333,7 @@ The task does not run in a transaction and it re-raises rather than swallowing, 
 Most of what a reader would get wrong here is in the models rather than in the task, because the seed calls each model's own `save` where a normal bulk load would not:
 
 - **The states do not get the sequence the seed file asks for.** `State.save` throws it away when the project already has a state and uses fifteen thousand past the last one instead, so the file's 15000/25000/35000/45000/55000 land as 15000/30000/45000/60000/75000. It also fills in the slug, which a normal project's states — written with `bulk_create` — never get.
-- **The cycles and the modules come out in the opposite order to the one the file numbers them in.** `Cycle.save` and `Module.save` both put a new one ten thousand *below* everything already in the project, so the file's 1, 2, 3 land as 1, −9999, −19999.
+- **The cycles and the modules come out in the opposite order to the one the file numbers them in.** `Cycle.save` and `Module.save` both put a new one ten thousand _below_ everything already in the project, so the file's 1, 2, 3 land as 1, −9999, −19999.
 - **A work item's sequence number and sort order are both taken from the project rather than from the file**, which is what any other work item would get too.
 - **Every seeded work item ends up with two sequence rows.** `Issue.save` writes one carrying the real number, and the task then writes another of its own that names no number at all, so it falls back to the column default of one. Reproduced rather than corrected.
 - **The seeded pages open blank.** The file carries the editor's json document under `description`, and the task reads `description_json` — a key the file does not have — so every page stores an empty document. Its `logo_props` is never read either, so the emoji beside the page's name is lost.
@@ -2353,9 +2351,9 @@ Its one side effect worth knowing is that the plain text of the email is written
 
 Three pieces that only make sense together: `manage configure_instance`, `manage register_instance`, and the telemetry task the second of them queues.
 
-`configure_instance` writes one `instance_configurations` row per variable, taking each value from an environment variable. `internal/manage/instance_config.tsv` is the list of thirty-six, generated from `plane/utils/instance_config_variables` and regenerated by CI — it holds the *definition* rather than the value, because the value comes from the environment at run time. A row that already exists is left exactly as it is, so changing an environment variable after the first run does nothing until the row is removed. The eight encrypted ones go through `auth.EncryptConfiguration`, which is `encrypt_data`: a Fernet token under the key derived from `SECRET_KEY`, with an empty value stored as an empty string rather than as a token. Its round trip is tested against the reader the running server already uses.
+`configure_instance` writes one `instance_configurations` row per variable, taking each value from an environment variable. `internal/manage/instance_config.tsv` is the list of thirty-six, generated from `plane/utils/instance_config_variables` and regenerated by CI — it holds the _definition_ rather than the value, because the value comes from the environment at run time. A row that already exists is left exactly as it is, so changing an environment variable after the first run does nothing until the row is removed. The eight encrypted ones go through `auth.EncryptConfiguration`, which is `encrypt_data`: a Fernet token under the key derived from `SECRET_KEY`, with an empty value stored as an empty string rather than as a token. Its round trip is tested against the reader the running server already uses.
 
-`register_instance` records that the installation exists, or refreshes what is recorded, and then queues the telemetry push. Two details are worth knowing. `Instance.Meta` orders newest first, so `Instance.objects.first()` is the *newest* registration — and `create_instance_admin`'s `.last()` is therefore the *oldest*, which is corrected here from the earlier port. And the machine signature is taken as an argument, required when there is no registration yet, and then never written down.
+`register_instance` records that the installation exists, or refreshes what is recorded, and then queues the telemetry push. Two details are worth knowing. `Instance.Meta` orders newest first, so `Instance.objects.first()` is the _newest_ registration — and `create_instance_admin`'s `.last()` is therefore the _oldest_, which is corrected here from the earlier port. And the machine signature is taken as an argument, required when there is no registration yet, and then never written down.
 
 ## Migrated service: the telemetry push
 
@@ -2365,7 +2363,7 @@ Two gates come first: an installation that was never registered reports nothing,
 
 Nine gauges describe the installation and six describe each of its oldest thousand workspaces, read in a deterministic order so the same thousand is reported from one run to the next. The workspace counts are read in one statement rather than six per workspace, which is what the batched aggregation upstream is for.
 
-The page count is the one that is not a plain count: it leaves out pages that are *both* owned by a bot and private. That is one condition rather than two, so a bot's public page is counted and so is a person's private one. Django renders it as an inner join and a negated pair, which is what the SQL here is — taken from the ORM rather than written by hand.
+The page count is the one that is not a plain count: it leaves out pages that are _both_ owned by a bot and private. That is one condition rather than two, so a bot's public page is counted and so is a person's private one. Django renders it as an inner join and a negated pair, which is what the SQL here is — taken from the ORM rather than written by hand.
 
 ## Migrated module: the admin console
 
@@ -2381,16 +2379,16 @@ Things worth knowing before reading a response from it:
 
 - **`primary_owner_details` never appears.** `InstanceSerializer` declares it with `source="primary_owner"` and the model has no such field, so DRF drops it — the same rule that shortens the other serializers on instances. Twenty-two keys, not twenty-three.
 - **`InstanceAdminMeSerializer` lists `is_email_verified` twice**, so it renders fifteen keys rather than sixteen.
-- **`/api/instances/admins/session/` asks a different question from every other route here.** It checks only whether the caller administers *any* instance — no role floor, and without naming this one — so somebody left over from an earlier registration reads as signed in there and is refused everywhere else.
+- **`/api/instances/admins/session/` asks a different question from every other route here.** It checks only whether the caller administers _any_ instance — no role floor, and without naming this one — so somebody left over from an earlier registration reads as signed in there and is refused everywhere else.
 - **The configuration values are decrypted on the way out.** A client secret is sent in full to whoever is signed in as an administrator, which is what lets the console show it in a field.
 - **Three of the config fallbacks disagree with what `configure_instance` seeds.** Signup falls back to off here and is seeded on; the magic link falls back to on here and is seeded off. It shows on an installation that has never been configured.
 - **`disable-email-feature` writes plain empty strings into encrypted rows**, because it is one SQL `UPDATE` with a `CASE` rather than a save. The stored password becomes the literal empty string rather than an encrypted one. Nothing reads it afterwards, since the switch is off.
 - **The first-run screen stores the telemetry answer as a boolean from whatever the form sent**, and any non-empty string is true — so `false` leaves telemetry on. Only an empty answer turns it off.
-- `get_configuration_value` has two rules that are easy to get backwards. With `SKIP_ENV_VAR` set — the default — a row's value is used *even when it is empty*, so a setting somebody cleared reads as cleared. Without it the rows are ignored entirely and every value comes from the environment, so an installation configured through the console but running without that flag shows none of it.
+- `get_configuration_value` has two rules that are easy to get backwards. With `SKIP_ENV_VAR` set — the default — a row's value is used _even when it is empty_, so a setting somebody cleared reads as cleared. Without it the rows are ignored entirely and every value comes from the environment, so an installation configured through the console but running without that flag shows none of it.
 - The two counts beside a workspace are correlated subqueries, so a workspace with no projects reports null rather than zero. The member count leaves out bots and anybody deactivated; the project count leaves out nothing.
 - Deleting an administrator is a hard delete rather than a soft one, and answers 204 whether or not there was anything to delete.
 
-The first-run screen takes the instance row's lock and re-checks the guard inside it, because two people submitting the form at the same moment could otherwise both become the first administrator. The guard asks whether *any* administrator exists rather than any of this instance, so a stray second registration cannot be used to get past it.
+The first-run screen takes the instance row's lock and re-checks the guard inside it, because two people submitting the form at the same moment could otherwise both become the first administrator. The guard asks whether _any_ administrator exists rather than any of this instance, so a stray second registration cannot be used to get past it.
 
 The credential check is the one place where the ported errors are coarser than Django's. Python's `smtplib` raises a different exception for each SMTP reply code and the view names each one; Go's client does not separate them the same way, so what is reported is the nearest of those sentences and, failing that, the one that covers the rest. The request fails either way, and with a sentence rather than a traceback.
 
@@ -2400,7 +2398,7 @@ Five routes that belong to nothing larger: the timezone list, the Unsplash searc
 
 ### Timezones
 
-`GET /api/timezones/`, which anybody may read because the sign-up screen offers it. The pairs of friendly name and IANA identifier are copied into `internal/project/timezones.tsv` and CI diffs them against the endpoint that declares them; the *order* cannot be baked in, because it is by how far each zone is from UTC right now and that moves with daylight saving.
+`GET /api/timezones/`, which anybody may read because the sign-up screen offers it. The pairs of friendly name and IANA identifier are copied into `internal/project/timezones.tsv` and CI diffs them against the endpoint that declares them; the _order_ cannot be baked in, because it is by how far each zone is from UTC right now and that moves with daylight saving.
 
 **A zone west of Greenwich on a half hour is reported an hour further out than it is.** The offset is worked out with python's floor division, so −9.5 hours floors to −10 and the remainder of 1800 seconds becomes 30 — and Marquesas, which is UTC−09:30, is reported as UTC−10:30. St John's has the same problem. East of Greenwich the arithmetic works, so Kolkata and Kathmandu are right. Reproduced rather than corrected.
 
@@ -2426,7 +2424,7 @@ All three providers are called through the same OpenAI-shaped endpoint, because 
 
 ## Migrated module: the v1 asset routes
 
-Ten routes that upload *through* the API rather than handing the browser a signed policy. Everything the editor writes today goes through the v2 routes, where the browser posts straight at the bucket; these take the bytes themselves, and they are still here because older clients still call them.
+Ten routes that upload _through_ the API rather than handing the browser a signed policy. Everything the editor writes today goes through the v2 routes, where the browser posts straight at the bucket; these take the bytes themselves, and they are still here because older clients still call them.
 
 Seven of them are the general file assets — a workspace's, and a person's own — and three are the work item attachments under their old path.
 
@@ -2468,7 +2466,7 @@ Each answers the archived projection plus both distributions: `distribution`, wh
 
 The two projections differ from the live details in ways the archive screens depend on. The cycle's is the archived list's twenty-three fields plus five — `sub_issues`, `logo_props`, the two point totals and `created_by` — and it renders its dates in UTC rather than in the project's zone, because nothing on this path converts them. The module's is `ModuleDetailSerializer`: the module serializer's fields plus the nested links, the sub-item count, and the four per-state point sums.
 
-The two distributions are not shaped alike either. A cycle's assignee rows carry a display name; a module's carry a first and a last name *and* a display name, and are ordered by the first name — so somebody with no first name sorts to the top rather than under their display name. That difference is upstream's, and the frontend reads both shapes.
+The two distributions are not shaped alike either. A cycle's assignee rows carry a display name; a module's carry a first and a last name _and_ a display name, and are ordered by the first name — so somebody with no first name sorts to the top rather than under their display name. That difference is upstream's, and the frontend reads both shapes.
 
 The counting rules are the ones already documented for the cycle analytics route and apply here unchanged: each count is over the grouping column rather than over the row, so the bucket holding work items with no assignee counts **zero** of them; and a sum with nothing to add is null rather than zero, so a bucket whose work is all still open reports `null` completed points.
 
@@ -2540,7 +2538,7 @@ The port reproduces it, dropping `style` at the point ProseMirror does and build
 - **A boolean attribute is a bare name or nothing at all.** A ticked task item carries `data-checked` with no value; an unticked one carries no `data-checked`.
 - **A self-closing tag has no closing tag.** `<br>` and `<img>` are written open and left that way, which is zeed-dom's list rather than HTML's.
 - **The nesting of marks follows the schema, not the document.** A text node listing `italic` before `bold` still renders `<strong><em>`, because ProseMirror sorts a mark set by the order the types were registered in. A mark shared by adjacent text nodes opens once and wraps them all.
-- **A `null` attribute beats the extension's default.** A link mark carrying `target: null` renders with no `target`, even though the extension's options supply one, because Tiptap's `mergeAttributes` lets the later value win. A `null` *class* is the exception: the class branch merges lists and an empty one leaves the existing classes alone.
+- **A `null` attribute beats the extension's default.** A link mark carrying `target: null` renders with no `target`, even though the extension's options supply one, because Tiptap's `mergeAttributes` lets the later value win. A `null` _class_ is the exception: the class branch merges lists and an empty one leaves the existing classes alone.
 - **A list starting at one loses its `start`.** Every other start is written out.
 - **A heading's level and a code block's language are never attributes.** The level picks the tag, the language picks the inner `<code>`'s class.
 
@@ -2598,7 +2596,7 @@ ProseMirror compiles each expression into a finite automaton, and `internal/ydoc
 
 ### The edge order is the behaviour
 
-The automaton is not just a membership test. The order of a state's outgoing edges is what decides which type gets *invented* when something has to be filled in: a document asked for empty comes back holding a paragraph because `block+`'s first edge is the paragraph's, and a bare list item at the top of a document is wrapped in a bullet list rather than an ordered one for the same reason.
+The automaton is not just a membership test. The order of a state's outgoing edges is what decides which type gets _invented_ when something has to be filled in: a document asked for empty comes back holding a paragraph because `block+`'s first edge is the paragraph's, and a bare list item at the top of a document is wrapped in a bullet list rather than an ordered one for the same reason.
 
 So the port is checked against ProseMirror's own dump of the automaton. `ContentMatch.toString()` prints every state, whether a node may end there, and every outgoing edge with the state it leads to — and two automatons that print alike are the same automaton. All twenty-three of the schema's types print identically, as do seventeen expressions the schema itself never contains, which are there to exercise ranges, optionals, alternation and nesting.
 
@@ -2649,17 +2647,17 @@ The corpus found these; none of them is what the code looks like it does.
 
 - **Every `<span>` becomes a colour mark.** The two `customColor` rules are written as `node.getAttribute("data-text-color") && null`, which is meant to refuse a span that carries no colour. The DOM the editor runs on answers `undefined` rather than `null` for a missing attribute, `undefined && null` is `undefined`, and Tiptap only treats a literal `false` as a refusal. So both rules match every span unconditionally, and a plain span in a page's HTML comes back carrying a `customColor` mark with both colours null.
 - **A code block's language is never read back.** The reader looks for a `language-` class on the element's `firstElementChild`, and that DOM has no such property. The lookup yields nothing every time, so a code block whose HTML says `language-go` returns with no language and the highlighting is lost the first time a page is read back from its HTML.
-- **An empty `<span data-type="emoji">` is dropped.** It is a consequence of the first one: the colour rule matches the span first, a mark rule parses the element's *children*, and an emoji span has none.
+- **An empty `<span data-type="emoji">` is dropped.** It is a consequence of the first one: the colour rule matches the span first, a mark rule parses the element's _children_, and an emoji span has none.
 
 ### The editor is not idempotent
 
-Reading a page's HTML and rendering it back does not always give the same HTML. `<span style="font-weight: bold">` is read into a bold mark plus a colour mark; those render as `<span><strong>`; and reading *that* gives the marks in the other order, which renders as `<strong><span>`. The second pass is stable.
+Reading a page's HTML and rendering it back does not always give the same HTML. `<span style="font-weight: bold">` is read into a bold mark plus a colour mark; those render as `<span><strong>`; and reading _that_ gives the marks in the other order, which renders as `<strong><span>`. The second pass is stable.
 
 The corpus records both renderings and both readings for all 96 documents, so the port is checked to be un-idempotent in exactly the same way rather than merely checked to be stable.
 
 ### The corpus
 
-96 documents: 52 written to work the parser — content in the wrong place, elements with no rule, whitespace, overlapping tags, styles that cancel marks — and every one of the 43 the renderer produces, read back in. Each records the document it parses to, the HTML that renders to, the document *that* parses to, and the HTML that renders to.
+96 documents: 52 written to work the parser — content in the wrong place, elements with no rule, whitespace, overlapping tags, styles that cancel marks — and every one of the 43 the renderer produces, read back in. Each records the document it parses to, the HTML that renders to, the document _that_ parses to, and the HTML that renders to.
 
 ### The selector subset
 
@@ -2725,7 +2723,7 @@ Two people editing the same page do not necessarily reach the same server. `inte
 
 ### Announcing a change does not send it
 
-The exchange is not obvious and getting it wrong is silent. A server that has applied a change publishes **its own state vector** — which on its own tells the others nothing about the change. Each of them answers with two things: what the first server is missing according to them, *and* their own state vector. It is the answer to that second half that carries the change back.
+The exchange is not obvious and getting it wrong is silent. A server that has applied a change publishes **its own state vector** — which on its own tells the others nothing about the change. Each of them answers with two things: what the first server is missing according to them, _and_ their own state vector. It is the answer to that second half that carries the change back.
 
 The first version only did the first half. Everything looked connected and nothing ever crossed.
 
@@ -2817,15 +2815,15 @@ This is not an oversight in this change. No Go service is wired into `deployment
 
 Running it against a database carrying the real `django_celery_beat` schema found something reading the code had not. A task whose `last_run_at` is null was treated as due immediately, so the first time beat ever started it fired the whole schedule at once — `hard_delete`, `archive_and_close_old_issues` and the ten others, all in the same second.
 
-Django does not do that. `ModelEntry` fills a null `last_run_at` in from `date_changed`, which `auto_now` holds at the moment the row was last written, so a task the scheduler has only just created waits a full period before its first run. The exception is a task with a start time, which is backdated by thirty years instead — that makes the schedule due whatever it is and leaves the separate start-time gate to decide, which is how such a task fires *at* its start time rather than at the first slot after it.
+Django does not do that. `ModelEntry` fills a null `last_run_at` in from `date_changed`, which `auto_now` holds at the moment the row was last written, so a task the scheduler has only just created waits a full period before its first run. The exception is a task with a start time, which is backdated by thirty years instead — that makes the schedule due whatever it is and leaves the separate start-time gate to decide, which is how such a task fires _at_ its start time rather than at the first slot after it.
 
 Both branches were read off django-celery-beat itself rather than off its source: three rows were built in a Django-migrated database, `last_run_at` forced back to null, and `ModelEntry.is_due` asked directly.
 
-| row | Django | Go, before | Go, now |
-| --- | --- | --- | --- |
-| never run, no start time | not due | due | not due |
-| never run, start time an hour ago | due | not due until midnight | due |
-| never run, start time in an hour | not due | not due | not due |
+| row                               | Django  | Go, before             | Go, now |
+| --------------------------------- | ------- | ---------------------- | ------- |
+| never run, no start time          | not due | due                    | not due |
+| never run, start time an hour ago | due     | not due until midnight | due     |
+| never run, start time in an hour  | not due | not due                | not due |
 
 The end of it, on a database truncated back to empty: beat syncs twelve entries and queues nothing. Set one task's `last_run_at` two days back and it queues that one, on `pace-go`, and nothing else.
 
@@ -2843,14 +2841,14 @@ Django answers a request that resolved to nothing with `handler404` — `plane.a
 
 Both were read off a running Django with `DEBUG` false — which matters, since with it on the debug page is served instead and the handler never runs — and then off the Go service standing in front of the same migrated database:
 
-| request | Django | Go |
-| --- | --- | --- |
-| `GET /api/nope/` | `{"error": "Page not found."}` | same |
-| `GET /api/v1/nope/` | `{"error": "Page not found."}` | same |
-| `POST /api/workspaces/acme/nope/` | `{"error": "Page not found."}` | same |
-| `GET /api/v1/workspaces/acme/states.json` | `{"error": "Page not found."}` | same |
-| `GET /api/v1/workspaces/acme/stickies.xml` | `{"detail":"Not found."}` | same |
-| `GET /static/nothing.css` | `{"error": "Page not found."}` | same |
+| request                                    | Django                         | Go   |
+| ------------------------------------------ | ------------------------------ | ---- |
+| `GET /api/nope/`                           | `{"error": "Page not found."}` | same |
+| `GET /api/v1/nope/`                        | `{"error": "Page not found."}` | same |
+| `POST /api/workspaces/acme/nope/`          | `{"error": "Page not found."}` | same |
+| `GET /api/v1/workspaces/acme/states.json`  | `{"error": "Page not found."}` | same |
+| `GET /api/v1/workspaces/acme/stickies.xml` | `{"detail":"Not found."}`      | same |
+| `GET /static/nothing.css`                  | `{"error": "Page not found."}` | same |
 
 The bytes are written out rather than handed to `c.JSON`, because Django's `JsonResponse` uses `json.dumps`' default separators and puts a space after the colon. The one remaining difference is the `charset=utf-8` gin appends to the content type, which every response in this service carries and Django's carry on neither.
 
@@ -2875,7 +2873,7 @@ None of them are rewritten here. Django is the only authority on what its own mi
 Recording a real run has no such problem, and three things had to be got right to make it usable:
 
 - **The filter is about reads, not first words.** Most of what a migration runs is Django reading the catalogue to decide what DDL to emit — 3140 of the first 5082 statements captured were `SELECT`s against `pg_class` and `pg_constraint`, and they are also the only statements carrying bound parameters. Skipping them is right. Skipping by first word was not: Django drops a foreign key with a compound statement beginning `SET CONSTRAINTS ... ; ALTER TABLE ... DROP CONSTRAINT`, so excluding anything starting with `SET` threw the drop away, and `db.0002` then tried to add a constraint that was still there.
-- **Two tables' rows are not a migration's to write.** `django_content_type` and `auth_permission` are filled in by `post_migrate` handlers rather than by any operation. Their *tables* are created by ordinary migrations and are recorded like anything else; their contents are written out separately, as the end state rather than the incremental inserts. Nothing in Plane reads either one — there is no `GenericForeignKey` in the app, and its permission classes are DRF's rather than Django's — but a database this builds and a database Django builds have to be the same thing, or comparing them stops meaning anything.
+- **Two tables' rows are not a migration's to write.** `django_content_type` and `auth_permission` are filled in by `post_migrate` handlers rather than by any operation. Their _tables_ are created by ordinary migrations and are recorded like anything else; their contents are written out separately, as the end state rather than the incremental inserts. Nothing in Plane reads either one — there is no `GenericForeignKey` in the app, and its permission classes are DRF's rather than Django's — but a database this builds and a database Django builds have to be the same thing, or comparing them stops meaning anything.
 - **`Migration.atomic` is carried in the plan.** Two migrations set it false, and they have to: `CREATE INDEX CONCURRENTLY` is refused inside a transaction block, so `db.0103` cannot be wrapped in one. Every other migration is one transaction — its statements, its code, and its ledger row together.
 
 The ledger is Django's own `django_migrations`, unchanged, because both sides read it: this package to know what is applied, and `wait_for_migrations` to know whether anything is outstanding. Its table is created by Django's `MigrationRecorder` before the first migration runs and so belongs to none of them, which is why its definition is recorded into `ledger.sql` of its own.
@@ -2886,13 +2884,13 @@ The ledger is Django's own `django_migrations`, unchanged, because both sides re
 
 All 2885 rows match. So do the other three things worth comparing:
 
-| | Django | Go |
-| --- | --- | --- |
-| schema facts | 2885 | identical |
-| tables | 110 | 110 |
-| `django_migrations` rows | 164 | identical, same names |
-| `django_content_type` rows | 121 | identical, same ids |
-| `auth_permission` rows | 512 | identical, same ids |
+|                            | Django | Go                    |
+| -------------------------- | ------ | --------------------- |
+| schema facts               | 2885   | identical             |
+| tables                     | 110    | 110                   |
+| `django_migrations` rows   | 164    | identical, same names |
+| `django_content_type` rows | 121    | identical, same ids   |
+| `auth_permission` rows     | 512    | identical, same ids   |
 
 And one result that was not expected: on a fresh database, **every `RunPython` operation is a no-op**. A Django-migrated empty database has rows in exactly three tables, all of them bookkeeping, and Go's has the same rows. The data migrations exist to move data that is already there, so a fresh install built by Go is already indistinguishable from one built by Django.
 
@@ -2915,9 +2913,9 @@ Neither was found by argument. Both were found by running the two implementation
 
 ### The check
 
-`tools/check_migration_operations.py` builds two databases, migrates both to the migration *before* the one under test, seeds them identically from `internal/migrate/testdata/operations/<app>.<name>.sql`, then lets Django apply the migration to one and the Go engine apply it to the other. Every row of every table is dumped from both and compared. CI runs it.
+`tools/check_migration_operations.py` builds two databases, migrates both to the migration _before_ the one under test, seeds them identically from `internal/migrate/testdata/operations/<app>.<name>.sql`, then lets Django apply the migration to one and the Go engine apply it to the other. Every row of every table is dumped from both and compared. CI runs it.
 
-Two things make that possible. `migrate.ApplyThrough` stops the Go engine at a named migration, which is also what `manage migrate <app> <name>` does and what Django's own command has always done. And the recorded files now say *where* a coded operation goes, with a `-- RUN app.name.function` line in the position Django ran the Python one — which is not a detail. `db.0035` adds `organization_size`, fills it in from `company_size`, and drops `company_size` in the same migration; replaying all the SQL and then all the code read a column that was no longer there.
+Two things make that possible. `migrate.ApplyThrough` stops the Go engine at a named migration, which is also what `manage migrate <app> <name>` does and what Django's own command has always done. And the recorded files now say _where_ a coded operation goes, with a `-- RUN app.name.function` line in the position Django ran the Python one — which is not a detail. `db.0035` adds `organization_size`, fills it in from `company_size`, and drops `company_size` in the same migration; replaying all the SQL and then all the code read a column that was no longer there.
 
 Four of the operations exist to scatter rows into an arbitrary order and call `random.randint` to do it. Two runs of the same Python disagree with each other, so comparing those values would only prove that random is random. A seed names them with a `-- RANDOM: table.column` line: the column is left out of the comparison, and checked separately for having been filled in at all.
 
@@ -3002,3 +3000,26 @@ Running them for the first time turned up two things:
 The all-in-one image is built `FROM makeplane/plane-backend` and `FROM makeplane/plane-live`, so it cannot be built until those two are published with Go in them. Its Dockerfile and `supervisor.conf` are changed to match what the new images contain — binaries on the path instead of a Django tree at `/app/backend` and a Node app at `/app/live` — but the first real build of it will be the first time that is exercised.
 
 Everything else was run: both images build, and against a throwaway Postgres, RabbitMQ and Valkey the migrator applies all 164 migrations, the api entrypoint waits, registers the instance, writes 36 configuration rows and serves `/api/health` on the port `PORT` names, the worker comes up with its 46 tasks, the beat syncs its schedule, and the live image answers `/live/health`.
+
+## The last of it
+
+`apps/api` and `apps/live` are gone, and with them `packages/logger` and `packages/decorators`, which were Express middleware with no consumer left once the collaborative editor was Go.
+
+Four things were still pointing at them, two of which had never been migrated at all:
+
+- **`docker-compose-local.yml`** — the development stack, still Django with `Dockerfile.dev`, `runserver` and the source mounted for reload. It is Go now, and `air` does what `runserver` did: `Dockerfile.dev` carries the toolchain, the source is mounted, and `.air.toml` rebuilds whichever binary `AIR_TARGET` names. One config, four services.
+- **`docker-compose-test.yml`** — ran `pytest`. It runs `go test ./...` now, against a schema the Go migrator builds first, so a migration that no longer applies fails before anything else is given the chance.
+- **`deployments/cli/community/build.yml`** — still built both images from `apps/api` and `apps/live`. That was missed when the published images were moved over.
+- **`apps/api/.env`** — the file every compose file read. It is `apps/api-go/.env` now, and `setup.sh` writes it there.
+
+### What went with them
+
+Twenty-nine of the forty-two fixture generators read one of the two apps: twenty-six ran Django, three read the Node editor's dependencies. They are deleted, and so are the CI steps that ran them. The ten that read `packages/editor` stay, because the frontend does.
+
+The distinction worth being precise about is that **the fixtures and the tests that read them are untouched**. `internal/drf` still checks its float formatting against `testdata/iso8601.tsv`; `internal/migrate` still replays 164 recorded migrations and compares the result against `testdata/schema.tsv`. What is gone is the ability to _re-derive_ any of it, and with it the CI step that regenerated a fixture and failed if it had drifted. Nothing can drift now: the thing it would have drifted from does not exist.
+
+So the recorded migrations are a frozen history rather than a generated artefact, and their headers say so instead of "Do not edit by hand". A migration added from here is a row in `plan.tsv` and a file of statements beside it, written by hand; `TestGoBuildsTheSameSchemaAsDjango` is what checks the whole sequence still produces the schema that was recorded.
+
+### One thing that was already broken
+
+The migration verification steps added when the schema was ported had been appended to the end of `go-api.yml`, which put them in the **editor fixtures** job — the one with no database. They were in the wrong job from the day they were written. The one worth keeping is now in the job that has Postgres.

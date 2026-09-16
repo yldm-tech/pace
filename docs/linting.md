@@ -34,7 +34,7 @@ Install the [OxLint extension](https://marketplace.visualstudio.com/items?itemNa
 
 The config applies to all TypeScript and JavaScript files across:
 
-- `apps/web`, `apps/admin`, `apps/space`, `apps/live`
+- `apps/web`, `apps/admin`, `apps/space`
 - All packages in `packages/`
 
 **Ignored paths:**
@@ -47,13 +47,14 @@ The config applies to all TypeScript and JavaScript files across:
 
 OxLint uses category-based configuration:
 
-| Category        | Level | What It Catches                                    |
-| --------------- | ----- | -------------------------------------------------- |
-| **correctness** | error | Real bugs that will cause runtime errors            |
-| **suspicious**  | warn  | Code patterns that are likely mistakes              |
-| **perf**        | warn  | Performance anti-patterns                           |
+| Category        | Level | What It Catches                          |
+| --------------- | ----- | ---------------------------------------- |
+| **correctness** | error | Real bugs that will cause runtime errors |
+| **suspicious**  | warn  | Code patterns that are likely mistakes   |
+| **perf**        | warn  | Performance anti-patterns                |
 
 Additional rule overrides:
+
 - `react/prop-types` off (TypeScript handles prop validation)
 - `no-unused-vars` warns with `_` prefix pattern ignored
 - Several noisy unicorn rules disabled

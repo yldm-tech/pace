@@ -1,4 +1,4 @@
--- db.0020_auto_20230214_0118, recorded by apps/api-go/tools/generate_migration_sql.py. Do not edit by hand.
+-- db.0020_auto_20230214_0118, recorded from the Django app this replaced.
 ALTER TABLE "labels" RENAME COLUMN "colour" TO "color";
 ALTER TABLE "api_tokens" ADD COLUMN "workspace_id" uuid NULL CONSTRAINT "api_tokens_workspace_id_6791c7bd_fk_workspaces_id" REFERENCES "workspaces"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "api_tokens_workspace_id_6791c7bd_fk_workspaces_id" IMMEDIATE;
 ALTER TABLE "issues" ADD COLUMN "completed_at" timestamp with time zone NULL;
