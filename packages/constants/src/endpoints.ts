@@ -23,11 +23,11 @@ export const LIVE_URL = encodeURI(`${LIVE_BASE_URL}${LIVE_BASE_PATH}`);
 export const WEB_BASE_URL = process.env.VITE_WEB_BASE_URL || "";
 export const WEB_BASE_PATH = process.env.VITE_WEB_BASE_PATH || "";
 export const WEB_URL = encodeURI(`${WEB_BASE_URL}${WEB_BASE_PATH}`);
-// plane website url
-export const WEBSITE_URL = process.env.VITE_WEBSITE_URL || "https://plane.so";
-// support email
-export const SUPPORT_EMAIL = process.env.VITE_SUPPORT_EMAIL || "support@plane.so";
+// This installation's own website, which is where "powered by" and the like point.
+export const WEBSITE_URL = process.env.VITE_WEBSITE_URL || "https://pace.yldm.ai";
+// Whoever runs this installation, not upstream. Left empty rather than guessed: every message that uses it already falls back to "administrator" when it is, and mailing support@yldm.ai about an account on someone else's fork helps nobody. Set VITE_SUPPORT_EMAIL to fill it in.
+export const SUPPORT_EMAIL = process.env.VITE_SUPPORT_EMAIL || "";
 // marketing links
-export const MARKETING_PRICING_PAGE_LINK = "https://plane.so/pricing";
-export const MARKETING_CONTACT_US_PAGE_LINK = "https://plane.so/contact";
-export const MARKETING_PLANE_ONE_PAGE_LINK = "https://plane.so/one";
+export const MARKETING_PRICING_PAGE_LINK = "https://pace.yldm.ai/pricing";
+export const MARKETING_CONTACT_US_PAGE_LINK = "https://pace.yldm.ai/contact";
+export const MARKETING_PLANE_ONE_PAGE_LINK = "https://pace.yldm.ai/one";

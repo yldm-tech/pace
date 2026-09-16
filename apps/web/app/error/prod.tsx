@@ -17,12 +17,12 @@ const linkMap = [
   {
     key: "mail_to",
     label: "Contact Support",
-    value: "mailto:support@plane.so",
+    value: "mailto:support@yldm.ai",
   },
   {
     key: "status",
     label: "Status Page",
-    value: "https://status.plane.so/",
+    value: "https://status.pace.yldm.ai/",
   },
   {
     key: "twitter_handle",

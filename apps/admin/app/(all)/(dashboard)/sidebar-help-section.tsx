@@ -27,12 +27,12 @@ import { useInstance, useTheme } from "@/hooks/store";
 const helpOptions = [
   {
     name: "Documentation",
-    href: "https://docs.plane.so/",
+    href: "https://pace.yldm.ai/docs/",
     Icon: PagesOutline,
   },
   {
     name: "Join our Forum",
-    href: "https://forum.plane.so",
+    href: "https://pace.yldm.ai/forum",
     Icon: ChatOutline,
   },
   {
