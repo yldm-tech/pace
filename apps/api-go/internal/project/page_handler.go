@@ -249,6 +249,10 @@ func (handler *Handler) pageCreate(c *gin.Context, user *auth.User) {
 		WorkspaceID: project.WorkspaceID, OwnedByID: user.ID,
 		CreatedByID: &user.ID, UpdatedByID: &user.ID, CreatedAt: now, UpdatedAt: now,
 		Access: pagePublicAccess, DescriptionHTML: "<p></p>",
+		// Django's default for the column, which a Go zero value would have made nought.
+		SortOrder: 65535,
+		// Both NOT NULL jsonb with a nil-by-default field behind them, which GORM writes as null. Django's default for each is the empty object.
+		ViewProps: []byte("{}"), LogoProps: []byte("{}"),
 	}
 	applyPagePayload(&page, payload)
 	// The three description fields are read out of the context rather than validated, so whatever the caller sent is stored as it stands.

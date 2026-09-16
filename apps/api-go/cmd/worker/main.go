@@ -100,12 +100,12 @@ func main() {
 		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
 	}, logger)
 
-	// The automation queues issue_activity, which still runs on the Python worker; publishing it from here is how a sweep's changes still show up in a work item's history.
+	// The tasks a task queues in turn: a sweep queues issue_activity, which queues webhook_activity and notifications. They are routed like every other publisher's, and were not — so each of them went to the queue the Python worker used to consume, and stopped there.
 	activityPublisher := auth.NewCeleryPublisher(settings.Auth.AMQPURL)
+	activityPublisher.RouteToGoWorker(workerQueue(), worker.MigratedTaskNames())
 	nightly := worker.NewNightlyTasks(db, assetStore, activityPublisher, logger)
-	// webhook_activity, the next link in the chain, still runs on the Python worker.
 	modelActivity := worker.NewModelActivityTasks(activityPublisher, logger)
-	// The activity task parks the request origin in Redis for the notification emails to read, and hands the rows it wrote to notifications, which still runs on the Python worker.
+	// The activity task parks the request origin in Redis for the notification emails to read, and hands the rows it wrote to notifications.
 	redisClient, err := auth.OpenRedis(ctx, settings.Auth.RedisURL)
 	if err != nil {
 		logger.Warn("redis is not reachable, the request origin will not be parked", "error", err)
@@ -151,7 +151,7 @@ func main() {
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
 
-	consumer := worker.NewConsumer(settings.Auth.AMQPURL, os.Getenv("PACE_WORKER_QUEUE"), logger)
+	consumer := worker.NewConsumer(settings.Auth.AMQPURL, workerQueue(), logger)
 	tasks.Register(consumer)
 	maintenance.Register(consumer)
 	deletions.Register(consumer)
@@ -230,3 +230,6 @@ func liveURL() string {
 	}
 	return joined.String()
 }
+
+// workerQueue is worker.Queue, named locally so the three commands read the same.
+func workerQueue() string { return worker.Queue() }

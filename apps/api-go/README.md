@@ -3023,3 +3023,44 @@ So the recorded migrations are a frozen history rather than a generated artefact
 ### One thing that was already broken
 
 The migration verification steps added when the schema was ported had been appended to the end of `go-api.yml`, which put them in the **editor fixtures** job — the one with no database. They were in the wrong job from the day they were written. The one worth keeping is now in the job that has Postgres.
+
+## What running it found
+
+Deleting the Python and the Node backends broke nothing. Bringing the whole stack up and using it, which is what proving that takes, broke a great deal — and almost none of it was the deletion's doing.
+
+The one exception is the queue, and it is the one that mattered most.
+
+### The queue nothing was consuming
+
+`NewCeleryPublisher` falls back to Celery's default queue when no other is named. That was right while the Python worker consumed it, and became wrong the moment it was removed: a publisher reaching that fallback puts tasks somewhere nothing is listening.
+
+Four publishers exist. The API and the beat named a queue from `PACE_WORKER_QUEUE`, which the compose file set for the worker and the beat and *not* for the API. The worker's own publisher — the one that queues an activity's follow-up webhook and notification — and the manage commands' never named one at all.
+
+So the API published every task into silence. Nothing said so: the request returned 201, the row was written, and the activity, the webhook and the notification that should have followed never happened. It surfaced as 38 messages sitting in a queue with no consumer and an `issue_activities` table with nothing in it.
+
+`worker.Queue()` now returns the Go worker's queue when the variable is unset, all four publishers are routed, and two tests hold it there: one that the queue never resolves to the dead one, and one that every `NewCeleryPublisher` in `cmd` is followed by a `RouteToGoWorker`.
+
+### Fourteen things that had never been run
+
+The rest were already broken and had simply never been exercised. God-mode could not create its first admin; a project could not be created; nor could a page, a cycle, a module, a view, an API token, an asset or a webhook. Every one failed on the same two shapes:
+
+- **A column that had moved.** `db.0065` took `is_onboarded` and `is_tour_completed` off `users` and put them on `profiles`, and two inserts went on naming them. A profile has no `created_by_id`, and one insert named that too.
+- **A column Django fills and Go does not.** Django gives a field with no explicit default the type's empty value — `""` for a text field, and for a `jsonb` with `default=dict` an empty object. An insert written from reading the Python leaves the column out, a struct has no field for it, or the field is a `[]byte` that is nil until something assigns it. All three end as `null value in column ... violates not-null constraint`. It cost `instances.domain`, `profiles.company_name`, `users.avatar` and nine of its neighbours, `issue_views.filters` and five of its neighbours, `pages.view_props`, `pages.logo_props`, `pages.sort_order`, `cycles.description` and six more, `modules.description` and four more, `issues.is_draft`, `issue_activities.attachments`, `states.description`, `states.is_triage`, `file_assets.is_archived`, `webhooks.version`, `webhooks.is_internal` and `api_tokens.allowed_rate_limit`.
+
+One was neither: `MAX(sort_order)` over no rows is one row holding null rather than no rows at all, and it was scanned into a `float64`. The first view in a workspace always failed.
+
+The admin sign-up is no longer a hand-written pair of inserts. `auth.NewUserRecords` builds the user, the profile and the notification preference that an ordinary sign-up builds, and both paths call it.
+
+### The guards
+
+Reading did not find any of this and neither did the type checker, so three tests read the source and check it against `internal/migrate/testdata/schema.tsv` — the schema recorded from a fully migrated database, which is still the authority on what a column is even though the app it was recorded from is gone:
+
+- every column named in a `Table(...).Create(map[...])` exists
+- every NOT NULL column with no database default is named by that map
+- the same, for a struct passed to `Create`
+
+They are blunt and they read names rather than being told them, so a column that moves tomorrow is caught without anyone remembering to update a list. A fourth checks that no publisher is built unrouted.
+
+### Where the defaults came from
+
+Django is deleted, so "what would Django have written here" is no longer a question anything can be asked. It did not need to be: the recorded migrations carry `ALTER TABLE ... ADD COLUMN ... DEFAULT ...` for every column that was added with one, and that is where every value in these fixes was read from — `60/min`, `v1`, `65535`, `UTC`, `en`, `#4a9B8c`, the two display objects, and the rest. The recording turned out to be worth more than the schema it was made for.

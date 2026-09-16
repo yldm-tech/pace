@@ -27,6 +27,8 @@ type Page struct {
 	LogoProps   []byte     `gorm:"column:logo_props;type:jsonb"`
 	IsGlobal    bool       `gorm:"column:is_global"`
 	MovedToPage *string    `gorm:"column:moved_to_page;type:uuid"`
+	// NOT NULL with no database default; Django's is 65535.
+	SortOrder float64 `gorm:"column:sort_order"`
 }
 
 func (Page) TableName() string { return "pages" }

@@ -71,6 +71,10 @@ func PrepareCreate(tx *gorm.DB, values map[string]any, projectID, workspaceID, a
 		values["description_html"] = defaultDescriptionHTML
 	}
 	values["description_stripped"] = StripTags(stringOrEmpty(values["description_html"]))
+	// NOT NULL with no database default. Django fills it from the field's default when the caller does not, and a work item created through this path is never a draft — the drafts have a table of their own.
+	if _, given := values["is_draft"]; !given {
+		values["is_draft"] = false
+	}
 
 	// completed_at is set on creation when the chosen state is a completed one, which is what _sync_completed_at does while adding.
 	group, err := StateGroup(tx, stateID)

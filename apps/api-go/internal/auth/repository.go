@@ -233,19 +233,30 @@ func (repository *GORMRepository) CreateOAuthUser(ctx context.Context, identity 
 	return user, repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", user.ID).Update("avatar_asset_id", assetID).Error
 }
 
-func (repository *GORMRepository) createUser(ctx context.Context, email, encodedPassword string, passwordAutoset, emailVerified bool, firstName, lastName, avatar string) (*User, error) {
-	now := time.Now().UTC()
+
+// NewUserRecords builds the three rows a new account is: the user, the profile the preferences moved to, and the notification preference.
+//
+// It is one function because a second caller writing these by hand got them wrong in four separate ways — naming columns that had moved to the profile, naming audit columns the profile does not have, and leaving out nine of the user's and ten of the profile's NOT NULL columns. Every default here is Django's, taken from what the recorded migrations set the column to when they added it.
+func NewUserRecords(email, encodedPassword, firstName, lastName, avatar string, passwordAutoset, emailVerified bool, now time.Time) (*User, *Profile, *UserNotificationPreference, error) {
 	userID, err := randomUUID()
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 	username, err := randomHex(16)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 	color, err := randomHex(3)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
+	}
+	profileID, err := randomUUID()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	preferenceID, err := randomUUID()
+	if err != nil {
+		return nil, nil, nil, err
 	}
 	user := &User{
 		ID: userID, Password: encodedPassword, Username: username, Email: strings.ToLower(strings.TrimSpace(email)),
@@ -254,15 +265,7 @@ func (repository *GORMRepository) createUser(ctx context.Context, email, encoded
 		IsEmailVerified: emailVerified, IsPasswordAutoset: passwordAutoset, Token: "", LastActive: &now,
 		LastLoginIP: "", LastLogoutIP: "", LastLoginMedium: "email", LastLoginUserAgent: "", UserTimezone: "UTC",
 	}
-	profileID, err := randomUUID()
-	if err != nil {
-		return nil, err
-	}
-	preferenceID, err := randomUUID()
-	if err != nil {
-		return nil, err
-	}
-	profile := Profile{
+	profile := &Profile{
 		ID: profileID, UserID: userID, Theme: JSONValue(`{}`), IsAppRailDocked: true,
 		OnboardingStep:        JSONValue(`{"profile_complete":false,"workspace_create":false,"workspace_invite":false,"workspace_join":false}`),
 		BillingAddressCountry: "INDIA", CompanyName: "", NotificationViewMode: "full",
@@ -271,18 +274,26 @@ func (repository *GORMRepository) createUser(ctx context.Context, email, encoded
 		ProductTour: JSONValue(`{"work_items":false,"cycles":false,"modules":false,"intake":false,"pages":false}`),
 		CreatedAt:   now, UpdatedAt: now,
 	}
-	preference := UserNotificationPreference{
+	preference := &UserNotificationPreference{
 		ID: preferenceID, UserID: userID, PropertyChange: true, StateChange: true, Comment: true,
 		Mention: true, IssueCompleted: true, CreatedAt: now, UpdatedAt: now,
+	}
+	return user, profile, preference, nil
+}
+
+func (repository *GORMRepository) createUser(ctx context.Context, email, encodedPassword string, passwordAutoset, emailVerified bool, firstName, lastName, avatar string) (*User, error) {
+	user, profile, preference, err := NewUserRecords(email, encodedPassword, firstName, lastName, avatar, passwordAutoset, emailVerified, time.Now().UTC())
+	if err != nil {
+		return nil, err
 	}
 	err = repository.db.WithContext(ctx).Transaction(func(transaction *gorm.DB) error {
 		if err := transaction.Create(user).Error; err != nil {
 			return err
 		}
-		if err := transaction.Create(&profile).Error; err != nil {
+		if err := transaction.Create(profile).Error; err != nil {
 			return err
 		}
-		return transaction.Create(&preference).Error
+		return transaction.Create(preference).Error
 	})
 	if err != nil {
 		return nil, err

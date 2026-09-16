@@ -71,7 +71,12 @@ func main() {
 		return emailDefaults(), auth.NewGORMRepository(db, settings.Auth.SkipEnvironmentConfig, settings.Auth.SecretKey), worker.SMTPMailer{}
 	}
 	manage.SecretKey = settings.Auth.SecretKey
-	manage.Queue = func() worker.DelayedPublisher { return auth.NewCeleryPublisher(settings.Auth.AMQPURL) }
+	manage.Queue = func() worker.DelayedPublisher {
+		// Routed like every other publisher. register_instance queues push_instance_metrics, and unrouted it went to a queue nothing consumes.
+		publisher := auth.NewCeleryPublisher(settings.Auth.AMQPURL)
+		publisher.RouteToGoWorker(worker.Queue(), worker.MigratedTaskNames())
+		return publisher
+	}
 
 	if err := command.Run(ctx, env, os.Args[2:]); err != nil {
 		var refused *manage.ErrCommand

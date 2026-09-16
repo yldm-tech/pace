@@ -24,6 +24,9 @@ type State struct {
 	Group       string    `gorm:"column:group"`
 	Default     bool      `gorm:"column:default"`
 	Slug        string    `gorm:"column:slug"`
+	// The remaining NOT NULL columns. A field that is not on the struct is a column GORM does not write, which is a null rather than the value Django would have put there.
+	Description string `gorm:"column:description"`
+	IsTriage    bool   `gorm:"column:is_triage"`
 }
 
 func (State) TableName() string { return "states" }
@@ -62,6 +65,7 @@ func CreateDefaultStates(tx *gorm.DB, projectID, workspaceID, actorID string, no
 			ProjectID: projectID, WorkspaceID: workspaceID,
 			Name: definition.Name, Color: definition.Color, Sequence: definition.Sequence,
 			Group: definition.Group, Default: definition.Default,
+			IsTriage: definition.Group == "triage",
 		})
 	}
 	return tx.Create(&states).Error

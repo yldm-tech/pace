@@ -69,11 +69,9 @@ func main() {
 		WebhookDisallowedDomains: cfg.Auth.WebhookDisallowedDomains,
 		APIKeyRateLimit:          cfg.Auth.APIKeyRateLimit,
 	}
-	// Tasks the Go worker implements go to its own queue; everything else keeps
-	// going to the queue the Python worker consumes. Leaving PACE_WORKER_QUEUE
-	// unset routes everything to Python, which is the rollback path.
+	// Where the tasks go. Every one of the forty-six is implemented here, so with nothing set they go to the Go worker's own queue — the fallback used to be the queue the Python worker consumed, and since that worker was removed nothing consumes it, so a publisher that fell back was publishing into a queue with no consumer and every background task silently never ran.
 	taskPublisher := auth.NewCeleryPublisher(cfg.Auth.AMQPURL)
-	taskPublisher.RouteToGoWorker(os.Getenv("PACE_WORKER_QUEUE"), worker.MigratedTaskNames())
+	taskPublisher.RouteToGoWorker(workerQueue(), worker.MigratedTaskNames())
 
 	httpServer := &http.Server{
 		Addr: cfg.Address,
@@ -165,3 +163,6 @@ func envOrDefault(name, fallback string) string {
 	}
 	return fallback
 }
+
+// workerQueue is worker.Queue, named locally so the three commands read the same.
+func workerQueue() string { return worker.Queue() }

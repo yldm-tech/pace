@@ -120,8 +120,7 @@ services:
     environment:
       # The API it reads and writes pages through, as the editing user.
       API_BASE_URL: ${API_BASE_URL:-http://api-go:8000}
-      LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY:-}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
+      # LIVE_SERVER_SECRET_KEY and CORS_ALLOWED_ORIGINS are deliberately not listed here. They come from the env file above, and naming them with an empty default would overwrite it: compose lets environment win over env_file, so `${VAR:-}` for a variable the shell does not set resolves to the empty string and blanks whatever the file said. The live server refuses to start without a secret key, so that is a crash loop rather than a quiet misconfiguration.
       # With no Redis it runs as a single node, and two people on one page have to reach the same server for it to converge.
       REDIS_URL: ${REDIS_URL:-redis://plane-redis:6379/}
     depends_on:

@@ -73,6 +73,16 @@ func (handler *Handler) cycleCreate(c *gin.Context, user *auth.User) {
 	values["workspace_id"] = project.WorkspaceID
 	// owned_by is the caller, and is read-only on the serializer so a request cannot set it.
 	values["owned_by_id"] = user.ID
+	// The NOT NULL columns a request does not have to send. Django fills each from its field's default, and a map that does not name one leaves a null behind.
+	for column, fallback := range map[string]any{
+		"description": "", "view_props": []byte("{}"), "sort_order": 65535.0,
+		"progress_snapshot": []byte("{}"), "logo_props": []byte("{}"),
+		"timezone": "UTC", "version": 1,
+	} {
+		if _, given := values[column]; !given {
+			values[column] = fallback
+		}
+	}
 	if err := handler.db.WithContext(c.Request.Context()).Table("cycles").Create(values).Error; err != nil {
 		handler.internalError(c, err)
 		return
