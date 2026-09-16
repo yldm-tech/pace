@@ -226,11 +226,13 @@
 	reverse_proxy @go_comment_reactions api-go:8000
 	reverse_proxy /api/users/me/workspaces/*/project-roles/ api-go:8000
 
-	reverse_proxy /api/* api:8000
+	# Everything the route inventory knows about is matched above, so this catches only paths the Django app would have answered with a 404 as well. It points at Go because nothing is left behind it.
+	reverse_proxy /api/* api-go:8000
 
 	reverse_proxy /auth/* api-go:8000
 
-	reverse_proxy /static/* api:8000
+	# Django served this through whitenoise. The only thing that ever asked for it was drf-spectacular's Swagger UI, which ENABLE_DRF_SPECTACULAR leaves switched off, so in a default deployment every request here is a miss on both sides.
+	reverse_proxy /static/* api-go:8000
 
 	reverse_proxy /{$BUCKET_NAME}/* plane-minio:9000
 	reverse_proxy /{$BUCKET_NAME} plane-minio:9000

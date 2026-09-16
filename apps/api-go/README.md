@@ -2828,3 +2828,36 @@ Both branches were read off django-celery-beat itself rather than off its source
 | never run, start time in an hour | not due | not due | not due |
 
 The end of it, on a database truncated back to empty: beat syncs twelve entries and queues nothing. Set one task's `last_run_at` two days back and it queues that one, on `pace-go`, and nothing else.
+
+## The API, cut over
+
+The proxy's last two lines pointing at Django now point at Go, and the `api` and `worker` services are gone from the compose file. What is left of Python is `migrator`.
+
+The fallback was already dead weight before it moved. `reverse_proxy /api/* api:8000` sat below a hundred-odd matchers that had claimed every route the app has: all 639 rows of `internal/server/testdata/django_routes.tsv` match something above it. Moving it changes what answers a request for a path that exists in neither app.
+
+Moving it also sharpens the guard. `TestEveryCutOverPathIsFullyServed` requires that every method Django serves on a cut-over path is registered on the Go router; with `/api/*` claiming the whole subtree, that is now every method of every route, rather than only those a named matcher had named.
+
+### Two different 404s, and Go was writing the wrong one
+
+Django answers a request that resolved to nothing with `handler404` — `plane.app.views.error_404.custom_404_view`, which writes `{"error": "Page not found."}`. DRF's `{"detail": "Not found."}` is a different thing: it needs a view to have been found and to have raised `Http404`, which here happens exactly once, when a format suffix names a format no renderer answers to. Go was writing DRF's body for both.
+
+Both were read off a running Django with `DEBUG` false — which matters, since with it on the debug page is served instead and the handler never runs — and then off the Go service standing in front of the same migrated database:
+
+| request | Django | Go |
+| --- | --- | --- |
+| `GET /api/nope/` | `{"error": "Page not found."}` | same |
+| `GET /api/v1/nope/` | `{"error": "Page not found."}` | same |
+| `POST /api/workspaces/acme/nope/` | `{"error": "Page not found."}` | same |
+| `GET /api/v1/workspaces/acme/states.json` | `{"error": "Page not found."}` | same |
+| `GET /api/v1/workspaces/acme/stickies.xml` | `{"detail":"Not found."}` | same |
+| `GET /static/nothing.css` | `{"error": "Page not found."}` | same |
+
+The bytes are written out rather than handed to `c.JSON`, because Django's `JsonResponse` uses `json.dumps`' default separators and puts a space after the colon. The one remaining difference is the `charset=utf-8` gin appends to the content type, which every response in this service carries and Django's carry on neither.
+
+### Why /static/ moved too
+
+Django served it through whitenoise, out of `static-assets/collected-static`. Nothing in this repository asks for it: there is no Django admin in the URL conf, the DRF renderer list is `JSONRenderer` alone so there is no browsable API, and the web apps reference no `/static/` URL. The one thing that ever wanted it is drf-spectacular's Swagger UI, and `ENABLE_DRF_SPECTACULAR` defaults to `0` — its routes are not even in the route inventory. So in a default deployment every request here missed on the Django side too, and now misses with the same body. A deployment that turns drf-spectacular on loses `/api/schema/` and its assets, which is the one thing this line costs.
+
+### Why migrator stays
+
+Django owns the schema. Every table was created by a Django migration, Go never creates or alters one — `internal/manage` asks the database whether `django_migrations` holds every migration the Python app ships, and refuses to start until it does — and there is no `migrate` on the Go side to put in its place. `migrator` runs once and exits, so no Python process serves anything once it has.
