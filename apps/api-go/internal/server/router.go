@@ -49,6 +49,7 @@ type InstanceSettings struct {
 func NewRouter(dependencies Dependencies) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
+	router.Use(requireUUIDPathParameters())
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     dependencies.CORSOrigins,
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
