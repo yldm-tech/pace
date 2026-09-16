@@ -92,9 +92,10 @@ func Load() (Config, error) {
 			SecretKeyFallbacks:      csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
 			RedisURL:                strings.TrimSpace(os.Getenv("REDIS_URL")),
 			AMQPURL:                 celeryBrokerURL(),
-			WebURL:                  strings.TrimRight(envOrDefault("WEB_URL", "http://localhost:8000"), "/"),
-			AppBaseURL:              strings.TrimRight(envOrDefault("APP_BASE_URL", "http://localhost:3000"), "/"),
-			SpaceBaseURL:            strings.TrimRight(envOrDefault("SPACE_BASE_URL", "http://localhost:3002"), "/"),
+			// None of these three carry a default, because settings.py gives none: WEB_URL is os.environ.get("WEB_URL"), and APP_BASE_URL and SPACE_BASE_URL are read the same way and then dropped when they are not urls. The defaults that used to stand here were invented by this port, and they were not harmless -- base_host prefers APP_BASE_URL over WEB_URL, so a default of http://localhost:3000 meant every redirect out of sign-up and sign-in went to port 3000 no matter what WEB_URL said, on every installation that had not set APP_BASE_URL. Which is all of them: neither variables.env nor the compose files set it.
+			WebURL:                  strings.TrimRight(validURLOrEmpty(os.Getenv("WEB_URL")), "/"),
+			AppBaseURL:              strings.TrimRight(validURLOrEmpty(os.Getenv("APP_BASE_URL")), "/"),
+			SpaceBaseURL:            strings.TrimRight(validURLOrEmpty(os.Getenv("SPACE_BASE_URL")), "/"),
 			SpaceBasePath:           normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
 			SessionCookieName:       envOrDefault("SESSION_COOKIE_NAME", "session-id"),
 			SessionCookieDomain:     strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),

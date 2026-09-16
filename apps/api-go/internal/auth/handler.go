@@ -953,14 +953,24 @@ func (handler *Handler) requireConfigured(c *gin.Context, baseURL, nextPath stri
 	return false
 }
 
+// baseURL is base_host: is_space=True when space is set, is_app=True otherwise, which is how all but two of the hundred and sixteen call sites in the authentication app used it.
 func (handler *Handler) baseURL(space bool) string {
+	// base_origin, which both branches fall back to.
+	origin := handler.settings.WebURL
+	if origin == "" {
+		origin = handler.settings.AppBaseURL
+	}
 	if space {
-		return strings.TrimRight(handler.settings.SpaceBaseURL, "/") + handler.settings.SpaceBasePath
+		// SPACE_BASE_URL only when it is set. Falling through to the bare path, which is what this did before, produced a Location header of "/spaces/" with no origin behind it.
+		if handler.settings.SpaceBaseURL != "" {
+			return strings.TrimRight(handler.settings.SpaceBaseURL, "/") + handler.settings.SpaceBasePath
+		}
+		return origin + handler.settings.SpaceBasePath
 	}
 	if handler.settings.AppBaseURL != "" {
 		return handler.settings.AppBaseURL
 	}
-	return handler.settings.WebURL
+	return origin
 }
 
 func (handler *Handler) validEmail(email string) bool {

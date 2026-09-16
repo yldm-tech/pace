@@ -9,14 +9,22 @@
 :3000 {
 	root * /usr/share/caddy/html
 
-	# Per-client-IP rate limiting for static asset requests
+	# Per-client-IP rate limiting for static asset requests.
+	#
+	# 300 was low enough to break the application rather than protect it. One cold load of this app is 118 requests, so three page loads inside a minute exhausted the budget -- which is what signing in, completing onboarding and creating a workspace looks like -- and the browser then failed to fetch route modules and fell into a reload loop. Any number of users sharing one egress IP hit it sooner.
+	#
+	# The immutable caching below removes the steady-state traffic, so what is left to budget for is first loads: this allows roughly twenty-five of them a minute from a single address, while still bounding anything that sets out to hammer the file server.
 	rate_limit {
 		zone static {
 			key {client_ip}
-			events 300
+			events 3000
 			window 1m
 		}
 	}
+
+	# The build output is content-hashed by Vite, so a given URL never changes contents and may be cached forever. Without this every navigation revalidates the whole module graph -- a cold load of the sign-in page alone is 118 requests -- and each revalidation is a request that counts against the rate limit above.
+	@immutable path /god-mode/assets/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
 
 	# Security headers (HSTS is set at the TLS terminator)
 	header {

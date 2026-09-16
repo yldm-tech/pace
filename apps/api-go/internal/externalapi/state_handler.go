@@ -391,8 +391,9 @@ func (handler *Handler) respondPaged(c *gin.Context, results []gin.H) {
 }
 
 // respondPagedWithDefault is the same envelope with the page size a route chooses. Most take the paginator's own default; the sticky list asks for twenty.
+// The ceiling is the paginator's own, not the route's page size: only default_per_page is what a view like the sticky list overrides, and passing the two as one refuses any per_page above the default.
 func (handler *Handler) respondPagedWithDefault(c *gin.Context, results []gin.H, defaultPerPage int) {
-	perPage, err := pagination.PerPage(c.Query("per_page"), defaultPerPage, defaultPerPage)
+	perPage, err := pagination.PerPage(c.Query("per_page"), defaultPerPage, pagination.DefaultPerPage)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
@@ -406,7 +407,8 @@ func (handler *Handler) respondPagedWithDefault(c *gin.Context, results []gin.H,
 		}
 		cursor = parsed
 	}
-	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), defaultPerPage)
+	// OffsetPaginator's max_limit, which is MAX_LIMIT rather than the route's page size.
+	page := pagination.PlanOffsetPage(perPage, cursor, len(results), len(results), pagination.DefaultPerPage)
 	offset := page.Offset
 	if offset > len(results) {
 		offset = len(results)
