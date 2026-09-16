@@ -1437,6 +1437,12 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated task: the email stacking
+
+`stack_email_notification` now runs on the Go worker. It is the five-minute sweep that reads every notification nobody has been emailed about yet, groups it by who is to be told and about what, and queues one email per pair. The email itself — `send_email_notification`, which renders a two-hundred-line template — still runs on the Python worker.
+
+**Every email a person is queued carries all of that person's notification ids**, not just the ones about the work item it is for. The list is built across the whole of a person's notifications and then handed to each of their emails, so the first one sent marks the rest as sent — and the lock each email takes is built from that same list, so two emails to the same person in one sweep take the same lock and only one of them goes out. Reproduced rather than corrected: this is why somebody with changes on three work items gets one email rather than three, and why which of the three they get is whichever the worker picked up first.
+
 ## Migrated task: the webhook fan-out
 
 `webhook_activity` now runs on the Go worker, which completes the webhook chain: the Go side now works out what changed, picks the webhooks that asked about it, serialises the object, delivers it and logs the result.

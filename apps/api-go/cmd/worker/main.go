@@ -109,6 +109,7 @@ func main() {
 		AllowedIPs:   allowedIPs,
 		AllowedHosts: httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
 	}, activityPublisher, activityPublisher, logger)
+	emailStack := worker.NewEmailStackTasks(db, activityPublisher, logger)
 
 	assets := worker.NewAssetTasks(db, assetStore, logger)
 	assets.SetUnuploadedAssetDeleteDays(retentionDays("UNUPLOADED_ASSET_DELETE_DAYS", worker.DefaultUnuploadedAssetDeleteDays))
@@ -125,6 +126,7 @@ func main() {
 	issueActivity.Register(consumer)
 	notifications.Register(consumer)
 	webhooks.Register(consumer)
+	emailStack.Register(consumer)
 	logger.Info("worker starting", "tasks", strings.Join(consumer.TaskNames(), ","))
 
 	for {

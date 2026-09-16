@@ -135,6 +135,14 @@ const webhookDeactivationTaskName = "plane.bgtasks.webhook_task.send_webhook_dea
 
 const notificationsTaskName = "plane.bgtasks.notification_task.notifications"
 
+// sendEmailNotificationTaskName is the task that renders and sends one batched notification email.
+const sendEmailNotificationTaskName = "plane.bgtasks.email_notification_task.send_email_notification"
+
+// PublishSendEmailNotification mirrors send_email_notification.delay, which the five-minute sweep queues once per person per work item.
+func (publisher *CeleryPublisher) PublishSendEmailNotification(ctx context.Context, keywords map[string]any) error {
+	return publisher.publishKeywords(ctx, sendEmailNotificationTaskName, keywords)
+}
+
 // webhookSendTaskName is the last link in the chain, which delivers one event to one webhook.
 const webhookSendTaskName = "plane.bgtasks.webhook_task.webhook_send_task"
 
