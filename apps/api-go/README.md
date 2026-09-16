@@ -3034,7 +3034,7 @@ The one exception is the queue, and it is the one that mattered most.
 
 `NewCeleryPublisher` falls back to Celery's default queue when no other is named. That was right while the Python worker consumed it, and became wrong the moment it was removed: a publisher reaching that fallback puts tasks somewhere nothing is listening.
 
-Four publishers exist. The API and the beat named a queue from `PACE_WORKER_QUEUE`, which the compose file set for the worker and the beat and *not* for the API. The worker's own publisher — the one that queues an activity's follow-up webhook and notification — and the manage commands' never named one at all.
+Four publishers exist. The API and the beat named a queue from `PACE_WORKER_QUEUE`, which the compose file set for the worker and the beat and _not_ for the API. The worker's own publisher — the one that queues an activity's follow-up webhook and notification — and the manage commands' never named one at all.
 
 So the API published every task into silence. Nothing said so: the request returned 201, the row was written, and the activity, the webhook and the notification that should have followed never happened. It surfaced as 38 messages sitting in a queue with no consumer and an `issue_activities` table with nothing in it.
 
@@ -3108,3 +3108,17 @@ Two of its six base images could not be built from this repository, so the web a
 `packages/propel` does not build, on `main` as much as anywhere: `emoji-picker.tsx` imports `./icon/icon-root` and that file has never been committed — it is in no branch and no commit. `apps/web` and `apps/space` both depend on propel, so neither builds either.
 
 Writing the missing component means designing an icon picker with search and colour selection over the two icon lists sitting beside it. That is a frontend feature, not a port of one, so it is left alone rather than invented.
+
+## Getting the workflow green
+
+`Go API` had never passed. Forty recorded runs, every one red, going back past the start of this migration — and none of them was ever looked at, because the instruction early on was not to let CI hold the port up. That was the wrong thing to keep doing once the port was finished.
+
+Two failures, and one of them was mine.
+
+**The replay test could only run once.** `TestGoBuildsTheSameSchemaAsDjango` refused a database that already had migrations, which is right for a fresh one and wrong for a workflow that runs the suite twice — plainly, then again under the race detector — plus once more for the step that named the test on its own. The first run left 164 migrations behind and every run after it failed. It empties the database itself now rather than demanding one that is already empty; the variable already promised a disposable database, and this takes it at its word. The step that ran the test a second time is gone, and only the `CREATE DATABASE` it needed stays.
+
+**The generators had nothing to import.** `pnpm install` does not build a workspace package, and none of the ones the editor imports has a `prepare` script, so `@plane/utils` had no `dist/` and every generator died on `Could not resolve "@plane/utils"`. The install step is followed by a build now.
+
+That build excludes `@plane/propel`, which does not build at all: `emoji-picker.tsx` imports `./icon/icon-root` and that file is in no commit on any branch. It is a real problem — it is why `apps/web` and `apps/space` cannot be built either — but none of the entry points these generators bundle reaches propel, so excluding it costs nothing here and stops a frontend problem from holding this workflow red.
+
+Both jobs were run locally end to end before this landed: the suite twice over against a Postgres with the schema already applied, the race pass, `go vet`, and all nine editor generators reproducing their fixtures byte for byte.

@@ -64,11 +64,9 @@ jobs:
         working-directory: apps/api-go
         run: go run ./cmd/manage migrate
 
-      - name: Verify the schema matches the recorded one
-        working-directory: apps/api-go
-        run: |
-          psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
-          go test -count=1 ./internal/migrate/ -run TestGoBuildsTheSameSchemaAsDjango -v
+      # The database the replay test builds into. It empties it before it starts, so the suite running more than once — plainly and again under the race detector — is fine.
+      - name: Make the replay database
+        run: psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
 
       - name: Test Go API
         working-directory: apps/api-go
@@ -113,6 +111,12 @@ jobs:
 
       - name: Install editor dependencies
         run: pnpm install --frozen-lockfile --filter @plane/editor...
+
+      # Installing is not enough. The generators bundle @plane/editor's source, which imports @plane/utils and its siblings by name, and those resolve through a dist that nothing builds on install — none of them has a prepare script. Without this every generator fails with "Could not resolve @plane/utils".
+      #
+      # propel is excluded because it does not build: emoji-picker.tsx imports ./icon/icon-root and that file is in no commit on any branch, which breaks apps/web and apps/space too. None of the entry points these generators bundle reaches propel, so leaving it out costs nothing here and keeps a frontend problem from holding this workflow red.
+      - name: Build the packages the editor imports
+        run: pnpm --filter "@plane/editor^..." --filter "!@plane/propel" build
 
       - name: Verify the document editor schema matches the editor
         run: |
