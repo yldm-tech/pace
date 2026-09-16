@@ -34,6 +34,7 @@ type Entry struct {
 	Expires        *time.Time
 	ExpireSeconds  *int64
 	LastRunAt      *time.Time
+	DateChanged    *time.Time
 	TotalRunCount  int64
 	Crontab        *crontabSpec
 	IntervalEvery  *int64
@@ -52,25 +53,32 @@ func (entry Entry) due(now time.Time) bool {
 	if entry.Expires != nil && !now.Before(*entry.Expires) {
 		return false
 	}
-	next, ok := entry.nextRun()
+	next, ok := entry.nextRun(now)
 	if !ok {
 		return false
 	}
 	return !now.Before(next)
 }
 
-// nextRun is the instant this entry is next allowed to fire, measured from the
-// last run, or from the start time when it has never run.
-func (entry Entry) nextRun() (time.Time, bool) {
+// neverRunBackdate is how far Django pushes the reference into the past for a task that has never run and has a start time. It is thirty years, written out the way ModelEntry does it, and the size is the point: the schedule is then due whatever it is, so the start time gate above is what actually decides when the task first fires.
+const neverRunBackdate = 365 * 30 * 24 * time.Hour
+
+// nextRun is the instant this entry is next allowed to fire, measured from the last run.
+//
+// A task that has never run has no last run to measure from, and Django does not treat that as "due now". ModelEntry fills the null in from date_changed — which auto_now holds at the moment the row was last written — so a task created by the scheduler's own sync waits a full period before its first run rather than firing the moment beat starts. Getting this wrong fires every task in the schedule at boot, which is what a fresh install did before this was written down.
+//
+// The exception is a task with a start time, which Django backdates by thirty years instead. That makes the schedule due immediately and hands the decision to the start time gate in due, so such a task fires at its start time rather than at the first slot after it.
+func (entry Entry) nextRun(now time.Time) (time.Time, bool) {
 	reference := entry.LastRunAt
 	if reference == nil {
-		if entry.StartTime != nil {
-			reference = entry.StartTime
-		} else {
-			// Never run and no start time: due immediately, as a fresh
-			// PeriodicTask is in Django.
-			return time.Time{}, true
+		fallback := now
+		if entry.DateChanged != nil {
+			fallback = *entry.DateChanged
 		}
+		if entry.StartTime != nil {
+			fallback = fallback.Add(-neverRunBackdate)
+		}
+		reference = &fallback
 	}
 	switch {
 	case entry.Crontab != nil:
@@ -123,6 +131,7 @@ func (store *Store) Entries(ctx context.Context) ([]Entry, []string, error) {
 		Expires        *time.Time `gorm:"column:expires"`
 		ExpireSeconds  *int64     `gorm:"column:expire_seconds"`
 		LastRunAt      *time.Time `gorm:"column:last_run_at"`
+		DateChanged    *time.Time `gorm:"column:date_changed"`
 		TotalRunCount  int64      `gorm:"column:total_run_count"`
 		SolarID        *int64     `gorm:"column:solar_id"`
 		ClockedID      *int64     `gorm:"column:clocked_id"`
@@ -137,7 +146,7 @@ func (store *Store) Entries(ctx context.Context) ([]Entry, []string, error) {
 	}
 	err := store.db.WithContext(ctx).Table(periodicTaskTable + " pt").
 		Select(`pt.id, pt.name, pt.task, pt.args, pt.kwargs, pt.queue, pt.enabled, pt.one_off,
-			pt.start_time, pt.expires, pt.expire_seconds, pt.last_run_at, pt.total_run_count,
+			pt.start_time, pt.expires, pt.expire_seconds, pt.last_run_at, pt.date_changed, pt.total_run_count,
 			pt.solar_id, pt.clocked_id,
 			c.minute, c.hour, c.day_of_month, c.month_of_year, c.day_of_week, c.timezone AS crontab_timezone,
 			i.every, i.period`).
@@ -154,7 +163,7 @@ func (store *Store) Entries(ctx context.Context) ([]Entry, []string, error) {
 			ID: row.ID, Name: row.Name, Task: row.Task, Args: row.Args, Kwargs: row.Kwargs,
 			Queue: row.Queue, Enabled: row.Enabled, OneOff: row.OneOff,
 			StartTime: row.StartTime, Expires: row.Expires, ExpireSeconds: row.ExpireSeconds,
-			LastRunAt: row.LastRunAt, TotalRunCount: row.TotalRunCount,
+			LastRunAt: row.LastRunAt, DateChanged: row.DateChanged, TotalRunCount: row.TotalRunCount,
 		}
 		switch {
 		case row.Minute != nil:

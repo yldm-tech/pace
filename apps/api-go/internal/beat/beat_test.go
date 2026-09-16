@@ -210,13 +210,36 @@ func TestIntervalEntriesUseTheirPeriod(t *testing.T) {
 	}
 }
 
-func TestNeverRunEntryIsDueImmediately(t *testing.T) {
+// TestNeverRunEntryFollowsDjango pins what a null last_run_at means, which is not "due now".
+//
+// The three rows below were put through django_celery_beat's own ModelEntry.is_due against a Django-migrated database, with last_run_at forced back to null, and these are the answers it gave. An earlier reading of the code had a never-run task due immediately, which fired all twelve of the schedule's tasks the first time beat started.
+func TestNeverRunEntryFollowsDjango(t *testing.T) {
 	spec, err := parseCrontab("0", "0", "*", "*", "*", "UTC")
 	if err != nil {
 		t.Fatal(err)
 	}
-	entry := Entry{Enabled: true, Crontab: &spec}
-	if !entry.due(time.Date(2026, time.September, 15, 12, 34, 0, 0, time.UTC)) {
-		t.Fatal("a periodic task that has never run should be due")
+	now := time.Date(2026, time.September, 15, 12, 34, 0, 0, time.UTC)
+	written := now.Add(-time.Minute)
+	anHourAgo := now.Add(-time.Hour)
+	inAnHour := now.Add(time.Hour)
+
+	for _, test := range []struct {
+		name      string
+		startTime *time.Time
+		due       bool
+	}{
+		// date_changed is a minute ago, so midnight has not come round again.
+		{name: "no start time", due: false},
+		// Backdated thirty years, so the crontab is due and the start time gate lets it through.
+		{name: "start time an hour ago", startTime: &anHourAgo, due: true},
+		// Due on the schedule for the same reason, but the start time gate holds it.
+		{name: "start time in an hour", startTime: &inAnHour, due: false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			entry := Entry{Enabled: true, Crontab: &spec, DateChanged: &written, StartTime: test.startTime}
+			if got := entry.due(now); got != test.due {
+				t.Fatalf("due = %v, want %v", got, test.due)
+			}
+		})
 	}
 }

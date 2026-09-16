@@ -82,25 +82,24 @@ services:
       - plane-redis
       - plane-mq
 
-  # The Go beat replaces beat-worker rather than running beside it: both read the
-  # same django_celery_beat tables, so running both would queue every periodic
-  # task twice. Switching over means commenting out beat-worker below in the
-  # same change.
+  # The Go beat, replacing beat-worker rather than running beside it: both read the same django_celery_beat tables, so running both would queue every periodic task twice. beat-worker is removed in the same change for that reason.
   #
-  # beat-go:
-  #   container_name: pace-beat-go
-  #   build:
-  #     context: ./apps/api-go
-  #     dockerfile: Dockerfile
-  #   entrypoint: ["pace-beat"]
-  #   restart: always
-  #   env_file:
-  #     - ./apps/api/.env
-  #   environment:
-  #     PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
-  #   depends_on:
-  #     - plane-db
-  #     - plane-mq
+  # It keeps its own container name rather than taking over beatworker, because nothing addresses the scheduler by name: it talks to Postgres and RabbitMQ and nothing talks to it.
+  beat-go:
+    container_name: pace-beat-go
+    build:
+      context: ./apps/api-go
+      dockerfile: Dockerfile
+    entrypoint: ["pace-beat"]
+    restart: always
+    env_file:
+      - ./apps/api/.env
+    environment:
+      # The queue it routes the twelve periodic tasks to, which is the one worker-go consumes.
+      PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
+    depends_on:
+      - plane-db
+      - plane-mq
 
   worker:
     container_name: bgworker
@@ -111,22 +110,6 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     command: ./bin/docker-entrypoint-worker.sh
-    env_file:
-      - ./apps/api/.env
-    depends_on:
-      - api
-      - plane-db
-      - plane-redis
-
-  beat-worker:
-    container_name: beatworker
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile.api
-      args:
-        DOCKER_BUILDKIT: 1
-    restart: always
-    command: ./bin/docker-entrypoint-beat.sh
     env_file:
       - ./apps/api/.env
     depends_on:
@@ -149,13 +132,9 @@ services:
       - plane-db
       - plane-redis
 
-  # The collaborative editor, now the Go one. It replaces the Node service rather
-  # than running beside it: the proxy sends /live/* to one host, and two servers
-  # holding the same page without a relay between them would not converge.
+  # The collaborative editor, now the Go one. It replaces the Node service rather than running beside it: the proxy sends /live/* to one host, and two servers holding the same page without a relay between them would not converge.
   #
-  # The service keeps the name live so that the proxy and LIVE_URL are unchanged.
-  # Reverting is switching the build back to ./apps/live/Dockerfile.live, which
-  # is still in the tree.
+  # The service keeps the name live so that the proxy and LIVE_URL are unchanged. Reverting is switching the build back to ./apps/live/Dockerfile.live, which is still in the tree.
   live:
     container_name: plane-live
     build:
