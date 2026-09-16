@@ -2,6 +2,7 @@ package project
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -199,18 +200,19 @@ func (handler *Handler) myActivities(c *gin.Context, user *auth.User) {
 //
 // A person who has never been in one gets an empty pair rather than a 404. The memberships are not narrowed to the active ones, so a project they were removed from is still listed.
 func (handler *Handler) lastVisitedWorkspace(c *gin.Context, user *auth.User) {
-	var lastWorkspace []string
-	err := handler.db.WithContext(c.Request.Context()).Table("users").
-		Where("id = ?", user.ID).Limit(1).Pluck("last_workspace_id", &lastWorkspace).Error
+	// profiles, not users: last_workspace_id is one of the twenty-six fields Django keeps on Profile, and asking users for it ends the request with `column "last_workspace_id" does not exist`. It is nullable there -- a person who has never opened a workspace has none -- which is why it is read through sql.NullString.
+	var lastWorkspace []sql.NullString
+	err := handler.db.WithContext(c.Request.Context()).Table("profiles").
+		Where("user_id = ?", user.ID).Limit(1).Pluck("last_workspace_id", &lastWorkspace).Error
 	if err != nil {
 		handler.internalError(c, err)
 		return
 	}
-	if len(lastWorkspace) == 0 || lastWorkspace[0] == "" {
+	if len(lastWorkspace) == 0 || !lastWorkspace[0].Valid || lastWorkspace[0].String == "" {
 		drf.Respond(c, http.StatusOK, gin.H{"project_details": []gin.H{}, "workspace_details": gin.H{}})
 		return
 	}
-	workspaceID := lastWorkspace[0]
+	workspaceID := lastWorkspace[0].String
 
 	workspace, found, err := handler.workspaceDetails(c, workspaceID)
 	if err != nil {
