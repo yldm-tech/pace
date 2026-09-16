@@ -169,7 +169,7 @@ func (handler *Handler) assetReserve(c *gin.Context, user *auth.User, _ APIToken
 		return
 	}
 
-	target, err := handler.assets.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.assets.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.serverError(c, err)
 		return
@@ -228,7 +228,7 @@ func (handler *Handler) assetDownload(c *gin.Context, user *auth.User, _ APIToke
 		disposition = "attachment"
 	}
 	filename, _ := attributes["name"].(string)
-	url, err := handler.assets.PresignedDownload(c.Request.Context(), asset.Asset, disposition, filename)
+	url, err := handler.assets.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, disposition, filename)
 	if err != nil {
 		handler.serverError(c, err)
 		return

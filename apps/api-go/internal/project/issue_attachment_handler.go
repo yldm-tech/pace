@@ -116,7 +116,7 @@ func (handler *Handler) issueAttachmentCreate(c *gin.Context, user *auth.User) {
 		return
 	}
 
-	upload, err := handler.storage.PresignedUpload(c.Request.Context(), assetKey, request.Type, size)
+	upload, err := handler.storage.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, request.Type, size)
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -176,7 +176,7 @@ func (handler *Handler) issueAttachmentDownload(c *gin.Context, user *auth.User)
 		handler.internalError(c, errors.New("object storage is not configured"))
 		return
 	}
-	signed, err := handler.storage.PresignedDownload(c.Request.Context(), asset.Asset, "attachment", attachmentName(asset))
+	signed, err := handler.storage.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, "attachment", attachmentName(asset))
 	if err != nil {
 		handler.internalError(c, err)
 		return

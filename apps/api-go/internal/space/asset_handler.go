@@ -97,7 +97,7 @@ func (handler *Handler) assetDownload(c *gin.Context) {
 	if scriptCapableMimeTypes[assetMimeType(asset)] {
 		disposition = "attachment"
 	}
-	url, err := handler.storage.PresignedDownload(c.Request.Context(), asset.Asset, disposition, "")
+	url, err := handler.storage.ForRequest(c.Request).PresignedDownload(c.Request.Context(), asset.Asset, disposition, "")
 	if err != nil {
 		handler.serverError(c, err)
 		return
@@ -190,7 +190,7 @@ func (handler *Handler) assetReserve(c *gin.Context, user *auth.User) {
 		handler.serverError(c, err)
 		return
 	}
-	target, err := handler.storage.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.storage.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.serverError(c, err)
 		return

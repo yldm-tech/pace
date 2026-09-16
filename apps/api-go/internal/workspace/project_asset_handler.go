@@ -118,7 +118,7 @@ func (handler *Handler) projectAssetReserve(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	target, err := handler.storage.PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
+	target, err := handler.storage.ForRequest(c.Request).PresignedUpload(c.Request.Context(), assetKey, fileType, int64(size))
 	if err != nil {
 		handler.internalError(c, err)
 		return
