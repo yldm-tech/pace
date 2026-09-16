@@ -1437,6 +1437,22 @@ The completed-work graph buckets by the calendar week of the year **taken modulo
 
 Two pieces of shared machinery were widened rather than copied. The list scope now leaves the project condition off when there is no project, which is what makes a workspace-wide list possible at all; and the group value lists read the workspace's own rows in that case. The assignee group is the only one where that is a different **table** rather than the same one unnarrowed: a project's list of people is its membership, a workspace's is the workspace's. There is a test pinning both.
 
+## Migrated module: the Django template subset
+
+`internal/djangotemplate` renders the notification emails' templates, and the templates themselves are **copied from `apps/api` unchanged**.
+
+Translating them into Go's own template syntax was the other option and it was rejected for a reason worth stating: a translated template drifts. Somebody changes a line of the html on the Python side, the two copies stop agreeing, and nobody finds out until a customer reads an email that is missing a row. Keeping the file byte for byte means an upstream change is a copy rather than a re-translation, and a diff tells you whether the two are the same. CI checks both: that the copy is the file `apps/api` ships, and that rendering it here gives what Django gives.
+
+The subset is what those templates use and no more — variables with dotted paths and numeric indices, `if`/`elif`/`else`, `for`, the operators `and`, `or`, `not`, `==`, `!=` and `>`, and the filters `length`, `add`, `slice`, `last` and `safe`. Anything else is refused at parse time rather than rendered wrongly.
+
+The corpus found three things a careful reading had already got wrong:
+
+**A missing key writes nothing; a key holding null writes the word.** Django draws that line with `string_if_invalid`, and the templates lean on it — several of their numbers come from a context that does not always carry them, and `There are  new updates` is what upstream sends today.
+
+**A numeric step into a string takes that character.** That is how the templates write somebody's initial when they have no avatar.
+
+**Escaping uses the hexadecimal entity for an apostrophe**, where Go's own escaper uses a decimal one. A subject line with an apostrophe in it would otherwise differ from Python's byte for byte.
+
 ## Migrated task: the email stacking
 
 `stack_email_notification` now runs on the Go worker. It is the five-minute sweep that reads every notification nobody has been emailed about yet, groups it by who is to be told and about what, and queues one email per pair. The email itself — `send_email_notification`, which renders a two-hundred-line template — still runs on the Python worker.
