@@ -99,13 +99,13 @@ jobs:
           # Where the images are pushed. It was makeplane, which is upstream's namespace and not this fork's. The owner is derived from the repository rather than configured: GITHUB_TOKEN can already write packages under it, so publishing needs no account, no secret and no guess about which namespace this fork owns. ghcr requires a lowercase path.
           IMAGE_OWNER=$(printf 'ghcr.io/%s' "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           echo "DH_OWNER=${IMAGE_OWNER}" >> $GITHUB_OUTPUT
-          echo "DH_IMG_WEB=plane-frontend" >> $GITHUB_OUTPUT
-          echo "DH_IMG_SPACE=plane-space" >> $GITHUB_OUTPUT
-          echo "DH_IMG_ADMIN=plane-admin" >> $GITHUB_OUTPUT
-          echo "DH_IMG_LIVE=plane-live" >> $GITHUB_OUTPUT
-          echo "DH_IMG_BACKEND=plane-backend" >> $GITHUB_OUTPUT
-          echo "DH_IMG_PROXY=plane-proxy" >> $GITHUB_OUTPUT
-          echo "DH_IMG_AIO=plane-aio-community" >> $GITHUB_OUTPUT
+          echo "DH_IMG_WEB=pace-frontend" >> $GITHUB_OUTPUT
+          echo "DH_IMG_SPACE=pace-space" >> $GITHUB_OUTPUT
+          echo "DH_IMG_ADMIN=pace-admin" >> $GITHUB_OUTPUT
+          echo "DH_IMG_LIVE=pace-live" >> $GITHUB_OUTPUT
+          echo "DH_IMG_BACKEND=pace-backend" >> $GITHUB_OUTPUT
+          echo "DH_IMG_PROXY=pace-proxy" >> $GITHUB_OUTPUT
+          echo "DH_IMG_AIO=pace-aio-community" >> $GITHUB_OUTPUT
 
           echo "BUILD_TYPE=${{env.BUILD_TYPE}}" >> $GITHUB_OUTPUT
           BUILD_RELEASE=false
@@ -156,7 +156,7 @@ jobs:
   #
   # buildx-driver is pinned to the local docker-container driver: each leg builds
   # its own architecture natively, so a remote builder buys nothing. The Docker
-  # Build Cloud path (makeplane/plane-dev) is gone from this workflow rather than
+  # Build Cloud path is gone from this workflow rather than
   # left as a no-op switch.
   branch_build_push_admin:
     name: Build-Push Admin Docker Image (${{ matrix.arch }})

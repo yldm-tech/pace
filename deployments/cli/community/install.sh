@@ -5,10 +5,9 @@ SCRIPT_DIR=$PWD
 SERVICE_FOLDER=plane-app
 PLANE_INSTALL_DIR=$PWD/$SERVICE_FOLDER
 export APP_RELEASE=stable
-# Where the images come from, registry included. Upstream's makeplane/plane-backend and makeplane/plane-live are Django and Node; everything this repository builds is Go, and it publishes to ghcr because that is the registry the release workflow can push to with no secret anybody has to create.
+# Where the images come from, registry included. ghcr is what the release workflow can push to with no secret anybody has to create.
 export PLANE_IMAGE_OWNER=ghcr.io/yldm-tech
 export PULL_POLICY=${PULL_POLICY:-if_not_present}
-# This repository, not upstream's. It was makeplane/plane, so the installer downloaded upstream's compose file and stood up upstream's Django and Node -- none of the Go in this tree.
 export GH_REPO=yldm-tech/pace
 export RELEASE_DOWNLOAD_URL="https://github.com/$GH_REPO/releases/download"
 export FALLBACK_DOWNLOAD_URL="https://raw.githubusercontent.com/$GH_REPO/$BRANCH/deployments/cli/community"
@@ -79,7 +78,7 @@ function initialize(){
         return 1
     fi
 
-    local IMAGE_NAME=${PLANE_IMAGE_OWNER}/plane-proxy
+    local IMAGE_NAME=${PLANE_IMAGE_OWNER}/pace-proxy
     local IMAGE_TAG=${APP_RELEASE}
     docker manifest inspect "${IMAGE_NAME}:${IMAGE_TAG}" | grep -q "\"architecture\": \"${CPU_ARCH}\"" &
     local pid=$!

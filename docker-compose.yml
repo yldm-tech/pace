@@ -107,7 +107,7 @@ services:
   #
   # The service keeps the name live so that the proxy and LIVE_URL are unchanged.
   live:
-    container_name: plane-live
+    container_name: pace-live
     build:
       context: ./apps/api
       dockerfile: Dockerfile

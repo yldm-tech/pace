@@ -4,7 +4,7 @@ set -e
 
 DIST_DIR=${DIST_DIR:-./dist}
 CPU_ARCH=$(uname -m)
-IMAGE_NAME=${IMAGE_NAME:-${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/plane-aio-community}
+IMAGE_NAME=${IMAGE_NAME:-${PLANE_IMAGE_OWNER:-ghcr.io/yldm-tech}/pace-aio-community}
 
 
 # loop though all flags and set the variables

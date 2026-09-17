@@ -9,12 +9,12 @@ FROM --platform=$BUILDPLATFORM tonistiigi/binfmt AS binfmt
 # **************************************************
 FROM node:22-alpine AS node
 
-FROM ${PLANE_IMAGE_OWNER}/plane-frontend:${PLANE_VERSION} AS web-img
-FROM ${PLANE_IMAGE_OWNER}/plane-backend:${PLANE_VERSION} AS backend-img
-FROM ${PLANE_IMAGE_OWNER}/plane-space:${PLANE_VERSION} AS space-img
-FROM ${PLANE_IMAGE_OWNER}/plane-admin:${PLANE_VERSION} AS admin-img
-FROM ${PLANE_IMAGE_OWNER}/plane-live:${PLANE_VERSION} AS live-img
-FROM ${PLANE_IMAGE_OWNER}/plane-proxy:${PLANE_VERSION} AS proxy-img
+FROM ${PLANE_IMAGE_OWNER}/pace-frontend:${PLANE_VERSION} AS web-img
+FROM ${PLANE_IMAGE_OWNER}/pace-backend:${PLANE_VERSION} AS backend-img
+FROM ${PLANE_IMAGE_OWNER}/pace-space:${PLANE_VERSION} AS space-img
+FROM ${PLANE_IMAGE_OWNER}/pace-admin:${PLANE_VERSION} AS admin-img
+FROM ${PLANE_IMAGE_OWNER}/pace-live:${PLANE_VERSION} AS live-img
+FROM ${PLANE_IMAGE_OWNER}/pace-proxy:${PLANE_VERSION} AS proxy-img
 
 # **************************************************
 #  STAGE 1: Runner

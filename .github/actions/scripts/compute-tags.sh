@@ -6,7 +6,7 @@
 #
 # Reads configuration from the environment:
 #   IMG_OWNER      required, the registry-qualified owner, e.g. ghcr.io/yldm-tech
-#   IMG_NAME       required, e.g. plane-backend
+#   IMG_NAME       required, e.g. pace-backend
 #   BUILD_RELEASE  "true" selects the release tag regime
 #   IS_PRERELEASE  "true" suppresses the :stable tag on a release
 #   REL_VERSION    semver, required when BUILD_RELEASE=true
