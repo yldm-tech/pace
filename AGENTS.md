@@ -25,9 +25,9 @@
 
 ## Backend tests (Docker)
 
-The Go suite for `apps/api-go` runs against real services in an isolated stack defined by `docker-compose-test.yml` at the repo root. The schema is built by the Go migrator before the tests run, so a broken migration fails before anything else gets the chance.
+The Go suite for `apps/api` runs against real services in an isolated stack defined by `docker-compose-test.yml` at the repo root. The schema is built by the Go migrator before the tests run, so a broken migration fails before anything else gets the chance.
 
-Prereq (once): `./setup.sh` — generates `apps/api-go/.env`.
+Prereq (once): `./setup.sh` — generates `apps/api/.env`.
 
 - Full suite: `docker compose -f docker-compose-test.yml up --build --abort-on-container-exit --exit-code-from api-tests`
 - Subset: `docker compose -f docker-compose-test.yml run --rm api-tests go test ./internal/beat/ -run Schema`

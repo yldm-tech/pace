@@ -1,6 +1,6 @@
 {
   "name": "@pace/editor",
-  "version": "1.4.14",
+  "version": "1.4.15",
   "private": true,
   "description": "Core Editor that powers Pace",
   "keywords": [

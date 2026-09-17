@@ -20,13 +20,13 @@ services:
   live:
     image: ${PLANE_IMAGE_OWNER:-local}/plane-live:${APP_RELEASE:-latest}
     build:
-      context: ../../apps/api-go
+      context: ../../apps/api
       dockerfile: Dockerfile.live
 
   api:
     image: ${PLANE_IMAGE_OWNER:-local}/plane-backend:${APP_RELEASE:-latest}
     build:
-      context: ../../apps/api-go
+      context: ../../apps/api
       dockerfile: Dockerfile
 
   proxy:
