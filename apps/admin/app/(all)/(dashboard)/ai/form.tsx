@@ -14,6 +14,7 @@ import { ControllerInput } from "@/components/common/controller-input";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { ProviderPicker } from "./provider-picker";
 
 type IInstanceAIForm = {
   config: IFormattedInstanceConfiguration;
@@ -29,31 +30,41 @@ export function InstanceAIForm(props: IInstanceAIForm) {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<AIFormValues>({
+    // Every field the form submits has to be seeded here. What is submitted is the whole form object, so a field left out of this arrives as an empty string and overwrites whatever the instance had configured.
     defaultValues: {
       LLM_API_KEY: config["LLM_API_KEY"],
       LLM_MODEL: config["LLM_MODEL"],
+      LLM_BASE_URL: config["LLM_BASE_URL"],
+      LLM_PROVIDER: config["LLM_PROVIDER"],
     },
   });
 
   const aiFormFields: TControllerInputFormField<AIFormValues>[] = [
     {
-      key: "LLM_MODEL",
+      key: "LLM_BASE_URL",
       type: "text",
-      label: "LLM Model",
+      label: "Base URL",
       description: (
         <>
-          Choose an OpenAI engine.{" "}
-          <a
-            href="https://platform.openai.com/docs/models/overview"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="OpenAI models documentation"
-          >
-            Learn more
-          </a>
+          Where completions are asked for. Anything that answers an OpenAI-shaped <code>POST /chat/completions</code>{" "}
+          works here — a gateway, a self-hosted server, or a provider&apos;s own endpoint. Leave it empty for OpenAI.
+        </>
+      ),
+      placeholder: "https://api.openai.com/v1",
+      error: Boolean(errors.LLM_BASE_URL),
+      required: false,
+    },
+    {
+      key: "LLM_MODEL",
+      type: "text",
+      label: "Model",
+      description: (
+        <>
+          Sent through as written, so whatever the endpoint above serves is what can go here. Required unless the
+          provider is one with a default.
         </>
       ),
       placeholder: "gpt-4o-mini",
@@ -64,21 +75,8 @@ export function InstanceAIForm(props: IInstanceAIForm) {
       key: "LLM_API_KEY",
       type: "password",
       label: "API key",
-      description: (
-        <>
-          You will find your API key{" "}
-          <a
-            href="https://platform.openai.com/api-keys"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="OpenAI API keys page"
-          >
-            here.
-          </a>
-        </>
-      ),
-      placeholder: "sk-asddassdfasdefqsdfasd23das3dasdcasd",
+      description: <>Sent as a bearer token to the base URL above.</>,
+      placeholder: "sk-...",
       error: Boolean(errors.LLM_API_KEY),
       required: false,
     },
@@ -102,9 +100,19 @@ export function InstanceAIForm(props: IInstanceAIForm) {
     <div className="space-y-8">
       <div className="space-y-3">
         <div>
-          <div className="pb-1 text-18 font-medium text-primary">OpenAI</div>
-          <div className="text-13 font-regular text-tertiary">If you use ChatGPT, this is for you.</div>
+          <div className="pb-1 text-18 font-medium text-primary">Language model</div>
+          <div className="text-13 font-regular text-tertiary">
+            The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve
+            it.
+          </div>
         </div>
+        <ProviderPicker
+          control={control}
+          onProviderChange={(baseURL) => {
+            // Only the endpoint is filled in. The model is left as it is, because a model the operator typed is a deliberate choice and the backend already falls back to the provider's default when the field is empty.
+            setValue("LLM_BASE_URL", baseURL ?? "", { shouldDirty: true });
+          }}
+        />
         <div className="grid-col grid w-full grid-cols-1 items-center justify-between gap-x-12 gap-y-8 lg:grid-cols-3">
           {aiFormFields.map((field) => (
             <ControllerInput
@@ -134,12 +142,7 @@ export function InstanceAIForm(props: IInstanceAIForm) {
 
         <div className="relative inline-flex items-center gap-1.5 rounded-sm border border-accent-subtle bg-accent-subtle px-4 py-2 text-caption-sm-regular text-accent-secondary">
           <ThoughtsOutline className="size-4" />
-          <div>
-            If you have a preferred AI models vendor, please get in{" "}
-            <a className="font-medium underline" href="https://pace.yldm.ai/contact">
-              touch with us.
-            </a>
-          </div>
+          <div>Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.</div>
         </div>
       </div>
     </div>

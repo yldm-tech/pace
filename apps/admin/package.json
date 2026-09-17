@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "1.4.23",
+  "version": "1.4.24",
   "private": true,
   "description": "Admin UI for Pace",
   "license": "AGPL-3.0",
@@ -31,6 +31,7 @@
     "@pace/ui": "workspace:*",
     "@pace/utils": "workspace:*",
     "@react-router/node": "catalog:",
+    "@yldm-tech/ai-logo-static-svg": "1.9.1",
     "isbot": "catalog:",
     "lodash-es": "catalog:",
     "lucide-react": "catalog:",

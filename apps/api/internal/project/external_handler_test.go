@@ -10,27 +10,87 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// The three providers with their models, and the rules that decide whether the assistant may be called at all.
-func TestTheLanguageModelConfiguration(t *testing.T) {
-	if len(llmProviders) != 3 {
-		t.Fatalf("there are %d providers", len(llmProviders))
-	}
+// Each known provider still carries a name and a default to fall back on.
+func TestTheKnownProvidersCarryADefault(t *testing.T) {
 	for name, provider := range llmProviders {
-		if provider.Name == "" || provider.DefaultModel == "" || len(provider.Models) == 0 {
-			t.Errorf("%s is missing its name, default or models", name)
-		}
-		listed := false
-		for _, model := range provider.Models {
-			if model == provider.DefaultModel {
-				listed = true
-			}
-		}
-		if !listed {
-			t.Errorf("%s defaults to %s, which it does not list", name, provider.DefaultModel)
+		if provider.Name == "" || provider.DefaultModel == "" {
+			t.Errorf("%s is missing its name or its default model", name)
 		}
 	}
 	if llmProviders["openai"].DefaultModel != "gpt-4o-mini" {
 		t.Errorf("OpenAI defaults to %s", llmProviders["openai"].DefaultModel)
+	}
+}
+
+// What llmConfig accepts, and the two things it still refuses.
+//
+// The case that matters here is the third: a provider absent from llmProviders, which is what a gateway or a self-hosted endpoint is. It used to be refused outright, and so was any model outside a hardcoded per-provider list -- a list that could only go stale, and had, to the point where an installation on OpenAI's own API could not select a model released after it was written.
+func TestTheLanguageModelConfiguration(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	for _, testCase := range []struct {
+		name          string
+		environment   map[string]string
+		expectedModel string
+		expectedOK    bool
+	}{
+		{"a known provider falls back to its default",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "openai"}, "gpt-4o-mini", true},
+		{"a model the old list never held is accepted",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "openai", "LLM_MODEL": "gpt-5-turbo-2027"}, "gpt-5-turbo-2027", true},
+		{"everyapi is known and carries its own default",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "everyapi"}, "claude-sonnet-5", true},
+		{"a provider nobody has heard of is accepted when the model is named",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "my-own-gateway", "LLM_MODEL": "llama-4"}, "llama-4", true},
+		{"a provider with no default and no model is refused",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "my-own-gateway"}, "", false},
+		{"no key is refused",
+			map[string]string{"LLM_PROVIDER": "openai", "LLM_MODEL": "gpt-4o"}, "", false},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			handler := &Handler{settings: Settings{SkipEnvironmentConfig: false, Environment: testCase.environment}}
+			c, _ := gin.CreateTestContext(httptest.NewRecorder())
+			c.Request = httptest.NewRequest(http.MethodPost, "/", nil)
+			_, model, _, ok := handler.llmConfig(c)
+			if ok != testCase.expectedOK {
+				t.Fatalf("configured=%v, wanted %v", ok, testCase.expectedOK)
+			}
+			if model != testCase.expectedModel {
+				t.Errorf("model %q, wanted %q", model, testCase.expectedModel)
+			}
+		})
+	}
+}
+
+// The base URL comes from the instance configuration first, so an operator can point the assistant somewhere else without a redeploy, then from the process environment, then OpenAI.
+func TestWhereCompletionsAreAskedFor(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	for _, testCase := range []struct {
+		name        string
+		environment map[string]string
+		fromProcess string
+		expected    string
+	}{
+		{"configuration wins", map[string]string{"LLM_BASE_URL": "https://api.everyapi.ai/v1"}, "https://other.example/v1", "https://api.everyapi.ai/v1"},
+		{"then the process environment", map[string]string{}, "https://other.example/v1", "https://other.example/v1"},
+		{"then the provider's own endpoint",
+			map[string]string{"LLM_PROVIDER": "everyapi"}, "", "https://api.everyapi.ai/v1"},
+		{"a named provider never beats an address somebody wrote down",
+			map[string]string{"LLM_PROVIDER": "everyapi", "LLM_BASE_URL": "https://mine.example/v1"}, "", "https://mine.example/v1"},
+		{"then OpenAI", map[string]string{}, "", "https://api.openai.com/v1"},
+		{"openai is listed with no endpoint of its own, so it lands on the same default",
+			map[string]string{"LLM_PROVIDER": "openai"}, "", "https://api.openai.com/v1"},
+		{"blank configuration does not win", map[string]string{"LLM_BASE_URL": "   "}, "https://other.example/v1", "https://other.example/v1"},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			handler := &Handler{settings: Settings{
+				SkipEnvironmentConfig: false, Environment: testCase.environment, LLMBaseURL: testCase.fromProcess,
+			}}
+			c, _ := gin.CreateTestContext(httptest.NewRecorder())
+			c.Request = httptest.NewRequest(http.MethodPost, "/", nil)
+			if got := handler.llmBaseURL(c); got != testCase.expected {
+				t.Errorf("base url %q, wanted %q", got, testCase.expected)
+			}
+		})
 	}
 }
 
