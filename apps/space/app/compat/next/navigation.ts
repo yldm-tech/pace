@@ -6,7 +6,7 @@
 
 import { useMemo } from "react";
 import { useLocation, useNavigate, useParams as useParamsRR, useSearchParams as useSearchParamsRR } from "react-router";
-import { ensureTrailingSlash } from "./helper";
+import { ensureTrailingSlash } from "@plane/utils";
 
 export function useRouter() {
   const navigate = useNavigate();
