@@ -39,21 +39,42 @@ export function InstanceAIForm(props: IInstanceAIForm) {
 
   const aiFormFields: TControllerInputFormField<AIFormValues>[] = [
     {
-      key: "LLM_MODEL",
+      key: "LLM_BASE_URL",
       type: "text",
-      label: "LLM Model",
+      label: "Base URL",
       description: (
         <>
-          Choose an OpenAI engine.{" "}
-          <a
-            href="https://platform.openai.com/docs/models/overview"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="OpenAI models documentation"
-          >
-            Learn more
-          </a>
+          Where completions are asked for. Anything that answers an OpenAI-shaped <code>POST /chat/completions</code>{" "}
+          works here — a gateway, a self-hosted server, or a provider&apos;s own endpoint. Leave it empty for OpenAI.
+        </>
+      ),
+      placeholder: "https://api.openai.com/v1",
+      error: Boolean(errors.LLM_BASE_URL),
+      required: false,
+    },
+    {
+      key: "LLM_PROVIDER",
+      type: "text",
+      label: "Provider",
+      description: (
+        <>
+          Only two things depend on this: it supplies a default model when the field below is empty, and{" "}
+          <code>gemini</code> prefixes the model name the way Gemini expects. Any other value is accepted and simply
+          means the model has to be named.
+        </>
+      ),
+      placeholder: "openai",
+      error: Boolean(errors.LLM_PROVIDER),
+      required: false,
+    },
+    {
+      key: "LLM_MODEL",
+      type: "text",
+      label: "Model",
+      description: (
+        <>
+          Sent through as written, so whatever the endpoint above serves is what can go here. Required unless the
+          provider is one with a default.
         </>
       ),
       placeholder: "gpt-4o-mini",
@@ -64,21 +85,8 @@ export function InstanceAIForm(props: IInstanceAIForm) {
       key: "LLM_API_KEY",
       type: "password",
       label: "API key",
-      description: (
-        <>
-          You will find your API key{" "}
-          <a
-            href="https://platform.openai.com/api-keys"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="OpenAI API keys page"
-          >
-            here.
-          </a>
-        </>
-      ),
-      placeholder: "sk-asddassdfasdefqsdfasd23das3dasdcasd",
+      description: <>Sent as a bearer token to the base URL above.</>,
+      placeholder: "sk-...",
       error: Boolean(errors.LLM_API_KEY),
       required: false,
     },
@@ -102,8 +110,11 @@ export function InstanceAIForm(props: IInstanceAIForm) {
     <div className="space-y-8">
       <div className="space-y-3">
         <div>
-          <div className="pb-1 text-18 font-medium text-primary">OpenAI</div>
-          <div className="text-13 font-regular text-tertiary">If you use ChatGPT, this is for you.</div>
+          <div className="pb-1 text-18 font-medium text-primary">Language model</div>
+          <div className="text-13 font-regular text-tertiary">
+            The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve
+            it.
+          </div>
         </div>
         <div className="grid-col grid w-full grid-cols-1 items-center justify-between gap-x-12 gap-y-8 lg:grid-cols-3">
           {aiFormFields.map((field) => (

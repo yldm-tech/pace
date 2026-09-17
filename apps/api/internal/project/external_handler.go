@@ -71,43 +71,50 @@ func (handler *Handler) unsplashSearch(c *gin.Context, _ *auth.User) {
 	drf.Respond(c, response.StatusCode, decoded)
 }
 
-// llmProviders are the three the installation may be pointed at, with the models each takes and the one it falls back to.
+// llmProviders are the providers this knows a default model for. It is no longer an allowlist: a provider absent from it is accepted and simply has no default, which is what lets the assistant be pointed at a gateway or a self-hosted endpoint.
+//
+// Each entry used to carry the full set of models it would accept, and a model outside that set was refused. That list could only ever go stale, and it had: an installation on OpenAI's own API could not select any model released after the list was written, because the check rejected it before the request was made. The provider's own API is the authority on which models it serves, and it answers with a message naming the problem rather than the silence this produced.
 var llmProviders = map[string]struct {
 	Name         string
-	Models       []string
 	DefaultModel string
 }{
-	"openai": {"OpenAI",
-		[]string{"gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o", "o1-mini", "o1-preview"}, "gpt-4o-mini"},
-	"anthropic": {"Anthropic",
-		[]string{"claude-3-5-sonnet-20240620", "claude-3-haiku-20240307", "claude-3-opus-20240229",
-			"claude-3-sonnet-20240229", "claude-2.1", "claude-2", "claude-instant-1.2", "claude-instant-1"},
-		"claude-3-sonnet-20240229"},
-	"gemini": {"Gemini",
-		[]string{"gemini-pro", "gemini-1.5-pro-latest", "gemini-pro-vision"}, "gemini-pro"},
+	"openai":    {"OpenAI", "gpt-4o-mini"},
+	"anthropic": {"Anthropic", "claude-3-5-sonnet-20240620"},
+	"gemini":    {"Gemini", "gemini-1.5-pro-latest"},
 }
 
-// llmConfig is get_llm_config: the key, the model and the provider, or nothing at all when any of the three does not check out.
+// llmConfig is the key, the model and the provider, or nothing at all when there is no key or no model to ask for.
 //
-// A provider nobody recognises, a missing key, or a model the provider does not list all give back nothing — and the caller reports the same sentence for all three, so an operator cannot tell which it was from the response.
+// What it no longer refuses is a provider it does not recognise. Every provider is called the same way -- an OpenAI-shaped POST to {base}/chat/completions with a bearer token -- so anything that speaks that shape works, and the base URL is what selects it.
 func (handler *Handler) llmConfig(c *gin.Context) (key, model, provider string, ok bool) {
 	key = handler.configurationValue(c, "LLM_API_KEY", "")
 	provider = handler.configurationValue(c, "LLM_PROVIDER", "openai")
 	model = handler.configurationValue(c, "LLM_MODEL", "")
 
-	definition, known := llmProviders[strings.ToLower(provider)]
-	if !known || key == "" {
+	if key == "" {
 		return "", "", "", false
 	}
 	if model == "" {
-		model = definition.DefaultModel
-	}
-	for _, supported := range definition.Models {
-		if supported == model {
-			return key, model, provider, true
+		// Only a provider this knows has a default to fall back on. For any other, the model has to be named.
+		if definition, known := llmProviders[strings.ToLower(provider)]; known {
+			model = definition.DefaultModel
 		}
 	}
-	return "", "", "", false
+	if model == "" {
+		return "", "", "", false
+	}
+	return key, model, provider, true
+}
+
+// llmBaseURL is where the completion is asked for: the instance configuration first, so an operator can change it without a redeploy, then the LLM_BASE_URL the process was started with, then OpenAI.
+func (handler *Handler) llmBaseURL(c *gin.Context) string {
+	if configured := strings.TrimSpace(handler.configurationValue(c, "LLM_BASE_URL", "")); configured != "" {
+		return configured
+	}
+	if handler.settings.LLMBaseURL != "" {
+		return handler.settings.LLMBaseURL
+	}
+	return "https://api.openai.com/v1"
 }
 
 // workspaceAssistant asks the configured model for some text, with nothing about the workspace in the answer.
@@ -177,7 +184,9 @@ func (handler *Handler) assistantText(c *gin.Context) (string, bool) {
 
 // askModel is get_llm_response: one chat completion against an OpenAI-shaped endpoint.
 //
-// All three providers are called the same way, because upstream points the OpenAI client at whichever one is configured. Gemini's model name is prefixed with the provider, which is the one thing that differs.
+// Every provider is called the same way: an OpenAI-shaped POST to {base}/chat/completions with a bearer token. That is what makes a custom endpoint work at all -- a gateway or a self-hosted server speaking that shape needs nothing here but its base URL.
+//
+// Gemini's model name is prefixed with the provider, which is the one thing that differs.
 func (handler *Handler) askModel(c *gin.Context, key, model, provider, content string) (string, error) {
 	if strings.EqualFold(provider, "gemini") {
 		model = "gemini/" + model
@@ -189,10 +198,7 @@ func (handler *Handler) askModel(c *gin.Context, key, model, provider, content s
 	if err != nil {
 		return "", err
 	}
-	endpoint := handler.settings.LLMBaseURL
-	if endpoint == "" {
-		endpoint = "https://api.openai.com/v1"
-	}
+	endpoint := handler.llmBaseURL(c)
 	request, err := http.NewRequestWithContext(c.Request.Context(), http.MethodPost,
 		strings.TrimRight(endpoint, "/")+"/chat/completions", bytes.NewReader(body))
 	if err != nil {
