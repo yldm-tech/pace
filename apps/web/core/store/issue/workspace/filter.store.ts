@@ -24,7 +24,7 @@ import type {
 import { EIssuesStoreType, EIssueLayoutTypes, STATIC_VIEW_TYPES } from "@pace/types";
 import { handleIssueQueryParamsByLayout } from "@pace/utils";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // local imports
 import type { IBaseIssueFilterStore, IIssueFilterHelperStore } from "../helpers/issue-filter-helper.store";
 import { IssueFilterHelperStore } from "../helpers/issue-filter-helper.store";

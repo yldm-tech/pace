@@ -31,7 +31,7 @@ import { Spinner } from "@pace/ui";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // components
 import { CommonOnboardingHeader } from "../common";
 

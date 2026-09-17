@@ -21,7 +21,7 @@ import { useInstance } from "@/hooks/store/use-instance";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserProfile, useUserSettings } from "@/hooks/store/user";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // local components
 import { CommonOnboardingHeader } from "../common";
 
@@ -72,7 +72,7 @@ export const WorkspaceCreateStep = observer(function WorkspaceCreateStep({
     if (isSubmitting) return;
 
     try {
-      const res = (await workspaceService.workspaceSlugCheck(formData.slug)) as { status: boolean };
+      const res = (await workspaceService.slugCheck(formData.slug)) as { status: boolean };
       if (res.status === true && !RESTRICTED_URLS.includes(formData.slug)) {
         setSlugError(false);
         try {

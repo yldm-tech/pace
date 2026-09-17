@@ -22,7 +22,7 @@ import type { EAuthenticationErrorCodes } from "@/helpers/authentication.helper"
 import { useUser } from "@/hooks/store/user";
 // services
 import { AuthService } from "@pace/services";
-import userService from "@/services/user.service";
+import { userService } from "@pace/services";
 
 type Props = { isOpen: boolean; onClose: () => void };
 

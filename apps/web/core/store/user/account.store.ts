@@ -9,7 +9,7 @@ import { makeObservable, observable } from "mobx";
 // types
 import type { IUserAccount } from "@pace/types";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 

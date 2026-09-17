@@ -4,57 +4,63 @@
  * See the LICENSE file for details.
  */
 
-// pace imports
+// services
 import { API_BASE_URL } from "@pace/constants";
-import type { IUser, TUserProfile } from "@pace/types";
-// api service
+import type {
+  TIssue,
+  IUser,
+  IUserActivityResponse,
+  IInstanceAdminStatus,
+  IUserProfileData,
+  IUserProfileProjectSegregation,
+  IUserSettings,
+  IUserEmailNotificationSettings,
+  TIssuesResponse,
+  TUserProfile,
+  IEmailCheckResponse,
+} from "@pace/types";
 import { APIService } from "../api.service";
+// types
+// helpers
 
-/**
- * Service class for managing user operations
- * Handles operations for retrieving the current user's details and perform CRUD operations
- * @extends {APIService}
- */
 export class UserService extends APIService {
-  /**
-   * Constructor for UserService
-   * @param BASE_URL - Base URL for API requests
-   */
-  constructor(BASE_URL?: string) {
-    super(BASE_URL || API_BASE_URL);
+  constructor() {
+    super(API_BASE_URL);
   }
 
-  /**
-   * Retrieves the current user details
-   * @returns {Promise<IUser>} Promise resolving to the current user details
-   */
-  async me(): Promise<IUser> {
-    return this.get("/api/users/me/")
-      .then((response) => response?.data)
-      .catch((error) => {
-        throw error;
-      });
+  currentUserConfig() {
+    return {
+      url: `${this.baseURL}/api/users/me/`,
+    };
   }
 
-  /**
-   * Updates the current user details
-   * @param {Partial<IUser>} data Data to update the user with
-   * @returns {Promise<IUser>} Promise resolving to the updated user details
-   * @throws {Error} If the API request fails
-   */
-  async update(data: Partial<IUser>): Promise<IUser> {
-    return this.patch("/api/users/me/", data)
+  async userIssues(
+    workspaceSlug: string,
+    params: any
+  ): Promise<
+    | {
+        [key: string]: TIssue[];
+      }
+    | TIssue[]
+  > {
+    return this.get(`/api/workspaces/${workspaceSlug}/my-issues/`, {
+      params,
+    })
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;
       });
   }
 
-  /**
-   * Retrieves the current user's profile details
-   * @returns {Promise<TUserProfile>} Promise resolving to the current user's profile details
-   * @throws {Error} If the API request fails
-   */
+  async me(): Promise<IUser> {
+    // Using validateStatus: null to bypass interceptors for unauthorized errors.
+    return this.get("/api/users/me/", { validateStatus: null })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
   async profile(): Promise<TUserProfile> {
     return this.get("/api/users/me/profile/")
       .then((response) => response?.data)
@@ -62,14 +68,7 @@ export class UserService extends APIService {
         throw error?.response;
       });
   }
-
-  /**
-   * Updates the current user's profile details
-   * @param {Partial<TUserProfile>} data Data to update the user's profile with
-   * @returns {Promise<TUserProfile>} Promise resolving to the updated user's profile details
-   * @throws {Error} If the API request fails
-   */
-  async updateProfile(data: Partial<TUserProfile>): Promise<TUserProfile> {
+  async updateProfile(data: any): Promise<any> {
     return this.patch("/api/users/me/profile/", data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -77,11 +76,220 @@ export class UserService extends APIService {
       });
   }
 
-  /**
-   * Retrieves the current instance admin details
-   * @returns {Promise<IUser>} Promise resolving to the current instance admin details
-   * @throws {Error} If the API request fails
-   */
+  async getCurrentUserAccounts(): Promise<any> {
+    return this.get("/api/users/me/accounts/")
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
+  async currentUserInstanceAdminStatus(): Promise<IInstanceAdminStatus> {
+    return this.get("/api/users/me/instance-admin/")
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
+  async currentUserSettings(bustCache: boolean = false): Promise<IUserSettings> {
+    const url = bustCache ? `/api/users/me/settings/?t=${Date.now()}` : "/api/users/me/settings/";
+    return this.get(url)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
+  async currentUserEmailNotificationSettings(): Promise<IUserEmailNotificationSettings> {
+    return this.get("/api/users/me/notification-preferences/")
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
+  async update(data: Partial<IUser>): Promise<any> {
+    return this.patch("/api/users/me/", data)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async updateUserOnBoard(): Promise<any> {
+    return this.patch("/api/users/me/onboard/", {
+      is_onboarded: true,
+    })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async updateUserTourCompleted(): Promise<any> {
+    return this.patch("/api/users/me/tour-completed/", {
+      is_tour_completed: true,
+    })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async updateCurrentUserEmailNotificationSettings(data: Partial<IUserEmailNotificationSettings>): Promise<any> {
+    return this.patch("/api/users/me/notification-preferences/", data)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async changePassword(token: string, data: { old_password?: string; new_password: string }): Promise<any> {
+    return this.post(`/auth/change-password/`, data, {
+      headers: {
+        "X-CSRFTOKEN": token,
+      },
+    })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async getUserProfileData(workspaceSlug: string, userId: string): Promise<IUserProfileData> {
+    return this.get(`/api/workspaces/${workspaceSlug}/user-stats/${userId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async getUserProfileProjectsSegregation(
+    workspaceSlug: string,
+    userId: string
+  ): Promise<IUserProfileProjectSegregation> {
+    return this.get(`/api/workspaces/${workspaceSlug}/user-profile/${userId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async getUserProfileActivity(
+    workspaceSlug: string,
+    userId: string,
+    params: {
+      per_page: number;
+      cursor?: string;
+    }
+  ): Promise<IUserActivityResponse> {
+    return this.get(`/api/workspaces/${workspaceSlug}/user-activity/${userId}/`, {
+      params,
+    })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async downloadProfileActivity(
+    workspaceSlug: string,
+    userId: string,
+    data: {
+      date: string;
+    }
+  ): Promise<any> {
+    return this.post(`/api/workspaces/${workspaceSlug}/user-activity/${userId}/export/`, data)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async getUserProfileIssues(
+    workspaceSlug: string,
+    userId: string,
+    params: any,
+    config = {}
+  ): Promise<TIssuesResponse> {
+    return this.get(
+      `/api/workspaces/${workspaceSlug}/user-issues/${userId}/`,
+      {
+        params,
+      },
+      config
+    )
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async deactivateAccount() {
+    return this.delete(`/api/users/me/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async leaveWorkspace(workspaceSlug: string) {
+    return this.post(`/api/workspaces/${workspaceSlug}/members/leave/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async joinProject(workspaceSlug: string, project_ids: string[]): Promise<any> {
+    return this.post(`/api/users/me/workspaces/${workspaceSlug}/projects/invitations/`, { project_ids })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async leaveProject(workspaceSlug: string, projectId: string) {
+    return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/members/leave/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async checkEmail(token: string, email: string): Promise<IEmailCheckResponse> {
+    return this.post(
+      "/auth/email-check/",
+      { email },
+      {
+        headers: {
+          "X-CSRFTOKEN": token,
+        },
+      }
+    )
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async generateEmailCode(data: { email: string }): Promise<any> {
+    return this.post("/api/users/me/email/generate-code/", data)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async verifyEmailCode(data: { email: string; code: string }): Promise<any> {
+    return this.patch("/api/users/me/email/", data)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
   async adminDetails(): Promise<IUser> {
     return this.get("/api/instances/admins/me/")
       .then((response) => response?.data)
@@ -90,3 +298,7 @@ export class UserService extends APIService {
       });
   }
 }
+
+export const userService = new UserService();
+
+export default userService;

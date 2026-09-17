@@ -20,7 +20,7 @@ import { USER_PROFILE_PROJECT_SEGREGATION } from "@pace/constants";
 import { useUserPermissions } from "@/hooks/store/user";
 import useSize from "@/hooks/use-window-size";
 // local components
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 import type { Route } from "./+types/layout";
 import { UserProfileHeader } from "./header";
 import { ProfileIssuesMobileHeader } from "./mobile-header";

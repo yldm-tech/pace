@@ -29,7 +29,7 @@ import { useAppRouter } from "@/hooks/use-app-router";
 // pace web hooks
 import { EPageStoreType, usePage, usePageStore } from "@/hooks/store";
 // pace web services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // services
 import { ProjectPageService, ProjectPageVersionService } from "@pace/services";
 import type { Route } from "./+types/page";

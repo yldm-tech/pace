@@ -8,7 +8,7 @@ import { observable, action, makeObservable, runInAction } from "mobx";
 // types
 import type { IInstance, IInstanceConfig } from "@pace/types";
 // services
-import { InstanceService } from "@/services/instance.service";
+import { InstanceService } from "@pace/services";
 
 type TError = {
   status: string;
@@ -58,7 +58,7 @@ export class InstanceStore implements IInstanceStore {
     try {
       this.isLoading = true;
       this.error = undefined;
-      const instanceInfo = await this.instanceService.getInstanceInfo();
+      const instanceInfo = await this.instanceService.info();
       runInAction(() => {
         this.isLoading = false;
         this.instance = instanceInfo.instance;

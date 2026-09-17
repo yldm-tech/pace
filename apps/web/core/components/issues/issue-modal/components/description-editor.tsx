@@ -29,7 +29,7 @@ import { useWorkspace } from "@/hooks/store/use-workspace";
 import useKeypress from "@/hooks/use-keypress";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // pace web services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // services
 import { AIService } from "@pace/services";
 const workspaceService = new WorkspaceService();

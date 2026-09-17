@@ -12,7 +12,7 @@ import { useTranslation } from "@pace/i18n";
 import { ProfileSettingsHeading } from "@/components/settings/profile/heading";
 import { EmailSettingsLoader } from "@/components/ui/loader/settings/email";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 // local imports
 import { NotificationsProfileSettingsForm } from "./email-notification-form";
 

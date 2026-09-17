@@ -23,7 +23,7 @@ import { validateWorkspaceName, validateSlug } from "@pace/utils";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserProfile, useUserSettings } from "@/hooks/store/user";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 
 type Props = {
   stepChange: (steps: Partial<TOnboardingSteps>) => Promise<void>;
@@ -65,7 +65,7 @@ export const CreateWorkspace = observer(function CreateWorkspace(props: Props) {
     if (isSubmitting) return;
 
     try {
-      const res = await workspaceService.workspaceSlugCheck(formData.slug);
+      const res = await workspaceService.slugCheck(formData.slug);
       if (res?.status === true && !RESTRICTED_URLS.includes(formData.slug)) {
         setSlugError(false);
         const workspaceResponse = await createWorkspace(formData);

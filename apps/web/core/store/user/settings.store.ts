@@ -8,7 +8,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 // pace imports
 import type { IUserSettings } from "@pace/types";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 
 type TError = {
   status: string;

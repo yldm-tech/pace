@@ -15,7 +15,7 @@ import type {
   TBulkOperationsPayload,
   TProfileViews,
 } from "@pace/types";
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 
 // services
 // types

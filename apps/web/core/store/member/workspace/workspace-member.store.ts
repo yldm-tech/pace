@@ -11,7 +11,7 @@ import { computedFn } from "mobx-utils";
 import type { EUserPermissions } from "@pace/constants";
 import type { IWorkspaceBulkInviteFormData, IWorkspaceMember, IWorkspaceMemberInvitation } from "@pace/types";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // types
 import type { IRouterStore } from "@/store/router.store";
 import type { IUserStore } from "@/store/user";

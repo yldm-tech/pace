@@ -15,7 +15,7 @@ import type {
   IWorkspaceUserPropertiesResponse,
 } from "@pace/types";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // store
 import type { CoreRootStore } from "@/store/root.store";
 // sub-stores
@@ -182,7 +182,7 @@ export class BaseWorkspaceRootStore implements IWorkspaceRootStore {
   fetchWorkspaces = async () => {
     this.loader = true;
     try {
-      const workspaceResponse = await this.workspaceService.userWorkspaces();
+      const workspaceResponse = await this.workspaceService.list();
       runInAction(() => {
         workspaceResponse.forEach((workspace) => {
           set(this.workspaces, [workspace.id], workspace);
@@ -199,7 +199,7 @@ export class BaseWorkspaceRootStore implements IWorkspaceRootStore {
    * @param data
    */
   createWorkspace = async (data: Partial<IWorkspace>) =>
-    await this.workspaceService.createWorkspace(data).then((response) => {
+    await this.workspaceService.create(data).then((response) => {
       runInAction(() => {
         this.workspaces = set(this.workspaces, response.id, response);
       });
@@ -212,7 +212,7 @@ export class BaseWorkspaceRootStore implements IWorkspaceRootStore {
    * @param data
    */
   updateWorkspace = async (workspaceSlug: string, data: Partial<IWorkspace>) =>
-    await this.workspaceService.updateWorkspace(workspaceSlug, data).then((res) => {
+    await this.workspaceService.update(workspaceSlug, data).then((res) => {
       if (res && res.id) {
         runInAction(() => {
           Object.keys(data).forEach((key) => {
@@ -244,7 +244,7 @@ export class BaseWorkspaceRootStore implements IWorkspaceRootStore {
    */
   deleteWorkspace = async (workspaceSlug: string) => {
     try {
-      await this.workspaceService.deleteWorkspace(workspaceSlug);
+      await this.workspaceService.destroy(workspaceSlug);
       const updatedWorkspacesList = this.workspaces;
       const workspaceId = this.getWorkspaceBySlug(workspaceSlug)?.id;
       delete updatedWorkspacesList[`${workspaceId}`];

@@ -15,7 +15,7 @@ import type { IUserPermissionStore } from "@/store/user/base-permissions.store";
 import { UserPermissionStore } from "@/store/user/base-permissions.store";
 // services
 import { AuthService } from "@pace/services";
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 // stores
 import type { IAccountStore } from "@/store/user/account.store";
 import type { IUserProfileStore } from "@/store/user/profile.store";
@@ -115,7 +115,7 @@ export class UserStore implements IUserStore {
         this.isLoading = true;
         this.error = undefined;
       });
-      const user = await this.userService.currentUser();
+      const user = await this.userService.me();
       if (user && user?.id) {
         await Promise.all([
           this.userProfile.fetchUserProfile(),
@@ -161,7 +161,7 @@ export class UserStore implements IUserStore {
           if (this.data) set(this.data, userKey, data[userKey]);
         });
       }
-      const user = await this.userService.updateUser(data);
+      const user = await this.userService.update(data);
       if (user && this.data) {
         runInAction(() => {
           Object.keys(user).forEach((key: string) => {

@@ -15,7 +15,7 @@ import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys }
 // components
 import { ContentOverflowWrapper } from "@/components/core/content-overflow-HOC";
 // pace web services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 import { RecentsEmptyState } from "../empty-states";
 import { EWidgetKeys, WidgetLoader } from "../loaders";
 import { FiltersDropdown } from "./filters";

@@ -15,7 +15,7 @@ import type {
   ViewFlags,
 } from "@pace/types";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // types
 import type { IBaseIssuesStore } from "../helpers/base-issues.store";
 import { BaseIssuesStore } from "../helpers/base-issues.store";

@@ -9,7 +9,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 // types
 import type { TLink, TLinkIdMap, TLinkMap } from "@pace/types";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 
 export interface IWorkspaceLinkStoreActions {
   addLinks: (projectId: string, links: TLink[]) => void;

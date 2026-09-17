@@ -10,7 +10,7 @@ import { computedFn } from "mobx-utils";
 // pace imports
 import type { IWorkspaceView } from "@pace/types";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // store
 import type { CoreRootStore } from "./root.store";
 
