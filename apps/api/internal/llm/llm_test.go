@@ -43,37 +43,24 @@ func TestResolveBaseURL(t *testing.T) {
 	}
 }
 
-// What the installation refuses to dial. An operator with the console can do a great deal already, but the address they type is still one this process connects to.
-func TestCheckBaseURLRefusesWhatItShould(t *testing.T) {
+// What the installation refuses to dial. These go through ListModels rather than a separate checker, because that is the only way in: the guarantee has to hold for the function callers actually reach for, not for one beside it that a caller might forget.
+func TestListModelsRefusesWhatItShould(t *testing.T) {
 	for _, testCase := range []struct {
-		name     string
-		target   string
-		rejected bool
+		name   string
+		target string
 	}{
-		{"a public https endpoint", "https://api.everyapi.ai/v1", false},
-		{"loop-back by name", "http://localhost:8000/v1", true},
-		{"loop-back by address", "http://127.0.0.1/v1", true},
-		{"a private range", "http://10.0.0.5/v1", true},
-		{"link-local metadata", "http://169.254.169.254/v1", true},
-		{"a scheme that is not http", "file:///etc/passwd", true},
-		{"not a url at all", "not a url", true},
+		{"loop-back by name", "http://localhost:8000/v1"},
+		{"loop-back by address", "http://127.0.0.1/v1"},
+		{"a private range", "http://10.0.0.5/v1"},
+		{"link-local metadata", "http://169.254.169.254/v1"},
+		{"a scheme that is not http", "file:///etc/passwd"},
+		{"not a url at all", "://nonsense"},
 	} {
 		t.Run(testCase.name, func(t *testing.T) {
-			err := CheckBaseURL(testCase.target, nil, nil)
-			if testCase.rejected && err == nil {
-				t.Errorf("%q was allowed", testCase.target)
-			}
-			if !testCase.rejected && err != nil {
-				t.Errorf("%q was refused: %v", testCase.target, err)
+			if _, err := ListModels(t.Context(), testCase.target, "k", nil, nil); err == nil {
+				t.Errorf("%q was dialled", testCase.target)
 			}
 		})
-	}
-}
-
-// An allowlisted host reaches a private address, which is what a deployment naming its own gateway needs.
-func TestAnAllowedHostSkipsThePrivateCheck(t *testing.T) {
-	if err := CheckBaseURL("http://gateway.internal/v1", nil, []string{"gateway.internal"}); err != nil {
-		t.Errorf("an allowlisted host was refused: %v", err)
 	}
 }
 
@@ -98,7 +85,8 @@ func TestListModelsReadsBothShapes(t *testing.T) {
 			}))
 			defer server.Close()
 
-			models, err := ListModels(t.Context(), server.Client(), server.URL+"/v1", "k")
+			// The test server is on loop-back, which the pinned client refuses by default. Naming it here is what an operator does for their own gateway, so this exercises the allowlist as well.
+			models, err := ListModels(t.Context(), server.URL+"/v1", "k", nil, []string{"127.0.0.1"})
 			if err != nil {
 				t.Fatalf("listing failed: %v", err)
 			}
@@ -117,7 +105,7 @@ func TestListModelsKeepsTheStatus(t *testing.T) {
 	}))
 	defer server.Close()
 
-	_, err := ListModels(t.Context(), server.Client(), server.URL+"/v1", "wrong")
+	_, err := ListModels(t.Context(), server.URL+"/v1", "wrong", nil, []string{"127.0.0.1"})
 	var status StatusError
 	if !errorsAs(err, &status) || int(status) != http.StatusUnauthorized {
 		t.Fatalf("error was %v", err)
@@ -130,4 +118,25 @@ func errorsAs(err error, target *StatusError) bool {
 		return true
 	}
 	return false
+}
+
+// A redirect is not followed. This is the failure the first version of this had: it used a plain http.Client, which follows redirects, so an endpoint answering 302 to a metadata address would have been fetched with every check already passed.
+func TestListModelsDoesNotFollowARedirect(t *testing.T) {
+	var reached bool
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/v1/models" {
+			http.Redirect(w, r, "http://169.254.169.254/latest/meta-data/", http.StatusFound)
+			return
+		}
+		reached = true
+	}))
+	defer server.Close()
+
+	_, err := ListModels(t.Context(), server.URL+"/v1", "k", nil, []string{"127.0.0.1"})
+	if err == nil {
+		t.Error("a redirecting endpoint was accepted")
+	}
+	if reached {
+		t.Error("the redirect was followed")
+	}
 }

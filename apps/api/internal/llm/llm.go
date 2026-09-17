@@ -8,10 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
 	"net/netip"
-	"net/url"
 	"strings"
 	"time"
 
@@ -54,59 +51,29 @@ func ResolveBaseURL(configured, fromProcess, provider string) string {
 	return DefaultBaseURL
 }
 
-// ErrRejected is a base URL the installation will not call.
-var ErrRejected = errors.New("the endpoint is not one this installation may call")
-
-// CheckBaseURL decides whether a base URL may be called at all. An operator who can reach the admin console can already do a great deal, but the address they type is still an address this process connects to, so the same guard the webhooks use applies here: http or https only, no loop-back, and nothing resolving into a private range unless the deployment has said otherwise.
-func CheckBaseURL(target string, allowedIPs []netip.Prefix, allowedHosts []string) error {
-	parsed, err := url.Parse(strings.TrimSpace(target))
-	if err != nil || parsed.Host == "" {
-		return fmt.Errorf("%w: it is not a url", ErrRejected)
-	}
-	if parsed.Scheme != "http" && parsed.Scheme != "https" {
-		return fmt.Errorf("%w: only http and https are allowed", ErrRejected)
-	}
-	hostname := strings.ToLower(strings.TrimSuffix(parsed.Hostname(), "."))
-	if hostname == "localhost" || hostname == "127.0.0.1" || hostname == "::1" {
-		return fmt.Errorf("%w: it is a loop-back address", ErrRejected)
-	}
-	if httpsafe.HostAllowed(hostname, allowedHosts) {
-		return nil
-	}
-	if _, err := httpsafe.ResolveAndValidate(parsed.Hostname(), allowedIPs, true); err != nil {
-		return fmt.Errorf("%w: it resolves somewhere this installation may not reach", ErrRejected)
-	}
-	return nil
-}
-
 // ListModels asks an endpoint what it serves, which is GET {base}/models on anything OpenAI-shaped.
 //
+// It takes the allowlists rather than a client, so that the address cannot be dialled without being checked first. An earlier version took an *http.Client and left the checking to the caller; that put the guarantee in the caller's hands, where the next one to write a caller would have had to know to repeat it, and it also meant a plain client -- which follows redirects -- could be handed in. A 302 to a metadata address would have walked past every check.
+//
+// httpsafe.Get resolves the host, validates each address, connects to the validated literal so no second lookup can happen in between, and refuses to follow redirects at all.
+//
 // The ids come back in whatever order the provider gives them, because that order is usually meaningful -- providers tend to list their current models first -- and sorting would discard it.
-func ListModels(ctx context.Context, client *http.Client, baseURL, key string) ([]string, error) {
+func ListModels(ctx context.Context, baseURL, key string, allowedIPs []netip.Prefix, allowedHosts []string) ([]string, error) {
 	endpoint := strings.TrimRight(strings.TrimSpace(baseURL), "/") + "/models"
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
-	if err != nil {
-		return nil, err
-	}
-	request.Header.Set("Accept", "application/json")
+	headers := map[string]string{"Accept": "application/json"}
 	if key != "" {
-		request.Header.Set("Authorization", "Bearer "+key)
+		headers["Authorization"] = "Bearer " + key
 	}
-	if client == nil {
-		client = &http.Client{Timeout: 30 * time.Second}
-	}
-	response, err := client.Do(request)
-	if err != nil {
-		return nil, err
-	}
-	defer response.Body.Close()
-	payload, err := io.ReadAll(io.LimitReader(response.Body, 4<<20))
+	response, err := httpsafe.Get(ctx, endpoint, httpsafe.Settings{
+		AllowedIPs: allowedIPs, AllowedHosts: allowedHosts,
+	}, headers, 30*time.Second)
 	if err != nil {
 		return nil, err
 	}
 	if response.StatusCode >= 400 {
 		return nil, StatusError(response.StatusCode)
 	}
+	payload := []byte(response.Body)
 	// The OpenAI shape is {"data": [{"id": "..."}]}. A few gateways answer a bare array instead, and both are cheap to accept.
 	var enveloped struct {
 		Data []entry `json:"data"`

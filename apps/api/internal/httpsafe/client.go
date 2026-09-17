@@ -77,6 +77,16 @@ const maxResponseBody = 1 << 20
 // verification. Redirects are never followed: a Location could point at an
 // internal host, and following it would reopen the rebinding window.
 func Post(ctx context.Context, target string, settings Settings, headers map[string]string, body []byte, timeout time.Duration) (*Response, error) {
+	return do(ctx, http.MethodPost, target, settings, headers, body, timeout)
+}
+
+// Get is Post's counterpart, for reading rather than sending. It is pinned the same way, and exists so that a caller who needs to read from an operator-supplied address cannot accidentally do it with a plain client -- one that would follow a redirect straight past every check above.
+func Get(ctx context.Context, target string, settings Settings, headers map[string]string, timeout time.Duration) (*Response, error) {
+	return do(ctx, http.MethodGet, target, settings, headers, nil, timeout)
+}
+
+// do is the pinned request both methods are. Keeping it in one place is what makes the guarantees above true of every request rather than of the one that happened to be written carefully.
+func do(ctx context.Context, method, target string, settings Settings, headers map[string]string, body []byte, timeout time.Duration) (*Response, error) {
 	parsed, err := url.Parse(target)
 	if err != nil {
 		return nil, RejectedError{Reason: "Invalid URL"}
@@ -118,7 +128,11 @@ func Post(ctx context.Context, target string, settings Settings, headers map[str
 			return http.ErrUseLastResponse
 		},
 	}
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, target, strings.NewReader(string(body)))
+	var reader io.Reader
+	if body != nil {
+		reader = strings.NewReader(string(body))
+	}
+	request, err := http.NewRequestWithContext(ctx, method, target, reader)
 	if err != nil {
 		return nil, RejectedError{Reason: "Invalid URL"}
 	}
@@ -129,12 +143,12 @@ func Post(ctx context.Context, target string, settings Settings, headers map[str
 
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, fmt.Errorf("webhook request failed: %w", err)
+		return nil, fmt.Errorf("request failed: %w", err)
 	}
 	defer response.Body.Close()
 	payload, err := io.ReadAll(io.LimitReader(response.Body, maxResponseBody))
 	if err != nil {
-		return nil, fmt.Errorf("read webhook response: %w", err)
+		return nil, fmt.Errorf("read response: %w", err)
 	}
 	return &Response{StatusCode: response.StatusCode, Headers: response.Header, Body: string(payload)}, nil
 }

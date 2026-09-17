@@ -4,11 +4,11 @@ import (
 	"errors"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
+	"github.com/yldm-tech/pace/apps/api/internal/httpsafe"
 	"github.com/yldm-tech/pace/apps/api/internal/llm"
 )
 
@@ -36,13 +36,15 @@ func (handler *Handler) llmModels(c *gin.Context, _ *auth.User, _ *Instance) {
 		return
 	}
 
-	if err := llm.CheckBaseURL(baseURL, handler.settings.LLMAllowedIPs, handler.settings.LLMAllowedHosts); err != nil {
-		drf.Respond(c, http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	models, err := llm.ListModels(c.Request.Context(), &http.Client{Timeout: 30 * time.Second}, baseURL, key)
+	// No separate check before this call: ListModels dials through the pinned client, which resolves the host, validates every address, connects to the validated literal and refuses redirects. Checking here as well would suggest the guarantee lives at the call site, and it does not.
+	models, err := llm.ListModels(c.Request.Context(), baseURL, key,
+		handler.settings.LLMAllowedIPs, handler.settings.LLMAllowedHosts)
 	if err != nil {
+		var rejected httpsafe.RejectedError
+		if errors.As(err, &rejected) {
+			drf.Respond(c, http.StatusBadRequest, gin.H{"error": "That endpoint is not one this installation may call: " + rejected.Reason})
+			return
+		}
 		// The endpoint's own status is worth passing on. A 401 is a key that is wrong and a 404 is usually a base URL missing its version segment, and an operator can act on either -- which is more than "something went wrong" offers.
 		var status llm.StatusError
 		if errors.As(err, &status) {
