@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // ui
-import { getButtonStyling } from "@plane/propel/button";
-import { PlaneLogo } from "@plane/propel/icons";
+import { getButtonStyling } from "@pace/propel/button";
+import { PlaneLogo } from "@pace/propel/icons";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 export function ProductUpdatesFooter() {
   const { t } = useTranslation();

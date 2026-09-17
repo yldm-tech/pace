@@ -8,14 +8,8 @@ import { isEqual, set } from "lodash-es";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
 // components
-import type {
-  ChartDataType,
-  IBlockUpdateDependencyData,
-  IGanttBlock,
-  TGanttViews,
-  EGanttBlockType,
-} from "@plane/types";
-import { renderFormattedPayloadDate } from "@plane/utils";
+import type { ChartDataType, IBlockUpdateDependencyData, IGanttBlock, TGanttViews, EGanttBlockType } from "@pace/types";
+import { renderFormattedPayloadDate } from "@pace/utils";
 import { currentViewDataWithView } from "@/components/gantt-chart/data";
 import {
   getDateFromPositionOnGantt,

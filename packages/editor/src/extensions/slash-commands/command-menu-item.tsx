@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane utils
-import { cn } from "@plane/utils";
+// pace utils
+import { cn } from "@pace/utils";
 // types
 import type { ISlashCommandItem } from "@/types";
 

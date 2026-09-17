@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { Header } from "@plane/ui";
+import { Header } from "@pace/ui";
 
 type Props = {
   leftItem?: React.ReactNode;

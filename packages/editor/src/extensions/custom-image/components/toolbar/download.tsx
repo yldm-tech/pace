@@ -5,8 +5,8 @@
  */
 
 import { DownloadOutline } from "@makeplane/propel/icons";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
+// pace imports
+import { Tooltip } from "@pace/propel/tooltip";
 
 type Props = {
   src: string;

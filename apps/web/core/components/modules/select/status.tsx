@@ -9,13 +9,13 @@ import React from "react";
 // react hook form
 import type { FieldError, Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import { MODULE_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { ModuleStatusIcon } from "@plane/propel/icons";
+import { MODULE_STATUS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { ModuleStatusIcon } from "@pace/propel/icons";
 import { StateOutline } from "@makeplane/propel/icons";
-import type { IModule } from "@plane/types";
+import type { IModule } from "@pace/types";
 // ui
-import { CustomSelect } from "@plane/ui";
+import { CustomSelect } from "@pace/ui";
 // types
 // constants
 

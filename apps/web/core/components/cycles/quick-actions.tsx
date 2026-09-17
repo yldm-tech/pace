@@ -8,13 +8,13 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontalOutline } from "@makeplane/propel/icons";
 // ui
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { IconButton } from "@pace/propel/icon-button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TContextMenuItem } from "@pace/ui";
+import { ContextMenu, CustomMenu } from "@pace/ui";
+import { copyUrlToClipboard, cn } from "@pace/utils";
 // hooks
 import { useCycleMenuItems } from "@/components/common/quick-actions-helper";
 import { useCycle } from "@/hooks/store/use-cycle";

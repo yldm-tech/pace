@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane types
-import { useTranslation } from "@plane/i18n";
-import type { IUser } from "@plane/types";
-// plane ui
+// pace types
+import { useTranslation } from "@pace/i18n";
+import type { IUser } from "@pace/types";
+// pace ui
 // hooks
 import { useCurrentTime } from "@/hooks/use-current-time";
 

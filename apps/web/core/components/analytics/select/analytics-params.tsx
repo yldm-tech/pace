@@ -9,12 +9,12 @@ import { observer } from "mobx-react";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { CalendarOutline, PreferencesOutline } from "@makeplane/propel/icons";
-// plane package imports
-import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES } from "@plane/constants";
-import type { IAnalyticsParams } from "@plane/types";
-import { ChartYAxisMetric } from "@plane/types";
-import { cn } from "@plane/utils";
-// plane web components
+// pace package imports
+import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES } from "@pace/constants";
+import type { IAnalyticsParams } from "@pace/types";
+import { ChartYAxisMetric } from "@pace/types";
+import { cn } from "@pace/utils";
+// pace web components
 import { SelectXAxis } from "./select-x-axis";
 import { SelectYAxis } from "./select-y-axis";
 

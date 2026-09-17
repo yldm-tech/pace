@@ -7,8 +7,8 @@
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { AddOutline } from "@makeplane/propel/icons";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";

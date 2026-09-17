@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { AccentureLogo, DolbyLogo, SonyLogo, ZerodhaLogo } from "@plane/propel/icons";
+import { AccentureLogo, DolbyLogo, SonyLogo, ZerodhaLogo } from "@pace/propel/icons";
 
 const BRAND_LOGOS: {
   id: string;

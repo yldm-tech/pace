@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
+// pace imports
+import { API_BASE_URL } from "@pace/constants";
 // api service
-import type { TPublicModule } from "@plane/types";
+import type { TPublicModule } from "@pace/types";
 import { APIService } from "../api.service";
 
 /**

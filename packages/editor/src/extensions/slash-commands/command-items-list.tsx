@@ -40,7 +40,7 @@ import {
   setText,
   openEmojiPicker,
 } from "@/helpers/editor-commands";
-// plane editor extensions
+// pace editor extensions
 import { coreEditorAdditionalSlashCommandOptions } from "@/extensions/additional-slash-command-options";
 // types
 import type { CommandProps, ISlashCommandItem, TSlashCommandSectionKeys } from "@/types";

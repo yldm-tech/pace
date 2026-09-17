@@ -7,11 +7,11 @@
 import { uniq, get, set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import type { TIssueRelationIdMap, TIssueRelationMap, TIssueRelation, TIssue, TIssueRelationTypes } from "@plane/types";
+// pace imports
+import type { TIssueRelationIdMap, TIssueRelationMap, TIssueRelation, TIssue, TIssueRelationTypes } from "@pace/types";
 // components
 import type { TRelationObject } from "@/components/issues/issue-detail-widgets/relations";
-import { REVERSE_RELATIONS } from "@plane/constants";
+import { REVERSE_RELATIONS } from "@pace/constants";
 // services
 import { IssueRelationService } from "@/services/issue";
 // types

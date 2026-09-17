@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 // icons
-import { DATE_BEFORE_FILTER_OPTIONS } from "@plane/constants";
+import { DATE_BEFORE_FILTER_OPTIONS } from "@pace/constants";
 import { CloseOutline } from "@makeplane/propel/icons";
-// plane constants
-import { renderFormattedDate, capitalizeFirstLetter } from "@plane/utils";
+// pace constants
+import { renderFormattedDate, capitalizeFirstLetter } from "@pace/utils";
 // helpers
 type Props = {
   editable: boolean | undefined;

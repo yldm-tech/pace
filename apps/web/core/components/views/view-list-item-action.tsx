@@ -8,14 +8,14 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
+import { useLocalStorage } from "@pace/hooks";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IProjectView } from "@plane/types";
-import { EViewAccess } from "@plane/types";
-import { FavoriteStar } from "@plane/ui";
-import { getPublishViewLink } from "@plane/utils";
+import type { IProjectView } from "@pace/types";
+import { EViewAccess } from "@pace/types";
+import { FavoriteStar } from "@pace/ui";
+import { getPublishViewLink } from "@pace/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useProjectView } from "@/hooks/store/use-project-view";

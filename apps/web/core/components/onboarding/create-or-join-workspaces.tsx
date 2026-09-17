@@ -7,8 +7,8 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { AlertOctagonOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { IWorkspaceMemberInvitation, TOnboardingSteps } from "@plane/types";
+// pace imports
+import type { IWorkspaceMemberInvitation, TOnboardingSteps } from "@pace/types";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 // hooks

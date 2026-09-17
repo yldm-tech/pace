@@ -8,11 +8,11 @@ import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-// plane imports
-import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@plane/constants";
-import { EmptyStateDetailed } from "@plane/propel/empty-state";
-import type { EIssueLayoutTypes } from "@plane/types";
-import { EIssuesStoreType, STATIC_VIEW_TYPES } from "@plane/types";
+// pace imports
+import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
+import { EmptyStateDetailed } from "@pace/propel/empty-state";
+import type { EIssueLayoutTypes } from "@pace/types";
+import { EIssuesStoreType, STATIC_VIEW_TYPES } from "@pace/types";
 // assets
 // components
 import { IssuePeekOverview } from "@/components/issues/peek-overview";

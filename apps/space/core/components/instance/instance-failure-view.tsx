@@ -5,7 +5,7 @@
  */
 
 import { useTheme } from "next-themes";
-import { Button } from "@plane/propel/button";
+import { Button } from "@pace/propel/button";
 // assets
 import InstanceFailureDarkImage from "@/app/assets/instance/instance-failure-dark.svg?url";
 import InstanceFailureImage from "@/app/assets/instance/instance-failure.svg?url";

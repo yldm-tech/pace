@@ -7,10 +7,10 @@
 import type { SetStateAction } from "react";
 import { observer } from "mobx-react";
 import { DragDropOutline, EditOutline } from "@makeplane/propel/icons";
-import { EIconSize } from "@plane/constants";
-// plane imports
-import { StateGroupIcon } from "@plane/propel/icons";
-import type { IState, TStateOperationsCallbacks } from "@plane/types";
+import { EIconSize } from "@pace/constants";
+// pace imports
+import { StateGroupIcon } from "@pace/propel/icons";
+import type { IState, TStateOperationsCallbacks } from "@pace/types";
 // local imports
 import { useProjectState } from "@/hooks/store/use-project-state";
 import { StateDelete, StateMarksAsDefault } from "./options";

@@ -7,10 +7,10 @@
 import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { EUserProjectRoles, EInboxIssueCurrentTab } from "@plane/types";
+// pace imports
+import { EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { EUserProjectRoles, EInboxIssueCurrentTab } from "@pace/types";
 // assets
 import darkIntakeAsset from "@/app/assets/empty-state/disabled-feature/intake-dark.webp?url";
 import lightIntakeAsset from "@/app/assets/empty-state/disabled-feature/intake-light.webp?url";
@@ -33,7 +33,7 @@ function ProjectInboxPage({ params }: Route.ComponentProps) {
   const inboxIssueId = searchParams.get("inboxIssueId");
   // theme hook
   const { resolvedTheme } = useTheme();
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // hooks
   const { currentProjectDetails } = useProject();

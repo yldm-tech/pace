@@ -6,23 +6,23 @@
 
 import { useCallback, useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import type { EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
+import type { EditorRefApi } from "@pace/editor";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
 import { ChevronLeftOutline, ChevronRightOutline, CopyOutline } from "@makeplane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TDescriptionVersion } from "@plane/types";
-import { EModalPosition, EModalWidth, Loader, ModalCore } from "@plane/ui";
-import { calculateTimeAgo, cn, getFileURL } from "@plane/utils";
+import type { TDescriptionVersion } from "@pace/types";
+import { EModalPosition, EModalWidth, Loader, ModalCore } from "@pace/ui";
+import { calculateTimeAgo, cn, getFileURL } from "@pace/utils";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useWorkspace } from "@/hooks/store/use-workspace";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 
 type Props = {
   activeVersionDescription: string | undefined;

@@ -7,11 +7,11 @@
 import { useCallback, useMemo, useState } from "react";
 import { isEqual, cloneDeep } from "lodash-es";
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { IProjectView, TWorkItemFilterExpression } from "@plane/types";
-import { EUserProjectRoles, EViewAccess } from "@plane/types";
+// pace imports
+import { EUserPermissionsLevel } from "@pace/constants";
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import type { IProjectView, TWorkItemFilterExpression } from "@pace/types";
+import { EUserProjectRoles, EViewAccess } from "@pace/types";
 // components
 import { removeNillKeys } from "@/components/issues/issue-layouts/utils";
 import { CreateUpdateProjectViewModal } from "@/components/views/modal";

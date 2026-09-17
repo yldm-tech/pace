@@ -7,12 +7,12 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { MoreHorizontalOutline, StarFilled } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { IFavorite } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import type { IFavorite } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type Props = {
   ref: React.MutableRefObject<HTMLDivElement | null>;

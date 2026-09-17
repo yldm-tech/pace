@@ -7,8 +7,8 @@
 import React from "react";
 import { CalendarOutline } from "@makeplane/propel/icons";
 // ui
-import { CalendarAfterIcon, CalendarBeforeIcon } from "@plane/propel/icons";
-import { CustomSelect } from "@plane/ui";
+import { CalendarAfterIcon, CalendarBeforeIcon } from "@pace/propel/icons";
+import { CustomSelect } from "@pace/ui";
 
 type Props = {
   title: string;

@@ -7,11 +7,11 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { FilterOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TPageFilterProps, TPageNavigationTabs } from "@plane/types";
-import { Header, EHeaderVariant } from "@plane/ui";
-import { calculateTotalFilters } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import type { TPageFilterProps, TPageNavigationTabs } from "@pace/types";
+import { Header, EHeaderVariant } from "@pace/ui";
+import { calculateTotalFilters } from "@pace/utils";
 // components
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 // hooks

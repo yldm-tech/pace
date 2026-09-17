@@ -2490,7 +2490,7 @@ Reconstruction is `schema.node(name, attrs, children)` for every element and `sc
 
 None of that is behaviour, so none of it is hand-written. `tools/generate_ydoc_schema.mjs` builds the real schema from the real extension list and dumps it to `internal/ydoc/schema.json`, which the package embeds. Twenty-three node types and eight mark types, and CI fails if the file drifts from the editor.
 
-The editor package will not build in this tree — `@plane/propel` has an import of a directory that does not exist — so the generators bundle the schema path directly with the workspace UI packages replaced by a proxy. Nothing replaced is ever called: building a schema reads names, attributes and renderers, and never renders a node view.
+The editor package will not build in this tree — `@pace/propel` has an import of a directory that does not exist — so the generators bundle the schema path directly with the workspace UI packages replaced by a proxy. Nothing replaced is ever called: building a schema reads names, attributes and renderers, and never renders a node view.
 
 ### An attribute has three states, not two
 
@@ -3117,8 +3117,8 @@ Two failures, and one of them was mine.
 
 **The replay test could only run once.** `TestGoBuildsTheSameSchemaAsDjango` refused a database that already had migrations, which is right for a fresh one and wrong for a workflow that runs the suite twice — plainly, then again under the race detector — plus once more for the step that named the test on its own. The first run left 164 migrations behind and every run after it failed. It empties the database itself now rather than demanding one that is already empty; the variable already promised a disposable database, and this takes it at its word. The step that ran the test a second time is gone, and only the `CREATE DATABASE` it needed stays.
 
-**The generators had nothing to import.** `pnpm install` does not build a workspace package, and none of the ones the editor imports has a `prepare` script, so `@plane/utils` had no `dist/` and every generator died on `Could not resolve "@plane/utils"`. The install step is followed by a build now.
+**The generators had nothing to import.** `pnpm install` does not build a workspace package, and none of the ones the editor imports has a `prepare` script, so `@pace/utils` had no `dist/` and every generator died on `Could not resolve "@pace/utils"`. The install step is followed by a build now.
 
-That build excludes `@plane/propel`, which does not build at all: `emoji-picker.tsx` imports `./icon/icon-root` and that file is in no commit on any branch. It is a real problem — it is why `apps/web` and `apps/space` cannot be built either — but none of the entry points these generators bundle reaches propel, so excluding it costs nothing here and stops a frontend problem from holding this workflow red.
+That build excludes `@pace/propel`, which does not build at all: `emoji-picker.tsx` imports `./icon/icon-root` and that file is in no commit on any branch. It is a real problem — it is why `apps/web` and `apps/space` cannot be built either — but none of the entry points these generators bundle reaches propel, so excluding it costs nothing here and stops a frontend problem from holding this workflow red.
 
 Both jobs were run locally end to end before this landed: the suite twice over against a Postgres with the schema already applied, the race pass, `go vet`, and all nine editor generators reproducing their fixtures byte for byte.

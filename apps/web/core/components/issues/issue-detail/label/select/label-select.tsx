@@ -9,14 +9,14 @@ import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
 import { AddOutline, LoadingOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { EUserPermissionsLevel, getRandomLabelColor } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IIssueLabel } from "@plane/types";
-import { EUserProjectRoles } from "@plane/types";
+// pace imports
+import { EUserPermissionsLevel, getRandomLabelColor } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import type { IIssueLabel } from "@pace/types";
+import { EUserProjectRoles } from "@pace/types";
 // helpers
-import { getTabIndex } from "@plane/utils";
+import { getTabIndex } from "@pace/utils";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 import { useUserPermissions } from "@/hooks/store/user";

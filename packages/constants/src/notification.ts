@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { TUnreadNotificationsCount } from "@plane/types";
+import type { TUnreadNotificationsCount } from "@pace/types";
 
 export enum ENotificationTab {
   ALL = "all",

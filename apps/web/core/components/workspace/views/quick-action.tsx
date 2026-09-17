@@ -6,12 +6,12 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspaceView } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { IWorkspaceView } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
+import { copyUrlToClipboard, cn } from "@pace/utils";
 // helpers
 import { useViewMenuItems } from "@/components/common/quick-actions-helper";
 // hooks

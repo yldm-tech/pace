@@ -6,14 +6,14 @@
 
 import { observer } from "mobx-react";
 import { ChevronDownOutline, SortAscendingOutline, SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
-import { INBOX_ISSUE_ORDER_BY_OPTIONS, INBOX_ISSUE_SORT_BY_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { getButtonStyling } from "@plane/propel/button";
-import type { TInboxIssueSortingOrderByKeys, TInboxIssueSortingSortByKeys } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import { INBOX_ISSUE_ORDER_BY_OPTIONS, INBOX_ISSUE_SORT_BY_OPTIONS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { getButtonStyling } from "@pace/propel/button";
+import type { TInboxIssueSortingOrderByKeys, TInboxIssueSortingSortByKeys } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
 // constants
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 import useSize from "@/hooks/use-window-size";

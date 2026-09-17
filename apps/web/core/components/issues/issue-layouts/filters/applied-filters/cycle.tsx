@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-import { CycleGroupIcon } from "@plane/propel/icons";
+import { CycleGroupIcon } from "@pace/propel/icons";
 import { CloseOutline } from "@makeplane/propel/icons";
-import type { TCycleGroups } from "@plane/types";
+import type { TCycleGroups } from "@pace/types";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 // ui

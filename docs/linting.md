@@ -23,7 +23,7 @@ pnpm fix:lint
 To lint a specific package:
 
 ```bash
-pnpm turbo run check:lint --filter=@plane/ui
+pnpm turbo run check:lint --filter=@pace/ui
 ```
 
 ## VS Code Integration

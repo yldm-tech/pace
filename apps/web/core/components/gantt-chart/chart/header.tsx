@@ -6,12 +6,12 @@
 
 import { observer } from "mobx-react";
 import { ArrowCollapseOutline, FullScreenOutline } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-// plane
-import type { TGanttViews } from "@plane/types";
-import { Row } from "@plane/ui";
+import { useTranslation } from "@pace/i18n";
+// pace
+import type { TGanttViews } from "@pace/types";
+import { Row } from "@pace/ui";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { VIEWS_LIST } from "@/components/gantt-chart/data";
 // helpers
 // hooks

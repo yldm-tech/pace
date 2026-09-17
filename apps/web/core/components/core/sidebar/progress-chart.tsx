@@ -5,10 +5,10 @@
  */
 
 import React from "react";
-// plane imports
-import { AreaChart } from "@plane/propel/charts/area-chart";
-import type { TChartData, TModuleCompletionChartDistribution } from "@plane/types";
-import { renderFormattedDateWithoutYear } from "@plane/utils";
+// pace imports
+import { AreaChart } from "@pace/propel/charts/area-chart";
+import type { TChartData, TModuleCompletionChartDistribution } from "@pace/types";
+import { renderFormattedDateWithoutYear } from "@pace/utils";
 
 type Props = {
   distribution: TModuleCompletionChartDistribution;

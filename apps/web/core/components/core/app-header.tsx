@@ -6,10 +6,10 @@
 
 import type { ReactNode } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { Row } from "@plane/ui";
+// pace imports
+import { Row } from "@pace/ui";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { ExtendedAppHeader } from "@/components/common/extended-app-header";
 
 export interface AppHeaderProps {

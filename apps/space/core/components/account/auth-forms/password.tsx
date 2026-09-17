@@ -7,12 +7,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/icons";
-// plane imports
-import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { AuthService } from "@plane/services";
-import { Input, Spinner, PasswordStrengthIndicator } from "@plane/ui";
-import { getPasswordStrength } from "@plane/utils";
+// pace imports
+import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
+import { Button } from "@pace/propel/button";
+import { AuthService } from "@pace/services";
+import { Input, Spinner, PasswordStrengthIndicator } from "@pace/ui";
+import { getPasswordStrength } from "@pace/utils";
 // types
 import { EAuthModes, EAuthSteps } from "@/types/auth";
 

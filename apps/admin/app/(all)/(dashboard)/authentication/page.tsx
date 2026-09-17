@@ -8,10 +8,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
-// plane internal packages
+// pace internal packages
 import { Switch } from "@makeplane/propel/components/switch";
-import type { TInstanceConfigurationKeys, TInstanceAuthenticationModes } from "@plane/types";
-import { cn, resolveGeneralTheme } from "@plane/utils";
+import type { TInstanceConfigurationKeys, TInstanceAuthenticationModes } from "@pace/types";
+import { cn, resolveGeneralTheme } from "@pace/utils";
 // components
 import { PageWrapper } from "@/components/common/page-wrapper";
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";

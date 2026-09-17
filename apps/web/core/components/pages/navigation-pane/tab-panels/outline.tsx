@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { ScrollArea } from "@plane/propel/scrollarea";
+// pace imports
+import { ScrollArea } from "@pace/propel/scrollarea";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";
 // local imports

@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { ISSUE_LAYOUTS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { ISSUE_LAYOUTS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { EIssueLayoutTypes } from "@plane/types";
-import { cn } from "@plane/utils";
+import type { EIssueLayoutTypes } from "@pace/types";
+import { cn } from "@pace/utils";
 // components
 import { IssueLayoutIcon } from "@/components/issues/issue-layouts/layout-icon";
 // hooks

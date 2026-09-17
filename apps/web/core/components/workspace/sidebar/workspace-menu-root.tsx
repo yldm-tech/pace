@@ -11,12 +11,12 @@ import Link from "next/link";
 import { ChevronDownOutline, LogOutOutline, MailOutline, PlusCircleOutline } from "@makeplane/propel/icons";
 // ui
 import { Menu, Transition } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { IWorkspace } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { orderWorkspacesList, cn } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { IWorkspace } from "@pace/types";
+import { Loader } from "@pace/ui";
+import { orderWorkspacesList, cn } from "@pace/utils";
 // helpers
 import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
 // hooks

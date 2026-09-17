@@ -5,15 +5,15 @@
  */
 
 import React, { useEffect, useState, useCallback } from "react";
-import type { EditorRefApi } from "@plane/editor";
-// plane imports
+import type { EditorRefApi } from "@pace/editor";
+// pace imports
 import { ChevronDownOutline, TickOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { CustomMenu } from "@pace/ui";
+import { cn } from "@pace/utils";
 // constants
-import type { ToolbarMenuItem } from "@plane/editor";
-import { TOOLBAR_ITEMS, TYPOGRAPHY_ITEMS } from "@plane/editor";
+import type { ToolbarMenuItem } from "@pace/editor";
+import { TOOLBAR_ITEMS, TYPOGRAPHY_ITEMS } from "@pace/editor";
 // local imports
 import { ColorDropdown } from "./color-dropdown";
 

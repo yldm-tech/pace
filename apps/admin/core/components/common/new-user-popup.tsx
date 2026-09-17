@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useTheme as useNextTheme } from "next-themes";
 // ui
 import { Button } from "@makeplane/propel/components/button";
-import { resolveGeneralTheme } from "@plane/utils";
+import { resolveGeneralTheme } from "@pace/utils";
 // hooks
 import TakeoffIconDark from "@/app/assets/logos/takeoff-icon-dark.svg?url";
 import TakeoffIconLight from "@/app/assets/logos/takeoff-icon-light.svg?url";

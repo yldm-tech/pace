@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { WorkItemsOutline } from "@makeplane/propel/icons";
-import { EInboxIssueSource } from "@plane/types";
+import { EInboxIssueSource } from "@pace/types";
 // hooks
-import { capitalizeFirstLetter } from "@plane/utils";
+import { capitalizeFirstLetter } from "@pace/utils";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // local imports
 import { IssueActivityBlockComponent } from "./";

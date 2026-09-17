@@ -7,9 +7,9 @@
 import { observer } from "mobx-react";
 
 // icons
-import { PriorityIcon } from "@plane/propel/icons";
+import { PriorityIcon } from "@pace/propel/icons";
 import { CloseOutline } from "@makeplane/propel/icons";
-import type { TIssuePriorities } from "@plane/types";
+import type { TIssuePriorities } from "@pace/types";
 // types
 
 type Props = {

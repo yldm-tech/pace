@@ -5,10 +5,10 @@
  */
 
 import { useCallback, useMemo } from "react";
-// plane editor
-import type { TMentionSection } from "@plane/editor";
-// plane types
-import type { TSearchEntities, TSearchResponse } from "@plane/types";
+// pace editor
+import type { TMentionSection } from "@pace/editor";
+// pace types
+import type { TSearchEntities, TSearchResponse } from "@pace/types";
 
 export type TUseAdditionalEditorMentionArgs = {
   enableAdvancedMentions: boolean;

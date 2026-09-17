@@ -7,10 +7,10 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { EditorRefApi } from "@plane/editor";
-import { EFileAssetType } from "@plane/types";
-import type { TNameDescriptionLoader } from "@plane/types";
+// pace imports
+import type { EditorRefApi } from "@pace/editor";
+import { EFileAssetType } from "@pace/types";
+import type { TNameDescriptionLoader } from "@pace/types";
 // components
 import { DescriptionVersionsRoot } from "@/components/core/description-versions";
 import { DescriptionInput } from "@/components/editor/rich-text/description-input";
@@ -19,9 +19,9 @@ import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";
 import useReloadConfirmations from "@/hooks/use-reload-confirmation";
-// plane web components
+// pace web components
 import { IssueTypeSwitcher } from "@/components/issues/issue-type-switcher";
-// plane web hooks
+// pace web hooks
 // services
 import { WorkItemVersionService } from "@/services/issue";
 // local components

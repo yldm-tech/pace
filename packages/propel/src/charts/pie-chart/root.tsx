@@ -6,8 +6,8 @@
 
 import React, { useMemo, useState } from "react";
 import { Cell, PieChart as CorePieChart, Label, Legend, Pie, ResponsiveContainer, Tooltip } from "recharts";
-// plane imports
-import type { TPieChartProps } from "@plane/types";
+// pace imports
+import type { TPieChartProps } from "@pace/types";
 // local components
 import { getLegendProps } from "../components/legend";
 import { CustomActiveShape } from "./active-shape";

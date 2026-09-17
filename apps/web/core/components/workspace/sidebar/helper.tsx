@@ -16,7 +16,7 @@ import {
   ViewsOutline,
   YourWorkOutline,
 } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 export const getSidebarNavigationItemIcon = (key: string, className: string = "") => {
   switch (key) {

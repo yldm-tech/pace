@@ -7,8 +7,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { WarningCircleOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TExternalFilter, TFilterProperty } from "@plane/types";
+// pace imports
+import type { TExternalFilter, TFilterProperty } from "@pace/types";
 // local imports
 import { FilterItemCloseButton } from "./close-button";
 import { FilterItemContainer } from "./container";

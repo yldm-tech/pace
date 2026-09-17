@@ -5,11 +5,11 @@
  */
 
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "@plane/propel/button";
-import { Calendar } from "@plane/propel/calendar";
+import { Button } from "@pace/propel/button";
+import { Calendar } from "@pace/propel/calendar";
 import { CloseOutline } from "@makeplane/propel/icons";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { renderFormattedPayloadDate, renderFormattedDate, getDate } from "@plane/utils";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { renderFormattedPayloadDate, renderFormattedDate, getDate } from "@pace/utils";
 import { DateFilterSelect } from "./date-filter-select";
 type Props = {
   title: string;

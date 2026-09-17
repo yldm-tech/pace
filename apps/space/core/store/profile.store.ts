@@ -6,10 +6,10 @@
 
 import { set } from "lodash-es";
 import { action, makeObservable, observable, runInAction } from "mobx";
-// plane imports
-import { UserService } from "@plane/services";
-import type { TUserProfile } from "@plane/types";
-import { EStartOfTheWeek } from "@plane/types";
+// pace imports
+import { UserService } from "@pace/services";
+import type { TUserProfile } from "@pace/types";
+import { EStartOfTheWeek } from "@pace/types";
 // store
 import type { RootStore } from "@/store/root.store";
 

@@ -7,10 +7,10 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { PiChatLogo } from "@plane/propel/icons";
+// pace imports
+import { PiChatLogo } from "@pace/propel/icons";
 import { DashboardsOutline, DraftsOutline, HomeOutline, YourWorkOutline } from "@makeplane/propel/icons";
-import { EUserWorkspaceRoles } from "@plane/types";
+import { EUserWorkspaceRoles } from "@pace/types";
 // hooks
 import { useUserPermissions, useUser } from "@/hooks/store/user";
 // local imports

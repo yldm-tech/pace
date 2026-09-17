@@ -8,9 +8,9 @@ import React from "react";
 import { observer } from "mobx-react";
 // constants
 // helpers
-import { INBOX_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { cn, findHowManyDaysLeft } from "@plane/utils";
+import { INBOX_STATUS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { cn, findHowManyDaysLeft } from "@pace/utils";
 // store
 import type { IInboxIssueStore } from "@/store/inbox/inbox-issue.store";
 import { ICON_PROPERTIES, InboxStatusIcon } from "./inbox-status-icon";

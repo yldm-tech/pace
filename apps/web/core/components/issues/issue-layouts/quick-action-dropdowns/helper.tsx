@@ -15,12 +15,12 @@ import {
   NewTabOutline,
   RestoreOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { EIssuesStoreType, TIssue } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { copyUrlToClipboard, generateWorkItemLink } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { EIssuesStoreType, TIssue } from "@pace/types";
+import type { TContextMenuItem } from "@pace/ui";
+import { copyUrlToClipboard, generateWorkItemLink } from "@pace/utils";
 import { createCopyMenuWithDuplication } from "./copy-menu-helper";
 
 // Generic helper function to handle optional function calls gracefully

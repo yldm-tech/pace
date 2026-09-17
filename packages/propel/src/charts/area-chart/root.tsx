@@ -6,9 +6,9 @@
 
 import React, { useMemo, useState } from "react";
 import { Area, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Line, ComposedChart, CartesianGrid } from "recharts";
-// plane imports
-import { AXIS_LABEL_CLASSNAME } from "@plane/constants";
-import type { TAreaChartProps } from "@plane/types";
+// pace imports
+import { AXIS_LABEL_CLASSNAME } from "@pace/constants";
+import type { TAreaChartProps } from "@pace/types";
 // local components
 import { getLegendProps } from "../components/legend";
 import { CustomXAxisTick, CustomYAxisTick } from "../components/tick";

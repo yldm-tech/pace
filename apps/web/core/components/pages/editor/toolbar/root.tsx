@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 import { RightSidePaneOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // components
 import { PageToolbar } from "@/components/pages/editor/toolbar";
 // hooks

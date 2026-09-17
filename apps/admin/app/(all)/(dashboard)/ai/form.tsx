@@ -7,7 +7,7 @@
 import { useForm } from "react-hook-form";
 import { ThoughtsOutline } from "@makeplane/propel/icons";
 import { Button } from "@makeplane/propel/components/button";
-import type { IFormattedInstanceConfiguration, TInstanceAIConfigurationKeys } from "@plane/types";
+import type { IFormattedInstanceConfiguration, TInstanceAIConfigurationKeys } from "@pace/types";
 // components
 import type { TControllerInputFormField } from "@/components/common/controller-input";
 import { ControllerInput } from "@/components/common/controller-input";

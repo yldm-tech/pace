@@ -8,8 +8,8 @@ import { observer } from "mobx-react";
 import { Link } from "react-router";
 import { usePathname } from "next/navigation";
 import { LockOutline } from "@makeplane/propel/icons";
-// plane imports
-import { Button } from "@plane/propel/button";
+// pace imports
+import { Button } from "@pace/propel/button";
 // components
 import { AddComment } from "@/components/issues/peek-overview/comment/add-comment";
 import { CommentCard } from "@/components/issues/peek-overview/comment/comment-detail-card";

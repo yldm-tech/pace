@@ -7,8 +7,8 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EIssuesStoreType } from "@plane/types";
+// pace imports
+import { EIssuesStoreType } from "@pace/types";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
 // local imports

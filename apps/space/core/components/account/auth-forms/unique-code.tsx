@@ -6,11 +6,11 @@
 
 import React, { useEffect, useState } from "react";
 import { CloseCircleOutline, TickCircleOutline } from "@makeplane/propel/icons";
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { AuthService } from "@plane/services";
-import { Input, Spinner } from "@plane/ui";
+// pace imports
+import { API_BASE_URL } from "@pace/constants";
+import { Button } from "@pace/propel/button";
+import { AuthService } from "@pace/services";
+import { Input, Spinner } from "@pace/ui";
 // hooks
 import useTimer from "@/hooks/use-timer";
 // types

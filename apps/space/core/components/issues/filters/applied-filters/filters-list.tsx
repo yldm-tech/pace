@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { CloseOutline } from "@makeplane/propel/icons";
 // types
 import type { TFilters } from "@/types/issue";

@@ -5,8 +5,8 @@
  */
 
 import { sortBy } from "lodash-es";
-// plane imports
-import type { TProject, TProjectDisplayFilters, TProjectFilters, TProjectOrderByOptions } from "@plane/types";
+// pace imports
+import type { TProject, TProjectDisplayFilters, TProjectFilters, TProjectOrderByOptions } from "@pace/types";
 // local imports
 import { getDate } from "./datetime";
 import { satisfiesDateFilter } from "./filter";

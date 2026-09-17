@@ -6,9 +6,9 @@
 
 import { set } from "lodash-es";
 import { makeObservable, observable, runInAction, action } from "mobx";
-// plane imports
-import { SitesProjectPublishService } from "@plane/services";
-import type { TProjectPublishSettings } from "@plane/types";
+// pace imports
+import { SitesProjectPublishService } from "@pace/services";
+import type { TProjectPublishSettings } from "@pace/types";
 // store
 import { PublishStore } from "@/store/publish/publish.store";
 import type { RootStore } from "@/store/root.store";

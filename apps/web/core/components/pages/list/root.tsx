@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 // types
-import type { TPageNavigationTabs } from "@plane/types";
+import type { TPageNavigationTabs } from "@pace/types";
 // components
 import { ListLayout } from "@/components/core/list";
-// plane web hooks
+// pace web hooks
 import type { EPageStoreType } from "@/hooks/store";
 import { usePageStore } from "@/hooks/store";
 // local imports

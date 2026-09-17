@@ -10,7 +10,7 @@ import type {
   TCoreInstanceAuthenticationModeKeys,
   TGetBaseAuthenticationModeProps,
   TInstanceAuthenticationModes,
-} from "@plane/types";
+} from "@pace/types";
 // assets
 import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
 import githubLightModeImage from "@/app/assets/logos/github-black.png?url";

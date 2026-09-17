@@ -6,8 +6,8 @@
 
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import type { EditorState, Selection } from "@tiptap/pm/state";
-// plane imports
-import { cn } from "@plane/utils";
+// pace imports
+import { cn } from "@pace/utils";
 // constants
 import { CORE_EXTENSIONS } from "@/constants/extension";
 

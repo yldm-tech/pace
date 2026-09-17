@@ -5,8 +5,8 @@
  */
 
 import React from "react";
-// plane imports
-import type { TIssueServiceType, TWorkItemWidgets } from "@plane/types";
+// pace imports
+import type { TIssueServiceType, TWorkItemWidgets } from "@pace/types";
 // local imports
 import { IssueDetailWidgetActionButtons } from "./action-buttons";
 import { IssueDetailWidgetCollapsibles } from "./issue-detail-widget-collapsibles";

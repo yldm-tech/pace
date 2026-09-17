@@ -8,14 +8,14 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-// plane hooks
-import { useOutsideClickDetector } from "@plane/hooks";
-// plane ui
+// pace hooks
+import { useOutsideClickDetector } from "@pace/hooks";
+// pace ui
 import { AddOutline, CloseOutline, MultipleStickyOutline, StickyNoteOutline } from "@makeplane/propel/icons";
 import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from "@makeplane/propel/components/preview-card";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-// plane utils
-import { cn } from "@plane/utils";
+// pace utils
+import { cn } from "@pace/utils";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useSticky } from "@/hooks/use-stickies";

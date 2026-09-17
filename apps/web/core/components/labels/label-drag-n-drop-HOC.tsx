@@ -14,10 +14,10 @@ import { attachInstruction } from "@atlaskit/pragmatic-drag-and-drop-hitbox/tree
 import { observer } from "mobx-react";
 import { createRoot } from "react-dom/client";
 // types
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import type { IIssueLabel, InstructionType } from "@plane/types";
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import type { IIssueLabel, InstructionType } from "@pace/types";
 // ui
-import { DropIndicator } from "@plane/ui";
+import { DropIndicator } from "@pace/ui";
 // components
 import { useUserPermissions } from "@/hooks/store/user";
 import { LabelName } from "./label-block/label-name";

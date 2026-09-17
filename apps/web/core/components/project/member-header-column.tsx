@@ -15,12 +15,12 @@ import {
   TickOutline,
 } from "@makeplane/propel/icons";
 // constants
-import type { IProjectMemberDisplayProperties, TMemberOrderByOptions } from "@plane/constants";
-import { MEMBER_PROPERTY_DETAILS } from "@plane/constants";
+import type { IProjectMemberDisplayProperties, TMemberOrderByOptions } from "@pace/constants";
+import { MEMBER_PROPERTY_DETAILS } from "@pace/constants";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // types
-import { CustomMenu } from "@plane/ui";
+import { CustomMenu } from "@pace/ui";
 import type { IMemberFilters } from "@/store/member/utils";
 
 interface Props {

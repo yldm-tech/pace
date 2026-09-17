@@ -13,15 +13,15 @@ import {
   TickCircleOutline,
   TickOutline,
 } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import type { TNotificationFilter } from "@plane/types";
-import { PopoverMenu } from "@plane/ui";
+import { useTranslation } from "@pace/i18n";
+// pace imports
+import type { TNotificationFilter } from "@pace/types";
+import { PopoverMenu } from "@pace/ui";
 // hooks
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
 // local imports
 import { NotificationMenuOptionItem } from "./menu-item";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 
 export type TPopoverMenuOptions = {
   key: string;

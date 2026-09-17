@@ -19,10 +19,10 @@ import {
   StateOutline,
   UserOutline,
 } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@plane/propel/icons";
+import { Logo } from "@pace/propel/emoji-icon-picker";
+import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
 import type {
   ICycle,
   IState,
@@ -32,7 +32,7 @@ import type {
   IModule,
   IProject,
   TWorkItemFilterProperty,
-} from "@plane/types";
+} from "@pace/types";
 
 import {
   getAssigneeFilterConfig,
@@ -52,7 +52,7 @@ import {
   getTargetDateFilterConfig,
   getUpdatedAtFilterConfig,
   isLoaderReady,
-} from "@plane/utils";
+} from "@pace/utils";
 // store hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useLabel } from "@/hooks/store/use-label";
@@ -60,7 +60,7 @@ import { useMember } from "@/hooks/store/use-member";
 import { useModule } from "@/hooks/store/use-module";
 import { useProject } from "@/hooks/store/use-project";
 import { useProjectState } from "@/hooks/store/use-project-state";
-// plane web imports
+// pace web imports
 import { useFiltersOperatorConfigs } from "@/hooks/rich-filters/use-filters-operator-configs";
 
 export type TWorkItemFiltersEntityProps = {

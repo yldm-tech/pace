@@ -8,10 +8,10 @@ import { useState, Fragment } from "react";
 import { observer } from "mobx-react";
 import { TickCircleOutline } from "@makeplane/propel/icons";
 import { Tab } from "@headlessui/react";
-// plane imports
+// pace imports
 // helpers
-import type { EProductSubscriptionEnum, TBillingFrequency, TSubscriptionPrice } from "@plane/types";
-import { cn, getBaseSubscriptionName, getSubscriptionName } from "@plane/utils";
+import type { EProductSubscriptionEnum, TBillingFrequency, TSubscriptionPrice } from "@pace/types";
+import { cn, getBaseSubscriptionName, getSubscriptionName } from "@pace/utils";
 
 export type TBasePaidPlanCardProps = {
   planVariant: EProductSubscriptionEnum;

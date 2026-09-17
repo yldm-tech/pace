@@ -5,12 +5,12 @@
  */
 
 import React, { useEffect, useState, useCallback } from "react";
-// plane imports
-import { TOOLBAR_ITEMS } from "@plane/editor";
-import type { ToolbarMenuItem, EditorRefApi } from "@plane/editor";
-import { Button } from "@plane/propel/button";
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
+// pace imports
+import { TOOLBAR_ITEMS } from "@pace/editor";
+import type { ToolbarMenuItem, EditorRefApi } from "@pace/editor";
+import { Button } from "@pace/propel/button";
+import { Tooltip } from "@pace/propel/tooltip";
+import { cn } from "@pace/utils";
 
 type Props = {
   executeCommand: (item: ToolbarMenuItem) => void;

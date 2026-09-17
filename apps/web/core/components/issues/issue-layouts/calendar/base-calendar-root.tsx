@@ -8,11 +8,11 @@ import type { FC } from "react";
 import { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EIssueGroupByToServerOptions, EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TGroupedIssues } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
+// pace imports
+import { EIssueGroupByToServerOptions, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TGroupedIssues } from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
 // hooks
 import { useCalendarView } from "@/hooks/store/use-calendar-view";
 import { useIssues } from "@/hooks/store/use-issues";

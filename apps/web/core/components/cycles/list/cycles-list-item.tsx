@@ -10,10 +10,10 @@ import { observer } from "mobx-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@makeplane/propel/components/circular-progress";
 import { TickOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TCycleGroups } from "@plane/types";
+// pace imports
+import type { TCycleGroups } from "@pace/types";
 // components
-import { generateQueryParams, calculateCycleProgress } from "@plane/utils";
+import { generateQueryParams, calculateCycleProgress } from "@pace/utils";
 import { ListItem } from "@/components/core/list";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";

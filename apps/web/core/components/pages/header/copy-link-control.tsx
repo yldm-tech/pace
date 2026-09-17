@@ -8,10 +8,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { observer } from "mobx-react";
 
 import { LinkOutline, TickOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { IconButton } from "@plane/propel/icon-button";
-import { cn } from "@plane/utils";
+import { IconButton } from "@pace/propel/icon-button";
+import { cn } from "@pace/utils";
 // hooks
 import { usePageOperations } from "@/hooks/use-page-operations";
 // store

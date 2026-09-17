@@ -9,17 +9,17 @@ import { useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import { SignalHigh } from "lucide-react";
 import { Combobox } from "@headlessui/react";
-import { ISSUE_PRIORITIES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { ISSUE_PRIORITIES } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 // types
-import { PriorityIcon } from "@plane/propel/icons";
+import { PriorityIcon } from "@pace/propel/icons";
 import { ChevronDownOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TIssuePriorities } from "@plane/types";
+import type { TIssuePriorities } from "@pace/types";
 // ui
-import { ComboDropDown } from "@plane/ui";
+import { ComboDropDown } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useDropdown } from "@/hooks/use-dropdown";
 import { usePlatformOS } from "@/hooks/use-platform-os";

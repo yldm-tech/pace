@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { CalendarOutline } from "@makeplane/propel/icons";
-import { cn, renderFormattedDate, getDate } from "@plane/utils";
+import { cn, renderFormattedDate, getDate } from "@pace/utils";
 
 export type TReadonlyDateProps = {
   className?: string;

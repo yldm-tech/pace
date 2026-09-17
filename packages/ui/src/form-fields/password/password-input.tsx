@@ -6,8 +6,8 @@
 
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 import { useState } from "react";
-import { Tooltip } from "@plane/propel/tooltip";
-import { cn } from "@plane/utils";
+import { Tooltip } from "@pace/propel/tooltip";
+import { cn } from "@pace/utils";
 
 type TPasswordInputProps = {
   id: string;

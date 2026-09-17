@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { CyclesOutline, ModuleOutline, PagesOutline, ViewsOutline, WorkItemsOutline } from "@makeplane/propel/icons";
-import type { ISvgIcons } from "@plane/propel/icons";
+import type { ISvgIcons } from "@pace/propel/icons";
 // types
 import type { TTourSteps } from "./root";
 

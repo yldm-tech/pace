@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-import type { TIssueLayout } from "@plane/constants";
+import type { TIssueLayout } from "@pace/constants";
 import { BoardOutline, ListOutline } from "@makeplane/propel/icons";
-import type { ISvgIcons } from "@plane/propel/icons";
+import type { ISvgIcons } from "@pace/propel/icons";
 
 export function IssueLayoutIcon({
   layout,

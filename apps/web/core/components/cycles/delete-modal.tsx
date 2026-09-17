@@ -8,12 +8,12 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams, useSearchParams } from "next/navigation";
 // types
-import { PROJECT_ERROR_MESSAGES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { ICycle } from "@plane/types";
+import { PROJECT_ERROR_MESSAGES } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { ICycle } from "@pace/types";
 // ui
-import { AlertModalCore } from "@plane/ui";
+import { AlertModalCore } from "@pace/ui";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useAppRouter } from "@/hooks/use-app-router";

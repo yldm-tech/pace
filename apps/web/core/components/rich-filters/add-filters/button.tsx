@@ -7,13 +7,13 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { FilterOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TButtonSize, TButtonVariant } from "@plane/propel/button";
-import { getButtonStyling } from "@plane/propel/button";
-import type { IFilterInstance } from "@plane/shared-state";
-import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@plane/types";
-import { LOGICAL_OPERATOR } from "@plane/types";
-import { cn } from "@plane/utils";
+// pace imports
+import type { TButtonSize, TButtonVariant } from "@pace/propel/button";
+import { getButtonStyling } from "@pace/propel/button";
+import type { IFilterInstance } from "@pace/shared-state";
+import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@pace/types";
+import { LOGICAL_OPERATOR } from "@pace/types";
+import { cn } from "@pace/utils";
 // local imports
 import { AddFilterDropdown } from "./dropdown";
 

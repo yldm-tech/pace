@@ -16,16 +16,16 @@ import {
   TransferWorkItemOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
+import { useLocalStorage } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { setPromiseToast } from "@plane/propel/toast";
+import { setPromiseToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { ICycle, TCycleGroups } from "@plane/types";
-import { FavoriteStar } from "@plane/ui";
-import { getDate, getFileURL, generateQueryParams } from "@plane/utils";
+import type { ICycle, TCycleGroups } from "@pace/types";
+import { FavoriteStar } from "@pace/ui";
+import { getDate, getFileURL, generateQueryParams } from "@pace/utils";
 // components
 import { AvatarGroupOverflow } from "@/components/common/avatar-group-overflow";
 import { DateRangeDropdown } from "@/components/dropdowns/date-range";

@@ -9,11 +9,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { SettingsOutline, TickOutline, UserPlusOutline } from "@makeplane/propel/icons";
 import { Menu } from "@headlessui/react";
-// plane imports
-import { EUserPermissions } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { IWorkspace } from "@plane/types";
-import { cn, getFileURL, getUserRole } from "@plane/utils";
+// pace imports
+import { EUserPermissions } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import type { IWorkspace } from "@pace/types";
+import { cn, getFileURL, getUserRole } from "@pace/utils";
 
 type TProps = {
   workspace: IWorkspace;

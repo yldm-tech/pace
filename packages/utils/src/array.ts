@@ -5,7 +5,7 @@
  */
 
 import { isEmpty } from "lodash-es";
-import type { IIssueLabel, IIssueLabelTree } from "@plane/types";
+import type { IIssueLabel, IIssueLabelTree } from "@pace/types";
 
 /**
  * @description Groups an array of objects by a specified key

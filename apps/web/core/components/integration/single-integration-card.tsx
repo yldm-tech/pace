@@ -9,18 +9,18 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
 import { TickCircleOutline } from "@makeplane/propel/icons";
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { Button } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IAppIntegration, IWorkspaceIntegration } from "@plane/types";
+import type { IAppIntegration, IWorkspaceIntegration } from "@pace/types";
 // ui
-import { Loader } from "@plane/ui";
+import { Loader } from "@pace/ui";
 // assets
 import GithubLogo from "@/app/assets/services/github.png?url";
 import SlackLogo from "@/app/assets/services/slack.png?url";
 // constants
-import { WORKSPACE_INTEGRATIONS } from "@plane/constants";
+import { WORKSPACE_INTEGRATIONS } from "@pace/constants";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import { useUserPermissions } from "@/hooks/store/user";

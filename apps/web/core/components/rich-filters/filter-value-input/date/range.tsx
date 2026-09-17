@@ -6,9 +6,9 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { TDateRangeFilterFieldConfig, TFilterConditionNodeForDisplay, TFilterProperty } from "@plane/types";
-import { cn, isValidDate, renderFormattedPayloadDate, toFilterArray } from "@plane/utils";
+// pace imports
+import type { TDateRangeFilterFieldConfig, TFilterConditionNodeForDisplay, TFilterProperty } from "@pace/types";
+import { cn, isValidDate, renderFormattedPayloadDate, toFilterArray } from "@pace/utils";
 // components
 import { DateRangeDropdown } from "@/components/dropdowns/date-range";
 // local imports

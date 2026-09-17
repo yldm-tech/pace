@@ -7,8 +7,8 @@
 import { InfoOutline, WarningTriangleOutline } from "@makeplane/propel/icons";
 import React from "react";
 // components
-import type { TButtonVariant } from "@plane/propel/button";
-import { Button } from "@plane/propel/button";
+import type { TButtonVariant } from "@pace/propel/button";
+import { Button } from "@pace/propel/button";
 import { cn } from "../utils";
 import { EModalPosition, EModalWidth } from "./constants";
 import { ModalCore } from "./modal-core";

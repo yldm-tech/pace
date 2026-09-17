@@ -5,7 +5,7 @@
  */
 
 //
-import type { IBlockUpdateDependencyData } from "@plane/types";
+import type { IBlockUpdateDependencyData } from "@pace/types";
 import { GanttChartBlock } from "@/components/gantt-chart/blocks/block";
 
 export type GanttChartBlocksProps = {

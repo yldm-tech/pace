@@ -6,10 +6,10 @@
 
 import { useState } from "react";
 import { CloseCircleOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IApiToken } from "@plane/types";
-import { renderFormattedDate, calculateTimeAgo, renderFormattedTime } from "@plane/utils";
+import type { IApiToken } from "@pace/types";
+import { renderFormattedDate, calculateTimeAgo, renderFormattedTime } from "@pace/utils";
 // components
 import { DeleteApiTokenModal } from "@/components/api-token/delete-token-modal";
 // hooks

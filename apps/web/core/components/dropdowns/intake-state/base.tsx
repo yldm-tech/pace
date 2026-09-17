@@ -9,20 +9,20 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { IntakeStateGroupIcon } from "@plane/propel/icons";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { IntakeStateGroupIcon } from "@pace/propel/icons";
 import { ChevronDownOutline, SearchOutline } from "@makeplane/propel/icons";
-import type { IIntakeState } from "@plane/types";
-import { ComboDropDown, Spinner } from "@plane/ui";
-import { cn } from "@plane/utils";
+import type { IIntakeState } from "@pace/types";
+import { ComboDropDown, Spinner } from "@pace/ui";
+import { cn } from "@pace/utils";
 // components
 import { DropdownButton } from "@/components/dropdowns/buttons";
 import { BUTTON_VARIANTS_WITH_TEXT } from "@/components/dropdowns/constants";
 import type { TDropdownProps } from "@/components/dropdowns/types";
 // hooks
 import { useDropdown } from "@/hooks/use-dropdown";
-// plane web imports
+// pace web imports
 import { StateOption } from "@/components/workflow";
 
 export type TWorkItemStateDropdownBaseProps = TDropdownProps & {

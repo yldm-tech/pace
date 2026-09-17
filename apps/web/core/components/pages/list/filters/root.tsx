@@ -7,7 +7,7 @@
 import { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react";
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
-import type { TPageFilterProps, TPageFilters } from "@plane/types";
+import type { TPageFilterProps, TPageFilters } from "@pace/types";
 // components
 import { FilterCreatedDate } from "@/components/common/filters/created-at";
 import { FilterCreatedBy } from "@/components/common/filters/created-by";

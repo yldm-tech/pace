@@ -5,11 +5,11 @@
  */
 
 import { SortAscendingOutline, SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
-// plane imports
-import { getButtonStyling } from "@plane/propel/button";
+// pace imports
+import { getButtonStyling } from "@pace/propel/button";
 // types
-import type { TPageFiltersSortBy, TPageFiltersSortKey } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import type { TPageFiltersSortBy, TPageFiltersSortKey } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
 
 type Props = {
   onChange: (value: { key?: TPageFiltersSortKey; order?: TPageFiltersSortBy }) => void;

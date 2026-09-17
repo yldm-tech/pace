@@ -5,12 +5,12 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { IconButton } from "@plane/propel/icon-button";
+// pace imports
+import { IconButton } from "@pace/propel/icon-button";
 import { FilterOutline, SelectedFilterOutline } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
-import type { IFilterInstance } from "@plane/shared-state";
-import type { TExternalFilter, TFilterProperty } from "@plane/types";
+import { cn } from "@pace/utils";
+import type { IFilterInstance } from "@pace/shared-state";
+import type { TExternalFilter, TFilterProperty } from "@pace/types";
 // components
 import { AddFilterButton } from "@/components/rich-filters/add-filters/button";
 

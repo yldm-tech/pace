@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 // Plane imports
-import type { IWebhook } from "@plane/types";
+import type { IWebhook } from "@pace/types";
 import { Switch } from "@makeplane/propel/components/switch";
 // hooks
 import { useWebhook } from "@/hooks/store/use-webhook";

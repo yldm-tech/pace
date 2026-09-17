@@ -9,13 +9,13 @@ import { observer } from "mobx-react";
 import { useParams, useRouter } from "next/navigation";
 import { ArchiveOutline, ChevronRightOutline, MoreHorizontalOutline, SettingsOutline } from "@makeplane/propel/icons";
 import { Disclosure } from "@headlessui/react";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { EUserWorkspaceRoles } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+// pace imports
+import { EUserPermissionsLevel } from "@pace/constants";
+import { useOutsideClickDetector } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
+import { EUserWorkspaceRoles } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
+import { cn } from "@pace/utils";
 // store hooks
 import { useUserPermissions } from "@/hooks/store/user";
 

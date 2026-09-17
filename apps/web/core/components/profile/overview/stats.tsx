@@ -8,11 +8,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 // ui
-import { useTranslation } from "@plane/i18n";
-import { LayerStackIcon } from "@plane/propel/icons";
+import { useTranslation } from "@pace/i18n";
+import { LayerStackIcon } from "@pace/propel/icons";
 import { AddOutline, UserOutline } from "@makeplane/propel/icons";
-import type { IUserProfileData } from "@plane/types";
-import { Loader, Card, ECardSpacing, ECardDirection } from "@plane/ui";
+import type { IUserProfileData } from "@pace/types";
+import { Loader, Card, ECardSpacing, ECardDirection } from "@pace/ui";
 // types
 
 type Props = {

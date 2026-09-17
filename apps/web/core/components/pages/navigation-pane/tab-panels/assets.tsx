@@ -8,11 +8,11 @@ import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { DownloadOutline } from "@makeplane/propel/icons";
-// plane imports
-import { CORE_EXTENSIONS } from "@plane/editor";
-import type { TEditorAsset } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import { getEditorAssetDownloadSrc, getEditorAssetSrc } from "@plane/utils";
+// pace imports
+import { CORE_EXTENSIONS } from "@pace/editor";
+import type { TEditorAsset } from "@pace/editor";
+import { useTranslation } from "@pace/i18n";
+import { getEditorAssetDownloadSrc, getEditorAssetSrc } from "@pace/utils";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";
 // local import

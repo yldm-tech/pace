@@ -10,12 +10,12 @@ import { observer } from "mobx-react";
 // icons
 import { CloseCircleOutline, WarningCircleOutline } from "@makeplane/propel/icons";
 // types
-import { Button } from "@plane/propel/button";
-import type { IEmailCheckData } from "@plane/types";
+import { Button } from "@pace/propel/button";
+import type { IEmailCheckData } from "@pace/types";
 // ui
-import { Input, Spinner } from "@plane/ui";
+import { Input, Spinner } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { checkEmailValidity } from "@/helpers/string.helper";
 
 type TAuthEmailForm = {

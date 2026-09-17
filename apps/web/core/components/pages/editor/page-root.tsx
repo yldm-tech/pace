@@ -6,10 +6,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { CollaborationState, EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import type { TDocumentPayload, TPage, TPageVersion, TWebhookConnectionQueryParams } from "@plane/types";
+// pace imports
+import type { CollaborationState, EditorRefApi } from "@pace/editor";
+import { useTranslation } from "@pace/i18n";
+import type { TDocumentPayload, TPage, TPageVersion, TWebhookConnectionQueryParams } from "@pace/types";
 // hooks
 import { usePageFallback } from "@/hooks/use-page-fallback";
 import type { PageUpdateHandler, TCustomEventHandlers } from "@/hooks/use-realtime-page-events";

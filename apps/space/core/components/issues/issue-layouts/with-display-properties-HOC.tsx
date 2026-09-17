@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { IIssueDisplayProperties } from "@plane/types";
+// pace imports
+import type { IIssueDisplayProperties } from "@pace/types";
 
 interface IWithDisplayPropertiesHOC {
   displayProperties: IIssueDisplayProperties;

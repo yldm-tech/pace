@@ -8,10 +8,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { observer } from "mobx-react";
 import { Field } from "@makeplane/propel/components/field";
 import { TextArea } from "@makeplane/propel/components/text-area";
-import { useTranslation } from "@plane/i18n";
-import type { TNameDescriptionLoader } from "@plane/types";
+import { useTranslation } from "@pace/i18n";
+import type { TNameDescriptionLoader } from "@pace/types";
 // types
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import useDebounce from "@/hooks/use-debounce";
 import type { TIssueOperations } from "./issue-detail";
 // hooks

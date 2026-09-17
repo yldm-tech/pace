@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
 // types
-import type { IIssueLabel } from "@plane/types";
+import type { IIssueLabel } from "@pace/types";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 // components

@@ -11,13 +11,13 @@ import { useParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { DeactivatedUserOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
-import { EPillSize, EPillVariant, Pill } from "@plane/propel/pill";
-import type { IUserLite } from "@plane/types";
-import { cn, getFileURL, sortByCurrentUserThenSelected } from "@plane/utils";
+import { EPillSize, EPillVariant, Pill } from "@pace/propel/pill";
+import type { IUserLite } from "@pace/types";
+import { cn, getFileURL, sortByCurrentUserThenSelected } from "@pace/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useUser } from "@/hooks/store/user";
@@ -53,7 +53,7 @@ export const MemberOptions = observer(function MemberOptions(props: Props) {
   // states
   const [query, setQuery] = useState("");
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // store hooks
   const { data: currentUser } = useUser();

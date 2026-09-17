@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { STATE_GROUPS } from "@plane/constants";
+// pace imports
+import { STATE_GROUPS } from "@pace/constants";
 // types
-import { useTranslation } from "@plane/i18n";
-import type { IUserStateDistribution } from "@plane/types";
-import { Card, ECardDirection, ECardSpacing } from "@plane/ui";
+import { useTranslation } from "@pace/i18n";
+import type { IUserStateDistribution } from "@pace/types";
+import { Card, ECardDirection, ECardSpacing } from "@pace/ui";
 // constants
 
 type Props = {

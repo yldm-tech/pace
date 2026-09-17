@@ -5,7 +5,7 @@
  *
  * Run from the repository root:
  *
- *     pnpm install --filter @plane/editor...
+ *     pnpm install --filter @pace/editor...
  *     node apps/api-go/tools/generate_parse_fixture.mjs > apps/api-go/internal/ydoc/testdata/parsed.json
  */
 

@@ -5,9 +5,9 @@
  */
 
 import { useEffect, useRef } from "react";
-// plane imports
-import type { IWorkspaceMemberInvitation } from "@plane/types";
-import { EOnboardingSteps } from "@plane/types";
+// pace imports
+import type { IWorkspaceMemberInvitation } from "@pace/types";
+import { EOnboardingSteps } from "@pace/types";
 // local components
 import { ProfileSetupStep } from "./profile";
 import { RoleSetupStep } from "./role";

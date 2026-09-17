@@ -12,8 +12,8 @@ import {
   NewTabOutline,
   RestoreOutline,
 } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-import type { TContextMenuItem } from "@plane/ui";
+import { useTranslation } from "@pace/i18n";
+import type { TContextMenuItem } from "@pace/ui";
 
 /**
  * Unified factory for creating menu items across all entities (cycles, modules, views, epics)

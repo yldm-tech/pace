@@ -8,14 +8,14 @@ import { useState } from "react";
 import { isNil } from "lodash-es";
 import { observer } from "mobx-react";
 import { SubscribeOutline, UnsubscribeOutline } from "@makeplane/propel/icons";
-// plane-i18n
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace-i18n
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 // UI
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { EIssueServiceType } from "@plane/types";
-import { Loader } from "@plane/ui";
+import { Button } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import { EIssueServiceType } from "@pace/types";
+import { Loader } from "@pace/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useUserPermissions } from "@/hooks/store/user";

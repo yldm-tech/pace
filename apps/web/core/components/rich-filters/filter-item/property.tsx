@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { cn } from "@plane/propel/utils";
-import type { IFilterInstance } from "@plane/shared-state";
-import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@plane/types";
+import { cn } from "@pace/propel/utils";
+import type { IFilterInstance } from "@pace/shared-state";
+import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@pace/types";
 // local imports
 import { AddFilterDropdown } from "../add-filters/dropdown";
 import { COMMON_FILTER_ITEM_BORDER_CLASSNAME } from "../shared";

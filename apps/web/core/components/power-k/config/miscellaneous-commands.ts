@@ -6,10 +6,10 @@
 
 import { useCallback } from "react";
 import { LeftSidePaneOutline, LinkOutline, SearchOutline } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import { copyTextToClipboard } from "@plane/utils";
+import { useTranslation } from "@pace/i18n";
+// pace imports
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import { copyTextToClipboard } from "@pace/utils";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks

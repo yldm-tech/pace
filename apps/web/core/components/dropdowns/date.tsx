@@ -11,10 +11,10 @@ import { usePopper } from "react-popper";
 import { CalendarOutline, CloseOutline } from "@makeplane/propel/icons";
 import { Combobox } from "@headlessui/react";
 // ui
-import type { Matcher } from "@plane/propel/calendar";
-import { Calendar } from "@plane/propel/calendar";
-import { ComboDropDown } from "@plane/ui";
-import { cn, renderFormattedDate, getDate } from "@plane/utils";
+import type { Matcher } from "@pace/propel/calendar";
+import { Calendar } from "@pace/propel/calendar";
+import { ComboDropDown } from "@pace/ui";
+import { cn, renderFormattedDate, getDate } from "@pace/utils";
 // helpers
 // hooks
 import { useUserProfile } from "@/hooks/store/user";

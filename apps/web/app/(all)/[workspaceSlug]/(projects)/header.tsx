@@ -6,17 +6,17 @@
 
 import { observer } from "mobx-react";
 import { HomeOutline, WidgetOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { Breadcrumbs, Header } from "@plane/ui";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import { Breadcrumbs, Header } from "@pace/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 // hooks
 import { useHome } from "@/hooks/store/use-home";
 
 export const WorkspaceDashboardHeader = observer(function WorkspaceDashboardHeader() {
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // hooks
   const { toggleWidgetSettings } = useHome();

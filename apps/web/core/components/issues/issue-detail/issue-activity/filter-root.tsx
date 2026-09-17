@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TActivityFilters, TActivityFilterOption } from "@plane/constants";
-import { ACTIVITY_FILTER_TYPE_OPTIONS } from "@plane/constants";
+// pace imports
+import type { TActivityFilters, TActivityFilterOption } from "@pace/constants";
+import { ACTIVITY_FILTER_TYPE_OPTIONS } from "@pace/constants";
 // components
 import { ActivityFilter } from "@/components/issues/issue-detail/issue-activity";
 

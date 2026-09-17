@@ -5,12 +5,12 @@
  */
 
 import { useCallback } from "react";
-// plane imports
-import type { TFileHandler } from "@plane/editor";
-import { getEditorAssetDownloadSrc, getEditorAssetSrc } from "@plane/utils";
+// pace imports
+import type { TFileHandler } from "@pace/editor";
+import { getEditorAssetDownloadSrc, getEditorAssetSrc } from "@pace/utils";
 // hooks
 import { useEditorAsset } from "@/hooks/store/use-editor-asset";
-// plane web hooks
+// pace web hooks
 import { useExtendedEditorConfig } from "@/hooks/editor/use-extended-editor-config";
 import { useFileSize } from "@/hooks/use-file-size";
 // services

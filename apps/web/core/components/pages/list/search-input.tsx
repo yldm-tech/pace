@@ -5,11 +5,11 @@
  */
 
 import { useRef, useState } from "react";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { IconButton } from "@plane/propel/icon-button";
+// pace imports
+import { useOutsideClickDetector } from "@pace/hooks";
+import { IconButton } from "@pace/propel/icon-button";
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type Props = {
   searchQuery: string;

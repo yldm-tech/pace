@@ -11,12 +11,12 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { usePopper } from "react-popper";
 import { LogOutOutline } from "@makeplane/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { AuthService } from "@plane/services";
-import { Avatar } from "@plane/ui";
-import { getFileURL } from "@plane/utils";
+// pace imports
+import { API_BASE_URL } from "@pace/constants";
+import { Button } from "@pace/propel/button";
+import { AuthService } from "@pace/services";
+import { Avatar } from "@pace/ui";
+import { getFileURL } from "@pace/utils";
 // helpers
 import { queryParamGenerator } from "@/helpers/query-param-generator";
 // hooks

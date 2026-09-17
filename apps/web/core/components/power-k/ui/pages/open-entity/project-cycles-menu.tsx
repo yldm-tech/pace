@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane types
-import type { ICycle } from "@plane/types";
-import { Spinner } from "@plane/ui";
+// pace types
+import type { ICycle } from "@pace/types";
+import { Spinner } from "@pace/ui";
 // components
 import type { TPowerKContext } from "@/components/power-k/core/types";
 import { PowerKCyclesMenu } from "@/components/power-k/menus/cycles";

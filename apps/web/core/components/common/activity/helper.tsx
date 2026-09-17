@@ -38,7 +38,7 @@ import {
 // components
 
 import { store } from "@/lib/store-context";
-import type { TProjectActivity } from "@plane/types";
+import type { TProjectActivity } from "@pace/types";
 
 type ActivityIconMap = {
   [key: string]: FC<{ className?: string }>;

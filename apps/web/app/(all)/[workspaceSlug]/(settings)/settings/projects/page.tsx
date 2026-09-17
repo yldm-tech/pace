@@ -7,9 +7,9 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-// plane imports
-import { Button, getButtonStyling } from "@plane/propel/button";
-import { cn } from "@plane/utils";
+// pace imports
+import { Button, getButtonStyling } from "@pace/propel/button";
+import { cn } from "@pace/utils";
 // assets
 import ProjectDarkEmptyState from "@/app/assets/empty-state/project-settings/no-projects-dark.png?url";
 import ProjectLightEmptyState from "@/app/assets/empty-state/project-settings/no-projects-light.png?url";

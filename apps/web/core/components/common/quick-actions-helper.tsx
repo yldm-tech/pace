@@ -7,8 +7,8 @@
 // @types/react 19 removed the global JSX namespace; it is imported from react now.
 import type { JSX } from "react";
 // types
-import type { ICycle, IModule, IProjectView, IWorkspaceView } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
+import type { ICycle, IModule, IProjectView, IWorkspaceView } from "@pace/types";
+import type { TContextMenuItem } from "@pace/ui";
 // hooks
 import { useQuickActionsFactory } from "@/components/common/quick-actions-factory";
 

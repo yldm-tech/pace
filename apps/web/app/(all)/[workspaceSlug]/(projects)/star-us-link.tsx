@@ -5,14 +5,14 @@
  */
 
 import { useTheme } from "next-themes";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 // assets
 import githubBlackImage from "@/app/assets/logos/github-black.png?url";
 import githubWhiteImage from "@/app/assets/logos/github-white.png?url";
 
 export function StarUsOnGitHubLink() {
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // hooks
   const { resolvedTheme } = useTheme();

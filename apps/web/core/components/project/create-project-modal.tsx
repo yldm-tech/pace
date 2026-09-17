@@ -5,16 +5,16 @@
  */
 
 import { useEffect, useState } from "react";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { getAssetIdFromUrl, checkURLValidity } from "@plane/utils";
-// plane ui
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { getAssetIdFromUrl, checkURLValidity } from "@pace/utils";
+// pace ui
 // helpers
 // hooks
 import useKeypress from "@/hooks/use-keypress";
-// plane web components
+// pace web components
 import { CreateProjectForm } from "@/components/projects/create/root";
-// plane web types
-import type { TProject } from "@plane/types";
+// pace web types
+import type { TProject } from "@pace/types";
 // services
 import { FileService } from "@/services/file.service";
 const fileService = new FileService();

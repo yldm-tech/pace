@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import { API_BASE_URL } from "@plane/constants";
-import type { IWorkspace, ILastActiveWorkspaceDetails, IWorkspaceSearchResults } from "@plane/types";
+import { API_BASE_URL } from "@pace/constants";
+import type { IWorkspace, ILastActiveWorkspaceDetails, IWorkspaceSearchResults } from "@pace/types";
 import { APIService } from "../api.service";
 
 /**

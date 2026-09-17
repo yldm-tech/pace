@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 import packageJson from "package.json";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 export const ProductUpdatesHeader = observer(function ProductUpdatesHeader() {
   const { t } = useTranslation();

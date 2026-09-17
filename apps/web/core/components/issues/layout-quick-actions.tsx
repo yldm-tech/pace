@@ -5,13 +5,13 @@
  */
 
 import { observer } from "mobx-react";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TContextMenuItem } from "@plane/ui";
-import { CustomMenu } from "@plane/ui";
-import { copyUrlToClipboard, cn } from "@plane/utils";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TContextMenuItem } from "@pace/ui";
+import { CustomMenu } from "@pace/ui";
+import { copyUrlToClipboard, cn } from "@pace/utils";
 import { useLayoutMenuItems } from "@/components/common/quick-actions-helper";
 import { MoreHorizontalOutline } from "@makeplane/propel/icons";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 
 type Props = {
   workspaceSlug: string;

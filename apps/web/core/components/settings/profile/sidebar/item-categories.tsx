@@ -9,15 +9,15 @@ import type { LucideIcon } from "lucide-react";
 import { KeyOutline, LockOutline, SettingsOutline, SubscribeOutline, UserOutline } from "@makeplane/propel/icons";
 import { observer } from "mobx-react";
 import { useParams } from "react-router";
-// plane imports
+// pace imports
 import {
   GROUPED_PROFILE_SETTINGS,
   PROFILE_SETTINGS_CATEGORIES,
   PROFILE_SETTINGS_CATEGORY_LABELS,
-} from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { ISvgIcons } from "@plane/propel/icons";
-import type { TProfileSettingsTabs } from "@plane/types";
+} from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import type { ISvgIcons } from "@pace/propel/icons";
+import type { TProfileSettingsTabs } from "@pace/types";
 // local imports
 import { SettingsSidebarItem } from "../../sidebar/item";
 import { ProfileSettingsSidebarWorkspaceOptions } from "./workspace-options";

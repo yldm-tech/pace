@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { isRouteErrorResponse } from "react-router";
 import { Banner } from "@makeplane/propel/components/banner";
 import { InfoFilled } from "@makeplane/propel/icons";
-import { Button } from "@plane/propel/button";
-import { Card, ECardVariant } from "@plane/propel/card";
+import { Button } from "@pace/propel/button";
+import { Card, ECardVariant } from "@pace/propel/card";
 
 interface ErrorActionsProps {
   onGoHome: () => void;

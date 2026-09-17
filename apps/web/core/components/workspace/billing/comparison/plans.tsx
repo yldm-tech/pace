@@ -5,9 +5,9 @@
  */
 
 import { ChatOutline, MailOutline } from "@makeplane/propel/icons";
-import { EProductSubscriptionEnum } from "@plane/types";
-// plane imports
-import { cn } from "@plane/utils";
+import { EProductSubscriptionEnum } from "@pace/types";
+// pace imports
+import { cn } from "@pace/utils";
 
 export type TPlanFeatureData = React.ReactNode | boolean | null;
 

@@ -5,7 +5,7 @@
  */
 
 import { createContext } from "react";
-// plane web store
+// pace web store
 import { RootStore } from "@/store/root.store";
 
 let rootStore = new RootStore();

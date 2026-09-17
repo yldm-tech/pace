@@ -11,12 +11,12 @@ import { RocketOutline, SearchOutline } from "@makeplane/propel/icons";
 // headless ui
 import { Combobox } from "@headlessui/react";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // types
-import type { ISearchIssueResponse } from "@plane/types";
+import type { ISearchIssueResponse } from "@pace/types";
 // ui
-import { Loader, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { generateWorkItemLink, getTabIndex } from "@plane/utils";
+import { Loader, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 // components
 import { IssueSearchModalEmptyState } from "@/components/core/modals/issue-search-modal-empty-state";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";

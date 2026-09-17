@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
-import { API_BASE_URL } from "@plane/constants";
-import type { TOAuthConfigs, TOAuthOption } from "@plane/types";
+import { API_BASE_URL } from "@pace/constants";
+import type { TOAuthConfigs, TOAuthOption } from "@pace/types";
 // assets
 import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
 import GithubLightLogo from "@/app/assets/logos/github-black.png?url";

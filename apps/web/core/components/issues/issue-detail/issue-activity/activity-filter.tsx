@@ -6,13 +6,13 @@
 
 import { observer } from "mobx-react";
 import { FilterOutline, TickOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TActivityFilters, TActivityFilterOption } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
-import { PopoverMenu } from "@plane/ui";
+// pace imports
+import type { TActivityFilters, TActivityFilterOption } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { IconButton } from "@pace/propel/icon-button";
+import { PopoverMenu } from "@pace/ui";
 // helper
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // constants
 
 type TActivityFilter = {

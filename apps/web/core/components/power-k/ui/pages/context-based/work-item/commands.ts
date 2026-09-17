@@ -21,13 +21,13 @@ import {
   UserMinusOutline,
   UserPlusOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { ICycle, IIssueLabel, IModule, TIssue, TIssuePriorities } from "@plane/types";
-import { EIssueServiceType, EUserPermissions } from "@plane/types";
-import { copyTextToClipboard } from "@plane/utils";
+// pace imports
+import { EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import type { ICycle, IIssueLabel, IModule, TIssue, TIssuePriorities } from "@pace/types";
+import { EIssueServiceType, EUserPermissions } from "@pace/types";
+import { copyTextToClipboard } from "@pace/utils";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks

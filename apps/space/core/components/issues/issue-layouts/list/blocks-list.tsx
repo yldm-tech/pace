@@ -6,7 +6,7 @@
 
 import type { MutableRefObject } from "react";
 // types
-import type { IIssueDisplayProperties } from "@plane/types";
+import type { IIssueDisplayProperties } from "@pace/types";
 import { IssueBlock } from "./block";
 
 interface Props {

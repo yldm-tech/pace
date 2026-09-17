@@ -5,8 +5,8 @@
  */
 
 import { useMemo, useCallback } from "react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import {
   CyclesOutline,
   IntakeOutline,
@@ -15,7 +15,7 @@ import {
   ViewsOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-import type { EUserProjectRoles, IPartialProject } from "@plane/types";
+import type { EUserProjectRoles, IPartialProject } from "@pace/types";
 import type { TNavigationItem } from "@/components/navigation/tab-navigation-root";
 
 type UseNavigationItemsProps = {

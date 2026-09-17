@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import type { EPageAccess } from "@plane/constants";
-import type { TPage } from "@plane/types";
+import type { EPageAccess } from "@pace/constants";
+import type { TPage } from "@pace/types";
 import type { CreatePayload, BaseActionPayload } from "@/types";
 
 // Define all payload types for each event.

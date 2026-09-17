@@ -8,14 +8,14 @@ import { useCallback, useRef, useState } from "react";
 import { debounce } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane hooks
-import { useOutsideClickDetector } from "@plane/hooks";
+// pace hooks
+import { useOutsideClickDetector } from "@pace/hooks";
 // helpers
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { useSticky } from "@/hooks/use-stickies";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 
 export const StickySearch = observer(function StickySearch() {
   // router

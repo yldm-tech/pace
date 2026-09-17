@@ -12,15 +12,15 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import useSWR from "swr";
 import { Popover } from "@headlessui/react";
-// plane imports
+// pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { Tab, Tabs, TabsList, TabsPanel } from "@makeplane/propel/components/tabs";
-import { ACCEPTED_COVER_IMAGE_MIME_TYPES_FOR_REACT_DROPZONE, MAX_FILE_SIZE } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { Button, getButtonStyling } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { EFileAssetType } from "@plane/types";
-import { Loader } from "@plane/ui";
+import { ACCEPTED_COVER_IMAGE_MIME_TYPES_FOR_REACT_DROPZONE, MAX_FILE_SIZE } from "@pace/constants";
+import { useOutsideClickDetector } from "@pace/hooks";
+import { Button, getButtonStyling } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import { EFileAssetType } from "@pace/types";
+import { Loader } from "@pace/ui";
 // helpers
 import { STATIC_COVER_IMAGES, getCoverImageDisplayURL } from "@/helpers/cover-image.helper";
 // hooks

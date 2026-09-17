@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 import { ArrowDownOutline, TopArrowOutline } from "@makeplane/propel/icons";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { cn } from "@plane/utils";
+// pace imports
+import { Button } from "@pace/propel/button";
+import { cn } from "@pace/utils";
 // constants
 import type { TPlanePlans } from "@/components/workspace/billing/comparison/plans";
 import { ComingSoonBadge, PLANE_PLANS, PLANS_LIST } from "@/components/workspace/billing/comparison/plans";

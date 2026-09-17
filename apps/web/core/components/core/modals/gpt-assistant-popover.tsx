@@ -11,11 +11,11 @@ import { Controller, useForm } from "react-hook-form"; // services
 import { usePopper } from "react-popper";
 import { WarningCircleOutline } from "@makeplane/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
-// plane imports
+// pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import type { EditorRefApi } from "@plane/editor";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import type { EditorRefApi } from "@pace/editor";
+import { Button } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 
 // components
 import { RichTextEditor } from "@/components/editor/rich-text";

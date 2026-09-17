@@ -7,12 +7,12 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { estimateCount } from "@plane/constants";
-import { Button } from "@plane/propel/button";
+// pace imports
+import { estimateCount } from "@pace/constants";
+import { Button } from "@pace/propel/button";
 import { AddOutline } from "@makeplane/propel/icons";
-import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeError } from "@plane/types";
-import { Sortable } from "@plane/ui";
+import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeError } from "@pace/types";
+import { Sortable } from "@pace/ui";
 // local imports
 import { EstimatePointCreate } from "./create";
 import { EstimatePointItemPreview } from "./preview";

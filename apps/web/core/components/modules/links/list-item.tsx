@@ -7,12 +7,12 @@
 import { observer } from "mobx-react";
 
 import { CopyOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
-// plane types
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+// pace types
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { ILinkDetails } from "@plane/types";
-// plane ui
-import { getIconForLink, copyTextToClipboard, calculateTimeAgo } from "@plane/utils";
+import type { ILinkDetails } from "@pace/types";
+// pace ui
+import { getIconForLink, copyTextToClipboard, calculateTimeAgo } from "@pace/utils";
 // helpers
 //
 // hooks

@@ -11,7 +11,7 @@ import type {
   IIssueFilterOptions,
   TIssue,
   EIssuesStoreType,
-} from "@plane/types";
+} from "@pace/types";
 
 export const ALL_ISSUES = "All Issues";
 

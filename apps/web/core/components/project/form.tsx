@@ -10,17 +10,17 @@ import { InfoOutline, LockOutline } from "@makeplane/propel/icons";
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { TextArea, TextAreaGroup } from "@makeplane/propel/components/text-area";
-import { NETWORK_CHOICES } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@plane/propel/emoji-icon-picker";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { NETWORK_CHOICES } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+// pace imports
+import { Button } from "@pace/propel/button";
+import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { EFileAssetType } from "@plane/types";
-import type { IProject, IWorkspace } from "@plane/types";
-import { CustomSelect } from "@plane/ui";
-import { renderFormattedDate } from "@plane/utils";
+import { EFileAssetType } from "@pace/types";
+import type { IProject, IWorkspace } from "@pace/types";
+import { CustomSelect } from "@pace/ui";
+import { renderFormattedDate } from "@pace/utils";
 import { CoverImage } from "@/components/common/cover-image";
 import { ImagePickerPopover } from "@/components/core/image-picker-popover";
 import { TimezoneSelect } from "@/components/global";

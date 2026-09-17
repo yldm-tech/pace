@@ -9,15 +9,15 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 // ui
 import { ArchiveOutline, WorkItemsOutline } from "@makeplane/propel/icons";
-import { Breadcrumbs, Header } from "@plane/ui";
+import { Breadcrumbs, Header } from "@pace/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { IssueDetailQuickActions } from "@/components/issues/issue-detail/issue-detail-quick-actions";
 // constants
-import { ISSUE_DETAILS } from "@plane/constants";
+import { ISSUE_DETAILS } from "@pace/constants";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
-// plane web
+// pace web
 import { ProjectBreadcrumb } from "@/components/breadcrumbs/project";
 // services
 import { IssueService } from "@/services/issue";

@@ -7,14 +7,14 @@
 import { observer } from "mobx-react";
 import useSWR from "swr";
 // components
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
 import { PageHead } from "@/components/core/page-title";
 import { SingleIntegrationCard } from "@/components/integration/single-integration-card";
 import { IntegrationsSettingsLoader } from "@/components/ui/loader/settings/integration";
 // constants
-import { APP_INTEGRATIONS } from "@plane/constants";
+import { APP_INTEGRATIONS } from "@pace/constants";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserPermissions } from "@/hooks/store/user";

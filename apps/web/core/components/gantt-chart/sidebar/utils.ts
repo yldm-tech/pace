@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { ChartDataType, IBlockUpdateData, IGanttBlock } from "@plane/types";
+import type { ChartDataType, IBlockUpdateData, IGanttBlock } from "@pace/types";
 
 export const handleOrderChange = (
   draggingBlockId: string | undefined,

@@ -6,12 +6,12 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { MODULE_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TModuleStatus } from "@plane/propel/icons";
-import { ModuleStatusIcon } from "@plane/propel/icons";
-import type { IModule } from "@plane/types";
-import { CustomSelect } from "@plane/ui";
+import { MODULE_STATUS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import type { TModuleStatus } from "@pace/propel/icons";
+import { ModuleStatusIcon } from "@pace/propel/icons";
+import type { IModule } from "@pace/types";
+import { CustomSelect } from "@pace/ui";
 
 type Props = {
   isDisabled: boolean;

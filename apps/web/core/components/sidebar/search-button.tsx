@@ -5,7 +5,7 @@
  */
 
 import { SearchOutline } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type Props = {
   isActive?: boolean;

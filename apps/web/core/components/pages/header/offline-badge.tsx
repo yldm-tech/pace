@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // hooks
 import useOnlineStatus from "@/hooks/use-online-status";

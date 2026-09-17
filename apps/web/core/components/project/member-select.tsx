@@ -9,11 +9,11 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Ban } from "lucide-react";
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { EUserProjectRoles } from "@plane/types";
-// plane ui
-import { CustomSearchSelect } from "@plane/ui";
+import { EUserProjectRoles } from "@pace/types";
+// pace ui
+import { CustomSearchSelect } from "@pace/ui";
 // helpers
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@pace/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 

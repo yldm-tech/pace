@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 
-// plane internal packages
+// pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { NewTabOutline } from "@makeplane/propel/icons";
-import { WEB_BASE_URL } from "@plane/constants";
-import { getFileURL } from "@plane/utils";
+import { WEB_BASE_URL } from "@pace/constants";
+import { getFileURL } from "@pace/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store";
 

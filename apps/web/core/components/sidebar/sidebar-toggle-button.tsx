@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import { LeftSidePaneOutline } from "@makeplane/propel/icons";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 
 export const AppSidebarToggleButton = observer(function AppSidebarToggleButton() {
   // store hooks

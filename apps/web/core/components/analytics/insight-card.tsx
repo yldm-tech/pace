@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
+// pace package imports
 import React from "react";
-import type { IAnalyticsResponseFields } from "@plane/types";
-import { Loader } from "@plane/ui";
+import type { IAnalyticsResponseFields } from "@pace/types";
+import { Loader } from "@pace/ui";
 
 export type InsightCardProps = {
   data?: IAnalyticsResponseFields;

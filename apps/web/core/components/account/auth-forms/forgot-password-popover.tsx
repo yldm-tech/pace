@@ -7,8 +7,8 @@
 import { Fragment, useState } from "react";
 import { usePopper } from "react-popper";
 import { Popover } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { CloseOutline } from "@makeplane/propel/icons";
 
 export function ForgotPasswordPopover() {
@@ -27,7 +27,7 @@ export function ForgotPasswordPopover() {
       },
     ],
   });
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
 
   return (

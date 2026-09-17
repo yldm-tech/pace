@@ -5,13 +5,13 @@
  */
 
 import { useState } from "react";
-// plane imports
-import { ROLE } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import type { IWorkspaceMemberInvitation } from "@plane/types";
+// pace imports
+import { ROLE } from "@pace/constants";
+import { Button } from "@pace/propel/button";
+import type { IWorkspaceMemberInvitation } from "@pace/types";
 import { Checkbox } from "@makeplane/propel/components/checkbox";
-import { Spinner } from "@plane/ui";
-import { truncateText } from "@plane/utils";
+import { Spinner } from "@pace/ui";
+import { truncateText } from "@pace/utils";
 // constants
 import { WorkspaceLogo } from "@/components/workspace/logo";
 // hooks

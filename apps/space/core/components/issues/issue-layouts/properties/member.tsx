@@ -8,10 +8,10 @@ import { observer } from "mobx-react";
 // icons
 import type { LucideIcon } from "lucide-react";
 import { MembersOutline } from "@makeplane/propel/icons";
-// plane ui
-import { Avatar, AvatarGroup } from "@plane/ui";
-// plane utils
-import { cn } from "@plane/utils";
+// pace ui
+import { Avatar, AvatarGroup } from "@pace/ui";
+// pace utils
+import { cn } from "@pace/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 //

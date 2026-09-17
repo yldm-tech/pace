@@ -7,12 +7,12 @@
 import { observer } from "mobx-react";
 import { CircleDashed, Microscope } from "lucide-react";
 import { AlertOctagonOutline, BarOutline, FolderOutline, SearchOutline } from "@makeplane/propel/icons";
-// plane imports
-import { MARKETING_PRICING_PAGE_LINK } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { getButtonStyling } from "@plane/propel/button";
-import { ContentWrapper } from "@plane/ui";
-import { cn } from "@plane/utils";
+// pace imports
+import { MARKETING_PRICING_PAGE_LINK } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { getButtonStyling } from "@pace/propel/button";
+import { ContentWrapper } from "@pace/ui";
+import { cn } from "@pace/utils";
 // assets
 import ctaL1Dark from "@/app/assets/workspace-active-cycles/cta-l-1-dark.webp?url";
 import ctaL1Light from "@/app/assets/workspace-active-cycles/cta-l-1-light.webp?url";

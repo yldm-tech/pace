@@ -10,14 +10,14 @@ import { useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 // icons
 import { TickCircleOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { useTranslation } from "@plane/i18n";
-import { Button, getButtonStyling } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { useTranslation } from "@pace/i18n";
+import { Button, getButtonStyling } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 
-import { cn, checkEmailValidity } from "@plane/utils";
+import { cn, checkEmailValidity } from "@pace/utils";
 // hooks
 import useTimer from "@/hooks/use-timer";
 // services
@@ -41,7 +41,7 @@ export const ForgotPasswordForm = observer(function ForgotPasswordForm() {
   // search params
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // timer
   const { timer: resendTimerCode, setTimer: setResendCodeTimer } = useTimer(0);

@@ -14,9 +14,9 @@ import {
   TransferWorkItemOutline,
   WarningCircleOutline,
 } from "@makeplane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { EIssuesStoreType } from "@plane/types";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import { EIssuesStoreType } from "@pace/types";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useIssues } from "@/hooks/store/use-issues";
 

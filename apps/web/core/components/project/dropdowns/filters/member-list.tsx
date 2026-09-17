@@ -6,12 +6,12 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { Button } from "@plane/propel/button";
+// pace imports
+import { Button } from "@pace/propel/button";
 import { ChevronDownOutline } from "@makeplane/propel/icons";
-import { EUserProjectRoles, EUserWorkspaceRoles } from "@plane/types";
-// plane ui
-import { CustomMenu } from "@plane/ui";
+import { EUserProjectRoles, EUserWorkspaceRoles } from "@pace/types";
+// pace ui
+import { CustomMenu } from "@pace/ui";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 

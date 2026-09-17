@@ -19,7 +19,7 @@ import {
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { EmptySpace, EmptySpaceItem } from "@/components/ui/empty-space";
 // constants
-import { WORKSPACE_INVITATION } from "@plane/constants";
+import { WORKSPACE_INVITATION } from "@pace/constants";
 // helpers
 import { EPageTypes } from "@/helpers/authentication.helper";
 // hooks

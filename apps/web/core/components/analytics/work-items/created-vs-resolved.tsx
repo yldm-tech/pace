@@ -8,17 +8,17 @@ import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-// plane package imports
-import { useTranslation } from "@plane/i18n";
-import { AreaChart } from "@plane/propel/charts/area-chart";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { IChartResponse, TChartData } from "@plane/types";
-import { renderFormattedDate } from "@plane/utils";
+// pace package imports
+import { useTranslation } from "@pace/i18n";
+import { AreaChart } from "@pace/propel/charts/area-chart";
+import { EmptyStateCompact } from "@pace/propel/empty-state";
+import type { IChartResponse, TChartData } from "@pace/types";
+import { renderFormattedDate } from "@pace/utils";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 // services
 import { AnalyticsService } from "@/services/analytics.service";
-// plane web components
+// pace web components
 import AnalyticsSectionWrapper from "../analytics-section-wrapper";
 import { ChartLoader } from "../loaders";
 

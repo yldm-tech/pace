@@ -6,8 +6,8 @@
 
 import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
-// plane helpers
-import { useOutsideClickDetector } from "@plane/hooks";
+// pace helpers
+import { useOutsideClickDetector } from "@pace/hooks";
 // hooks
 import { useTheme } from "@/hooks/store";
 // components

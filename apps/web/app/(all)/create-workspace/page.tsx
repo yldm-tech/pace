@@ -7,11 +7,11 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button, getButtonStyling } from "@plane/propel/button";
-import { PlaneLogo } from "@plane/propel/icons";
-import type { IWorkspace } from "@plane/types";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { Button, getButtonStyling } from "@pace/propel/button";
+import { PlaneLogo } from "@pace/propel/icons";
+import type { IWorkspace } from "@pace/types";
 // assets
 import WorkspaceCreationDisabled from "@/app/assets/workspace/workspace-creation-disabled.png?url";
 // components

@@ -10,12 +10,12 @@ import { useParams } from "next/navigation";
 import { CircleDashed } from "lucide-react";
 import { AddOutline } from "@makeplane/propel/icons";
 // types
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue, ISearchIssueResponse, TIssueGroupByOptions } from "@plane/types";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TIssue, ISearchIssueResponse, TIssueGroupByOptions } from "@pace/types";
 // ui
-import { CustomMenu } from "@plane/ui";
+import { CustomMenu } from "@pace/ui";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
 import { MultipleSelectGroupAction } from "@/components/core/multiple-select";
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";

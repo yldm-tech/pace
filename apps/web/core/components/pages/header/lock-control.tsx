@@ -7,7 +7,7 @@
 import { useState, useEffect, useRef } from "react";
 import { observer } from "mobx-react";
 import { LockedOutline, UnlockedOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // hooks
 import { usePageOperations } from "@/hooks/use-page-operations";

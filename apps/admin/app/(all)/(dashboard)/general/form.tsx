@@ -7,11 +7,11 @@
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
 import { UsageOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Button } from "@makeplane/propel/components/button";
 import { Input } from "@makeplane/propel/components/input";
 import { Switch } from "@makeplane/propel/components/switch";
-import type { IInstance, IInstanceAdmin } from "@plane/types";
+import type { IInstance, IInstanceAdmin } from "@pace/types";
 // components
 import { ControllerInput } from "@/components/common/controller-input";
 import { TOAST_TYPE, setToast } from "@/providers/toast";

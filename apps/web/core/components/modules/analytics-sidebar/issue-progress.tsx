@@ -9,22 +9,22 @@ import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
 import { ChevronDownOutline, ChevronUpOutline, WarningCircleOutline } from "@makeplane/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
-import { EEstimateSystem } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TModulePlotType } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import { CustomSelect, Spinner } from "@plane/ui";
+import { EEstimateSystem } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import type { TModulePlotType } from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
+import { CustomSelect, Spinner } from "@pace/ui";
 // components
 // constants
 // helpers
-import { getDate } from "@plane/utils";
+import { getDate } from "@pace/utils";
 import ProgressChart from "@/components/core/sidebar/progress-chart";
 import { ModuleProgressStats } from "@/components/modules";
 // hooks
 import { useProjectEstimates } from "@/hooks/store/estimates";
 import { useModule } from "@/hooks/store/use-module";
 import { useWorkItemFilters } from "@/hooks/store/work-item-filters/use-work-item-filters";
-// plane web constants
+// pace web constants
 type TModuleAnalyticsProgress = {
   workspaceSlug: string;
   projectId: string;
@@ -42,7 +42,7 @@ export const ModuleAnalyticsProgress = observer(function ModuleAnalyticsProgress
   // router
   const searchParams = useSearchParams();
   const peekModule = searchParams.get("peekModule") || undefined;
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // hooks
   const { areEstimateEnabledByProjectId, currentActiveEstimateId, estimateById } = useProjectEstimates();

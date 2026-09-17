@@ -8,12 +8,12 @@ import type { MouseEvent } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { PriorityIcon } from "@plane/propel/icons";
+import { PriorityIcon } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { Row } from "@plane/ui";
-import { cn, renderFormattedDate } from "@plane/utils";
+import { Row } from "@pace/ui";
+import { cn, renderFormattedDate } from "@pace/utils";
 // components
 import { ButtonAvatars } from "@/components/dropdowns/member/avatar";
 // hooks

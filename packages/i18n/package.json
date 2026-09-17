@@ -1,6 +1,6 @@
 {
-  "name": "@plane/i18n",
-  "version": "1.4.3",
+  "name": "@pace/i18n",
+  "version": "1.4.4",
   "private": true,
   "description": "I18n shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -33,7 +33,7 @@
     "react-i18next": "catalog:"
   },
   "devDependencies": {
-    "@plane/typescript-config": "workspace:*",
+    "@pace/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "tsdown": "catalog:",

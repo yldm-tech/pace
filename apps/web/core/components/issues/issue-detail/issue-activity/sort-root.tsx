@@ -6,9 +6,9 @@
 
 import { memo } from "react";
 import { SortAscendingOutline, SortDescendingOutline } from "@makeplane/propel/icons";
-// plane package imports
-import { E_SORT_ORDER } from "@plane/constants";
-import { IconButton } from "@plane/propel/icon-button";
+// pace package imports
+import { E_SORT_ORDER } from "@pace/constants";
+import { IconButton } from "@pace/propel/icon-button";
 
 export type TActivitySortRoot = {
   sortOrder: E_SORT_ORDER;

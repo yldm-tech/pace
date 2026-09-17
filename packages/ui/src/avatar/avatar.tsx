@@ -5,7 +5,7 @@
  */
 
 // ui
-import { Tooltip } from "@plane/propel/tooltip";
+import { Tooltip } from "@pace/propel/tooltip";
 // helpers
 import { cn } from "../utils";
 import type { TAvatarSize } from "./helper";

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-// plane internal packages
+// pace internal packages
 import { Switch } from "@makeplane/propel/components/switch";
 // assets
 import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";

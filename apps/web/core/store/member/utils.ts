@@ -5,8 +5,8 @@
  */
 
 // Types and utilities for member filtering
-import type { EUserPermissions, TMemberOrderByOptions } from "@plane/constants";
-import type { IUserLite, TProjectMembership } from "@plane/types";
+import type { EUserPermissions, TMemberOrderByOptions } from "@pace/constants";
+import type { IUserLite, TProjectMembership } from "@pace/types";
 
 export interface IMemberFilters {
   order_by?: TMemberOrderByOptions;

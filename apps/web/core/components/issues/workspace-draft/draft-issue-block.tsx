@@ -9,13 +9,13 @@ import { omit } from "lodash-es";
 import { observer } from "mobx-react";
 import { SquareStackIcon } from "lucide-react";
 import { CopyOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
-// plane utils
+// pace utils
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TWorkspaceDraftIssue } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { Row } from "@plane/ui";
-import { cn } from "@plane/utils";
+import type { TWorkspaceDraftIssue } from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
+import type { TContextMenuItem } from "@pace/ui";
+import { Row } from "@pace/ui";
+import { cn } from "@pace/utils";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useProject } from "@/hooks/store/use-project";

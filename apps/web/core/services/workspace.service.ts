@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { API_BASE_URL } from "@plane/constants";
+import { API_BASE_URL } from "@pace/constants";
 import type {
   IWorkspace,
   IWorkspaceMemberMe,
@@ -26,7 +26,7 @@ import type {
   IWorkspaceSidebarNavigationItem,
   IWorkspaceSidebarNavigation,
   IWorkspaceUserPropertiesResponse,
-} from "@plane/types";
+} from "@pace/types";
 // services
 import { APIService } from "@/services/api.service";
 

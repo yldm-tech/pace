@@ -9,16 +9,16 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { ChevronRightOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
-import { SPREADSHEET_SELECT_GROUP } from "@plane/constants";
-// plane helpers
-import { useOutsideClickDetector } from "@plane/hooks";
+import { SPREADSHEET_SELECT_GROUP } from "@pace/constants";
+// pace helpers
+import { useOutsideClickDetector } from "@pace/hooks";
 // types
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IIssueDisplayProperties, TIssue } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+import type { IIssueDisplayProperties, TIssue } from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
 // ui
-import { ControlLink, Row } from "@plane/ui";
-import { cn, generateWorkItemLink } from "@plane/utils";
+import { ControlLink, Row } from "@pace/ui";
+import { cn, generateWorkItemLink } from "@pace/utils";
 // components
 import { MultipleSelectEntityAction } from "@/components/core/multiple-select";
 import RenderIfVisible from "@/components/core/render-if-visible-HOC";

@@ -12,15 +12,15 @@ import {
   ProjectsOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import type {
   IWorkspaceDefaultSearchResult,
   IWorkspaceIssueSearchResult,
   IWorkspacePageSearchResult,
   IWorkspaceProjectSearchResult,
   IWorkspaceSearchResult,
-} from "@plane/types";
-import { generateWorkItemLink } from "@plane/utils";
+} from "@pace/types";
+import { generateWorkItemLink } from "@pace/utils";
 // components
 import type { TPowerKSearchResultsKeys } from "@/components/power-k/core/types";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";

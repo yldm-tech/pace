@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane types
-import type { TSearchEntities } from "@plane/types";
+// pace types
+import type { TSearchEntities } from "@pace/types";
 
 export enum EMentionComponentAttributeNames {
   ID = "id",

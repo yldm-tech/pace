@@ -5,8 +5,8 @@
  */
 
 import { DownloadOutline } from "@makeplane/propel/icons";
-import type { IExportData } from "@plane/types";
-import { getDate, getFileURL, renderFormattedDate } from "@plane/utils";
+import type { IExportData } from "@pace/types";
+import { getDate, getFileURL, renderFormattedDate } from "@pace/utils";
 
 type RowData = IExportData;
 const checkExpiry = (inputDateString: string) => {

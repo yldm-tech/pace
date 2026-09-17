@@ -6,11 +6,11 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { ETabIndices } from "@plane/constants";
+import { ETabIndices } from "@pace/constants";
 import { ParentOutline } from "@makeplane/propel/icons";
-import type { ISearchIssueResponse, TIssue } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
-import { renderFormattedPayloadDate, getDate, getTabIndex } from "@plane/utils";
+import type { ISearchIssueResponse, TIssue } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
+import { renderFormattedPayloadDate, getDate, getTabIndex } from "@pace/utils";
 // components
 import { CycleDropdown } from "@/components/dropdowns/cycle";
 import { DateDropdown } from "@/components/dropdowns/date";

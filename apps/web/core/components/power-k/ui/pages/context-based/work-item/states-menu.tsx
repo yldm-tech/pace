@@ -6,10 +6,10 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane types
+// pace types
 import { useParams } from "next/navigation";
-import type { TIssue } from "@plane/types";
-import { Spinner } from "@plane/ui";
+import type { TIssue } from "@pace/types";
+import { Spinner } from "@pace/ui";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";
 // local imports

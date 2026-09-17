@@ -5,12 +5,12 @@
  */
 
 import { observer } from "mobx-react";
-// plane ui
-import { StateGroupIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TStateGroups } from "@plane/types";
-// plane utils
-import { cn } from "@plane/utils";
+// pace ui
+import { StateGroupIcon } from "@pace/propel/icons";
+import { Tooltip } from "@pace/propel/tooltip";
+import type { TStateGroups } from "@pace/types";
+// pace utils
+import { cn } from "@pace/utils";
 //hooks
 import { useStates } from "@/hooks/store/use-state";
 

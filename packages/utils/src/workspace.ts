@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { IWorkspace } from "@plane/types";
+// pace imports
+import type { IWorkspace } from "@pace/types";
 
 export const orderWorkspacesList = (workspaces: IWorkspace[]): IWorkspace[] =>
   workspaces.sort((a, b) => a.name.localeCompare(b.name));

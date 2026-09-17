@@ -6,12 +6,12 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { IFilterInstance } from "@plane/shared-state";
-import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@plane/types";
-import { CustomSearchSelect } from "@plane/ui";
-import { getOperatorForPayload } from "@plane/utils";
+// pace imports
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import type { IFilterInstance } from "@pace/shared-state";
+import type { TExternalFilter, TFilterProperty, TSupportedOperators } from "@pace/types";
+import { CustomSearchSelect } from "@pace/ui";
+import { getOperatorForPayload } from "@pace/utils";
 
 export type TAddFilterDropdownProps<P extends TFilterProperty, E extends TExternalFilter> = {
   customButton: React.ReactNode;

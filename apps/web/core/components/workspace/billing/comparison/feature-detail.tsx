@@ -6,8 +6,8 @@
 
 import { MinusCircle } from "lucide-react";
 import { MinusOutline, TickCircleOutline } from "@makeplane/propel/icons";
-import type { EProductSubscriptionEnum } from "@plane/types";
-// plane imports
+import type { EProductSubscriptionEnum } from "@pace/types";
+// pace imports
 // constants
 import type { TPlanFeatureData } from "@/components/workspace/billing/comparison/plans";
 

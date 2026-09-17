@@ -6,9 +6,9 @@
 
 import React from "react";
 import { AttachOutline, LinkOutline, RelationsOutline, ViewsOutline } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-// plane imports
-import type { TIssueServiceType, TWorkItemWidgets } from "@plane/types";
+import { useTranslation } from "@pace/i18n";
+// pace imports
+import type { TIssueServiceType, TWorkItemWidgets } from "@pace/types";
 // local imports
 import { IssueAttachmentActionButton } from "./attachments";
 import { IssueLinksActionButton } from "./links";

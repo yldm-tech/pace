@@ -6,14 +6,14 @@
 
 import { useState } from "react";
 import { mutate } from "swr";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { APITokenService } from "@plane/services";
-import type { IApiToken } from "@plane/types";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { renderFormattedDate, csvDownload } from "@plane/utils";
+// pace imports
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import { APITokenService } from "@pace/services";
+import type { IApiToken } from "@pace/types";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { renderFormattedDate, csvDownload } from "@pace/utils";
 // constants
-import { API_TOKENS_LIST } from "@plane/constants";
+import { API_TOKENS_LIST } from "@pace/constants";
 // local imports
 import { CreateApiTokenForm } from "./form";
 import { GeneratedTokenDetails } from "./generated-token-details";

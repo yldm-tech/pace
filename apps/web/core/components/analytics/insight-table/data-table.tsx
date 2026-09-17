@@ -22,13 +22,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { useTranslation } from "@plane/i18n";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
+import { useTranslation } from "@pace/i18n";
+import { EmptyStateCompact } from "@pace/propel/empty-state";
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
-// plane package imports
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@plane/propel/table";
-import { cn } from "@plane/utils";
-// plane web components
+// pace package imports
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pace/propel/table";
+import { cn } from "@pace/utils";
+// pace web components
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

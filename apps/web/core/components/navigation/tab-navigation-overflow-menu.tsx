@@ -7,11 +7,11 @@
 import React from "react";
 import { Link } from "react-router";
 import { DefaultTabOutline, MoreHorizontalOutline, PinOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Menu } from "@plane/propel/menu";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { Menu } from "@pace/propel/menu";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // local imports
 import type { TNavigationItem } from "./tab-navigation-root";
 import type { TTabPreferences } from "./tab-navigation-utils";

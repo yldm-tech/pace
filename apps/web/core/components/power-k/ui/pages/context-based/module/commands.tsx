@@ -8,14 +8,14 @@ import { useCallback } from "react";
 import { useParams } from "next/navigation";
 import { StarOff } from "lucide-react";
 import { LinkOutline, MembersOutline, StarOutline } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { ModuleStatusIcon } from "@plane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { IModule, TModuleStatus } from "@plane/types";
-import { EUserPermissions } from "@plane/types";
-import { copyTextToClipboard } from "@plane/utils";
+// pace imports
+import { EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { ModuleStatusIcon } from "@pace/propel/icons";
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import type { IModule, TModuleStatus } from "@pace/types";
+import { EUserPermissions } from "@pace/types";
+import { copyTextToClipboard } from "@pace/utils";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks

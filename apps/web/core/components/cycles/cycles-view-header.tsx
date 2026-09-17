@@ -7,12 +7,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { CloseOutline, FilterOutline, SearchOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { IconButton } from "@plane/propel/icon-button";
-import { useTranslation } from "@plane/i18n";
-import type { TCycleFilters } from "@plane/types";
-import { cn, calculateTotalFilters } from "@plane/utils";
+// pace imports
+import { useOutsideClickDetector } from "@pace/hooks";
+import { IconButton } from "@pace/propel/icon-button";
+import { useTranslation } from "@pace/i18n";
+import type { TCycleFilters } from "@pace/types";
+import { cn, calculateTotalFilters } from "@pace/utils";
 // components
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 // hooks

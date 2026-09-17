@@ -110,13 +110,13 @@ jobs:
             pnpm-store-${{ runner.os }}-
 
       - name: Install editor dependencies
-        run: pnpm install --frozen-lockfile --filter @plane/editor...
+        run: pnpm install --frozen-lockfile --filter @pace/editor...
 
-      # Installing is not enough. The generators bundle @plane/editor's source, which imports @plane/utils and its siblings by name, and those resolve through a dist that nothing builds on install — none of them has a prepare script. Without this every generator fails with "Could not resolve @plane/utils".
+      # Installing is not enough. The generators bundle @pace/editor's source, which imports @pace/utils and its siblings by name, and those resolve through a dist that nothing builds on install — none of them has a prepare script. Without this every generator fails with "Could not resolve @pace/utils".
       #
       # propel is excluded because it does not build: emoji-picker.tsx imports ./icon/icon-root and that file is in no commit on any branch, which breaks apps/web and apps/space too. None of the entry points these generators bundle reaches propel, so leaving it out costs nothing here and keeps a frontend problem from holding this workflow red.
       - name: Build the packages the editor imports
-        run: pnpm --filter "@plane/editor^..." --filter "!@plane/propel" build
+        run: pnpm --filter "@pace/editor^..." --filter "!@pace/propel" build
 
       - name: Verify the document editor schema matches the editor
         run: |

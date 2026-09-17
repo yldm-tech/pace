@@ -7,12 +7,12 @@
 import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // ui
 import { ChevronDownOutline, CyclesOutline } from "@makeplane/propel/icons";
-import { ComboDropDown } from "@plane/ui";
+import { ComboDropDown } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useDropdown } from "@/hooks/use-dropdown";

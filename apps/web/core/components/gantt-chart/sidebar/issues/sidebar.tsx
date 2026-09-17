@@ -8,9 +8,9 @@ import type { RefObject } from "react";
 import { useState } from "react";
 import { observer } from "mobx-react";
 // ui
-import { GANTT_TIMELINE_TYPE } from "@plane/types";
-import type { IBlockUpdateData } from "@plane/types";
-import { Loader } from "@plane/ui";
+import { GANTT_TIMELINE_TYPE } from "@pace/types";
+import type { IBlockUpdateData } from "@pace/types";
+import { Loader } from "@pace/ui";
 // components
 import RenderIfVisible from "@/components/core/render-if-visible-HOC";
 import { GanttLayoutListItemLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";

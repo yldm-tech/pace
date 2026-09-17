@@ -7,17 +7,17 @@
 import type { MutableRefObject } from "react";
 import { Fragment, forwardRef, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useTranslation } from "@plane/i18n";
-// plane types
+import { useTranslation } from "@pace/i18n";
+// pace types
 import type {
   IGroupByColumn,
   TIssueGroupByOptions,
   IIssueDisplayProperties,
   TPaginationData,
   TLoader,
-} from "@plane/types";
-// plane utils
-import { cn } from "@plane/utils";
+} from "@pace/types";
+// pace utils
+import { cn } from "@pace/utils";
 // hooks
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 //

@@ -8,10 +8,10 @@ import type { FC, ReactNode } from "react";
 import { HierarchyOutline } from "@makeplane/propel/icons";
 // types
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TWorkspaceBaseActivity } from "@plane/types";
+import type { TWorkspaceBaseActivity } from "@pace/types";
 // ui
 // helpers
-import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@plane/utils";
+import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@pace/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // local components

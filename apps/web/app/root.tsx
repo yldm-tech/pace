@@ -8,8 +8,8 @@ import type { ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { LinksFunction } from "react-router";
 import { ThemeProvider, useTheme } from "next-themes";
-// plane imports
-import { SITE_DESCRIPTION, SITE_NAME } from "@plane/constants";
+// pace imports
+import { SITE_DESCRIPTION, SITE_NAME } from "@pace/constants";
 // types
 // assets
 import favicon16 from "@/app/assets/favicon/favicon-16x16.png?url";

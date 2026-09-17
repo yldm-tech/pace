@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane ui
-import { Loader } from "@plane/ui";
+// pace ui
+import { Loader } from "@pace/ui";
 
 export function StickiesLoader() {
   return (

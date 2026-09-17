@@ -9,14 +9,14 @@ import { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
 import { CloseCircleOutline, WarningCircleOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IEmailCheckData } from "@plane/types";
-import { Spinner } from "@plane/ui";
-import { checkEmailValidity } from "@plane/utils";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import type { IEmailCheckData } from "@pace/types";
+import { Spinner } from "@pace/ui";
+import { checkEmailValidity } from "@pace/utils";
 // helpers
 type TAuthEmailForm = {
   defaultEmail: string;
@@ -28,7 +28,7 @@ export const AuthEmailForm = observer(function AuthEmailForm(props: TAuthEmailFo
   // states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState(defaultEmail);
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   const emailError = useMemo(
     () => (email && !checkEmailValidity(email) ? { email: "auth.common.email.errors.invalid" } : undefined),

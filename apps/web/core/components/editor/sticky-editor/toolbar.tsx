@@ -7,15 +7,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { DeleteOutline, PaletteOutline } from "@makeplane/propel/icons";
 // editor
-import type { EditorRefApi } from "@plane/editor";
+import type { EditorRefApi } from "@pace/editor";
 // ui
-import { useOutsideClickDetector } from "@plane/hooks";
+import { useOutsideClickDetector } from "@pace/hooks";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TSticky } from "@plane/types";
+import type { TSticky } from "@pace/types";
 // constants
-import { cn } from "@plane/utils";
-import type { ToolbarMenuItem } from "@plane/editor";
-import { TOOLBAR_ITEMS } from "@plane/editor";
+import { cn } from "@pace/utils";
+import type { ToolbarMenuItem } from "@pace/editor";
+import { TOOLBAR_ITEMS } from "@pace/editor";
 // helpers
 import { ColorPalette } from "./color-palette";
 

@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Link as RRLink } from "react-router";
-import { ensureTrailingSlash } from "@plane/utils";
+import { ensureTrailingSlash } from "@pace/utils";
 
 type NextLinkProps = React.ComponentProps<"a"> & {
   href: string;

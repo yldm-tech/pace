@@ -5,10 +5,10 @@
  */
 
 import { useTheme } from "next-themes";
-// plane imports
-import type { TBillingFrequency } from "@plane/types";
-import { EProductSubscriptionEnum } from "@plane/types";
-import { cn } from "@plane/utils";
+// pace imports
+import type { TBillingFrequency } from "@pace/types";
+import { EProductSubscriptionEnum } from "@pace/types";
+import { cn } from "@pace/utils";
 
 import ScribbleBlack from "@/app/assets/scribble/scribble-black.svg?url";
 import ScribbleWhite from "@/app/assets/scribble/scribble-white.svg?url";

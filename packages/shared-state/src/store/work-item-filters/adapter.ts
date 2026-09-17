@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { isEmpty } from "lodash-es";
 import type {
   SingleOrArray,
@@ -16,9 +16,9 @@ import type {
   TWorkItemFilterExpression,
   TWorkItemFilterExpressionData,
   TWorkItemFilterProperty,
-} from "@plane/types";
-import { LOGICAL_OPERATOR, MULTI_VALUE_OPERATORS, WORK_ITEM_FILTER_PROPERTY_KEYS } from "@plane/types";
-import { createConditionNode, createAndGroupNode, isAndGroupNode, isConditionNode } from "@plane/utils";
+} from "@pace/types";
+import { LOGICAL_OPERATOR, MULTI_VALUE_OPERATORS, WORK_ITEM_FILTER_PROPERTY_KEYS } from "@pace/types";
+import { createConditionNode, createAndGroupNode, isAndGroupNode, isConditionNode } from "@pace/utils";
 // local imports
 import { FilterAdapter } from "../rich-filters/adapter";
 

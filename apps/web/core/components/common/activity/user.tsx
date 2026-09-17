@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "next/link";
 // types
-import type { TWorkspaceBaseActivity } from "@plane/types";
+import type { TWorkspaceBaseActivity } from "@pace/types";
 // store hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useWorkspace } from "@/hooks/store/use-workspace";

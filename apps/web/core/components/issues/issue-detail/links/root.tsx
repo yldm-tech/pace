@@ -7,10 +7,10 @@
 import { useCallback, useMemo, useState } from "react";
 
 import { AddOutline } from "@makeplane/propel/icons";
-// plane imports
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssueLink } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+// pace imports
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TIssueLink } from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // local imports

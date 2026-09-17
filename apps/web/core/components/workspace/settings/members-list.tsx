@@ -8,9 +8,9 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-// plane imports
+// pace imports
 import { Collapsible } from "@makeplane/propel/components/collapsible";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // components
 import { CountChip } from "@/components/common/count-chip";
 import { MembersSettingsLoader } from "@/components/ui/loader/settings/members";
