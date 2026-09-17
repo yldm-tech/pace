@@ -428,14 +428,7 @@ api-1  | Bucket 'uploads' does not exist. Creating bucket...
 api-1  | Bucket 'uploads' created successfully.
 api-1  | Public read access policy set for bucket 'uploads'.
 api-1  | Cache Cleared
-api-1  | [2024-05-02 03:56:01 +0000] [1] [INFO] Starting gunicorn 21.2.0
-api-1  | [2024-05-02 03:56:01 +0000] [1] [INFO] Listening at: http://0.0.0.0:8000 (1)
-api-1  | [2024-05-02 03:56:01 +0000] [1] [INFO] Using worker: uvicorn.workers.UvicornWorker
-api-1  | [2024-05-02 03:56:01 +0000] [25] [INFO] Booting worker with pid: 25
-api-1  | [2024-05-02 03:56:03 +0000] [25] [INFO] Started server process [25]
-api-1  | [2024-05-02 03:56:03 +0000] [25] [INFO] Waiting for application startup.
-api-1  | [2024-05-02 03:56:03 +0000] [25] [INFO] ASGI 'lifespan' protocol appears unsupported.
-api-1  | [2024-05-02 03:56:03 +0000] [25] [INFO] Application startup complete.
+api-1  | 2024/05/02 03:56:03 Pace Go API listening on :8000
 
 ```
 

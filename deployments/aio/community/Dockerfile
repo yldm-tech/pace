@@ -65,8 +65,6 @@ COPY --from=admin-img /usr/share/caddy/html/god-mode /app/admin
 COPY --from=live-img /usr/local/bin/pace-live /usr/local/bin/pace-live
 COPY --from=live-img /usr/local/bin/pace-entrypoint-live /usr/local/bin/pace-entrypoint-live
 
-RUN rm -rf /app/space/apps/space/.next/cache
-
 COPY --from=proxy-img /usr/bin/caddy /usr/bin/caddy
 COPY dist/Caddyfile /app/proxy/Caddyfile
 
