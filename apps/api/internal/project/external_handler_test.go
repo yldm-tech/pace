@@ -10,18 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Each known provider still carries a name and a default to fall back on.
-func TestTheKnownProvidersCarryADefault(t *testing.T) {
-	for name, provider := range llmProviders {
-		if provider.Name == "" || provider.DefaultModel == "" {
-			t.Errorf("%s is missing its name or its default model", name)
-		}
-	}
-	if llmProviders["openai"].DefaultModel != "gpt-4o-mini" {
-		t.Errorf("OpenAI defaults to %s", llmProviders["openai"].DefaultModel)
-	}
-}
-
 // What llmConfig accepts, and the two things it still refuses.
 //
 // The case that matters here is the third: a provider absent from llmProviders, which is what a gateway or a self-hosted endpoint is. It used to be refused outright, and so was any model outside a hardcoded per-provider list -- a list that could only go stale, and had, to the point where an installation on OpenAI's own API could not select a model released after it was written.

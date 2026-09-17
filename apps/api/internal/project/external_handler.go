@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
+	"github.com/yldm-tech/pace/apps/api/internal/llm"
 	"gorm.io/gorm"
 )
 
@@ -71,21 +72,6 @@ func (handler *Handler) unsplashSearch(c *gin.Context, _ *auth.User) {
 	drf.Respond(c, response.StatusCode, decoded)
 }
 
-// llmProviders are the providers this knows a default model for. It is no longer an allowlist: a provider absent from it is accepted and simply has no default, which is what lets the assistant be pointed at a gateway or a self-hosted endpoint.
-//
-// Each entry used to carry the full set of models it would accept, and a model outside that set was refused. That list could only ever go stale, and it had: an installation on OpenAI's own API could not select any model released after the list was written, because the check rejected it before the request was made. The provider's own API is the authority on which models it serves, and it answers with a message naming the problem rather than the silence this produced.
-var llmProviders = map[string]struct {
-	Name         string
-	DefaultModel string
-	// DefaultBaseURL is where this provider answers, so choosing one is enough and the URL only has to be typed for something not listed here. Empty means OpenAI's own, which is also the fallback when nothing is configured at all.
-	DefaultBaseURL string
-}{
-	"openai":    {"OpenAI", "gpt-4o-mini", ""},
-	"anthropic": {"Anthropic", "claude-3-5-sonnet-20240620", "https://api.anthropic.com/v1"},
-	"gemini":    {"Gemini", "gemini-1.5-pro-latest", "https://generativelanguage.googleapis.com/v1beta/openai"},
-	"everyapi":  {"EveryAPI", "claude-sonnet-5", "https://api.everyapi.ai/v1"},
-}
-
 // llmConfig is the key, the model and the provider, or nothing at all when there is no key or no model to ask for.
 //
 // What it no longer refuses is a provider it does not recognise. Every provider is called the same way -- an OpenAI-shaped POST to {base}/chat/completions with a bearer token -- so anything that speaks that shape works, and the base URL is what selects it.
@@ -99,7 +85,7 @@ func (handler *Handler) llmConfig(c *gin.Context) (key, model, provider string, 
 	}
 	if model == "" {
 		// Only a provider this knows has a default to fall back on. For any other, the model has to be named.
-		if definition, known := llmProviders[strings.ToLower(provider)]; known {
+		if definition, known := llm.Providers[strings.ToLower(provider)]; known {
 			model = definition.DefaultModel
 		}
 	}
@@ -109,21 +95,13 @@ func (handler *Handler) llmConfig(c *gin.Context) (key, model, provider string, 
 	return key, model, provider, true
 }
 
-// llmBaseURL is where the completion is asked for, in the order a deployment can override it: the instance configuration, so an operator can change it without a redeploy; the LLM_BASE_URL the process was started with; the chosen provider's own endpoint; and OpenAI.
-//
-// The provider's default sits below the two explicit settings rather than above them, so naming a provider is a convenience and never overrides an address somebody wrote down.
+// llmBaseURL is where the completion is asked for. The order lives in internal/llm, because the admin console resolves the same thing when it lists what a provider serves and the two must not disagree.
 func (handler *Handler) llmBaseURL(c *gin.Context) string {
-	if configured := strings.TrimSpace(handler.configurationValue(c, "LLM_BASE_URL", "")); configured != "" {
-		return configured
-	}
-	if handler.settings.LLMBaseURL != "" {
-		return handler.settings.LLMBaseURL
-	}
-	provider := handler.configurationValue(c, "LLM_PROVIDER", "openai")
-	if definition, known := llmProviders[strings.ToLower(provider)]; known && definition.DefaultBaseURL != "" {
-		return definition.DefaultBaseURL
-	}
-	return "https://api.openai.com/v1"
+	return llm.ResolveBaseURL(
+		handler.configurationValue(c, "LLM_BASE_URL", ""),
+		handler.settings.LLMBaseURL,
+		handler.configurationValue(c, "LLM_PROVIDER", "openai"),
+	)
 }
 
 // workspaceAssistant asks the configured model for some text, with nothing about the workspace in the answer.

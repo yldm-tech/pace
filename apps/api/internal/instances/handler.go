@@ -6,6 +6,7 @@ package instances
 import (
 	"context"
 	"net/http"
+	"net/netip"
 	"strings"
 	"time"
 
@@ -30,6 +31,9 @@ type Settings struct {
 	SecretKey            string
 	// SkipEnvironmentConfig is SKIP_ENV_VAR: with it set the configuration rows are authoritative, and without it they are ignored entirely.
 	SkipEnvironmentConfig bool
+	// The allowlists the language-model endpoint is checked against before this process connects to it. They are the webhook ones: an address typed into the console is still an address this process dials, and a deployment that has already said which private ranges are reachable should not have to say it twice.
+	LLMAllowedIPs   []netip.Prefix
+	LLMAllowedHosts []string
 	// Environment is the fallback every configuration value falls back to, read the way get_configuration_value reads it.
 	Environment map[string]string
 }
@@ -71,6 +75,7 @@ func (handler *Handler) RegisterRoutes(router gin.IRouter) {
 	router.POST(base+"admins/sign-up-screen-visited/", handler.signUpScreenVisited)
 
 	router.GET(base+"configurations/", handler.admin(handler.configurationList))
+	router.POST(base+"configurations/llm-models/", handler.admin(handler.llmModels))
 	router.PATCH(base+"configurations/", handler.admin(handler.configurationUpdate))
 	router.DELETE(base+"configurations/disable-email-feature/", handler.admin(handler.disableEmailFeature))
 	router.POST(base+"email-credentials-check/", handler.admin(handler.emailCredentialsCheck))
