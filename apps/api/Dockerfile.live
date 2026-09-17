@@ -1,6 +1,6 @@
 # The collaborative editor on its own, replacing apps/live/Dockerfile.live.
 #
-# It is a second image rather than the main one with a different entrypoint because that is what the published tags are: makeplane/plane-live has always been a separate image from makeplane/plane-backend, the all-in-one Dockerfile pulls both by name, and keeping one of them would have meant changing what every deployment refers to as well as what it contains. Building only cmd/live also makes it the smaller of the two rather than a copy of the larger.
+# It is a second image rather than the main one with a different entrypoint because the all-in-one Dockerfile pulls both by name. Building only cmd/live also makes it the smaller of the two rather than a copy of the larger.
 #
 # The tag has to keep up with the go line in go.mod: the image pins GOTOOLCHAIN=local, so a module asking for a newer toolchain than the image carries fails the download outright rather than fetching one.
 FROM golang:1.26-alpine AS build

@@ -1,36 +1,36 @@
 services:
   web:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-frontend:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-frontend:${APP_RELEASE:-latest}
     build:
       context: ../../
       dockerfile: apps/web/Dockerfile.web
 
   space:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-space:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-space:${APP_RELEASE:-latest}
     build:
       context: ../../
       dockerfile: apps/space/Dockerfile.space
 
   admin:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-admin:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-admin:${APP_RELEASE:-latest}
     build:
       context: ../../
       dockerfile: apps/admin/Dockerfile.admin
 
   live:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-live:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-live:${APP_RELEASE:-latest}
     build:
       context: ../../apps/api
       dockerfile: Dockerfile.live
 
   api:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-backend:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-backend:${APP_RELEASE:-latest}
     build:
       context: ../../apps/api
       dockerfile: Dockerfile
 
   proxy:
-    image: ${PLANE_IMAGE_OWNER:-local}/plane-proxy:${APP_RELEASE:-latest}
+    image: ${PLANE_IMAGE_OWNER:-local}/pace-proxy:${APP_RELEASE:-latest}
     build:
       context: ../../apps/proxy
       dockerfile: Dockerfile.ce
