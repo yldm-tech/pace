@@ -20,9 +20,6 @@ import { generateFileUploadPayload, getAssetIdFromUrl, getFileMetaDataForUpload 
  * @remarks This service is only available for plane sites
  */
 export class SitesFileService extends FileService {
-  private cancelSource: any;
-  fileUploadService: FileUploadService;
-
   /**
    * Creates an instance of SitesFileService
    * @param {string} BASE_URL - The base URL for API requests
@@ -30,8 +27,6 @@ export class SitesFileService extends FileService {
   constructor(BASE_URL?: string) {
     super(BASE_URL || API_BASE_URL);
     this.cancelUpload = this.cancelUpload.bind(this);
-    // services
-    this.fileUploadService = new FileUploadService();
   }
 
   /**
@@ -104,7 +99,7 @@ export class SitesFileService extends FileService {
    * @returns {Promise<void>} Promise resolving to void
    * @throws {Error} If the request fails
    */
-  async restoreNewAsset(anchor: string, src: string): Promise<void> {
+  override async restoreNewAsset(anchor: string, src: string): Promise<void> {
     // remove the last slash and get the asset id
     const assetId = getAssetIdFromUrl(src);
     return this.post(`/api/public/assets/v2/anchor/${anchor}/restore/${assetId}/`)
@@ -117,7 +112,8 @@ export class SitesFileService extends FileService {
   /**
    * Cancels the upload
    */
-  cancelUpload() {
+  // Sites cancel through the upload service's own method rather than the axios token the base class uses.
+  override cancelUpload() {
     this.cancelSource.cancelUpload();
   }
 }

@@ -25,7 +25,7 @@ import { useAppRouter } from "@/hooks/use-app-router";
 import useKeypress from "@/hooks/use-keypress";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 // local imports
 import { InboxIssueDescription } from "./issue-description";
 import { InboxIssueProperties } from "./issue-properties";

@@ -19,7 +19,7 @@ import { getAssetIdFromUrl, getFileURL, checkURLValidity } from "@pace/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 
 type Props = {
   handleRemove: () => Promise<void>;
@@ -92,7 +92,7 @@ export const WorkspaceImageUploadModal = observer(function WorkspaceImageUploadM
     setIsRemoving(true);
     try {
       if (checkURLValidity(value)) {
-        await fileService.deleteOldWorkspaceAsset(currentWorkspace?.id ?? "", value);
+        await fileService.deleteOldEditorAsset(currentWorkspace?.id ?? "", value);
       } else {
         const assetId = getAssetIdFromUrl(value);
         await fileService.deleteWorkspaceAsset(workspaceSlug.toString(), assetId);

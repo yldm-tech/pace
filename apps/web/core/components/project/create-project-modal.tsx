@@ -16,7 +16,7 @@ import { CreateProjectForm } from "@/components/projects/create/root";
 // pace web types
 import type { TProject } from "@pace/types";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 const fileService = new FileService();
 import { ProjectFeatureUpdate } from "./project-feature-update";
 

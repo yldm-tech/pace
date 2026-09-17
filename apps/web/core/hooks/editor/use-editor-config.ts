@@ -14,7 +14,7 @@ import { useEditorAsset } from "@/hooks/store/use-editor-asset";
 import { useExtendedEditorConfig } from "@/hooks/editor/use-extended-editor-config";
 import { useFileSize } from "@/hooks/use-file-size";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 const fileService = new FileService();
 
 type TArgs = {
@@ -45,7 +45,7 @@ export const useEditorConfig = () => {
         },
         delete: async (src: string) => {
           if (src?.startsWith("http")) {
-            await fileService.deleteOldWorkspaceAsset(workspaceId, src);
+            await fileService.deleteOldEditorAsset(workspaceId, src);
           } else {
             await fileService.deleteNewAsset(
               getEditorAssetSrc({

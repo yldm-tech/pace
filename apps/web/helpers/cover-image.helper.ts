@@ -37,7 +37,7 @@ import CoverImage7 from "@/app/assets/cover-images/image_7.jpg?url";
 import CoverImage8 from "@/app/assets/cover-images/image_8.jpg?url";
 import CoverImage9 from "@/app/assets/cover-images/image_9.jpg?url";
 
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 
 const fileService = new FileService();
 

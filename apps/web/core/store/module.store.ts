@@ -13,7 +13,7 @@ import type { DistributionUpdates } from "@pace/utils";
 import { updateDistribution, orderModules, shouldFilterModule } from "@pace/utils";
 // helpers
 // services
-import { ModuleService } from "@/services/module.service";
+import { ModuleService } from "@pace/services";
 import { ModuleArchiveService } from "@pace/services";
 import { ProjectService } from "@pace/services";
 // store
@@ -269,7 +269,7 @@ export class ModulesStore implements IModuleStore {
    * @returns IModule[]
    */
   fetchWorkspaceModules = async (workspaceSlug: string) =>
-    await this.moduleService.getWorkspaceModules(workspaceSlug).then((response) => {
+    await this.moduleService.workspaceModulesList(workspaceSlug).then((response) => {
       runInAction(() => {
         response.forEach((module) => {
           set(this.moduleMap, [module.id], { ...this.moduleMap[module.id], ...module });
@@ -292,7 +292,7 @@ export class ModulesStore implements IModuleStore {
   fetchModules = async (workspaceSlug: string, projectId: string) => {
     try {
       this.loader = true;
-      await this.moduleService.getModules(workspaceSlug, projectId).then((response) => {
+      await this.moduleService.projectModulesList(workspaceSlug, projectId).then((response) => {
         runInAction(() => {
           response.forEach((module) => {
             set(this.moduleMap, [module.id], { ...this.moduleMap[module.id], ...module });
@@ -317,7 +317,7 @@ export class ModulesStore implements IModuleStore {
   fetchModulesSlim = async (workspaceSlug: string, projectId: string) => {
     try {
       this.loader = true;
-      await this.moduleService.getWorkspaceModules(workspaceSlug).then((response) => {
+      await this.moduleService.workspaceModulesList(workspaceSlug).then((response) => {
         const projectModules = response.filter((module) => module.project_id === projectId);
         runInAction(() => {
           projectModules.forEach((module) => {
@@ -413,7 +413,7 @@ export class ModulesStore implements IModuleStore {
    * @returns IModule
    */
   createModule = async (workspaceSlug: string, projectId: string, data: Partial<IModule>) =>
-    await this.moduleService.createModule(workspaceSlug, projectId, data).then((response) => {
+    await this.moduleService.create(workspaceSlug, projectId, data).then((response) => {
       runInAction(() => {
         set(this.moduleMap, [response?.id], response);
       });
@@ -434,7 +434,7 @@ export class ModulesStore implements IModuleStore {
       runInAction(() => {
         set(this.moduleMap, [moduleId], { ...originalModuleDetails, ...data });
       });
-      const response = await this.moduleService.patchModule(workspaceSlug, projectId, moduleId, data);
+      const response = await this.moduleService.update(workspaceSlug, projectId, moduleId, data);
       return response;
     } catch (error) {
       console.error("Failed to update module in module store", error);
@@ -454,7 +454,7 @@ export class ModulesStore implements IModuleStore {
   deleteModule = async (workspaceSlug: string, projectId: string, moduleId: string) => {
     const moduleDetails = this.getModuleById(moduleId);
     if (!moduleDetails) return;
-    await this.moduleService.deleteModule(workspaceSlug, projectId, moduleId).then(() => {
+    await this.moduleService.destroy(workspaceSlug, projectId, moduleId).then(() => {
       runInAction(() => {
         delete this.moduleMap[moduleId];
         if (this.rootStore.favorite.entityMap[moduleId]) this.rootStore.favorite.removeFavoriteFromStore(moduleId);

@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 // pace types
 import type { EFileAssetType, TFileEntityInfo, TFileSignedURLResponse } from "@pace/types";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 import type { TAttachmentUploadStatus } from "../issue/issue-details/attachment.store";
 
 export interface IEditorAssetStore {
