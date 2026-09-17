@@ -42,7 +42,6 @@ export const links: LinksFunction = () => [
   { rel: "apple-touch-icon", href: icon512 },
   { rel: "apple-touch-icon", sizes: "180x180", href: icon180 },
   { rel: "apple-touch-icon", sizes: "512x512", href: icon512 },
-  { rel: "manifest", href: "/manifest.json" },
   { rel: "stylesheet", href: globalStyles },
   {
     rel: "preload",
