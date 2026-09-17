@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"net"
 	"net/smtp"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -255,6 +256,12 @@ func mimeEncode(value string) string {
 
 // renderEmail renders one of the embedded templates with the Django context.
 func renderEmail(name string, context map[string]any) (string, error) {
+	// Every template shows the mark at the top. It is served from this deployment rather than hotlinked from somewhere else: an image in an email is fetched when the message is opened, so a third-party url hands that third party a read receipt and an IP address for every mail this instance sends.
+	if _, present := context["logo_url"]; !present {
+		if base := strings.TrimRight(os.Getenv("WEB_URL"), "/"); base != "" {
+			context["logo_url"] = base + "/favicon/android-chrome-192x192.png"
+		}
+	}
 	parsed, err := template.ParseFS(emailTemplates, "templates/"+name)
 	if err != nil {
 		return "", fmt.Errorf("parse email template %s: %w", name, err)

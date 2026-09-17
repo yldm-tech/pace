@@ -51,7 +51,7 @@ func main() {
 		Port:     envOrDefault("EMAIL_PORT", "587"),
 		UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
 		UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
-		From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+		From:     envOrDefault("EMAIL_FROM", "Pace <support@yldm.ai>"),
 	}, repository, nil, logger)
 
 	maintenance := worker.NewMaintenanceTasks(db, worker.RetentionSettings{
@@ -128,7 +128,7 @@ func main() {
 		Port:     envOrDefault("EMAIL_PORT", "587"),
 		UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
 		UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
-		From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+		From:     envOrDefault("EMAIL_FROM", "Pace <support@yldm.ai>"),
 	}
 	emailSend, err := worker.NewEmailSendTasks(db, redisClient, emailDefaults, repository, nil, logger)
 	if err != nil {

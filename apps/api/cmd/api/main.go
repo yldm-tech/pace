@@ -142,7 +142,7 @@ func instanceMailer(db *gorm.DB, cfg config.Config) instances.Mailer {
 			Port:     envOrDefault("EMAIL_PORT", "587"),
 			UseTLS:   envOrDefault("EMAIL_USE_TLS", "1"),
 			UseSSL:   envOrDefault("EMAIL_USE_SSL", "0"),
-			From:     envOrDefault("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+			From:     envOrDefault("EMAIL_FROM", "Pace <support@yldm.ai>"),
 		},
 	}
 }
