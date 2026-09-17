@@ -20,6 +20,7 @@ import { AuthHeader } from "@/app/(all)/(home)/auth-header";
 import { PasswordStrengthIndicator } from "@/components/common/password-strength-indicator";
 import { Banner } from "../common/banner";
 import { FormHeader } from "./form-header";
+import { useTranslation } from "@pace/i18n";
 
 // service initialization
 const authService = new AuthService();
@@ -70,6 +71,7 @@ export function InstanceSetupForm() {
   const errorCode = searchParams?.get("error_code") || undefined;
   const errorMessage = searchParams?.get("error_message") || undefined;
   // state
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState({
     password: false,
     retypePassword: false,
@@ -144,7 +146,7 @@ export function InstanceSetupForm() {
       <div className="mt-10 flex w-full flex-grow flex-col items-center justify-center py-6">
         <div className="relative flex w-full max-w-[22.5rem] flex-col gap-6">
           <FormHeader
-            heading="Set up your Pace instance"
+            heading={t("admin.setup.heading")}
             subHeading="After setup, you will be able to manage this Pace instance."
           />
           {errorData.type &&
@@ -165,7 +167,7 @@ export function InstanceSetupForm() {
             <div className="flex flex-col items-center gap-4 sm:flex-row">
               <div className="w-full space-y-1">
                 <label className="text-13 font-medium text-tertiary" htmlFor="first_name">
-                  First name <span className="text-danger-primary">*</span>
+                  {t("admin.common.first_name")} <span className="text-danger-primary">*</span>
                 </label>
                 <InputGroup size="lg">
                   <Input
@@ -189,7 +191,7 @@ export function InstanceSetupForm() {
               </div>
               <div className="w-full space-y-1">
                 <label className="text-13 font-medium text-tertiary" htmlFor="last_name">
-                  Last name <span className="text-danger-primary">*</span>
+                  {t("admin.common.last_name")} <span className="text-danger-primary">*</span>
                 </label>
                 <InputGroup size="lg">
                   <Input
@@ -214,7 +216,7 @@ export function InstanceSetupForm() {
 
             <div className="w-full space-y-1">
               <label className="text-13 font-medium text-tertiary" htmlFor="email">
-                Email <span className="text-danger-primary">*</span>
+                {t("admin.common.email")} <span className="text-danger-primary">*</span>
               </label>
               <InputGroup size="lg">
                 <Input
@@ -222,7 +224,7 @@ export function InstanceSetupForm() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="name@company.com"
+                  placeholder={t("admin.common.email_placeholder")}
                   value={formData.email}
                   onChange={(e) => handleFormChange("email", e.target.value)}
                   aria-invalid={errorData.type && errorData.type === EErrorCodes.INVALID_EMAIL ? true : false}
@@ -236,7 +238,7 @@ export function InstanceSetupForm() {
 
             <div className="w-full space-y-1">
               <label className="text-13 font-medium text-tertiary" htmlFor="company_name">
-                Company name <span className="text-danger-primary">*</span>
+                {t("admin.common.company_name")} <span className="text-danger-primary">*</span>
               </label>
               <InputGroup size="lg">
                 <Input
@@ -244,7 +246,7 @@ export function InstanceSetupForm() {
                   id="company_name"
                   name="company_name"
                   type="text"
-                  placeholder="Company name"
+                  placeholder={t("admin.common.company_name")}
                   value={formData.company_name}
                   onChange={(e) => {
                     const validation = validateCompanyName(e.target.value, false);
@@ -259,7 +261,7 @@ export function InstanceSetupForm() {
 
             <div className="w-full space-y-1">
               <label className="text-13 font-medium text-tertiary" htmlFor="password">
-                Set a password <span className="text-danger-primary">*</span>
+                {t("admin.setup.set_password")} <span className="text-danger-primary">*</span>
               </label>
               <InputGroup size="lg">
                 <Input
@@ -267,7 +269,7 @@ export function InstanceSetupForm() {
                   id="password"
                   name="password"
                   type={showPassword.password ? "text" : "password"}
-                  placeholder="New password"
+                  placeholder={t("admin.setup.new_password")}
                   value={formData.password}
                   onChange={(e) => handleFormChange("password", e.target.value)}
                   aria-invalid={errorData.type && errorData.type === EErrorCodes.INVALID_PASSWORD ? true : false}
@@ -278,7 +280,7 @@ export function InstanceSetupForm() {
                 {showPassword.password ? (
                   <button
                     type="button"
-                    aria-label="Hide password"
+                    aria-label={t("admin.common.hide_password")}
                     className="flex items-center justify-center text-placeholder"
                     onClick={() => handleShowPassword("password")}
                   >
@@ -287,7 +289,7 @@ export function InstanceSetupForm() {
                 ) : (
                   <button
                     type="button"
-                    aria-label="Show password"
+                    aria-label={t("admin.common.show_password")}
                     className="flex items-center justify-center text-placeholder"
                     onClick={() => handleShowPassword("password")}
                   >
@@ -303,7 +305,7 @@ export function InstanceSetupForm() {
 
             <div className="w-full space-y-1">
               <label className="text-13 font-medium text-tertiary" htmlFor="confirm_password">
-                Confirm password <span className="text-danger-primary">*</span>
+                {t("admin.setup.confirm_password")} <span className="text-danger-primary">*</span>
               </label>
               <InputGroup size="lg">
                 <Input
@@ -313,7 +315,7 @@ export function InstanceSetupForm() {
                   name="confirm_password"
                   value={formData.confirm_password}
                   onChange={(e) => handleFormChange("confirm_password", e.target.value)}
-                  placeholder="Confirm password"
+                  placeholder={t("admin.setup.confirm_password")}
                   onFocus={() => setIsRetryPasswordInputFocused(true)}
                   onBlur={() => setIsRetryPasswordInputFocused(false)}
                   autoComplete="new-password"
@@ -321,7 +323,7 @@ export function InstanceSetupForm() {
                 {showPassword.retypePassword ? (
                   <button
                     type="button"
-                    aria-label="Hide password"
+                    aria-label={t("admin.common.hide_password")}
                     className="flex items-center justify-center text-placeholder"
                     onClick={() => handleShowPassword("retypePassword")}
                   >
@@ -330,7 +332,7 @@ export function InstanceSetupForm() {
                 ) : (
                   <button
                     type="button"
-                    aria-label="Show password"
+                    aria-label={t("admin.common.show_password")}
                     className="flex items-center justify-center text-placeholder"
                     onClick={() => handleShowPassword("retypePassword")}
                   >
@@ -349,20 +351,20 @@ export function InstanceSetupForm() {
               <div>
                 <Checkbox
                   id="is_telemetry_enabled"
-                  aria-label="Allow Pace to anonymously collect usage events"
+                  aria-label={t("admin.setup.telemetry")}
                   onCheckedChange={(checked) => handleFormChange("is_telemetry_enabled", checked)}
                   checked={formData.is_telemetry_enabled}
                 />
               </div>
               <label className="cursor-pointer text-13 font-medium text-tertiary" htmlFor="is_telemetry_enabled">
-                Allow Plane to anonymously collect usage events.{" "}
+                {t("admin.setup.telemetry")}{" "}
                 <a
                   href="https://pace.yldm.ai/docs/self-hosting/telemetry"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:text-blue-600 flex-shrink-0 text-13 font-medium"
                 >
-                  See More
+                  {t("admin.common.see_more")}
                 </a>
               </label>
             </div>
@@ -375,7 +377,7 @@ export function InstanceSetupForm() {
                 stretch="full"
                 disabled={isButtonDisabled}
                 loading={isSubmitting}
-                label="Continue"
+                label={t("admin.common.continue")}
               />
             </div>
           </form>

@@ -24,8 +24,10 @@ import { setPromiseToast } from "@/providers/toast";
 import { useInstance, useWorkspace } from "@/hooks/store";
 // types
 import type { Route } from "./+types/page";
+import { useTranslation } from "@pace/i18n";
 
 const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props: Route.ComponentProps) {
+  const { t } = useTranslation();
   // states
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // store
@@ -88,7 +90,7 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
           <div className={cn("flex w-full items-center gap-14 rounded-sm")}>
             <div className="flex grow items-center gap-4">
               <div className="grow">
-                <div className="pb-1 text-16 font-medium">Prevent anyone else from creating a workspace.</div>
+                <div className="pb-1 text-16 font-medium">{t("admin.workspace.prevent_creation")}</div>
                 <div className={cn("text-11 leading-5 font-regular text-tertiary")}>
                   Toggling this on will let only you create workspaces. You will have to invite users to new workspaces.
                 </div>
@@ -138,7 +140,7 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
                   stretch="auto"
                   nativeButton={false}
                   render={<Link href="/workspace/create" />}
-                  label="Create workspace"
+                  label={t("admin.workspace.create")}
                 />
               </div>
             </div>
@@ -154,7 +156,7 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
                   size="md"
                   onClick={() => fetchNextWorkspaces()}
                   loading={workspaceLoader === "pagination"}
-                  label="Load more"
+                  label={t("admin.actions.load_more")}
                 />
               </div>
             )}

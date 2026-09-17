@@ -85,7 +85,13 @@
       "disabled_message": "邮件功能已被禁用",
       "disable_error_title": "禁用邮件失败",
       "disable_error_message": "无法禁用邮件功能，请重试。",
-      "saved": "邮件设置已更新"
+      "saved": "邮件设置已更新",
+      "host": "主机地址",
+      "port": "端口",
+      "sender": "发件人邮箱地址",
+      "username": "用户名",
+      "security": "邮件安全",
+      "authentication": "身份认证"
     },
     "auth": {
       "heading": "管理此实例的登录方式",
@@ -97,7 +103,64 @@
       "save_failed": "保存配置失败",
       "client_id": "Client ID",
       "client_secret": "Client Secret",
-      "host": "主机地址"
+      "host": "主机地址",
+      "origin_url": "来源地址",
+      "callback_uri": "回调地址",
+      "callback_url": "回调地址",
+      "redirect_uri": "重定向地址",
+      "application_id": "应用 ID",
+      "secret": "密钥",
+      "organization_id": "组织 ID",
+      "gitea_host": "Gitea 主机地址",
+      "authorized_origins": "已授权的 JavaScript 来源",
+      "authorized_redirect": "已授权的重定向地址",
+      "authorized_callback": "已授权的回调地址",
+      "authorized_origin_url": "已授权的来源地址"
+    },
+    "common": {
+      "email": "邮箱",
+      "password": "密码",
+      "continue": "继续",
+      "sign_in": "登录",
+      "show_password": "显示密码",
+      "hide_password": "隐藏密码",
+      "see_more": "查看更多",
+      "first_name": "名",
+      "last_name": "姓",
+      "company_name": "公司名称",
+      "email_placeholder": "name@company.com",
+      "password_enter": "请输入密码",
+      "password_short": "密码太短",
+      "password_weak": "密码强度弱",
+      "password_strong": "密码强度高",
+      "keep_editing": "继续编辑",
+      "owned_by": "所有者：",
+      "total_projects": "项目总数：",
+      "total_members": "成员总数：",
+      "unique_codes": "一次性验证码",
+      "passwords": "密码"
+    },
+    "setup": {
+      "heading": "初始化你的 Pace 实例",
+      "set_password": "设置密码",
+      "new_password": "新密码",
+      "confirm_password": "确认密码",
+      "telemetry": "允许 Pace 匿名收集使用数据"
+    },
+    "signin": {
+      "heading": "管理你的 Pace 实例",
+      "password_placeholder": "请输入密码"
+    },
+    "workspace": {
+      "heading": "工作区",
+      "create": "创建工作区",
+      "prevent_creation": "禁止其他人创建工作区。",
+      "created": "工作区创建成功。",
+      "create_failed": "工作区创建失败，请重试。",
+      "create_error": "创建工作区时发生错误，请重试。",
+      "name_placeholder": "取一个熟悉且好认的名字。",
+      "slug_placeholder": "workspace-name",
+      "go_back": "返回"
     }
   }
 }
