@@ -101,4 +101,7 @@ PY
 gradient 561 312 1 "$root/apps/web/app/assets/auth/gradient-logo.webp"
 gradient 1080 672 0.35 "$root/apps/web/app/assets/auth/gradient-bg-logo.webp"
 
+# Storybook reads its brand image from propel's public directory rather than from a package it depends on, so that one copy is written here instead of being kept in step by hand.
+cp "$brand/lockup.svg" "$root/packages/propel/public/pace-lockup-light.svg"
+
 echo "brand assets regenerated from packages/brand/mark.svg"

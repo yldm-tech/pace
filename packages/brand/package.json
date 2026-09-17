@@ -1,0 +1,21 @@
+{
+  "name": "@pace/brand",
+  "version": "1.4.8",
+  "private": true,
+  "description": "The Pace mark and logotype, and the script that regenerates every icon in the repository from them",
+  "license": "AGPL-3.0",
+  "files": [
+    "mark.svg",
+    "lockup.svg",
+    "generate.sh"
+  ],
+  "exports": {
+    "./mark.svg": "./mark.svg",
+    "./lockup.svg": "./lockup.svg"
+  },
+  "scripts": {
+    "check:format": "oxfmt --check .",
+    "fix:format": "oxfmt .",
+    "generate": "bash ./generate.sh"
+  }
+}
