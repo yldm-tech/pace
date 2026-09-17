@@ -76,7 +76,7 @@ func Load() (Config, error) {
 		[]string{"http://localhost:3000", "http://localhost:3001"},
 	)
 	trustedOrigins := csvOrDefault(os.Getenv("CSRF_TRUSTED_ORIGINS"), corsOrigins)
-	secureCookies := originsRequireSecureCookies(corsOrigins)
+	secureCookies := secureCookieSetting(corsOrigins)
 	// An entry that cannot be parsed is skipped rather than stopping the process, which is what settings.py does with a warning.
 	webhookAllowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
 
@@ -172,9 +172,14 @@ func firstNonEmpty(values ...string) string {
 	return ""
 }
 
-func originsRequireSecureCookies(origins []string) bool {
-	if len(origins) == 0 {
-		return false
+// secureCookieSetting decides whether the session and CSRF cookies carry Secure.
+//
+// SECURE_COOKIES wins when it is set, so a deployment can say so outright. Otherwise the answer is yes unless one of the configured origins is served over plain http, which is what tells a local development stack apart from a real one. A deployment that configures nothing gets Secure rather than not: an unconfigured instance is far more likely to be behind TLS than to be a browser talking plain http to a real host.
+func secureCookieSetting(origins []string) bool {
+	if explicit, set := os.LookupEnv("SECURE_COOKIES"); set {
+		if parsed, err := strconv.ParseBool(strings.TrimSpace(explicit)); err == nil {
+			return parsed
+		}
 	}
 	for _, origin := range origins {
 		if strings.HasPrefix(strings.ToLower(strings.TrimSpace(origin)), "http:") {

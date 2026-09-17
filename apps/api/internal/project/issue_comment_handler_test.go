@@ -132,3 +132,22 @@ func runCommentFields(t *testing.T, body map[string]any) issueCommentInput {
 	}
 	return parsed
 }
+
+// TestInvalidChoiceQuotesTheValue covers the case the old spelling got wrong. It wrapped the value in literal quotes, so a value that contained one produced a message nobody could read back -- and a reader could not tell where the value ended. strconv.Quote escapes it instead.
+func TestInvalidChoiceQuotesTheValue(t *testing.T) {
+	for _, test := range []struct {
+		value any
+		want  string
+	}{
+		{"high", `"high" is not a valid choice.`},
+		{nil, `"None" is not a valid choice.`},
+		{`say "hi"`, `"say \"hi\"" is not a valid choice.`},
+		{`back\slash`, `"back\\slash" is not a valid choice.`},
+		{"line\nbreak", `"line\nbreak" is not a valid choice.`},
+		{42.0, `"42" is not a valid choice.`},
+	} {
+		if got := invalidChoice(test.value); got != test.want {
+			t.Errorf("invalidChoice(%#v) = %s, want %s", test.value, got, test.want)
+		}
+	}
+}

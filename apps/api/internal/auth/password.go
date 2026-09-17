@@ -34,6 +34,22 @@ func encodePassword(password, salt string, iterations int) string {
 	return fmt.Sprintf("pbkdf2_sha256$%d$%s$%s", iterations, salt, base64.StdEncoding.EncodeToString(digest))
 }
 
+// NeedsRehash reports whether a stored hash is behind what HashPassword produces now.
+//
+// Every algorithm VerifyPassword accepts is there so that a password set before this one can still be checked; none of them should be left in the database once its owner has proved they know the password. A sign-in is the only moment the plaintext is available to re-derive from, so that is where the upgrade has to happen.
+func NeedsRehash(encoded string) bool {
+	algorithm, rest, found := strings.Cut(encoded, "$")
+	if !found || algorithm != "pbkdf2_sha256" {
+		return true
+	}
+	iterations, _, found := strings.Cut(rest, "$")
+	if !found {
+		return true
+	}
+	count, err := strconv.Atoi(iterations)
+	return err != nil || count < djangoPBKDF2Iterations
+}
+
 func VerifyPassword(password, encoded string) bool {
 	algorithm, _, found := strings.Cut(encoded, "$")
 	if !found {

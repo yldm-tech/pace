@@ -15,11 +15,12 @@ import (
 )
 
 type fakeRepository struct {
-	configured      bool
-	users           map[string]*User
-	configs         map[string]string
-	loginCount      int
-	updatedPassword string
+	upgradedPassword string
+	configured       bool
+	users            map[string]*User
+	configs          map[string]string
+	loginCount       int
+	updatedPassword  string
 }
 
 func (repository *fakeRepository) InstanceConfigured(context.Context) (bool, error) {
@@ -86,6 +87,19 @@ func (repository *fakeRepository) RecordSessionLogin(_ context.Context, userID s
 	return nil
 }
 func (repository *fakeRepository) RecordLogout(context.Context, string, string, time.Time) error {
+	return nil
+}
+
+// UpgradePasswordHash records the rehash without the side effects UpdatePassword has, which is the point of it being a separate method.
+func (repository *fakeRepository) UpgradePasswordHash(_ context.Context, target *User, password string) error {
+	repository.upgradedPassword = password
+	for _, user := range repository.users {
+		if user.ID == target.ID {
+			user.Password = password
+		}
+	}
+	// The real one writes back to the caller's copy as well, and the session built straight after a sign-in is derived from it.
+	target.Password = password
 	return nil
 }
 

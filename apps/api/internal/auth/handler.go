@@ -165,6 +165,7 @@ func (handler *Handler) signIn(space bool) gin.HandlerFunc {
 			handler.redirectError(c, baseURL, nextPath, authError(ErrorAuthenticationFailedSignIn, "AUTHENTICATION_FAILED_SIGN_IN", map[string]any{"email": email}))
 			return
 		}
+		handler.upgradePasswordHash(c, user, password)
 		if authenticationError := interactiveUserError(user); authenticationError != nil {
 			handler.redirectError(c, baseURL, nextPath, authenticationError)
 			return
@@ -188,6 +189,21 @@ func (handler *Handler) signIn(space bool) gin.HandlerFunc {
 			return
 		}
 		c.Redirect(http.StatusFound, safeRedirectURL(baseURL, nextPath, nil))
+	}
+}
+
+// upgradePasswordHash re-derives the stored hash when it is behind the current algorithm, which is the only time the plaintext is at hand to do it with. A failure here is logged and otherwise ignored: the person has signed in correctly and should not be turned away because their hash could not be brought forward.
+func (handler *Handler) upgradePasswordHash(c *gin.Context, user *User, password string) {
+	if !NeedsRehash(user.Password) {
+		return
+	}
+	encoded, err := HashPassword(password)
+	if err != nil {
+		log.Printf("derive an upgraded password hash for %s: %v", user.ID, err)
+		return
+	}
+	if err := handler.repository.UpgradePasswordHash(c.Request.Context(), user, encoded); err != nil {
+		log.Printf("store an upgraded password hash for %s: %v", user.ID, err)
 	}
 }
 

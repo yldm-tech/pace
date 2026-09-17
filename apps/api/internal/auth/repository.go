@@ -128,6 +128,7 @@ type Repository interface {
 	RecordSessionLogin(ctx context.Context, userID string, at time.Time) error
 	RecordLogout(ctx context.Context, userID, ipAddress string, at time.Time) error
 	UpdatePassword(ctx context.Context, user *User, encodedPassword string, at time.Time) error
+	UpgradePasswordHash(ctx context.Context, user *User, encodedPassword string) error
 }
 
 type GORMRepository struct {
@@ -483,6 +484,18 @@ func (repository *GORMRepository) UpdatePassword(ctx context.Context, user *User
 	user.Password = encodedPassword
 	user.IsPasswordAutoset = false
 	user.UpdatedAt = at
+	return nil
+}
+
+// UpgradePasswordHash writes a freshly derived hash of the password the user just proved they know.
+//
+// It touches the password column and nothing else. UpdatePassword is for someone choosing a new password: it clears is_password_autoset and rotates the api token, neither of which should happen because a hash was brought up to date behind the scenes.
+func (repository *GORMRepository) UpgradePasswordHash(ctx context.Context, user *User, encodedPassword string) error {
+	if err := repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", user.ID).
+		Update("password", encodedPassword).Error; err != nil {
+		return err
+	}
+	user.Password = encodedPassword
 	return nil
 }
 

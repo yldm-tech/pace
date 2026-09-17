@@ -49,6 +49,7 @@ func (fakeUsers) RecordAuthentication(context.Context, *auth.User, string, strin
 func (fakeUsers) RecordSessionLogin(context.Context, string, time.Time) error         { return nil }
 func (fakeUsers) RecordLogout(context.Context, string, string, time.Time) error       { return nil }
 func (fakeUsers) UpdatePassword(context.Context, *auth.User, string, time.Time) error { return nil }
+func (fakeUsers) UpgradePasswordHash(context.Context, *auth.User, string) error       { return nil }
 
 type fakeSessions struct {
 	records map[string]*auth.SessionRecord

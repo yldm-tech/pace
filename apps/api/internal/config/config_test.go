@@ -130,3 +130,37 @@ func TestTheListenAddressFollowsTheDjangoEntrypoint(t *testing.T) {
 		})
 	}
 }
+
+// TestSecureCookiesDefaultToOn pins the direction of the default. The old rule answered no whenever nothing was configured, so a deployment that set no CORS origins quietly sent its session cookie over plain http.
+func TestSecureCookiesDefaultToOn(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		origins []string
+		want    bool
+	}{
+		{"nothing configured", nil, true},
+		{"all https", []string{"https://pace.example", "https://app.pace.example"}, true},
+		{"one plain http", []string{"https://pace.example", "http://localhost:3000"}, false},
+		{"only plain http", []string{"http://localhost:3000"}, false},
+		{"upper case scheme", []string{"HTTP://localhost:3000"}, false},
+	} {
+		if got := secureCookieSetting(test.origins); got != test.want {
+			t.Errorf("%s: secureCookieSetting(%v) = %v, want %v", test.name, test.origins, got, test.want)
+		}
+	}
+
+	// The environment wins either way.
+	t.Setenv("SECURE_COOKIES", "false")
+	if secureCookieSetting([]string{"https://pace.example"}) {
+		t.Error("SECURE_COOKIES=false did not turn it off")
+	}
+	t.Setenv("SECURE_COOKIES", "true")
+	if !secureCookieSetting([]string{"http://localhost:3000"}) {
+		t.Error("SECURE_COOKIES=true did not turn it on")
+	}
+	// Something unparseable falls back to the inference rather than guessing.
+	t.Setenv("SECURE_COOKIES", "yes-please")
+	if secureCookieSetting([]string{"http://localhost:3000"}) {
+		t.Error("an unparseable SECURE_COOKIES should leave the inference in charge")
+	}
+}

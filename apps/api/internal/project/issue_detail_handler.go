@@ -508,7 +508,7 @@ func (handler *Handler) issueFields(c *gin.Context, body map[string]json.RawMess
 		if json.Unmarshal(raw, &value) != nil || !validIssuePriority(value) {
 			var decoded any
 			_ = json.Unmarshal(raw, &decoded)
-			c.JSON(http.StatusBadRequest, gin.H{"priority": []string{`"` + stringify(decoded) + `" is not a valid choice.`}})
+			c.JSON(http.StatusBadRequest, gin.H{"priority": []string{invalidChoice(decoded)}})
 			return issueInput{}, false
 		}
 		result.values["priority"] = value

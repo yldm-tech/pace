@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 
@@ -529,7 +530,7 @@ func (handler *Handler) issueCommentFieldsFrom(c *gin.Context, body map[string]j
 		if json.Unmarshal(raw, &value) != nil || (value != "INTERNAL" && value != "EXTERNAL") {
 			var decoded any
 			_ = json.Unmarshal(raw, &decoded)
-			c.JSON(http.StatusBadRequest, gin.H{"access": []string{`"` + stringify(decoded) + `" is not a valid choice.`}})
+			c.JSON(http.StatusBadRequest, gin.H{"access": []string{invalidChoice(decoded)}})
 			return issueCommentInput{}, false
 		}
 		result.access = value
@@ -590,6 +591,11 @@ func strippedComment(html string) string {
 		return ""
 	}
 	return commentTagPattern.ReplaceAllString(html, "")
+}
+
+// invalidChoice is the message a field sends back when the value is not one of the ones it accepts. The value is quoted with strconv.Quote so that a value containing a quote of its own reads unambiguously instead of running the message together.
+func invalidChoice(value any) string {
+	return strconv.Quote(stringify(value)) + " is not a valid choice."
 }
 
 func stringify(value any) string {

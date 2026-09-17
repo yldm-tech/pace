@@ -34,3 +34,29 @@ func TestVerifyDjangoLegacyPasswordHashes(t *testing.T) {
 		}
 	}
 }
+
+// TestNeedsRehashSpotsEverythingOlderThanTheCurrentScheme covers the predicate that decides whether a sign-in should re-derive the stored hash. Every algorithm VerifyPassword still accepts is one a password could have been stored under before, and none of them should survive a successful sign-in.
+func TestNeedsRehashSpotsEverythingOlderThanTheCurrentScheme(t *testing.T) {
+	current, err := HashPassword("Correct-Horse-Battery-7")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if NeedsRehash(current) {
+		t.Errorf("a hash this version just produced should not need rehashing: %s", current)
+	}
+
+	for _, stale := range []string{
+		"pbkdf2_sha256$1000$abcdefghijklmnopqrstuv$gyIKGYrTlRTAwlDBIge8uQnhX+Bk/ZRF8dGfP4K2Zjc=",
+		"pbkdf2_sha1$260000$salt$digest",
+		"bcrypt_sha256$$2b$12$abcdefghijklmnopqrstuv",
+		"scrypt$16384$salt$8$1$digest",
+		"argon2$whatever",
+		"not-a-hash",
+		"",
+		"pbkdf2_sha256$notanumber$salt$digest",
+	} {
+		if !NeedsRehash(stale) {
+			t.Errorf("NeedsRehash(%q) = false, want true", stale)
+		}
+	}
+}
