@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     pull_request:
         branches:
-            - "preview"
+            - "main"
         types:
             - "opened"
             - "synchronize"
@@ -30,13 +30,7 @@ jobs:
                   go install github.com/google/addlicense@latest
                   echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
-            - name: Check Copyright For Python Files
-              run: |
-                  set -e
-                  echo "Running copyright check..."
-                  addlicense -check -f COPYRIGHT.txt -ignore "**/migrations/**" $(git ls-files '*.py')
-                  echo "Copyright check passed."
-
+            # There was a Python step here. No .py file is tracked any more, so `$(git ls-files '*.py')` expanded to nothing, addlicense fell back to printing its usage and exiting 1, and this job could only have gone red the moment it started running. Go files are deliberately not checked: they carry no header today and adding one is a separate decision.
             - name: Check Copyright For TypeScript Files
               run: |
                   set -e
