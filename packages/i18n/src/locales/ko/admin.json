@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "언어",
+      "description": "관리 콘솔 자체의 언어입니다. 이 브라우저에만 기억되며 다른 사용자에게 보이는 화면은 바뀌지 않습니다."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "일반",
+      "email": "이메일",
+      "authentication": "인증",
+      "ai": "인공지능",
+      "images": "이미지",
+      "workspace": "작업 공간"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "변경 사항 저장",
+      "saving": "저장 중",
+      "cancel": "취소",
+      "load_more": "더 보기"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "성공",
+      "error": "오류"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "언어 모델",
+      "subheading": "어시스턴트는 단일 프로토콜만 사용하므로, OpenAI 형식의 채팅 완성에 응답하는 엔드포인트라면 무엇이든 연결할 수 있습니다.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "공급자",
+        "custom": "사용자 정의",
+        "description": "공급자를 선택하면 해당 엔드포인트가 채워지고 모델에 기본값이 지정됩니다. 사용자 정의를 선택하면 두 가지를 직접 입력해야 하며, OpenAI 형식의 채팅 완성에 응답하는 곳이라면 무엇이든 사용할 수 있습니다."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "모델에 요청을 보낼 주소입니다. OpenAI 형식의 POST /chat/completions에 응답하는 곳이라면 게이트웨이, 자체 호스팅 서버, 공급자의 자체 엔드포인트 모두 사용할 수 있습니다. OpenAI를 사용한다면 비워 두세요.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "모델",
+        "fetch": "모델 가져오기",
+        "refresh": "새로 고침",
+        "fetching": "요청 중…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "위 엔드포인트에서 목록을 가져오거나 이름을 직접 입력하세요. 비워 두면 공급자의 기본 모델이 사용됩니다.",
+        "hint_loaded": "모델 {{count}}개. 입력을 시작하면 필터링되며, 비워 두면 공급자의 기본 모델이 사용됩니다.",
+        "error_none": "엔드포인트가 응답했지만 모델 목록이 비어 있습니다.",
+        "error_key": "엔드포인트가 API 키를 거부했습니다.",
+        "error_not_found": "해당 URL에 모델 목록이 없습니다. 보통 /v1처럼 버전 경로가 필요합니다.",
+        "error_unreachable": "엔드포인트에 연결할 수 없습니다."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API 키",
+        "description": "위 Base URL에 bearer token으로 전송됩니다.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "위 목록에 없나요? 사용자 정의를 선택하고 Base URL을 입력하세요. OpenAI 형식이라면 무엇이든 동작합니다.",
+      "saved": "AI 설정이 성공적으로 업데이트되었습니다"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "인스턴스 정보",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "인스턴스 이름",
+        "placeholder": "인스턴스 이름"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "이메일",
+        "placeholder": "관리자 이메일"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "인스턴스 ID",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "텔레메트리",
+        "description": "Pace가 익명 사용 데이터를 수집하도록 허용합니다"
       },
-      "saved": "Settings updated successfully"
+      "saved": "설정이 성공적으로 업데이트되었습니다"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "서드파티 이미지 라이브러리",
+      "subheading": "사용자가 서드파티 라이브러리에서 이미지를 검색하고 선택할 수 있도록 합니다",
+      "saved": "이미지 설정이 성공적으로 업데이트되었습니다"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "자체 인스턴스에서 보내는 보안 이메일",
+      "subheading": "설정이 잘못되면 이메일 반송과 오류가 발생할 수 있습니다.",
+      "disabled_title": "이메일 기능 비활성화됨",
+      "disabled_message": "이메일 기능이 비활성화되었습니다",
+      "disable_error_title": "이메일 비활성화 오류",
+      "disable_error_message": "이메일 기능을 비활성화하지 못했습니다. 다시 시도하세요.",
+      "saved": "이메일 설정이 성공적으로 업데이트되었습니다",
+      "host": "호스트",
+      "port": "포트",
+      "sender": "발신자 이메일 주소",
+      "username": "사용자 이름",
+      "security": "이메일 보안",
+      "authentication": "인증"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "인스턴스의 인증 방식 관리",
+      "available_modes": "사용 가능한 인증 방식",
+      "allow_signup": "초대 없이도 누구나 가입할 수 있도록 허용",
+      "cannot_disable": "인증을 비활성화할 수 없습니다",
+      "saving": "구성 저장 중",
+      "saved": "구성이 성공적으로 저장되었습니다",
+      "save_failed": "구성 저장에 실패했습니다",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "client_secret": "Client Secret",
+      "host": "호스트",
+      "origin_url": "원본 URL",
+      "callback_uri": "콜백 URI",
+      "callback_url": "콜백 URL",
+      "redirect_uri": "리디렉션 URI",
+      "application_id": "애플리케이션 ID",
+      "secret": "시크릿",
+      "organization_id": "조직 ID",
+      "gitea_host": "Gitea 호스트",
+      "authorized_origins": "승인된 JavaScript 원본",
+      "authorized_redirect": "승인된 리디렉션 URI",
+      "authorized_callback": "승인된 콜백 URI",
+      "authorized_origin_url": "승인된 원본 URL"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "이메일",
+      "password": "비밀번호",
+      "continue": "계속",
+      "sign_in": "로그인",
+      "show_password": "비밀번호 표시",
+      "hide_password": "비밀번호 숨기기",
+      "see_more": "자세히 보기",
+      "first_name": "이름",
+      "last_name": "성",
+      "company_name": "회사 이름",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "비밀번호를 입력해주세요",
+      "password_short": "비밀번호가 너무 짧습니다",
+      "password_weak": "비밀번호가 약합니다",
+      "password_strong": "비밀번호가 강합니다",
+      "keep_editing": "계속 편집",
+      "owned_by": "소유자:",
+      "total_projects": "전체 프로젝트:",
+      "total_members": "전체 멤버:",
+      "unique_codes": "고유 코드",
+      "passwords": "비밀번호"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Pace 인스턴스 설정",
+      "set_password": "비밀번호 설정",
+      "new_password": "새 비밀번호",
+      "confirm_password": "비밀번호 확인",
+      "telemetry": "Pace가 사용 이벤트를 익명으로 수집하도록 허용"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Pace 인스턴스 관리",
+      "password_placeholder": "비밀번호를 입력하세요"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "작업 공간",
+      "create": "작업 공간 생성",
+      "prevent_creation": "다른 사용자가 작업 공간을 생성하지 못하도록 합니다.",
+      "created": "작업 공간이 성공적으로 생성되었습니다.",
+      "create_failed": "작업 공간을 생성할 수 없습니다. 다시 시도하세요.",
+      "create_error": "작업 공간을 생성하는 중 오류가 발생했습니다. 다시 시도하세요.",
+      "name_placeholder": "익숙하고 알아보기 쉬운 이름이 가장 좋습니다.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "뒤로 가기"
     }
   }
 }

@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "ენა",
+      "description": "კონსოლის საკუთარი ენა. ის ამ ბრაუზერში იმახსოვრება და არ ცვლის იმას, რასაც სხვები ხედავენ."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "ზოგადი",
+      "email": "ელფოსტა",
+      "authentication": "ავთენტიფიკაცია",
+      "ai": "ხელოვნური ინტელექტი",
+      "images": "სურათები",
+      "workspace": "სამუშაო სივრცეები"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "ცვლილებების შენახვა",
+      "saving": "შენახვა",
+      "cancel": "გაუქმება",
+      "load_more": "მეტის ჩატვირთვა"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "წარმატება",
+      "error": "შეცდომა"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "ენობრივი მოდელი",
+      "subheading": "ასისტენტი ერთ პროტოკოლზე საუბრობს, ამიტომ მას ნებისმიერი ენდპოინტი მოემსახურება, რომელიც OpenAI-shaped chat completion-ის მოთხოვნას პასუხობს.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "პროვაიდერი",
+        "custom": "მორგებული",
+        "description": "პროვაიდერის არჩევისას მისი ენდპოინტი ავტომატურად ივსება და მოდელს ნაგულისხმევი მნიშვნელობა ენიჭება. მორგებული ორივეს მითითებას ითხოვს და მუშაობს ყველაფერთან, რაც OpenAI-shaped chat completion-ს პასუხობს."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "სად იგზავნება completion-ის მოთხოვნები. აქ გამოდგება ყველაფერი, რაც OpenAI-shaped POST /chat/completions-ს პასუხობს — გეითვეი, თვითჰოსტინგზე გაშვებული სერვერი ან პროვაიდერის საკუთარი ენდპოინტი. OpenAI-სთვის დატოვეთ ცარიელი.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "მოდელი",
+        "fetch": "მოდელების მოპოვება",
+        "refresh": "განახლება",
+        "fetching": "მოთხოვნა…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "მოიპოვეთ სია ზემოთ მითითებული ენდპოინტიდან ან ჩაწერეთ სახელი. ცარიელი ველის შემთხვევაში გამოიყენება პროვაიდერის ნაგულისხმევი მოდელი.",
+        "hint_loaded": "{{count}} მოდელი. დაიწყეთ წერა გასაფილტრად ან დატოვეთ ცარიელი პროვაიდერის ნაგულისხმევი მოდელისთვის.",
+        "error_none": "ენდპოინტმა პასუხი გასცა, მაგრამ არცერთი მოდელი არ ჩამოთვალა.",
+        "error_key": "ენდპოინტმა უარყო API გასაღები.",
+        "error_not_found": "ამ URL-ზე მოდელების სია არ არის. ჩვეულებრივ საჭიროა ვერსიის სეგმენტი, მაგალითად /v1.",
+        "error_unreachable": "ენდპოინტთან დაკავშირება ვერ მოხერხდა."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API გასაღები",
+        "description": "იგზავნება bearer token-ის სახით ზემოთ მითითებულ Base URL-ზე.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "ზემოთ ჩამონათვალში არ არის? აირჩიეთ მორგებული და მიუთითეთ Base URL — გამოდგება ნებისმიერი OpenAI-shaped ენდპოინტი.",
+      "saved": "AI-ის პარამეტრები წარმატებით განახლდა"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "ინსტანციის დეტალები",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "ინსტანციის სახელი",
+        "placeholder": "შეიყვანეთ ინსტანციის სახელი"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "ელფოსტა",
+        "placeholder": "ადმინის ელფოსტა"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ინსტანციის ID",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "ტელემეტრია",
+        "description": "ნება დართეთ Pace-ს შეაგროვოს ანონიმური მონაცემები გამოყენების შესახებ"
       },
-      "saved": "Settings updated successfully"
+      "saved": "პარამეტრები წარმატებით განახლდა"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "მესამე მხარის სურათების ბიბლიოთეკები",
+      "subheading": "მიეცით თქვენს მომხმარებლებს საშუალება მოძებნონ და აირჩიონ სურათები მესამე მხარის ბიბლიოთეკებიდან",
+      "saved": "სურათების პარამეტრები წარმატებით განახლდა"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "უსაფრთხო ელფოსტა თქვენივე ინსტანციიდან",
+      "subheading": "არასწორმა კონფიგურაციამ შეიძლება გამოიწვიოს ელფოსტების დაბრუნება და შეცდომები.",
+      "disabled_title": "ელფოსტის ფუნქცია გამორთულია",
+      "disabled_message": "ელფოსტის ფუნქცია გამოირთო",
+      "disable_error_title": "ელფოსტის გამორთვის შეცდომა",
+      "disable_error_message": "ელფოსტის ფუნქციის გამორთვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.",
+      "saved": "ელფოსტის პარამეტრები წარმატებით განახლდა",
+      "host": "ჰოსტი",
+      "port": "პორტი",
+      "sender": "გამგზავნის ელფოსტის მისამართი",
+      "username": "მომხმარებლის სახელი",
+      "security": "ელფოსტის უსაფრთხოება",
+      "authentication": "ავთენტიფიკაცია"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "მართეთ თქვენი ინსტანციის ავთენტიფიკაციის რეჟიმები",
+      "available_modes": "ავთენტიფიკაციის ხელმისაწვდომი რეჟიმები",
+      "allow_signup": "ნება დართეთ ნებისმიერს დარეგისტრირდეს მოწვევის გარეშეც",
+      "cannot_disable": "ავთენტიფიკაციის გამორთვა შეუძლებელია",
+      "saving": "კონფიგურაციის შენახვა",
+      "saved": "კონფიგურაცია წარმატებით შეინახა",
+      "save_failed": "კონფიგურაციის შენახვა ვერ მოხერხდა",
       "client_id": "Client ID",
       "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "host": "ჰოსტი",
+      "origin_url": "წყაროს URL",
+      "callback_uri": "უკუგამოძახების URI",
+      "callback_url": "უკუგამოძახების URL",
+      "redirect_uri": "გადამისამართების URI",
+      "application_id": "აპლიკაციის ID",
+      "secret": "საიდუმლო",
+      "organization_id": "ორგანიზაციის ID",
+      "gitea_host": "Gitea-ს ჰოსტი",
+      "authorized_origins": "ავტორიზებული JavaScript წყაროები",
+      "authorized_redirect": "ავტორიზებული გადამისამართების URI",
+      "authorized_callback": "ავტორიზებული უკუგამოძახების URI",
+      "authorized_origin_url": "ავტორიზებული წყაროს URL"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "ელფოსტა",
+      "password": "პაროლი",
+      "continue": "გაგრძელება",
+      "sign_in": "შესვლა",
+      "show_password": "პაროლის ჩვენება",
+      "hide_password": "პაროლის დამალვა",
+      "see_more": "მეტის ნახვა",
+      "first_name": "სახელი",
+      "last_name": "გვარი",
+      "company_name": "კომპანიის სახელი",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "გთხოვთ, შეიყვანოთ პაროლი",
+      "password_short": "პაროლი ძალიან მოკლეა",
+      "password_weak": "პაროლი სუსტია",
+      "password_strong": "პაროლი ძლიერია",
+      "keep_editing": "რედაქტირების გაგრძელება",
+      "owned_by": "მფლობელი:",
+      "total_projects": "პროექტების საერთო რაოდენობა:",
+      "total_members": "წევრების საერთო რაოდენობა:",
+      "unique_codes": "უნიკალური კოდები",
+      "passwords": "პაროლები"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "დააყენეთ თქვენი Pace ინსტანცია",
+      "set_password": "დააყენეთ პაროლი",
+      "new_password": "ახალი პაროლი",
+      "confirm_password": "პაროლის დადასტურება",
+      "telemetry": "ნება დართეთ Pace-ს ანონიმურად შეაგროვოს გამოყენების მოვლენები"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "მართეთ თქვენი Pace ინსტანცია",
+      "password_placeholder": "შეიყვანეთ პაროლი"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "სამუშაო სივრცეები",
+      "create": "სამუშაო სივრცის შექმნა",
+      "prevent_creation": "აუკრძალეთ სხვებს სამუშაო სივრცის შექმნა.",
+      "created": "სამუშაო სივრცე წარმატებით შეიქმნა.",
+      "create_failed": "სამუშაო სივრცის შექმნა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.",
+      "create_error": "სამუშაო სივრცის შექმნისას მოხდა შეცდომა. გთხოვთ, სცადოთ ხელახლა.",
+      "name_placeholder": "საუკეთესოა რაღაც ნაცნობი და ადვილად ამოსაცნობი.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "უკან დაბრუნება"
     }
   }
 }

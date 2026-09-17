@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Idioma",
+      "description": "O idioma do próprio console. Ele fica salvo neste navegador e não altera o que as outras pessoas veem."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "Geral",
+      "email": "E-mail",
+      "authentication": "Autenticação",
+      "ai": "Inteligência artificial",
+      "images": "Imagens",
+      "workspace": "Espaços de trabalho"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Salvar alterações",
+      "saving": "Salvando",
+      "cancel": "Cancelar",
+      "load_more": "Carregar mais"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Sucesso",
+      "error": "Erro"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Modelo de linguagem",
+      "subheading": "O assistente fala um único protocolo, então qualquer endpoint que responda a uma chat completion no formato OpenAI-shaped pode atendê-lo.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Provedor",
+        "custom": "Personalizado",
+        "description": "Escolher um deles preenche o endpoint correspondente e define um modelo padrão. Personalizado pede os dois e funciona com qualquer coisa que responda a uma chat completion no formato OpenAI-shaped."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Onde as completions são solicitadas. Qualquer coisa que responda a um POST /chat/completions no formato OpenAI-shaped funciona aqui — um gateway, um servidor auto-hospedado ou o endpoint do próprio provedor. Deixe em branco para a OpenAI.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "Modelo",
+        "fetch": "Buscar modelos",
+        "refresh": "Atualizar",
+        "fetching": "Consultando…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Busque a lista no endpoint acima ou digite um nome. Em branco, usa o padrão do provedor.",
+        "hint_loaded": "{{count}} modelos. Comece a digitar para filtrar ou deixe em branco para usar o padrão do provedor.",
+        "error_none": "O endpoint respondeu, mas não listou nenhum modelo.",
+        "error_key": "O endpoint recusou a chave de API.",
+        "error_not_found": "Nenhuma lista de modelos nessa URL. Normalmente falta o segmento de versão, como em /v1.",
+        "error_unreachable": "Não foi possível acessar o endpoint."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "Chave de API",
+        "description": "Enviada como bearer token para a Base URL acima.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Não está na lista acima? Escolha Personalizado e informe a Base URL — qualquer coisa OpenAI-shaped serve.",
+      "saved": "Configurações de IA atualizadas com sucesso"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Detalhes da instância",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Nome da instância",
+        "placeholder": "Nome da instância"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "E-mail",
+        "placeholder": "E-mail do administrador"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ID da instância",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Telemetria",
+        "description": "Permitir que o Pace colete dados de uso anônimos"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Configurações atualizadas com sucesso"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Bibliotecas de imagens de terceiros",
+      "subheading": "Permita que seus usuários busquem e escolham imagens em bibliotecas de terceiros",
+      "saved": "Configurações de imagem atualizadas com sucesso"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
+      "heading": "E-mails seguros a partir da sua própria instância",
+      "subheading": "Configurações incorretas podem causar devoluções e erros de e-mail.",
+      "disabled_title": "Recurso de e-mail desativado",
+      "disabled_message": "O recurso de e-mail foi desativado",
+      "disable_error_title": "Erro ao desativar o e-mail",
+      "disable_error_message": "Não foi possível desativar o recurso de e-mail. Tente novamente.",
+      "saved": "Configurações de e-mail atualizadas com sucesso",
       "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "port": "Porta",
+      "sender": "Endereço de e-mail do remetente",
+      "username": "Nome de usuário",
+      "security": "Segurança de e-mail",
+      "authentication": "Autenticação"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Gerencie os modos de autenticação da sua instância",
+      "available_modes": "Modos de autenticação disponíveis",
+      "allow_signup": "Permitir que qualquer pessoa se cadastre mesmo sem convite",
+      "cannot_disable": "Não é possível desativar a autenticação",
+      "saving": "Salvando configuração",
+      "saved": "Configuração salva com sucesso",
+      "save_failed": "Não foi possível salvar a configuração",
       "client_id": "Client ID",
       "client_secret": "Client secret",
       "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
+      "origin_url": "URL de origem",
+      "callback_uri": "URI de callback",
+      "callback_url": "URL de callback",
+      "redirect_uri": "URI de redirecionamento",
+      "application_id": "ID do aplicativo",
       "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "organization_id": "ID da organização",
+      "gitea_host": "Host do Gitea",
+      "authorized_origins": "Origens JavaScript autorizadas",
+      "authorized_redirect": "URI de redirecionamento autorizada",
+      "authorized_callback": "URI de callback autorizada",
+      "authorized_origin_url": "URL de origem autorizada"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "E-mail",
+      "password": "Senha",
+      "continue": "Continuar",
+      "sign_in": "Login",
+      "show_password": "Mostrar senha",
+      "hide_password": "Ocultar senha",
+      "see_more": "Ver mais",
+      "first_name": "Primeiro nome",
+      "last_name": "Sobrenome",
+      "company_name": "Nome da empresa",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Digite sua senha",
+      "password_short": "A senha é muito curta",
+      "password_weak": "A senha é fraca",
+      "password_strong": "A senha é forte",
+      "keep_editing": "Continuar editando",
+      "owned_by": "Pertence a:",
+      "total_projects": "Total de projetos:",
+      "total_members": "Total de membros:",
+      "unique_codes": "Códigos únicos",
+      "passwords": "Senhas"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Configure sua instância do Pace",
+      "set_password": "Defina uma senha",
+      "new_password": "Nova senha",
+      "confirm_password": "Confirmar senha",
+      "telemetry": "Permitir que o Pace colete eventos de uso de forma anônima"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Gerencie sua instância do Pace",
+      "password_placeholder": "Digite sua senha"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Espaços de trabalho",
+      "create": "Criar espaço de trabalho",
+      "prevent_creation": "Impedir que outras pessoas criem espaços de trabalho.",
+      "created": "Espaço de trabalho criado com sucesso.",
+      "create_failed": "Não foi possível criar o espaço de trabalho. Tente novamente.",
+      "create_error": "Ocorreu um erro ao criar o espaço de trabalho. Tente novamente.",
+      "name_placeholder": "Algo familiar e fácil de reconhecer é sempre melhor.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Voltar"
     }
   }
 }
