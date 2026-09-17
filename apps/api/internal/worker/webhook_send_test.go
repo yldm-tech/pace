@@ -122,3 +122,42 @@ func TestTheHeaderRendering(t *testing.T) {
 		t.Errorf("an unsigned delivery rendered %s", rendered)
 	}
 }
+
+// TestQuotesInAValueCannotBreakThePayload is the answer to CodeQL's unsafe-quoting alert on webhookPayload. The format string builds the object by hand, which is what the rule looks for, but every value spliced into it has already been through json.Marshal or arrived as a json.RawMessage, and none of the verbs sits inside quotes. A double quote in a value therefore lands escaped rather than ending a string early. This test fails the moment that stops being true.
+func TestQuotesInAValueCannotBreakThePayload(t *testing.T) {
+	hostile := `he said "hi", then \ left`
+	body, err := webhookPayload(webhookDelivery{
+		event:     hostile,
+		slug:      hostile,
+		eventData: json.RawMessage(`{"note": "quote \" inside"}`),
+	}, webhookRow{ID: hostile, WorkspaceID: hostile}, hostile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var decoded map[string]any
+	if err := json.Unmarshal(body, &decoded); err != nil {
+		t.Fatalf("a value carrying a double quote broke the payload: %v\n%s", err, body)
+	}
+	for _, key := range []string{"event", "action", "webhook_id", "workspace_id", "workspace_slug"} {
+		if decoded[key] != hostile {
+			t.Errorf("%q decoded to %#v, want the value it was given", key, decoded[key])
+		}
+	}
+}
+
+// TestTheBytesMatchDjangoSeparators pins the one thing about this payload that cannot be changed for tidiness. The signature in X-Plane-Signature is an HMAC over these exact bytes, and Django produced them with json.dumps, whose default separators put a space after every colon and comma. encoding/json writes neither, so marshalling a struct here -- however much cleaner it would read -- would change what every receiver verifies against.
+func TestTheBytesMatchDjangoSeparators(t *testing.T) {
+	body, err := webhookPayload(webhookDelivery{
+		event: "issue", slug: "acme",
+		eventData: json.RawMessage(`null`),
+		activity:  json.RawMessage(`null`),
+	}, webhookRow{ID: "hook-id", WorkspaceID: "workspace-id"}, "create")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := `{"event": "issue", "action": "create", "webhook_id": "hook-id", "workspace_id": "workspace-id", "workspace_slug": "acme", "data": null, "activity": null}`
+	if string(body) != want {
+		t.Errorf("payload bytes\n got %s\nwant %s", body, want)
+	}
+}
