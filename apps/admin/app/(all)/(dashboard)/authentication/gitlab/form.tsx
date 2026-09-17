@@ -24,6 +24,7 @@ import type { TCopyField } from "@/components/common/copy-field";
 import { CopyField } from "@/components/common/copy-field";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 type Props = {
   config: IFormattedInstanceConfiguration;
@@ -37,6 +38,7 @@ const GITLAB_FORM_SWITCH_FIELD: TControllerSwitchFormField<GitlabConfigFormValue
 };
 
 export function InstanceGitlabConfigForm(props: Props) {
+  const { t } = useTranslation();
   const { config } = props;
   // states
   const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
@@ -63,7 +65,7 @@ export function InstanceGitlabConfigForm(props: Props) {
     {
       key: "GITLAB_HOST",
       type: "text",
-      label: "Host",
+      label: t("admin.auth.host"),
       description: (
         <>
           This is either https://gitlab.com or the <CodeBlock>domain.tld</CodeBlock> where you host GitLab.
@@ -203,7 +205,7 @@ export function InstanceGitlabConfigForm(props: Props) {
                   onClick={(e) => void handleSubmit(onSubmit)(e)}
                   loading={isSubmitting}
                   disabled={!isDirty}
-                  label={isSubmitting ? "Saving" : "Save changes"}
+                  label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
                 />
                 <Button
                   variant="secondary"

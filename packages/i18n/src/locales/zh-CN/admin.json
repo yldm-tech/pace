@@ -86,6 +86,18 @@
       "disable_error_title": "禁用邮件失败",
       "disable_error_message": "无法禁用邮件功能，请重试。",
       "saved": "邮件设置已更新"
+    },
+    "auth": {
+      "heading": "管理此实例的登录方式",
+      "available_modes": "可用的登录方式",
+      "allow_signup": "允许任何人注册，无需邀请",
+      "cannot_disable": "无法禁用该登录方式",
+      "saving": "正在保存配置",
+      "saved": "配置已保存",
+      "save_failed": "保存配置失败",
+      "client_id": "Client ID",
+      "client_secret": "Client Secret",
+      "host": "主机地址"
     }
   }
 }

@@ -25,6 +25,7 @@ import type { TCopyField } from "@/components/common/copy-field";
 import { CopyField } from "@/components/common/copy-field";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 type Props = {
   config: IFormattedInstanceConfiguration;
@@ -38,6 +39,7 @@ const GOOGLE_FORM_SWITCH_FIELD: TControllerSwitchFormField<GoogleConfigFormValue
 };
 
 export function InstanceGoogleConfigForm(props: Props) {
+  const { t } = useTranslation();
   const { config } = props;
   // states
   const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
@@ -63,7 +65,7 @@ export function InstanceGoogleConfigForm(props: Props) {
     {
       key: "GOOGLE_CLIENT_ID",
       type: "text",
-      label: "Client ID",
+      label: t("admin.auth.client_id"),
       description: (
         <>
           Your client ID lives in your Google API Console.{" "}
@@ -85,7 +87,7 @@ export function InstanceGoogleConfigForm(props: Props) {
     {
       key: "GOOGLE_CLIENT_SECRET",
       type: "password",
-      label: "Client secret",
+      label: t("admin.auth.client_secret"),
       description: (
         <>
           Your client secret should also be in your Google API Console.{" "}
@@ -213,7 +215,7 @@ export function InstanceGoogleConfigForm(props: Props) {
                   onClick={(e) => void handleSubmit(onSubmit)(e)}
                   loading={isSubmitting}
                   disabled={!isDirty}
-                  label={isSubmitting ? "Saving" : "Save changes"}
+                  label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
                 />
                 <Button
                   variant="secondary"
