@@ -79,7 +79,7 @@ func communityProxyMatchers(t *testing.T) []*regexp.Regexp {
 	matchers := []*regexp.Regexp{}
 	for _, line := range strings.Split(config, "\n") {
 		fields := strings.Fields(line)
-		if len(fields) < 3 || fields[0] != "reverse_proxy" || !strings.HasSuffix(fields[len(fields)-1], "api:8000") {
+		if len(fields) < 3 || fields[0] != "reverse_proxy" || !proxiesToGoAPI(fields[len(fields)-1]) {
 			continue
 		}
 		if strings.HasPrefix(fields[1], "@") {

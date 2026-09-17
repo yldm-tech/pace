@@ -18,7 +18,7 @@ func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
 		"/api/users/me/workspaces/invitations/",
 	}
 	for _, route := range staticRoutes {
-		directive := "reverse_proxy " + route + " api:8000"
+		directive := "reverse_proxy " + route + " {$API_UPSTREAM:api:8000}"
 		if !strings.Contains(config, directive) {
 			t.Errorf("community proxy is missing %q", directive)
 		}
@@ -63,25 +63,44 @@ func TestCommunityProxyCutsOverOnlyCoreWorkspaceRoutes(t *testing.T) {
 		}
 	}
 
-	matcherProxy := "reverse_proxy @go_workspace_core api:8000"
+	matcherProxy := "reverse_proxy @go_workspace_core {$API_UPSTREAM:api:8000}"
 	if !strings.Contains(config, matcherProxy) {
 		t.Errorf("community proxy is missing %q", matcherProxy)
 	}
-	if !strings.Contains(config, "reverse_proxy /api/* api:8000") {
+	if !strings.Contains(config, "reverse_proxy /api/* {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the API fallback")
 	}
 	// This used to assert that nothing was still addressed to `api`, the Django service. Django is gone and `api` is the Go service now, so that reading has nothing left to protect. The failure it guarded against does still exist: Caddyfile.ce is baked into the proxy image, so an upstream no compose file declares makes every route through it a 502 while the proxy's own config reads as though it were correct. That is exactly what `api-go:8000` was doing here while the deployment called the service `api`.
 	services := composeServices(t)
-	for _, upstream := range proxyUpstreams(config) {
+	upstreams := proxyUpstreams(config)
+	// Without this the whole check passes by finding nothing. Parameterising the upstreams changed the shape the pattern below has to match, and a pattern that matches none of them leaves every assertion in the loop unreached while the test still reports success.
+	if len(upstreams) == 0 {
+		t.Fatal("no upstreams were extracted from the community proxy, so the checks below verify nothing")
+	}
+	for _, upstream := range upstreams {
 		if !services[upstream] {
 			t.Errorf("the community proxy sends traffic to %q, which is not a service in the compose file", upstream)
 		}
 	}
 }
 
-// proxyUpstreams returns every host a reverse_proxy directive names, whether the directive carries a named matcher, a bare path, or neither.
+// TestEveryProxyUpstreamIsOverridable fails on an upstream written as a bare `host:port`. The default still has to name a compose service -- that is the test above -- but a hardcoded one cannot be pointed anywhere else, and a deployment that needs to is then stuck forking the file.
+func TestEveryProxyUpstreamIsOverridable(t *testing.T) {
+	config := communityProxyConfig(t)
+	hardcoded := regexp.MustCompile(`(?m)^\s*reverse_proxy (?:\S+ )?([a-z][a-z0-9-]*:\d+)\s*$`).FindAllStringSubmatch(config, -1)
+	for _, match := range hardcoded {
+		t.Errorf("the community proxy hardcodes the upstream %q; write it as {$SOMETHING_UPSTREAM:%s} so a deployment that cannot use compose's service names can override it", match[1], match[1])
+	}
+}
+
+// proxiesToGoAPI reports whether the last field of a reverse_proxy line sends the request to the Go API. The upstream is written `{$API_UPSTREAM:api:8000}` so a deployment can point it elsewhere, and the bare form is accepted too because that is what this looked like before it was parameterised -- a reader comparing the two against the Caddyfile should not have to know which era it is in.
+func proxiesToGoAPI(upstream string) bool {
+	return strings.HasSuffix(upstream, "api:8000") || strings.HasSuffix(upstream, "api:8000}")
+}
+
+// proxyUpstreams returns the default host of every reverse_proxy directive, whether the directive carries a named matcher, a bare path, or neither. Each upstream is `{$VAR:host:port}`, and it is the default -- the part a deployment does not override -- that has to name a real compose service.
 func proxyUpstreams(config string) []string {
-	matches := regexp.MustCompile(`(?m)^\s*reverse_proxy (?:\S+ )?([a-z][a-z0-9-]*):\d+\s*$`).FindAllStringSubmatch(config, -1)
+	matches := regexp.MustCompile(`(?m)^\s*reverse_proxy (?:\S+ )?\{\$[A-Z0-9_]+:([a-z][a-z0-9-]*):\d+\}\s*$`).FindAllStringSubmatch(config, -1)
 	seen := map[string]bool{}
 	hosts := make([]string, 0, len(matches))
 	for _, match := range matches {
@@ -143,7 +162,7 @@ func TestCommunityProxyCutsOverOnlyWorkspaceThemeRoutes(t *testing.T) {
 		}
 	}
 
-	if !strings.Contains(config, "reverse_proxy @go_workspace_themes api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_themes {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace Themes reverse proxy")
 	}
 }
@@ -166,7 +185,7 @@ func TestCommunityProxyCutsOverOnlyWorkspaceUserPropertiesRoutes(t *testing.T) {
 			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_user_properties api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_user_properties {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace User Properties reverse proxy")
 	}
 }
@@ -185,7 +204,7 @@ func TestCommunityProxyCutsOverOnlyWorkspaceSidebarPreferencesRoutes(t *testing.
 			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_sidebar_preferences api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_sidebar_preferences {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace Sidebar Preferences reverse proxy")
 	}
 }
@@ -212,7 +231,7 @@ func TestCommunityProxyCutsOverOnlyWorkspaceHomePreferencesRoutes(t *testing.T) 
 			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_home_preferences api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_home_preferences {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace Home Preferences reverse proxy")
 	}
 }
@@ -238,7 +257,7 @@ func TestCommunityProxyCutsOverOnlyWorkspaceQuickLinkRoutes(t *testing.T) {
 			t.Errorf("unmigrated Workspace route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_quick_links api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_quick_links {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace Quick Links reverse proxy")
 	}
 }
@@ -268,7 +287,7 @@ func TestCommunityProxyCutsOverOnlyCoreProjectRoutes(t *testing.T) {
 			t.Errorf("unmigrated Project route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_core api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_core {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the core Project reverse proxy")
 	}
 }
@@ -301,8 +320,8 @@ func TestCommunityProxyCutsOverOnlyProjectMemberRoutes(t *testing.T) {
 		}
 	}
 	for _, directive := range []string{
-		"reverse_proxy @go_project_members api:8000",
-		"reverse_proxy /api/users/me/workspaces/*/project-roles/ api:8000",
+		"reverse_proxy @go_project_members {$API_UPSTREAM:api:8000}",
+		"reverse_proxy /api/users/me/workspaces/*/project-roles/ {$API_UPSTREAM:api:8000}",
 	} {
 		if !strings.Contains(config, directive) {
 			t.Errorf("community proxy is missing %q", directive)
@@ -333,7 +352,7 @@ func TestCommunityProxyCutsOverOnlyProjectLabelRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_labels api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_labels {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Project Labels reverse proxy")
 	}
 }
@@ -356,7 +375,7 @@ func TestCommunityProxyCutsOverOnlyTheDescriptionVersionRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_work_item_description_versions api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_work_item_description_versions {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Description versions reverse proxy")
 	}
 }
@@ -389,7 +408,7 @@ func TestCommunityProxyCutsOverOnlyTheProjectIssueOperations(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_issue_operations api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_issue_operations {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Project issue operations reverse proxy")
 	}
 }
@@ -437,7 +456,7 @@ func TestCommunityProxyCutsOverOnlyIssueInteractionRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_interactions api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_interactions {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Issue interactions reverse proxy")
 	}
 }
@@ -456,7 +475,7 @@ func TestCommunityProxyCutsOverOnlyCommentReactionRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_comment_reactions api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_comment_reactions {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Comment reactions reverse proxy")
 	}
 }
@@ -482,7 +501,7 @@ func TestCommunityProxyCutsOverOnlyTheWorkItemIdentifierRoute(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_work_item_identifier api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_work_item_identifier {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the work item identifier reverse proxy")
 	}
 }
@@ -503,7 +522,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueSyncRoute(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_sync api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_sync {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Issue sync reverse proxy")
 	}
 }
@@ -527,7 +546,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueListRoute(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_list api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_list {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Issue list reverse proxy")
 	}
 }
@@ -550,7 +569,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueDetailRoute(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_detail api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_detail {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Issue detail reverse proxy")
 	}
 }
@@ -579,7 +598,7 @@ func TestCommunityProxyCutsOverOnlyTheVersionTwoAttachmentRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_attachments api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_attachments {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Issue attachments reverse proxy")
 	}
 }
@@ -609,7 +628,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedCycleRoutes(t *testing.T) {
 			t.Errorf("Cycle route %q is not cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_cycle_basics api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_cycle_basics {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Cycle basics reverse proxy")
 	}
 }
@@ -641,7 +660,7 @@ func TestCommunityProxyCutsOverTheSessionEstimates(t *testing.T) {
 			t.Errorf("route %q would be cut over by the estimate matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_estimates api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_estimates {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the estimate reverse proxy")
 	}
 }
@@ -692,7 +711,7 @@ func TestCommunityProxyCutsOverTheWorkspaceAssets(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_assets api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_assets {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the workspace asset reverse proxy")
 	}
 }
@@ -722,7 +741,7 @@ func TestCommunityProxyCutsOverTheProjectInvitations(t *testing.T) {
 			t.Errorf("route %q would be cut over by the project invitation matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_invites api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_invites {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the project invitation reverse proxy")
 	}
 }
@@ -748,7 +767,7 @@ func TestCommunityProxyCutsOverTheDeployBoards(t *testing.T) {
 			t.Errorf("route %q would be cut over by the deploy board matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_deploy_boards api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_deploy_boards {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the deploy board reverse proxy")
 	}
 }
@@ -777,7 +796,7 @@ func TestCommunityProxyCutsOverTheSpaceAssets(t *testing.T) {
 			t.Errorf("route %q would be cut over by the space asset matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_space_assets api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_space_assets {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the space asset reverse proxy")
 	}
 }
@@ -820,7 +839,7 @@ func TestCommunityProxyCutsOverTheSpaceReadRoutes(t *testing.T) {
 			t.Errorf("route %q would be cut over by the space read matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_space_read api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_space_read {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the space reverse proxy")
 	}
 }
@@ -846,7 +865,7 @@ func TestCommunityProxyCutsOverTheProjectDetailRoutes(t *testing.T) {
 			t.Errorf("route %q would be cut over by the project detail matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_details api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_details {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the project detail reverse proxy")
 	}
 }
@@ -873,7 +892,7 @@ func TestCommunityProxyCutsOverTheWorkspaceAggregates(t *testing.T) {
 			t.Errorf("route %q would be cut over by the workspace aggregate matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_aggregates api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_aggregates {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the workspace aggregate reverse proxy")
 	}
 }
@@ -892,7 +911,7 @@ func TestCommunityProxyCutsOverTheAPITokens(t *testing.T) {
 	if matcher.MatchString("/api/users/me/") {
 		t.Error("the person's own route would be cut over by the token matcher")
 	}
-	if !strings.Contains(config, "reverse_proxy @go_api_tokens api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_api_tokens {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the API token reverse proxy")
 	}
 }
@@ -913,7 +932,7 @@ func TestCommunityProxyCutsOverTheWorkspaceIssueList(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_issues api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_issues {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the workspace issue list reverse proxy")
 	}
 }
@@ -949,7 +968,7 @@ func TestCommunityProxyCutsOverTheAdvanceAnalytics(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_advance_analytics api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_advance_analytics {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the advance analytics reverse proxy")
 	}
 }
@@ -975,7 +994,7 @@ func TestCommunityProxyCutsOverOnePersonsCornerOfAWorkspace(t *testing.T) {
 	if matcher.MatchString("/api/workspaces/acme/members/") {
 		t.Error("the member list would be cut over by the profile matcher")
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_user api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_user {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the workspace user reverse proxy")
 	}
 }
@@ -996,7 +1015,7 @@ func TestCommunityProxyCutsOverTheDraftWorkItems(t *testing.T) {
 	if matcher.MatchString("/api/workspaces/acme/draft-to-issue/") {
 		t.Error("the bare draft-to-issue path would be cut over")
 	}
-	if !strings.Contains(config, "reverse_proxy @go_draft_issues api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_draft_issues {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the draft reverse proxy")
 	}
 }
@@ -1020,7 +1039,7 @@ func TestCommunityProxyCutsOverTheStickies(t *testing.T) {
 			t.Errorf("route %q would be cut over by the sticky matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_stickies api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_stickies {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the sticky reverse proxy")
 	}
 }
@@ -1048,7 +1067,7 @@ func TestCommunityProxyCutsOverTheFavorites(t *testing.T) {
 			t.Errorf("route %q would be cut over by the favourite matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_favorites api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_favorites {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the favourite reverse proxy")
 	}
 }
@@ -1078,7 +1097,7 @@ func TestCommunityProxyCutsOverTheSessionStates(t *testing.T) {
 			t.Errorf("route %q would be cut over by the state matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_states api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_states {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the state reverse proxy")
 	}
 }
@@ -1111,7 +1130,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalWorkItems(t *testing.T) {
 			t.Errorf("route %q would be cut over by the work item matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_work_items api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_work_items {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external work item reverse proxy")
 	}
 }
@@ -1139,7 +1158,7 @@ func TestCommunityProxyCutsOverTheExternalUserAssets(t *testing.T) {
 			t.Errorf("route %q would be cut over by the user asset matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_user_assets api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_user_assets {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external user asset reverse proxy")
 	}
 }
@@ -1171,7 +1190,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalAttachments(t *testing.T) {
 			t.Errorf("unserved route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_attachments api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_attachments {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external attachments reverse proxy")
 	}
 }
@@ -1200,7 +1219,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIssueSearch(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_issue_search api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_issue_search {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external issue search reverse proxy")
 	}
 }
@@ -1222,7 +1241,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIssueRelations(t *testing.T) {
 			t.Errorf("unserved route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_relations api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_relations {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external relations reverse proxy")
 	}
 }
@@ -1250,7 +1269,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIssueActivities(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_activities api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_activities {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external activities reverse proxy")
 	}
 }
@@ -1279,7 +1298,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIssueComments(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_comments api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_comments {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external comments reverse proxy")
 	}
 }
@@ -1310,7 +1329,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIssueLinks(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_links api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_links {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external links reverse proxy")
 	}
 }
@@ -1337,7 +1356,7 @@ func TestCommunityProxyCutsOverTheExternalProjectCollection(t *testing.T) {
 			t.Errorf("route %q would be cut over by the project matcher", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_project_crud api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_project_crud {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external project reverse proxy")
 	}
 }
@@ -1369,7 +1388,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalModuleRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_modules api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_modules {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external modules reverse proxy")
 	}
 }
@@ -1402,7 +1421,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalCycleRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_cycles api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_cycles {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external cycles reverse proxy")
 	}
 }
@@ -1428,7 +1447,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalAssetRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_assets api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_assets {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external assets reverse proxy")
 	}
 }
@@ -1454,7 +1473,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalIntakeRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_intake api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_intake {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external intake reverse proxy")
 	}
 }
@@ -1496,7 +1515,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalStickyAndInviteRoutes(t *testing.T
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_stickies api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_stickies {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external stickies reverse proxy")
 	}
 }
@@ -1522,7 +1541,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalLabelRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_labels api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_labels {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external labels reverse proxy")
 	}
 }
@@ -1555,7 +1574,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalMemberRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_members api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_members {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external members reverse proxy")
 	}
 }
@@ -1582,7 +1601,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalProjectRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_projects api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_projects {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external projects reverse proxy")
 	}
 }
@@ -1610,7 +1629,7 @@ func TestCommunityProxyCutsOverOnlyTheExternalStateRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_external_states api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_external_states {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the external states reverse proxy")
 	}
 }
@@ -1641,7 +1660,7 @@ func TestCommunityProxyCutsOverOnlyTheAnalyticViewRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_analytic_views api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_analytic_views {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Analytic views reverse proxy")
 	}
 }
@@ -1668,7 +1687,7 @@ func TestCommunityProxyCutsOverOnlyTheWebhookRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_webhooks api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_webhooks {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Webhooks reverse proxy")
 	}
 }
@@ -1692,7 +1711,7 @@ func TestCommunityProxyCutsOverOnlyTheWorkspaceSearches(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_global_search api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_global_search {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the global search reverse proxy")
 	}
 }
@@ -1714,7 +1733,7 @@ func TestCommunityProxyCutsOverOnlyTheIssueSearch(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_issue_search api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_issue_search {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the issue search reverse proxy")
 	}
 }
@@ -1756,7 +1775,7 @@ func TestCommunityProxyCutsOverOnlyTheIntakeRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_intakes api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_intakes {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Intakes reverse proxy")
 	}
 }
@@ -1792,7 +1811,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedPageRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_pages api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_pages {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Pages reverse proxy")
 	}
 }
@@ -1823,7 +1842,7 @@ func TestCommunityProxyCutsOverOnlyTheNotificationRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_notifications api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_notifications {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Notifications reverse proxy")
 	}
 }
@@ -1849,7 +1868,7 @@ func TestCommunityProxyCutsOverOnlyTheWorkspaceViewRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_workspace_views api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_workspace_views {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Workspace views reverse proxy")
 	}
 }
@@ -1879,7 +1898,7 @@ func TestCommunityProxyCutsOverOnlyTheProjectViewRoutes(t *testing.T) {
 			t.Errorf("unmigrated route %q would be cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_project_views api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_project_views {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Project views reverse proxy")
 	}
 }
@@ -1907,7 +1926,7 @@ func TestCommunityProxyCutsOverOnlyTheMigratedModuleRoutes(t *testing.T) {
 			t.Errorf("Module route %q is not cut over to Go", route)
 		}
 	}
-	if !strings.Contains(config, "reverse_proxy @go_module_basics api:8000") {
+	if !strings.Contains(config, "reverse_proxy @go_module_basics {$API_UPSTREAM:api:8000}") {
 		t.Error("community proxy is missing the Module basics reverse proxy")
 	}
 }
