@@ -671,3 +671,33 @@ jobs:
             ${{ github.workspace }}/deployments/cli/community/docker-compose.yml
             ${{ github.workspace }}/deployments/cli/community/variables.env
             ${{ github.workspace }}/deployments/swarm/community/swarm.sh
+
+      # The step above is not retried by the action -- it has no input for it -- and a transient GitHub API error leaves the release created but still a draft. That happened on v1.4.27: all six images were pushed, the release existed, and the step failed with an HTML error page. A draft release is not visible to anyone, so install.sh and the compose default had a version they could not fetch, and nothing said so.
+      #
+      # This runs even when the step above failed, because that is exactly the case worth repairing. It publishes a draft, waits for the release to appear if the API was briefly unavailable, and fails loudly if neither works -- which is better than a green pipeline over a release nobody can download.
+      - name: Make sure the release is actually published
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REL_VERSION: ${{ env.REL_VERSION }}
+        run: |
+          set -o pipefail
+          for attempt in 1 2 3 4 5; do
+            state=$(gh release view "$REL_VERSION" --json isDraft,name --jq '.isDraft' 2>/dev/null || echo "missing")
+            case "$state" in
+              false)
+                echo "$REL_VERSION is published."
+                exit 0
+                ;;
+              true)
+                echo "Attempt $attempt: $REL_VERSION is a draft, publishing it."
+                gh release edit "$REL_VERSION" --draft=false && continue
+                ;;
+              *)
+                echo "Attempt $attempt: $REL_VERSION does not exist yet."
+                ;;
+            esac
+            sleep $((attempt * 10))
+          done
+          echo "::error::$REL_VERSION is not a published release after five attempts. The images may well have been pushed -- check ghcr before re-running the whole build."
+          exit 1
