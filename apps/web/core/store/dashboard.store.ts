@@ -17,7 +17,7 @@ import type {
   TWidgetStatsRequestParams,
 } from "@pace/types";
 // services
-import { DashboardService } from "@/services/dashboard.service";
+import { DashboardService } from "@pace/services";
 // pace web store
 import type { CoreRootStore } from "./root.store";
 
@@ -156,7 +156,7 @@ export class DashboardStore implements IDashboardStore {
    */
   fetchHomeDashboardWidgets = async (workspaceSlug: string): Promise<THomeDashboardResponse> => {
     try {
-      const response = await this.dashboardService.getHomeDashboardWidgets(workspaceSlug);
+      const response = await this.dashboardService.getHomeWidgets(workspaceSlug);
 
       runInAction(() => {
         this.homeDashboardId = response.dashboard.id;
@@ -228,7 +228,7 @@ export class DashboardStore implements IDashboardStore {
           ...data,
         };
       });
-      const response = await this.dashboardService.updateDashboardWidget(dashboardId, widgetId, data);
+      const response = await this.dashboardService.updateWidget(dashboardId, widgetId, data);
       return response;
     } catch (error) {
       // revert changes

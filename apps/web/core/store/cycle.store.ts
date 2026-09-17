@@ -21,8 +21,8 @@ import type { DistributionUpdates } from "@pace/utils";
 import { orderCycles, shouldFilterCycle, getDate, updateDistribution } from "@pace/utils";
 // helpers
 // services
-import { CycleService } from "@/services/cycle.service";
-import { CycleArchiveService } from "@/services/cycle_archive.service";
+import { CycleService } from "@pace/services";
+import { CycleArchiveService } from "@pace/services";
 import { IssueService } from "@pace/services";
 import { ProjectService } from "@pace/services";
 // store
@@ -414,7 +414,7 @@ export class CycleStore implements ICycleStore {
   fetchAllCycles = async (workspaceSlug: string, projectId: string) => {
     try {
       this.loader = true;
-      await this.cycleService.getCyclesWithParams(workspaceSlug, projectId).then((response) => {
+      await this.cycleService.getWithParams(workspaceSlug, projectId).then((response) => {
         runInAction(() => {
           response.forEach((cycle) => {
             set(this.cycleMap, [cycle.id], cycle);
@@ -442,7 +442,7 @@ export class CycleStore implements ICycleStore {
   fetchArchivedCycles = async (workspaceSlug: string, projectId: string) => {
     this.loader = true;
     return await this.cycleArchiveService
-      .getArchivedCycles(workspaceSlug, projectId)
+      .list(workspaceSlug, projectId)
       .then((response) => {
         runInAction(() => {
           response.forEach((cycle) => {
@@ -465,7 +465,7 @@ export class CycleStore implements ICycleStore {
    * @returns
    */
   fetchActiveCycle = async (workspaceSlug: string, projectId: string) =>
-    await this.cycleService.getCyclesWithParams(workspaceSlug, projectId, "current").then((response) => {
+    await this.cycleService.getWithParams(workspaceSlug, projectId, "current").then((response) => {
       runInAction(() => {
         response.forEach((cycle) => {
           set(this.activeCycleIdMap, [cycle.id], true);
@@ -533,7 +533,7 @@ export class CycleStore implements ICycleStore {
    * @returns
    */
   fetchArchivedCycleDetails = async (workspaceSlug: string, projectId: string, cycleId: string) =>
-    await this.cycleArchiveService.getArchivedCycleDetails(workspaceSlug, projectId, cycleId).then((response) => {
+    await this.cycleArchiveService.retrieve(workspaceSlug, projectId, cycleId).then((response) => {
       runInAction(() => {
         set(this.cycleMap, [response.id], { ...this.cycleMap?.[response.id], ...response });
       });
@@ -548,7 +548,7 @@ export class CycleStore implements ICycleStore {
    * @returns
    */
   fetchCycleDetails = async (workspaceSlug: string, projectId: string, cycleId: string) =>
-    await this.cycleService.getCycleDetails(workspaceSlug, projectId, cycleId).then((response) => {
+    await this.cycleService.retrieve(workspaceSlug, projectId, cycleId).then((response) => {
       runInAction(() => {
         set(this.cycleMap, [response.id], { ...this.cycleMap?.[response.id], ...response });
       });
@@ -579,7 +579,7 @@ export class CycleStore implements ICycleStore {
    */
   createCycle = action(
     async (workspaceSlug: string, projectId: string, data: Partial<ICycle>) =>
-      await this.cycleService.createCycle(workspaceSlug, projectId, data).then((response) => {
+      await this.cycleService.create(workspaceSlug, projectId, data).then((response) => {
         runInAction(() => {
           set(this.cycleMap, [response.id], response);
         });
@@ -600,7 +600,7 @@ export class CycleStore implements ICycleStore {
       runInAction(() => {
         set(this.cycleMap, [cycleId], { ...this.cycleMap?.[cycleId], ...data });
       });
-      const response = await this.cycleService.patchCycle(workspaceSlug, projectId, cycleId, data);
+      const response = await this.cycleService.update(workspaceSlug, projectId, cycleId, data);
       this.fetchCycleDetails(workspaceSlug, projectId, cycleId);
       return response;
     } catch (error) {
@@ -618,7 +618,7 @@ export class CycleStore implements ICycleStore {
    * @param cycleId
    */
   deleteCycle = async (workspaceSlug: string, projectId: string, cycleId: string) =>
-    await this.cycleService.deleteCycle(workspaceSlug, projectId, cycleId).then(() => {
+    await this.cycleService.destroy(workspaceSlug, projectId, cycleId).then(() => {
       runInAction(() => {
         delete this.cycleMap[cycleId];
         delete this.activeCycleIdMap[cycleId];
@@ -689,7 +689,7 @@ export class CycleStore implements ICycleStore {
     const cycleDetails = this.getCycleById(cycleId);
     if (cycleDetails?.archived_at) return;
     await this.cycleArchiveService
-      .archiveCycle(workspaceSlug, projectId, cycleId)
+      .archive(workspaceSlug, projectId, cycleId)
       .then((response) => {
         runInAction(() => {
           set(this.cycleMap, [cycleId, "archived_at"], response.archived_at);
@@ -712,7 +712,7 @@ export class CycleStore implements ICycleStore {
     const cycleDetails = this.getCycleById(cycleId);
     if (!cycleDetails?.archived_at) return;
     await this.cycleArchiveService
-      .restoreCycle(workspaceSlug, projectId, cycleId)
+      .restore(workspaceSlug, projectId, cycleId)
       .then(() => {
         runInAction(() => {
           set(this.cycleMap, [cycleId, "archived_at"], null);

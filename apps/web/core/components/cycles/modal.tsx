@@ -19,7 +19,7 @@ import useKeypress from "@/hooks/use-keypress";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // services
-import { CycleService } from "@/services/cycle.service";
+import { CycleService } from "@pace/services";
 // local imports
 import { CycleForm } from "./form";
 
@@ -100,7 +100,7 @@ export function CycleCreateUpdateModal(props: CycleModalProps) {
   const dateChecker = async (projectId: string, payload: CycleDateCheckData) => {
     let status = false;
 
-    await cycleService.cycleDateCheck(workspaceSlug, projectId, payload).then((res) => {
+    await cycleService.validateDates(workspaceSlug, projectId, payload).then((res) => {
       status = res.status;
     });
 
