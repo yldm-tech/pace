@@ -381,7 +381,8 @@ function startServices() {
     local start_time=$(date +%s)
 
     echo "   Waiting for API Service to be ready..."
-    while ! docker exec "$api_container_id" python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=3)" > /dev/null 2>&1; do
+    # busybox wget, which is what the alpine-based api image actually carries. The probe used to be a python3 one-liner inherited from the Django image; the Go image installs nothing but ca-certificates, so that command exited 127 every time and this loop could only ever run out its five minutes and declare the api unhealthy. wget exits non-zero on a non-2xx response and on a refused connection, which is the same pass/fail shape urllib.request.urlopen had.
+    while ! docker exec "$api_container_id" wget -q -O /dev/null -T 3 http://localhost:8000/api/health > /dev/null 2>&1; do
         local current_time=$(date +%s)
         local elapsed_time=$((current_time - start_time))
 
