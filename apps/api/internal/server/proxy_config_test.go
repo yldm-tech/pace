@@ -93,6 +93,11 @@ func TestEveryProxyUpstreamIsOverridable(t *testing.T) {
 	}
 }
 
+// proxiesToGoAPI reports whether the last field of a reverse_proxy line sends the request to the Go API. The upstream is written `{$API_UPSTREAM:api:8000}` so a deployment can point it elsewhere, and the bare form is accepted too because that is what this looked like before it was parameterised -- a reader comparing the two against the Caddyfile should not have to know which era it is in.
+func proxiesToGoAPI(upstream string) bool {
+	return strings.HasSuffix(upstream, "api:8000") || strings.HasSuffix(upstream, "api:8000}")
+}
+
 // proxyUpstreams returns the default host of every reverse_proxy directive, whether the directive carries a named matcher, a bare path, or neither. Each upstream is `{$VAR:host:port}`, and it is the default -- the part a deployment does not override -- that has to name a real compose service.
 func proxyUpstreams(config string) []string {
 	matches := regexp.MustCompile(`(?m)^\s*reverse_proxy (?:\S+ )?\{\$[A-Z0-9_]+:([a-z][a-z0-9-]*):\d+\}\s*$`).FindAllStringSubmatch(config, -1)
