@@ -106,6 +106,6 @@ const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthent
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Google Authentication - God Mode" }];
+export const meta: Route.MetaFunction = () => [{ title: "Google Authentication - Pace Admin" }];
 
 export default InstanceGoogleAuthenticationPage;

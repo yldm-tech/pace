@@ -105,6 +105,6 @@ const InstanceGitlabAuthenticationPage = observer(function InstanceGitlabAuthent
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "GitLab Authentication - God Mode" }];
+export const meta: Route.MetaFunction = () => [{ title: "GitLab Authentication - Pace Admin" }];
 
 export default InstanceGitlabAuthenticationPage;

@@ -6,6 +6,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { SWRConfig } from "swr";
+import { TranslationProvider } from "@pace/i18n";
 import { AppProgressBar } from "@pace/ui";
 // local imports
 import { ToastWithTheme } from "./toast";
@@ -27,13 +28,16 @@ export function CoreProviders({ children }: { children: React.ReactNode }) {
     <ThemeProvider themes={["light", "dark"]} defaultTheme="system" enableSystem>
       <AppProgressBar />
       <ToastWithTheme />
-      <SWRConfig value={DEFAULT_SWR_CONFIG}>
-        <StoreProvider>
-          <InstanceProvider>
-            <UserProvider>{children}</UserProvider>
-          </InstanceProvider>
-        </StoreProvider>
-      </SWRConfig>
+      {/* Inside the theme provider and outside the stores, which is where web puts it: the stores do not read translations, and a toast raised during startup should already be able to. */}
+      <TranslationProvider>
+        <SWRConfig value={DEFAULT_SWR_CONFIG}>
+          <StoreProvider>
+            <InstanceProvider>
+              <UserProvider>{children}</UserProvider>
+            </InstanceProvider>
+          </StoreProvider>
+        </SWRConfig>
+      </TranslationProvider>
     </ThemeProvider>
   );
 }

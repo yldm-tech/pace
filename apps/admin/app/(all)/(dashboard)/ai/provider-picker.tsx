@@ -6,6 +6,7 @@
 
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "@pace/i18n";
 import type { TInstanceAIConfigurationKeys } from "@pace/types";
 // Brand marks come from @yldm-tech/ai-logo-static-svg, which is svg files and nothing else -- no dependencies and no peers.
 //
@@ -38,6 +39,7 @@ type ProviderPickerProps = {
 
 export function ProviderPicker(props: ProviderPickerProps) {
   const { control, onProviderChange } = props;
+  const { t } = useTranslation();
 
   return (
     <Controller
@@ -49,7 +51,7 @@ export function ProviderPicker(props: ProviderPickerProps) {
 
         return (
           <div className="space-y-2">
-            <div className="text-13 font-medium text-primary">Provider</div>
+            <div className="text-13 font-medium text-primary">{t("admin.ai.provider.label")}</div>
             <div className="flex flex-wrap gap-2">
               {KNOWN_PROVIDERS.map((provider) => (
                 <button
@@ -84,13 +86,10 @@ export function ProviderPicker(props: ProviderPickerProps) {
                     : "border-subtle text-secondary hover:border-strong"
                 }`}
               >
-                Custom
+                {t("admin.ai.provider.custom")}
               </button>
             </div>
-            <div className="text-13 font-regular text-tertiary">
-              Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with
-              anything that answers an OpenAI-shaped chat completion.
-            </div>
+            <div className="text-13 font-regular text-tertiary">{t("admin.ai.provider.description")}</div>
           </div>
         );
       }}

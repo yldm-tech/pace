@@ -1,0 +1,60 @@
+{
+  "admin": {
+    "language": {
+      "label": "语言",
+      "description": "管理台自身的显示语言。仅记录在此浏览器中，不会改变其他人看到的内容。"
+    },
+    "nav": {
+      "general": "通用",
+      "email": "邮件",
+      "authentication": "身份认证",
+      "ai": "人工智能",
+      "images": "图片",
+      "workspace": "工作区"
+    },
+    "actions": {
+      "save": "保存更改",
+      "saving": "保存中",
+      "cancel": "取消",
+      "load_more": "加载更多"
+    },
+    "toast": {
+      "success": "成功",
+      "error": "错误"
+    },
+    "ai": {
+      "heading": "语言模型",
+      "subheading": "助手只使用一种协议，因此任何能响应 OpenAI 形式补全请求的端点都可以接入。",
+      "provider": {
+        "label": "服务商",
+        "custom": "自定义",
+        "description": "选择其一会自动填入其端点并给模型一个默认值。自定义需要同时填写两者，可搭配任何响应 OpenAI 形式补全的服务。"
+      },
+      "base_url": {
+        "label": "接口地址",
+        "description": "补全请求发往的地址。任何能响应 OpenAI 形式 POST /chat/completions 的服务都可以——网关、自建服务器，或服务商自己的端点。留空则使用 OpenAI。",
+        "placeholder": "https://api.openai.com/v1"
+      },
+      "model": {
+        "label": "模型",
+        "fetch": "获取模型列表",
+        "refresh": "刷新",
+        "fetching": "请求中…",
+        "placeholder": "gpt-4o-mini",
+        "hint_empty": "从上方端点获取列表，或直接输入名称。留空则使用服务商的默认模型。",
+        "hint_loaded": "共 {{count}} 个模型。输入可筛选，留空则使用服务商的默认模型。",
+        "error_none": "端点有响应，但未返回任何模型。",
+        "error_key": "端点拒绝了该 API 密钥。",
+        "error_not_found": "该地址下没有模型列表。通常是缺少版本段，例如 /v1。",
+        "error_unreachable": "无法连接该端点。"
+      },
+      "api_key": {
+        "label": "API 密钥",
+        "description": "以 bearer token 形式发送至上方接口地址。",
+        "placeholder": "sk-..."
+      },
+      "not_listed": "没有列出你用的服务？选择「自定义」并填写接口地址——只要是 OpenAI 形式的都可以。",
+      "saved": "AI 设置已更新"
+    }
+  }
+}
