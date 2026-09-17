@@ -18,6 +18,7 @@ import { TOAST_TYPE, setToast } from "@/providers/toast";
 import { useInstance } from "@/hooks/store";
 // local components
 import { SendTestEmailModal } from "./test-email-modal";
+import { useTranslation } from "@pace/i18n";
 
 type IInstanceEmailForm = {
   config: IFormattedInstanceConfiguration;
@@ -34,6 +35,7 @@ const EMAIL_SECURITY_OPTIONS: { [key in TEmailSecurityKeys]: string } = {
 };
 
 export function InstanceEmailForm(props: IInstanceEmailForm) {
+  const { t } = useTranslation();
   const { config } = props;
   // states
   const [isSendTestEmailModalOpen, setIsSendTestEmailModalOpen] = useState(false);
@@ -62,7 +64,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
     {
       key: "EMAIL_HOST",
       type: "text",
-      label: "Host",
+      label: t("admin.email.host"),
       placeholder: "email.google.com",
       error: Boolean(errors.EMAIL_HOST),
       required: true,
@@ -70,7 +72,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
     {
       key: "EMAIL_PORT",
       type: "text",
-      label: "Port",
+      label: t("admin.email.port"),
       placeholder: "8080",
       error: Boolean(errors.EMAIL_PORT),
       required: true,
@@ -78,7 +80,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
     {
       key: "EMAIL_FROM",
       type: "text",
-      label: "Sender's email address",
+      label: t("admin.email.sender"),
       description:
         "This is the email address your users will see when getting emails from this instance. You will need to verify this address.",
       placeholder: "no-reply@yldm.ai",
@@ -91,7 +93,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
     {
       key: "EMAIL_HOST_USER",
       type: "text",
-      label: "Username",
+      label: t("admin.email.username"),
       placeholder: "getitdone@yldm.ai",
       error: Boolean(errors.EMAIL_HOST_USER),
       required: false,
@@ -99,7 +101,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
     {
       key: "EMAIL_HOST_PASSWORD",
       type: "password",
-      label: "Password",
+      label: t("admin.common.password"),
       placeholder: "Password",
       error: Boolean(errors.EMAIL_HOST_PASSWORD),
       required: false,
@@ -113,8 +115,8 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
       .then(() =>
         setToast({
           type: TOAST_TYPE.SUCCESS,
-          title: "Success",
-          message: "Email Settings updated successfully",
+          title: t("admin.toast.success"),
+          message: t("admin.email.saved"),
         })
       )
       .catch((err) => console.error(err));
@@ -162,7 +164,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
             />
           ))}
           <div className="flex flex-col gap-1">
-            <h4 className="text-13 text-tertiary">Email security</h4>
+            <h4 className="text-13 text-tertiary">{t("admin.email.security")}</h4>
             <Select
               value={emailSecurityKey}
               onValueChange={(value) => handleEmailSecurityChange(value as TEmailSecurityKeys)}
@@ -182,7 +184,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
           <div className="flex w-full max-w-xl flex-col gap-y-10 px-1">
             <div className="mr-8 flex items-center gap-10 pt-4">
               <div className="grow">
-                <div className="text-13 font-medium text-primary">Authentication</div>
+                <div className="text-13 font-medium text-primary">{t("admin.email.authentication")}</div>
                 <div className="text-11 font-regular text-tertiary">
                   This is optional, but we recommend setting up a username and a password for your SMTP server.
                 </div>
@@ -214,7 +216,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
           onClick={handleSubmit(onSubmit)}
           loading={isSubmitting}
           disabled={!isValid || !isDirty}
-          label={isSubmitting ? "Saving" : "Save changes"}
+          label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
         />
         <Button
           variant="secondary"

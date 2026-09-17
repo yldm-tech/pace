@@ -85,7 +85,13 @@
       "disabled_message": "Email feature has been disabled",
       "disable_error_title": "Error disabling email",
       "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully"
+      "saved": "Email settings updated successfully",
+      "host": "Host",
+      "port": "Port",
+      "sender": "Sender's email address",
+      "username": "Username",
+      "security": "Email security",
+      "authentication": "Authentication"
     },
     "auth": {
       "heading": "Manage authentication modes for your instance",
@@ -97,7 +103,64 @@
       "save_failed": "Failed to save configuration",
       "client_id": "Client ID",
       "client_secret": "Client secret",
-      "host": "Host"
+      "host": "Host",
+      "origin_url": "Origin URL",
+      "callback_uri": "Callback URI",
+      "callback_url": "Callback URL",
+      "redirect_uri": "Redirect URI",
+      "application_id": "Application ID",
+      "secret": "Secret",
+      "organization_id": "Organization ID",
+      "gitea_host": "Gitea Host",
+      "authorized_origins": "Authorized JavaScript origins",
+      "authorized_redirect": "Authorized Redirect URI",
+      "authorized_callback": "Authorized Callback URI",
+      "authorized_origin_url": "Authorized origin URL"
+    },
+    "common": {
+      "email": "Email",
+      "password": "Password",
+      "continue": "Continue",
+      "sign_in": "Sign in",
+      "show_password": "Show password",
+      "hide_password": "Hide password",
+      "see_more": "See More",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company_name": "Company name",
+      "email_placeholder": "name@company.com",
+      "password_enter": "Please enter your password",
+      "password_short": "Password is too short",
+      "password_weak": "Password is weak",
+      "password_strong": "Password is strong",
+      "keep_editing": "Keep editing",
+      "owned_by": "Owned by:",
+      "total_projects": "Total projects:",
+      "total_members": "Total members:",
+      "unique_codes": "Unique codes",
+      "passwords": "Passwords"
+    },
+    "setup": {
+      "heading": "Set up your Pace instance",
+      "set_password": "Set a password",
+      "new_password": "New password",
+      "confirm_password": "Confirm password",
+      "telemetry": "Allow Pace to anonymously collect usage events"
+    },
+    "signin": {
+      "heading": "Manage your Pace instance",
+      "password_placeholder": "Enter your password"
+    },
+    "workspace": {
+      "heading": "Workspaces",
+      "create": "Create workspace",
+      "prevent_creation": "Prevent anyone else from creating a workspace.",
+      "created": "Workspace created successfully.",
+      "create_failed": "Workspace could not be created. Please try again.",
+      "create_error": "Some error occurred while creating workspace. Please try again.",
+      "name_placeholder": "Something familiar and recognizable is always best.",
+      "slug_placeholder": "workspace-name",
+      "go_back": "Go back"
     }
   }
 }

@@ -13,12 +13,14 @@ import { WEB_BASE_URL } from "@pace/constants";
 import { getFileURL } from "@pace/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 type TWorkspaceListItemProps = {
   workspaceId: string;
 };
 
 export const WorkspaceListItem = observer(function WorkspaceListItem({ workspaceId }: TWorkspaceListItemProps) {
+  const { t } = useTranslation();
   // store hooks
   const { getWorkspaceById } = useWorkspace();
   // derived values
@@ -58,14 +60,14 @@ export const WorkspaceListItem = observer(function WorkspaceListItem({ workspace
           </div>
           {workspace.owner.email && (
             <div className="flex items-center gap-1 text-11">
-              <h3 className="font-medium text-secondary">Owned by:</h3>
+              <h3 className="font-medium text-secondary">{t("admin.common.owned_by")}</h3>
               <h4 className="text-tertiary">{workspace.owner.email}</h4>
             </div>
           )}
           <div className="flex items-center gap-2.5 text-11">
             {workspace.total_projects !== null && (
               <span className="flex items-center gap-1">
-                <h3 className="font-medium text-secondary">Total projects:</h3>
+                <h3 className="font-medium text-secondary">{t("admin.common.total_projects")}</h3>
                 <h4 className="text-tertiary">{workspace.total_projects}</h4>
               </span>
             )}
@@ -73,7 +75,7 @@ export const WorkspaceListItem = observer(function WorkspaceListItem({ workspace
               <>
                 •
                 <span className="flex items-center gap-1">
-                  <h3 className="font-medium text-secondary">Total members:</h3>
+                  <h3 className="font-medium text-secondary">{t("admin.common.total_members")}</h3>
                   <h4 className="text-tertiary">{workspace.total_members}</h4>
                 </span>
               </>

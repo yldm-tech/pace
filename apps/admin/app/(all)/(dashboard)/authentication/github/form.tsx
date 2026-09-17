@@ -108,7 +108,7 @@ export function InstanceGithubConfigForm(props: Props) {
     {
       key: "GITHUB_ORGANIZATION_ID",
       type: "text",
-      label: "Organization ID",
+      label: t("admin.auth.organization_id"),
       description: <>The organization github ID.</>,
       placeholder: "123456789",
       error: Boolean(errors.GITHUB_ORGANIZATION_ID),
@@ -119,11 +119,12 @@ export function InstanceGithubConfigForm(props: Props) {
   const GITHUB_COMMON_SERVICE_DETAILS: TCopyField[] = [
     {
       key: "Origin_URL",
-      label: "Origin URL",
+      label: t("admin.auth.origin_url"),
       url: originURL,
       description: (
         <>
-          We will auto-generate this. Paste this into the <CodeBlock darkerShade>Authorized origin URL</CodeBlock> field{" "}
+          We will auto-generate this. Paste this into the{" "}
+          <CodeBlock darkerShade>{t("admin.auth.authorized_origin_url")}</CodeBlock> field{" "}
           <a
             href="https://github.com/settings/applications/new"
             target="_blank"
@@ -141,12 +142,12 @@ export function InstanceGithubConfigForm(props: Props) {
   const GITHUB_SERVICE_DETAILS: TCopyField[] = [
     {
       key: "Callback_URI",
-      label: "Callback URI",
+      label: t("admin.auth.callback_uri"),
       url: `${originURL}/auth/github/callback/`,
       description: (
         <>
-          We will auto-generate this. Paste this into your <CodeBlock darkerShade>Authorized Callback URI</CodeBlock>{" "}
-          field{" "}
+          We will auto-generate this. Paste this into your{" "}
+          <CodeBlock darkerShade>{t("admin.auth.authorized_callback")}</CodeBlock> field{" "}
           <a
             href="https://github.com/settings/applications/new"
             target="_blank"

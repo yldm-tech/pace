@@ -8,6 +8,7 @@ import { TickCircleOutline } from "@makeplane/propel/icons";
 // pace internal packages
 import { E_PASSWORD_STRENGTH } from "@pace/constants";
 import { cn, getPasswordCriteria, getPasswordStrength } from "@pace/utils";
+import { useTranslation } from "@pace/i18n";
 
 interface StrengthInfo {
   message: string;
@@ -18,35 +19,36 @@ interface StrengthInfo {
 /**
  * Get strength information including message, color, and active fragments
  */
+// The message is a translation key rather than text: this is a plain function outside the component, so it cannot call the hook, and returning the key keeps the switch a pure mapping from strength to presentation.
 const getStrengthInfo = (strength: E_PASSWORD_STRENGTH): StrengthInfo => {
   switch (strength) {
     case E_PASSWORD_STRENGTH.EMPTY:
       return {
-        message: "Please enter your password",
+        message: "admin.common.password_enter",
         textColor: "text-primary",
         activeFragments: 0,
       };
     case E_PASSWORD_STRENGTH.LENGTH_NOT_VALID:
       return {
-        message: "Password is too short",
+        message: "admin.common.password_short",
         textColor: "text-danger-primary",
         activeFragments: 1,
       };
     case E_PASSWORD_STRENGTH.STRENGTH_NOT_VALID:
       return {
-        message: "Password is weak",
+        message: "admin.common.password_weak",
         textColor: "text-orange-500",
         activeFragments: 2,
       };
     case E_PASSWORD_STRENGTH.STRENGTH_VALID:
       return {
-        message: "Password is strong",
+        message: "admin.common.password_strong",
         textColor: "text-success-primary",
         activeFragments: 3,
       };
     default:
       return {
-        message: "Please enter your password",
+        message: "admin.common.password_enter",
         textColor: "text-primary",
         activeFragments: 0,
       };
@@ -84,6 +86,7 @@ export function PasswordStrengthIndicator({
   showCriteria = true,
   isFocused = false,
 }: PasswordStrengthIndicatorProps) {
+  const { t } = useTranslation();
   const strength = getPasswordStrength(password);
   const criteria = getPasswordCriteria(password);
   const strengthInfo = getStrengthInfo(strength);
@@ -111,7 +114,7 @@ export function PasswordStrengthIndicator({
         </div>
 
         {/* Strength Message */}
-        {password && <p className={cn("!text-13 font-medium", strengthInfo.textColor)}>{strengthInfo.message}</p>}
+        {password && <p className={cn("!text-13 font-medium", strengthInfo.textColor)}>{t(strengthInfo.message)}</p>}
       </div>
 
       {/* Criteria list */}

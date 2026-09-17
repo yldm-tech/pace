@@ -10,6 +10,7 @@ import Link from "@/app/hooks/link";
 import { Dialog, Transition } from "@headlessui/react";
 // ui
 import { Button } from "@makeplane/propel/components/button";
+import { useTranslation } from "@pace/i18n";
 
 type Props = {
   isOpen: boolean;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function ConfirmDiscardModal(props: Props) {
+  const { t } = useTranslation();
   const { isOpen, handleClose, onDiscardHref } = props;
 
   return (
@@ -61,14 +63,20 @@ export function ConfirmDiscardModal(props: Props) {
                   </div>
                 </div>
                 <div className="flex items-center justify-end gap-2 p-4 sm:px-6">
-                  <Button variant="secondary" size="md" stretch="auto" onClick={handleClose} label="Keep editing" />
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    stretch="auto"
+                    onClick={handleClose}
+                    label={t("admin.common.keep_editing")}
+                  />
                   <Button
                     variant="primary"
                     size="sm"
                     stretch="auto"
                     nativeButton={false}
                     render={<Link href={onDiscardHref} />}
-                    label="Go back"
+                    label={t("admin.workspace.go_back")}
                   />
                 </div>
               </Dialog.Panel>

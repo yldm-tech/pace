@@ -54,9 +54,25 @@ func twoServers(t *testing.T) (*fakeAPI, *Server, string, *Server, string) {
 	return api, first, firstAddress, second, secondAddress
 }
 
+// waitForSubscription blocks until a server's relay is carrying a document, which is what makes a publish from the other one reach it.
+func waitForSubscription(t *testing.T, server *Server, name string) {
+	t.Helper()
+	deadline := time.Now().Add(5 * time.Second)
+	for time.Now().Before(deadline) {
+		server.relay.mu.Lock()
+		_, subscribed := server.relay.subscriptions[name]
+		server.relay.mu.Unlock()
+		if subscribed {
+			return
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	t.Fatalf("the relay never subscribed to %s", name)
+}
+
 // TestAChangeOnOneServerReachesTheOther is the whole reason the relay exists: two people editing one page do not necessarily reach the same server.
 func TestAChangeOnOneServerReachesTheOther(t *testing.T) {
-	_, _, firstAddress, _, secondAddress := twoServers(t)
+	_, first, firstAddress, second, secondAddress := twoServers(t)
 
 	here := dial(t, firstAddress)
 	here.authenticate(testPageID, "a-user")
@@ -65,6 +81,10 @@ func TestAChangeOnOneServerReachesTheOther(t *testing.T) {
 	there := dial(t, secondAddress)
 	there.authenticate(testPageID, "a-user")
 	there.readUntil(hocuspocus.MessageAuth)
+
+	// Being authenticated is not the same as being subscribed. The document is taken up after the handshake, on the server's own schedule, and Redis pub/sub keeps no backlog -- so a change published before the far server has confirmed its subscription is not delayed, it is discarded. On a loaded machine that is the whole test: it saw zero frames in ten seconds while both servers were working correctly.
+	waitForSubscription(t, first, testPageID)
+	waitForSubscription(t, second, testPageID)
 
 	document, err := ydoc.ParseHTML("<p>across the cluster</p>")
 	if err != nil {

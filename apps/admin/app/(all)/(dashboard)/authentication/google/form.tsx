@@ -111,12 +111,12 @@ export function InstanceGoogleConfigForm(props: Props) {
   const GOOGLE_COMMON_SERVICE_DETAILS: TCopyField[] = [
     {
       key: "Origin_URL",
-      label: "Origin URL",
+      label: t("admin.auth.origin_url"),
       url: originURL,
       description: (
         <p>
           We will auto-generate this. Paste this into your{" "}
-          <CodeBlock darkerShade>Authorized JavaScript origins</CodeBlock> field. For this OAuth client{" "}
+          <CodeBlock darkerShade>{t("admin.auth.authorized_origins")}</CodeBlock> field. For this OAuth client{" "}
           <a
             href="https://console.cloud.google.com/apis/credentials/oauthclient"
             target="_blank"
@@ -134,12 +134,12 @@ export function InstanceGoogleConfigForm(props: Props) {
   const GOOGLE_SERVICE_DETAILS: TCopyField[] = [
     {
       key: "Callback_URI",
-      label: "Callback URI",
+      label: t("admin.auth.callback_uri"),
       url: `${originURL}/auth/google/callback/`,
       description: (
         <p>
-          We will auto-generate this. Paste this into your <CodeBlock darkerShade>Authorized Redirect URI</CodeBlock>{" "}
-          field. For this OAuth client{" "}
+          We will auto-generate this. Paste this into your{" "}
+          <CodeBlock darkerShade>{t("admin.auth.authorized_redirect")}</CodeBlock> field. For this OAuth client{" "}
           <a
             href="https://console.cloud.google.com/apis/credentials/oauthclient"
             target="_blank"

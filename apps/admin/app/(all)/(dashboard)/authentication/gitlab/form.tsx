@@ -78,7 +78,7 @@ export function InstanceGitlabConfigForm(props: Props) {
     {
       key: "GITLAB_CLIENT_ID",
       type: "text",
-      label: "Application ID",
+      label: t("admin.auth.application_id"),
       description: (
         <>
           Get this from your{" "}
@@ -100,7 +100,7 @@ export function InstanceGitlabConfigForm(props: Props) {
     {
       key: "GITLAB_CLIENT_SECRET",
       type: "password",
-      label: "Secret",
+      label: t("admin.auth.secret"),
       description: (
         <>
           The client secret is also found in your{" "}
@@ -124,7 +124,7 @@ export function InstanceGitlabConfigForm(props: Props) {
   const GITLAB_SERVICE_FIELD: TCopyField[] = [
     {
       key: "Callback_URL",
-      label: "Callback URL",
+      label: t("admin.auth.callback_url"),
       url: `${originURL}/auth/gitlab/callback/`,
       description: (
         <>

@@ -20,10 +20,12 @@ import { validateSlug, validateWorkspaceName } from "@pace/utils";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useWorkspace } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 const instanceWorkspaceService = new InstanceWorkspaceService();
 
 export function WorkspaceCreateForm() {
+  const { t } = useTranslation();
   // router
   const router = useRouter();
   // states
@@ -63,16 +65,16 @@ export function WorkspaceCreateForm() {
             .then(async () => {
               setToast({
                 type: TOAST_TYPE.SUCCESS,
-                title: "Success!",
-                message: "Workspace created successfully.",
+                title: t("admin.toast.success"),
+                message: t("admin.workspace.created"),
               });
               router.push(`/workspace`);
             })
             .catch(() => {
               setToast({
                 type: TOAST_TYPE.ERROR,
-                title: "Error!",
-                message: "Workspace could not be created. Please try again.",
+                title: t("admin.toast.error"),
+                message: t("admin.workspace.create_failed"),
               });
             });
         } else setSlugError(true);
@@ -80,8 +82,8 @@ export function WorkspaceCreateForm() {
       .catch(() => {
         setToast({
           type: TOAST_TYPE.ERROR,
-          title: "Error!",
-          message: "Some error occurred while creating workspace. Please try again.",
+          title: t("admin.toast.error"),
+          message: t("admin.workspace.create_error"),
         });
       });
   };
@@ -122,7 +124,7 @@ export function WorkspaceCreateForm() {
                     }}
                     ref={ref}
                     aria-invalid={Boolean(errors.name)}
-                    placeholder="Something familiar and recognizable is always best."
+                    placeholder={t("admin.workspace.name_placeholder")}
                   />
                 </InputGroup>
               )}
@@ -153,7 +155,7 @@ export function WorkspaceCreateForm() {
                   }}
                   ref={ref}
                   aria-invalid={Boolean(errors.slug)}
-                  placeholder="workspace-name"
+                  placeholder={t("admin.workspace.slug_placeholder")}
                 />
               )}
             />
@@ -206,7 +208,7 @@ export function WorkspaceCreateForm() {
           stretch="auto"
           nativeButton={false}
           render={<Link href="/workspace" />}
-          label="Go back"
+          label={t("admin.workspace.go_back")}
         />
       </div>
     </div>
