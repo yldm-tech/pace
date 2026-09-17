@@ -234,10 +234,19 @@ func webhookPayload(delivery webhookDelivery, webhook webhookRow, verb string) (
 	if err != nil {
 		return nil, err
 	}
+	// The two ids used to be spliced in with %q, which is Go's quoting rather than JSON's. The two agree on a uuid and disagree elsewhere, so the payload was correct only for as long as these columns held what they hold today. Marshalling them like every other value costs nothing and removes the assumption.
+	webhookID, err := json.Marshal(webhook.ID)
+	if err != nil {
+		return nil, err
+	}
+	workspaceID, err := json.Marshal(webhook.WorkspaceID)
+	if err != nil {
+		return nil, err
+	}
 	// Written by hand rather than through a map, so the keys keep the order the payload is documented in.
 	return []byte(fmt.Sprintf(
-		`{"event": %s, "action": %s, "webhook_id": %q, "workspace_id": %q, "workspace_slug": %s, "data": %s, "activity": %s}`,
-		event, action, webhook.ID, webhook.WorkspaceID, slug, data, activity)), nil
+		`{"event": %s, "action": %s, "webhook_id": %s, "workspace_id": %s, "workspace_slug": %s, "data": %s, "activity": %s}`,
+		event, action, webhookID, workspaceID, slug, data, activity)), nil
 }
 
 // renderHeaderMap is what str() of a python dict looks like, which is what the log column holds today.

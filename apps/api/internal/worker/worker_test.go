@@ -2,9 +2,11 @@ package worker
 
 import (
 	"context"
-	"github.com/yldm-tech/pace/apps/api/internal/httpsafe"
+	"errors"
 	"strings"
 	"testing"
+
+	"github.com/yldm-tech/pace/apps/api/internal/httpsafe"
 )
 
 // The expectations come from running generate_plain_text_from_html, which is
@@ -156,7 +158,10 @@ func TestEmailSettingsReadTheInstanceConfiguration(t *testing.T) {
 }
 
 func TestMessageCarriesBothAlternatives(t *testing.T) {
-	message := buildMultipartMessage("Team <team@pace.test>", "to@pace.test", "Subject", "plain", "<p>html</p>")
+	message, err := buildMultipartMessage("Team <team@pace.test>", "to@pace.test", "Subject", "plain", "<p>html</p>")
+	if err != nil {
+		t.Fatalf("build message: %v", err)
+	}
 	for _, fragment := range []string{
 		"From: Team <team@pace.test>", "To: to@pace.test", "Subject: Subject",
 		"multipart/alternative", `Content-Type: text/plain; charset="utf-8"`,
@@ -301,5 +306,47 @@ func TestNullableIDKeepsEmptyOutOfUUIDColumns(t *testing.T) {
 	}
 	if nullableID("abc") != "abc" {
 		t.Fatal("a present identifier must be kept")
+	}
+}
+
+// TestHeaderValuesCannotCarryNewlines covers the protection Django got from EmailMultiAlternatives and this package had to reimplement. The invitation subjects are built from a display name, a project name and a workspace name, all of which the person being invited did not choose, so a CR or LF in one of them would have ended the Subject header and started whatever header came next.
+func TestHeaderValuesCannotCarryNewlines(t *testing.T) {
+	injected := "Someone\r\nBcc: attacker@example.test"
+
+	if _, err := buildMultipartMessage("team@pace.test", "to@pace.test", injected, "plain", "<p>html</p>"); err == nil {
+		t.Error("a subject carrying CRLF was accepted")
+	} else {
+		var bad BadHeaderError
+		if !errors.As(err, &bad) || bad.Header != "Subject" {
+			t.Errorf("error = %v, want a BadHeaderError naming Subject", err)
+		}
+	}
+
+	for name, args := range map[string][3]string{
+		"From":    {injected, "to@pace.test", "Subject"},
+		"To":      {"team@pace.test", injected, "Subject"},
+		"Subject": {"team@pace.test", "to@pace.test", injected},
+	} {
+		if _, err := buildMultipartMessage(args[0], args[1], args[2], "plain", "<p>html</p>"); err == nil {
+			t.Errorf("%s carrying CRLF was accepted", name)
+		}
+	}
+
+	// A bare LF is as good as a CRLF to a mail transport, so it is refused too.
+	if _, err := buildMultipartMessage("team@pace.test", "to@pace.test", "Hi\nBcc: x@y.test", "plain", ""); err == nil {
+		t.Error("a subject carrying a bare LF was accepted")
+	}
+
+	// The attachment builder writes the filename and the content type into headers of their own.
+	if _, err := buildAttachmentMessage("team@pace.test", "to@pace.test", "Subject", "plain", injected, "text/csv", []byte("a")); err == nil {
+		t.Error("a filename carrying CRLF was accepted")
+	}
+	if _, err := buildAttachmentMessage("team@pace.test", "to@pace.test", "Subject", "plain", "export.csv", injected, []byte("a")); err == nil {
+		t.Error("a content type carrying CRLF was accepted")
+	}
+
+	// Nothing above should have made ordinary values harder to send.
+	if _, err := buildAttachmentMessage("team@pace.test", "to@pace.test", "Subject", "plain", "export.csv", "text/csv", []byte("a")); err != nil {
+		t.Errorf("an ordinary attachment message was refused: %v", err)
 	}
 }

@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/smtp"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -48,12 +49,20 @@ type SMTPMailer struct{}
 // Send reproduces Django's get_connection plus EmailMultiAlternatives: a plain
 // text body with an HTML alternative, over TLS, SSL, or neither.
 func (mailer SMTPMailer) Send(ctx context.Context, settings EmailSettings, to, subject, text, html string) error {
-	return mailer.deliver(ctx, settings, to, buildMultipartMessage(settings.From, to, subject, text, html))
+	message, err := buildMultipartMessage(settings.From, to, subject, text, html)
+	if err != nil {
+		return err
+	}
+	return mailer.deliver(ctx, settings, to, message)
 }
 
 // SendAttachment reproduces EmailMultiAlternatives with one attached file and no html alternative, which is what the export emails are.
 func (mailer SMTPMailer) SendAttachment(ctx context.Context, settings EmailSettings, to, subject, text, filename, contentType string, content []byte) error {
-	return mailer.deliver(ctx, settings, to, buildAttachmentMessage(settings.From, to, subject, text, filename, contentType, content))
+	message, err := buildAttachmentMessage(settings.From, to, subject, text, filename, contentType, content)
+	if err != nil {
+		return err
+	}
+	return mailer.deliver(ctx, settings, to, message)
 }
 
 func (SMTPMailer) deliver(ctx context.Context, settings EmailSettings, to, message string) error {
@@ -122,7 +131,36 @@ func envelopeAddress(from string) string {
 	return strings.TrimSpace(from)
 }
 
-func buildMultipartMessage(from, to, subject, text, html string) string {
+// BadHeaderError is what Django raises out of forbid_multi_line_headers, and it means the same thing here: a header value carried a newline, so the message is not sent at all.
+type BadHeaderError struct {
+	Header string
+	Value  string
+}
+
+func (err BadHeaderError) Error() string {
+	return fmt.Sprintf("header values can't contain newlines (got %q for header %q)", err.Value, err.Header)
+}
+
+// forbidMultiLineHeaders reproduces django.core.mail.message.forbid_multi_line_headers. Every header this package writes is assembled by hand, so nothing else stands between a value and the wire: a CR or LF in one ends the header and starts another, which turns a display name or a workspace name into whatever headers the person who chose it wants. Django refuses to send in that case rather than stripping, and refusing is what a caller can notice.
+func forbidMultiLineHeaders(headers map[string]string) error {
+	// Sorted so that a message with more than one bad header always names the same one, which keeps the error a test can assert on.
+	names := make([]string, 0, len(headers))
+	for name := range headers {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		if strings.ContainsAny(headers[name], "\r\n") {
+			return BadHeaderError{Header: name, Value: headers[name]}
+		}
+	}
+	return nil
+}
+
+func buildMultipartMessage(from, to, subject, text, html string) (string, error) {
+	if err := forbidMultiLineHeaders(map[string]string{"From": from, "To": to, "Subject": subject}); err != nil {
+		return "", err
+	}
 	boundary := "pace-go-boundary-0f2a1c"
 	var builder strings.Builder
 	builder.WriteString("From: " + from + "\r\n")
@@ -137,11 +175,18 @@ func buildMultipartMessage(from, to, subject, text, html string) string {
 	builder.WriteString("Content-Type: text/html; charset=\"utf-8\"\r\n\r\n")
 	builder.WriteString(html + "\r\n")
 	builder.WriteString("--" + boundary + "--\r\n")
-	return builder.String()
+	return builder.String(), nil
 }
 
 // buildAttachmentMessage is a plain text body with one file beside it, which is what Django's attach() produces when nothing was attached as an alternative.
-func buildAttachmentMessage(from, to, subject, text, filename, contentType string, content []byte) string {
+func buildAttachmentMessage(from, to, subject, text, filename, contentType string, content []byte) (string, error) {
+	// The filename and the content type are header values too -- they go into Content-Disposition and Content-Type -- so they are checked beside the three obvious ones.
+	if err := forbidMultiLineHeaders(map[string]string{
+		"From": from, "To": to, "Subject": subject,
+		"Content-Disposition": filename, "Content-Type": contentType,
+	}); err != nil {
+		return "", err
+	}
 	boundary := "pace-go-mixed-0f2a1c"
 	var builder strings.Builder
 	builder.WriteString("From: " + from + "\r\n")
@@ -159,7 +204,7 @@ func buildAttachmentMessage(from, to, subject, text, filename, contentType strin
 	builder.WriteString("Content-Disposition: attachment; filename=\"" + filename + "\"\r\n\r\n")
 	builder.WriteString(wrapBase64(content) + "\r\n")
 	builder.WriteString("--" + boundary + "--\r\n")
-	return builder.String()
+	return builder.String(), nil
 }
 
 // wrapBase64 breaks the encoded attachment at the line length a mail transport expects.
