@@ -125,7 +125,7 @@ To build the AIO image yourself:
 
 ```bash
 cd deployments/aio/community
-IMAGE_NAME=myplane-aio ./build.sh --release=v0.27.1 [--platform=linux/amd64]
+IMAGE_NAME=myplane-aio ./build.sh --release=v1.4.17 [--platform=linux/amd64]
 ```
 
 Available build options:
