@@ -1,16 +1,23 @@
 {
   "name": "@pace/codemods",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "private": true,
   "scripts": {
-    "test": "vitest run",
+    "check:format": "oxfmt --check .",
+    "check:lint": "oxlint --max-warnings=1 .",
+    "check:types": "tsc --noEmit",
+    "fix:format": "oxfmt .",
+    "fix:lint": "oxlint --fix .",
     "function-declaration": "jscodeshift -t ./function-declaration.ts --extensions=tsx --parser=tsx ../../apps/*/app ../../apps/*/ce ../../apps/*/core ../../apps/*/ee ../../apps/*/helpers ../../packages/*/src --ignore-pattern='**/node_modules/**' --ignore-pattern='**/dist/**' --ignore-pattern='**/build/**' --ignore-pattern='**/*.d.ts'",
+    "headlessui-v2-default-tags": "jscodeshift -t ./headlessui-v2-default-tags.ts --extensions=tsx --parser=tsx ../../apps/*/app ../../apps/*/ce ../../apps/*/components ../../apps/*/core ../../apps/*/ee ../../apps/*/helpers ../../apps/*/src ../../packages/*/src --ignore-pattern='**/node_modules/**' --ignore-pattern='**/dist/**' --ignore-pattern='**/build/**' --ignore-pattern='**/*.d.ts'",
     "remove-directives": "jscodeshift -t ./remove-directives.ts --extensions=ts,tsx --parser=tsx ../../apps/*/app ../../apps/*/ce ../../apps/*/core ../../apps/*/ee ../../apps/*/helpers ../../apps/*/src ../../packages/*/src --ignore-pattern='**/node_modules/**' --ignore-pattern='**/dist/**' --ignore-pattern='**/build/**' --ignore-pattern='**/*.d.ts'",
-    "headlessui-v2-default-tags": "jscodeshift -t ./headlessui-v2-default-tags.ts --extensions=tsx --parser=tsx ../../apps/*/app ../../apps/*/ce ../../apps/*/components ../../apps/*/core ../../apps/*/ee ../../apps/*/helpers ../../apps/*/src ../../packages/*/src --ignore-pattern='**/node_modules/**' --ignore-pattern='**/dist/**' --ignore-pattern='**/build/**' --ignore-pattern='**/*.d.ts'"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@hypermod/utils": "catalog:",
+    "@pace/typescript-config": "workspace:*",
     "@types/jscodeshift": "catalog:",
+    "@types/node": "catalog:",
     "ast-types": "catalog:",
     "jscodeshift": "catalog:",
     "vitest": "catalog:"

@@ -1,6 +1,6 @@
 {
   "name": "@pace/tailwind-config",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "private": true,
   "description": "common tailwind configuration across monorepo",
   "license": "AGPL-3.0",
@@ -11,6 +11,12 @@
   "exports": {
     "./index.css": "./index.css",
     "./postcss.config.js": "./postcss.config.js"
+  },
+  "scripts": {
+    "check:format": "oxfmt --check .",
+    "check:lint": "oxlint --max-warnings=1 .",
+    "fix:format": "oxfmt .",
+    "fix:lint": "oxlint --fix ."
   },
   "dependencies": {
     "@makeplane/propel": "catalog:",

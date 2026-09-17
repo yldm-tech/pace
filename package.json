@@ -1,8 +1,8 @@
 {
-  "name": "plane",
-  "version": "1.4.4",
+  "name": "pace",
+  "version": "1.4.6",
   "private": true,
-  "description": "Open-source project management that unlocks customer value",
+  "description": "Project management that keeps pace with the work",
   "license": "AGPL-3.0",
   "repository": "https://github.com/yldm-tech/pace.git",
   "scripts": {

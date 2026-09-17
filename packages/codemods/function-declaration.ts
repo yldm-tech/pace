@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import { CommentKind } from "ast-types/gen/kinds";
-import {
+import type { CommentKind } from "ast-types/gen/kinds";
+import type {
   API,
   FileInfo,
   Options,
@@ -216,7 +216,6 @@ function extractPropsTypeFromWrapper(
 
   if (isMemo) {
     // For memo<Props>, the first type parameter is the props type
-    // @ts-expect-error: jscodeshift types are too strict here
     return typeParam;
   }
 
@@ -367,8 +366,8 @@ function convertToFunction(
     newFunction.typeParameters = arrowFn.typeParameters;
   }
 
-  newFunction.async = arrowFn.async;
-  newFunction.generator = arrowFn.generator;
+  newFunction.async = arrowFn.async ?? false;
+  newFunction.generator = arrowFn.generator ?? false;
 
   return newFunction;
 }
@@ -391,8 +390,8 @@ function toFunctionExpression(
     declaration.generator,
     declaration.async
   );
-  expression.returnType = declaration.returnType;
-  expression.typeParameters = declaration.typeParameters;
+  expression.returnType = declaration.returnType ?? null;
+  expression.typeParameters = declaration.typeParameters ?? null;
   return expression;
 }
 
