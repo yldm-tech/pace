@@ -8,7 +8,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api-go
+      - api
 
   admin:
     container_name: admin
@@ -19,7 +19,7 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api-go
+      - api
       - web
 
   space:
@@ -31,33 +31,33 @@ services:
         DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
-      - api-go
+      - api
       - web
 
-  api-go:
-    container_name: pace-api-go
+  api:
+    container_name: pace-api
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
     restart: always
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     depends_on:
       - plane-db
       - plane-redis
       - plane-mq
 
-  worker-go:
-    container_name: pace-worker-go
+  worker:
+    container_name: pace-worker
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile
     entrypoint: ["pace-entrypoint-worker"]
     restart: always
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       # The only consumer left. Every one of the forty-six tasks is registered here, and the API and the beat route all forty-six to this queue, so nothing is published to the queue Celery would have used.
       PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
@@ -69,17 +69,17 @@ services:
   # The Go beat, replacing beat-worker rather than running beside it: both read the same django_celery_beat tables, so running both would queue every periodic task twice. beat-worker is removed in the same change for that reason.
   #
   # It keeps its own container name rather than taking over beatworker, because nothing addresses the scheduler by name: it talks to Postgres and RabbitMQ and nothing talks to it.
-  beat-go:
-    container_name: pace-beat-go
+  beat-worker:
+    container_name: pace-beat-worker
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile
     entrypoint: ["pace-entrypoint-beat"]
     restart: always
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
-      # The queue it routes the twelve periodic tasks to, which is the one worker-go consumes.
+      # The queue it routes the twelve periodic tasks to, which is the one worker consumes.
       PACE_WORKER_QUEUE: ${PACE_WORKER_QUEUE:-pace-go}
     depends_on:
       - plane-db
@@ -91,14 +91,14 @@ services:
   migrator:
     container_name: plane-migrator
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
     restart: no
     entrypoint: ["pace-entrypoint-migrator"]
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     depends_on:
       - plane-db
       - plane-redis
@@ -109,22 +109,22 @@ services:
   live:
     container_name: plane-live
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
     entrypoint: ["pace-entrypoint-live"]
     restart: always
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       # The API it reads and writes pages through, as the editing user.
-      API_BASE_URL: ${API_BASE_URL:-http://api-go:8000}
+      API_BASE_URL: ${API_BASE_URL:-http://api:8000}
       # LIVE_SERVER_SECRET_KEY and CORS_ALLOWED_ORIGINS are deliberately not listed here. They come from the env file above, and naming them with an empty default would overwrite it: compose lets environment win over env_file, so `${VAR:-}` for a variable the shell does not set resolves to the empty string and blanks whatever the file said. The live server refuses to start without a secret key, so that is a crash loop rather than a quiet misconfiguration.
       # With no Redis it runs as a single node, and two people on one page have to reach the same server for it to converge.
       REDIS_URL: ${REDIS_URL:-redis://plane-redis:6379/}
     depends_on:
-      - api-go
+      - api
       - plane-redis
 
   plane-db:
@@ -191,7 +191,7 @@ services:
       SITE_ADDRESS: ${SITE_ADDRESS:-:80}
     depends_on:
       - web
-      - api-go
+      - api
       - space
       - admin
 

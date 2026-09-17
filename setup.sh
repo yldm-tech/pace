@@ -44,7 +44,7 @@ export LC_CTYPE=C
 echo -e "${YELLOW}Setting up environment files...${NC}"
 
 # Copy all environment example files
-services=("" "web" "api-go" "space" "admin")
+services=("" "web" "api" "space" "admin")
 success=true
 
 for service in "${services[@]}"; do
@@ -60,7 +60,7 @@ for service in "${services[@]}"; do
 done
 
 # Generate the SECRET_KEY the API signs with
-if [ -f "./apps/api-go/.env" ]; then
+if [ -f "./apps/api/.env" ]; then
     echo -e "\n${YELLOW}Generating SECRET_KEY...${NC}"
     SECRET_KEY=$(tr -dc 'a-z0-9' < /dev/urandom | head -c50)
 
@@ -69,11 +69,11 @@ if [ -f "./apps/api-go/.env" ]; then
         echo -e "${RED}Ensure 'tr' and 'head' commands are available on your system.${NC}"
         success=false
     else
-        echo -e "SECRET_KEY=\"$SECRET_KEY\"" >> ./apps/api-go/.env
-        echo -e "${GREEN}✓${NC} Added SECRET_KEY to apps/api-go/.env"
+        echo -e "SECRET_KEY=\"$SECRET_KEY\"" >> ./apps/api/.env
+        echo -e "${GREEN}✓${NC} Added SECRET_KEY to apps/api/.env"
     fi
 else
-    echo -e "${RED}✗${NC} apps/api-go/.env not found. SECRET_KEY not added."
+    echo -e "${RED}✗${NC} apps/api/.env not found. SECRET_KEY not added."
     success=false
 fi
 

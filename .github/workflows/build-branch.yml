@@ -317,8 +317,8 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_live }}
-          build-context: ./apps/api-go
-          dockerfile-path: ./apps/api-go/Dockerfile.live
+          build-context: ./apps/api
+          dockerfile-path: ./apps/api/Dockerfile.live
           buildx-driver: docker-container
           buildx-version: latest
           buildx-platforms: ${{ matrix.platform }}
@@ -364,8 +364,8 @@ jobs:
           release-version: ${{ needs.branch_build_setup.outputs.release_version }}
           docker-image-owner: ${{ needs.branch_build_setup.outputs.dh_owner }}
           docker-image-name: ${{ needs.branch_build_setup.outputs.dh_img_backend }}
-          build-context: ./apps/api-go
-          dockerfile-path: ./apps/api-go/Dockerfile
+          build-context: ./apps/api
+          dockerfile-path: ./apps/api/Dockerfile
           buildx-driver: docker-container
           buildx-version: latest
           buildx-platforms: ${{ matrix.platform }}

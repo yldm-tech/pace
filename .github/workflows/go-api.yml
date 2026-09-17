@@ -5,7 +5,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/go-api.yml"
-      - "apps/api-go/**"
+      - "apps/api/**"
       - "packages/editor/**"
       - "apps/proxy/Caddyfile.ce"
 
@@ -56,12 +56,12 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version-file: apps/api-go/go.mod
-          cache-dependency-path: apps/api-go/go.sum
+          go-version-file: apps/api/go.mod
+          cache-dependency-path: apps/api/go.sum
 
       # The schema every other step runs against, built the way production builds it. It used to be laid down by manage.py migrate; the recorded statements the Go engine replays were taken from that, and testdata/schema.tsv is what they have to produce.
       - name: Apply the schema
-        working-directory: apps/api-go
+        working-directory: apps/api
         run: go run ./cmd/manage migrate
 
       # The database the replay test builds into. It empties it before it starts, so the suite running more than once — plainly and again under the race detector — is fine.
@@ -69,15 +69,15 @@ jobs:
         run: psql "postgresql://pace:pace@localhost:5432/postgres" -c 'CREATE DATABASE pace_migration_replay OWNER pace'
 
       - name: Test Go API
-        working-directory: apps/api-go
+        working-directory: apps/api
         run: go test -count=1 ./...
 
       - name: Test Go API with race detector
-        working-directory: apps/api-go
+        working-directory: apps/api
         run: go test -race -count=1 ./...
 
       - name: Vet Go API
-        working-directory: apps/api-go
+        working-directory: apps/api
         run: go vet ./...
 
   editor-fixtures:
@@ -120,111 +120,111 @@ jobs:
 
       - name: Verify the document editor schema matches the editor
         run: |
-          node apps/api-go/tools/generate_ydoc_schema.mjs > /tmp/schema.json
-          if ! diff -u apps/api-go/internal/ydoc/schema.json /tmp/schema.json; then
-            echo "::error::apps/api-go/internal/ydoc/schema.json is stale."
+          node apps/api/tools/generate_ydoc_schema.mjs > /tmp/schema.json
+          if ! diff -u apps/api/internal/ydoc/schema.json /tmp/schema.json; then
+            echo "::error::apps/api/internal/ydoc/schema.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_ydoc_schema.mjs > apps/api-go/internal/ydoc/schema.json"
+            echo "  node apps/api/tools/generate_ydoc_schema.mjs > apps/api/internal/ydoc/schema.json"
             exit 1
           fi
 
       - name: Verify the content expressions match ProseMirror
         run: |
-          node apps/api-go/tools/generate_content_match_fixture.mjs > /tmp/content_match.json
-          if ! diff -u apps/api-go/internal/ydoc/testdata/content_match.json /tmp/content_match.json; then
-            echo "::error::apps/api-go/internal/ydoc/testdata/content_match.json is stale."
+          node apps/api/tools/generate_content_match_fixture.mjs > /tmp/content_match.json
+          if ! diff -u apps/api/internal/ydoc/testdata/content_match.json /tmp/content_match.json; then
+            echo "::error::apps/api/internal/ydoc/testdata/content_match.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_content_match_fixture.mjs > apps/api-go/internal/ydoc/testdata/content_match.json"
+            echo "  node apps/api/tools/generate_content_match_fixture.mjs > apps/api/internal/ydoc/testdata/content_match.json"
             exit 1
           fi
 
       - name: Verify the emoji table matches the editor
         run: |
-          node apps/api-go/tools/generate_ydoc_emoji.mjs > /tmp/emoji.tsv
-          if ! diff -u apps/api-go/internal/ydoc/emoji.tsv /tmp/emoji.tsv; then
-            echo "::error::apps/api-go/internal/ydoc/emoji.tsv is stale."
+          node apps/api/tools/generate_ydoc_emoji.mjs > /tmp/emoji.tsv
+          if ! diff -u apps/api/internal/ydoc/emoji.tsv /tmp/emoji.tsv; then
+            echo "::error::apps/api/internal/ydoc/emoji.tsv is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_ydoc_emoji.mjs > apps/api-go/internal/ydoc/emoji.tsv"
+            echo "  node apps/api/tools/generate_ydoc_emoji.mjs > apps/api/internal/ydoc/emoji.tsv"
             exit 1
           fi
 
       - name: Verify the rich text schema matches the editor
         run: |
-          node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > /tmp/schema_rich.json
-          if ! diff -u apps/api-go/internal/ydoc/schema_rich.json /tmp/schema_rich.json; then
-            echo "::error::apps/api-go/internal/ydoc/schema_rich.json is stale."
+          node apps/api/tools/generate_ydoc_schema.mjs --variant=rich > /tmp/schema_rich.json
+          if ! diff -u apps/api/internal/ydoc/schema_rich.json /tmp/schema_rich.json; then
+            echo "::error::apps/api/internal/ydoc/schema_rich.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > apps/api-go/internal/ydoc/schema_rich.json"
+            echo "  node apps/api/tools/generate_ydoc_schema.mjs --variant=rich > apps/api/internal/ydoc/schema_rich.json"
             exit 1
           fi
 
       - name: Verify the rich text parse rules match the schema
         run: |
-          node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > /tmp/parse_rules_rich.json
-          if ! diff -u apps/api-go/internal/ydoc/parse_rules_rich.json /tmp/parse_rules_rich.json; then
-            echo "::error::apps/api-go/internal/ydoc/parse_rules_rich.json is stale."
+          node apps/api/tools/generate_parse_rules.mjs --variant=rich > /tmp/parse_rules_rich.json
+          if ! diff -u apps/api/internal/ydoc/parse_rules_rich.json /tmp/parse_rules_rich.json; then
+            echo "::error::apps/api/internal/ydoc/parse_rules_rich.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > apps/api-go/internal/ydoc/parse_rules_rich.json"
+            echo "  node apps/api/tools/generate_parse_rules.mjs --variant=rich > apps/api/internal/ydoc/parse_rules_rich.json"
             exit 1
           fi
 
       - name: Verify the converted documents match the editor
         run: |
-          node apps/api-go/tools/generate_convert_fixture.mjs > /tmp/converted.json
-          if ! diff -u apps/api-go/internal/live/testdata/converted.json /tmp/converted.json; then
-            echo "::error::apps/api-go/internal/live/testdata/converted.json is stale."
+          node apps/api/tools/generate_convert_fixture.mjs > /tmp/converted.json
+          if ! diff -u apps/api/internal/live/testdata/converted.json /tmp/converted.json; then
+            echo "::error::apps/api/internal/live/testdata/converted.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_convert_fixture.mjs > apps/api-go/internal/live/testdata/converted.json"
+            echo "  node apps/api/tools/generate_convert_fixture.mjs > apps/api/internal/live/testdata/converted.json"
             exit 1
           fi
 
       - name: Verify the parse rules match the schema
         run: |
-          node apps/api-go/tools/generate_parse_rules.mjs > /tmp/parse_rules.json
-          if ! diff -u apps/api-go/internal/ydoc/parse_rules.json /tmp/parse_rules.json; then
-            echo "::error::apps/api-go/internal/ydoc/parse_rules.json is stale."
+          node apps/api/tools/generate_parse_rules.mjs > /tmp/parse_rules.json
+          if ! diff -u apps/api/internal/ydoc/parse_rules.json /tmp/parse_rules.json; then
+            echo "::error::apps/api/internal/ydoc/parse_rules.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_parse_rules.mjs > apps/api-go/internal/ydoc/parse_rules.json"
+            echo "  node apps/api/tools/generate_parse_rules.mjs > apps/api/internal/ydoc/parse_rules.json"
             exit 1
           fi
 
       - name: Verify the parsed documents match the editor
         run: |
-          node apps/api-go/tools/generate_parse_fixture.mjs > /tmp/parsed.json
-          if ! diff -u apps/api-go/internal/ydoc/testdata/parsed.json /tmp/parsed.json; then
-            echo "::error::apps/api-go/internal/ydoc/testdata/parsed.json is stale."
+          node apps/api/tools/generate_parse_fixture.mjs > /tmp/parsed.json
+          if ! diff -u apps/api/internal/ydoc/testdata/parsed.json /tmp/parsed.json; then
+            echo "::error::apps/api/internal/ydoc/testdata/parsed.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_parse_fixture.mjs > apps/api-go/internal/ydoc/testdata/parsed.json"
+            echo "  node apps/api/tools/generate_parse_fixture.mjs > apps/api/internal/ydoc/testdata/parsed.json"
             exit 1
           fi
 
       - name: Verify the written updates match the editor
         run: |
-          node apps/api-go/tools/generate_tobinary_fixture.mjs > /tmp/updates.json
-          if ! diff -u apps/api-go/internal/ydoc/testdata/updates.json /tmp/updates.json; then
-            echo "::error::apps/api-go/internal/ydoc/testdata/updates.json is stale."
+          node apps/api/tools/generate_tobinary_fixture.mjs > /tmp/updates.json
+          if ! diff -u apps/api/internal/ydoc/testdata/updates.json /tmp/updates.json; then
+            echo "::error::apps/api/internal/ydoc/testdata/updates.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_tobinary_fixture.mjs > apps/api-go/internal/ydoc/testdata/updates.json"
+            echo "  node apps/api/tools/generate_tobinary_fixture.mjs > apps/api/internal/ydoc/testdata/updates.json"
             exit 1
           fi
 
       - name: Verify the parsed trees match zeed-dom
         run: |
-          node apps/api-go/tools/generate_vdom_fixture.mjs > /tmp/trees.json
-          if ! diff -u apps/api-go/internal/vdom/testdata/trees.json /tmp/trees.json; then
-            echo "::error::apps/api-go/internal/vdom/testdata/trees.json is stale."
+          node apps/api/tools/generate_vdom_fixture.mjs > /tmp/trees.json
+          if ! diff -u apps/api/internal/vdom/testdata/trees.json /tmp/trees.json; then
+            echo "::error::apps/api/internal/vdom/testdata/trees.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_vdom_fixture.mjs > apps/api-go/internal/vdom/testdata/trees.json"
+            echo "  node apps/api/tools/generate_vdom_fixture.mjs > apps/api/internal/vdom/testdata/trees.json"
             exit 1
           fi
 
       - name: Verify the document corpus matches the editor
         run: |
-          node apps/api-go/tools/generate_ydoc_fixture.mjs > /tmp/documents.json
-          if ! diff -u apps/api-go/internal/ydoc/testdata/documents.json /tmp/documents.json; then
-            echo "::error::apps/api-go/internal/ydoc/testdata/documents.json is stale."
+          node apps/api/tools/generate_ydoc_fixture.mjs > /tmp/documents.json
+          if ! diff -u apps/api/internal/ydoc/testdata/documents.json /tmp/documents.json; then
+            echo "::error::apps/api/internal/ydoc/testdata/documents.json is stale."
             echo "Regenerate it from the repository root with:"
-            echo "  node apps/api-go/tools/generate_ydoc_fixture.mjs > apps/api-go/internal/ydoc/testdata/documents.json"
+            echo "  node apps/api/tools/generate_ydoc_fixture.mjs > apps/api/internal/ydoc/testdata/documents.json"
             exit 1
           fi
 

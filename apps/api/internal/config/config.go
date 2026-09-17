@@ -1,0 +1,289 @@
+package config
+
+import (
+	"fmt"
+	"net/url"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/yldm-tech/pace/apps/api/internal/httpsafe"
+	"net/netip"
+)
+
+const (
+	defaultAddress         = ":8000"
+	defaultShutdownTimeout = 10 * time.Second
+	defaultMaxOpenConns    = 25
+	defaultMaxIdleConns    = 5
+)
+
+type Config struct {
+	Address         string
+	DatabaseURL     string
+	CORSOrigins     []string
+	ShutdownTimeout time.Duration
+	MaxOpenConns    int
+	MaxIdleConns    int
+	Auth            AuthConfig
+}
+
+type AuthConfig struct {
+	SecretKey               string
+	SecretKeyFallbacks      []string
+	RedisURL                string
+	AMQPURL                 string
+	WebURL                  string
+	AppBaseURL              string
+	SpaceBaseURL            string
+	SpaceBasePath           string
+	SessionCookieName       string
+	SessionCookieDomain     string
+	SessionCookieSecure     bool
+	SessionCookieAge        time.Duration
+	SessionSaveEveryRequest bool
+	CSRFCookieName          string
+	CSRFCookieDomain        string
+	CSRFCookieSecure        bool
+	CSRFCookieAge           time.Duration
+	CSRFTrustedOrigins      []string
+	AuthenticationRateLimit string
+	SkipEnvironmentConfig   bool
+	// The four settings only the admin console reads. ADMIN_BASE_URL is dropped when it is not a url, the same way settings.py drops it.
+	AdminBaseURL             string
+	AdminBasePath            string
+	InstanceChangelogURL     string
+	IsSelfManaged            bool
+	AWSAccessKeyID           string
+	AWSSecretAccessKey       string
+	AWSRegion                string
+	AWSBucketName            string
+	AWSEndpointURL           string
+	UseMinio                 bool
+	MinioEndpointSSL         bool
+	FileSizeLimit            int64
+	SignedURLExpiration      time.Duration
+	WebhookAllowedIPs        []netip.Prefix
+	WebhookAllowedHosts      []string
+	WebhookDisallowedDomains []string
+	APIKeyRateLimit          string
+}
+
+func Load() (Config, error) {
+	corsOrigins := csvOrDefault(
+		firstNonEmpty(os.Getenv("CORS_ALLOWED_ORIGINS"), os.Getenv("CORS_ORIGINS")),
+		[]string{"http://localhost:3000", "http://localhost:3001"},
+	)
+	trustedOrigins := csvOrDefault(os.Getenv("CSRF_TRUSTED_ORIGINS"), corsOrigins)
+	secureCookies := secureCookieSetting(corsOrigins)
+	// An entry that cannot be parsed is skipped rather than stopping the process, which is what settings.py does with a warning.
+	webhookAllowedIPs, _ := httpsafe.ParseAllowedIPs(os.Getenv("WEBHOOK_ALLOWED_IPS"))
+
+	config := Config{
+		Address:         listenAddress(),
+		DatabaseURL:     strings.TrimSpace(os.Getenv("DATABASE_URL")),
+		CORSOrigins:     corsOrigins,
+		ShutdownTimeout: durationOrDefault(os.Getenv("SHUTDOWN_TIMEOUT"), defaultShutdownTimeout),
+		MaxOpenConns:    positiveIntOrDefault(os.Getenv("DB_MAX_OPEN_CONNS"), defaultMaxOpenConns),
+		MaxIdleConns:    positiveIntOrDefault(os.Getenv("DB_MAX_IDLE_CONNS"), defaultMaxIdleConns),
+		Auth: AuthConfig{
+			SecretKey:          strings.TrimSpace(os.Getenv("SECRET_KEY")),
+			SecretKeyFallbacks: csvOrDefault(os.Getenv("SECRET_KEY_FALLBACKS"), nil),
+			RedisURL:           strings.TrimSpace(os.Getenv("REDIS_URL")),
+			AMQPURL:            celeryBrokerURL(),
+			// None of these three carry a default, because settings.py gives none: WEB_URL is os.environ.get("WEB_URL"), and APP_BASE_URL and SPACE_BASE_URL are read the same way and then dropped when they are not urls. The defaults that used to stand here were invented by this port, and they were not harmless -- base_host prefers APP_BASE_URL over WEB_URL, so a default of http://localhost:3000 meant every redirect out of sign-up and sign-in went to port 3000 no matter what WEB_URL said, on every installation that had not set APP_BASE_URL. Which is all of them: neither variables.env nor the compose files set it.
+			WebURL:                  strings.TrimRight(validURLOrEmpty(os.Getenv("WEB_URL")), "/"),
+			AppBaseURL:              strings.TrimRight(validURLOrEmpty(os.Getenv("APP_BASE_URL")), "/"),
+			SpaceBaseURL:            strings.TrimRight(validURLOrEmpty(os.Getenv("SPACE_BASE_URL")), "/"),
+			SpaceBasePath:           normalizedBasePath(envOrDefault("SPACE_BASE_PATH", "/spaces/")),
+			SessionCookieName:       envOrDefault("SESSION_COOKIE_NAME", "session-id"),
+			SessionCookieDomain:     strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			SessionCookieSecure:     secureCookies,
+			SessionCookieAge:        secondsOrDefault(os.Getenv("SESSION_COOKIE_AGE"), 7*24*time.Hour),
+			SessionSaveEveryRequest: boolOrDefault(os.Getenv("SESSION_SAVE_EVERY_REQUEST"), false),
+			CSRFCookieName:          envOrDefault("CSRF_COOKIE_NAME", "csrftoken"),
+			CSRFCookieDomain:        strings.TrimSpace(os.Getenv("COOKIE_DOMAIN")),
+			CSRFCookieSecure:        secureCookies,
+			CSRFCookieAge:           secondsOrDefault(os.Getenv("CSRF_COOKIE_AGE"), 364*24*time.Hour),
+			CSRFTrustedOrigins:      trustedOrigins,
+			AuthenticationRateLimit: envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
+			SkipEnvironmentConfig:   boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
+			AdminBaseURL:            validURLOrEmpty(os.Getenv("ADMIN_BASE_URL")),
+			AdminBasePath:           envOrDefault("ADMIN_BASE_PATH", "/god-mode/"),
+			InstanceChangelogURL:    os.Getenv("INSTANCE_CHANGELOG_URL"),
+			// IS_SELF_MANAGED is a literal in settings.py rather than an environment variable, and the community edition is always self managed.
+			IsSelfManaged:            true,
+			AWSAccessKeyID:           strings.TrimSpace(os.Getenv("AWS_ACCESS_KEY_ID")),
+			AWSSecretAccessKey:       strings.TrimSpace(os.Getenv("AWS_SECRET_ACCESS_KEY")),
+			AWSRegion:                strings.TrimSpace(os.Getenv("AWS_REGION")),
+			AWSBucketName:            envOrDefault("AWS_S3_BUCKET_NAME", "uploads"),
+			AWSEndpointURL:           firstNonEmpty(os.Getenv("AWS_S3_ENDPOINT_URL"), os.Getenv("MINIO_ENDPOINT_URL")),
+			UseMinio:                 boolOrDefault(os.Getenv("USE_MINIO"), false),
+			MinioEndpointSSL:         boolOrDefault(os.Getenv("MINIO_ENDPOINT_SSL"), false),
+			FileSizeLimit:            int64(positiveIntOrDefault(os.Getenv("FILE_SIZE_LIMIT"), 5*1024*1024)),
+			SignedURLExpiration:      secondsOrDefault(os.Getenv("SIGNED_URL_EXPIRATION"), time.Hour),
+			WebhookAllowedIPs:        webhookAllowedIPs,
+			WebhookAllowedHosts:      httpsafe.ParseAllowedHosts(os.Getenv("WEBHOOK_ALLOWED_HOSTS")),
+			WebhookDisallowedDomains: parseDisallowedDomains(os.Getenv("WEBHOOK_DISALLOWED_DOMAINS")),
+			APIKeyRateLimit:          envOrDefault("API_KEY_RATE_LIMIT", "60/minute"),
+		},
+	}
+	if config.DatabaseURL == "" {
+		return Config{}, fmt.Errorf("DATABASE_URL is required")
+	}
+	if config.MaxIdleConns > config.MaxOpenConns {
+		return Config{}, fmt.Errorf("DB_MAX_IDLE_CONNS cannot exceed DB_MAX_OPEN_CONNS")
+	}
+	if config.Auth.SecretKey == "" {
+		return Config{}, fmt.Errorf("SECRET_KEY is required")
+	}
+	return config, nil
+}
+
+// listenAddress is where the API server binds.
+//
+// PORT is read because the Django entrypoint read it: it ran gunicorn with --bind 0.0.0.0:"${PORT:-8000}", and deployments set it — the all-in-one image puts the API on 3004 and its proxy sends /api/ there. A Go service that only answered to a name of its own would have come up on 8000 and been unreachable behind that proxy.
+//
+// PACE_API_ADDRESS wins when both are set, because it says more: it can name an interface as well as a port.
+func listenAddress() string {
+	if address := strings.TrimSpace(os.Getenv("PACE_API_ADDRESS")); address != "" {
+		return address
+	}
+	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+		return ":" + port
+	}
+	return defaultAddress
+}
+
+func envOrDefault(name, fallback string) string {
+	if value := strings.TrimSpace(os.Getenv(name)); value != "" {
+		return value
+	}
+	return fallback
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		if strings.TrimSpace(value) != "" {
+			return value
+		}
+	}
+	return ""
+}
+
+// secureCookieSetting decides whether the session and CSRF cookies carry Secure.
+//
+// SECURE_COOKIES wins when it is set, so a deployment can say so outright. Otherwise the answer is yes unless one of the configured origins is served over plain http, which is what tells a local development stack apart from a real one. A deployment that configures nothing gets Secure rather than not: an unconfigured instance is far more likely to be behind TLS than to be a browser talking plain http to a real host.
+func secureCookieSetting(origins []string) bool {
+	if explicit, set := os.LookupEnv("SECURE_COOKIES"); set {
+		if parsed, err := strconv.ParseBool(strings.TrimSpace(explicit)); err == nil {
+			return parsed
+		}
+	}
+	for _, origin := range origins {
+		if strings.HasPrefix(strings.ToLower(strings.TrimSpace(origin)), "http:") {
+			return false
+		}
+	}
+	return true
+}
+
+func csvOrDefault(value string, fallback []string) []string {
+	values := make([]string, 0)
+	for _, candidate := range strings.Split(value, ",") {
+		if candidate = strings.TrimSpace(candidate); candidate != "" {
+			values = append(values, candidate)
+		}
+	}
+	if len(values) == 0 {
+		return fallback
+	}
+	return values
+}
+
+func durationOrDefault(value string, fallback time.Duration) time.Duration {
+	duration, err := time.ParseDuration(strings.TrimSpace(value))
+	if err != nil || duration <= 0 {
+		return fallback
+	}
+	return duration
+}
+
+func positiveIntOrDefault(value string, fallback int) int {
+	parsed, err := strconv.Atoi(strings.TrimSpace(value))
+	if err != nil || parsed <= 0 {
+		return fallback
+	}
+	return parsed
+}
+
+func secondsOrDefault(value string, fallback time.Duration) time.Duration {
+	seconds, err := strconv.Atoi(strings.TrimSpace(value))
+	if err != nil || seconds <= 0 {
+		return fallback
+	}
+	return time.Duration(seconds) * time.Second
+}
+
+func boolOrDefault(value string, fallback bool) bool {
+	value = strings.TrimSpace(strings.ToLower(value))
+	if value == "" {
+		return fallback
+	}
+	switch value {
+	case "1", "true", "yes", "on":
+		return true
+	case "0", "false", "no", "off":
+		return false
+	default:
+		return fallback
+	}
+}
+
+func normalizedBasePath(value string) string {
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return "/spaces/"
+	}
+	if !strings.HasPrefix(value, "/") {
+		value = "/" + value
+	}
+	if !strings.HasSuffix(value, "/") {
+		value += "/"
+	}
+	return value
+}
+
+func celeryBrokerURL() string {
+	if configured := strings.TrimSpace(os.Getenv("AMQP_URL")); configured != "" {
+		return configured
+	}
+	user := envOrDefault("RABBITMQ_USER", "guest")
+	password := envOrDefault("RABBITMQ_PASSWORD", "guest")
+	host := envOrDefault("RABBITMQ_HOST", "localhost")
+	port := envOrDefault("RABBITMQ_PORT", "5672")
+	vhost := envOrDefault("RABBITMQ_VHOST", "/")
+	return fmt.Sprintf("amqp://%s:%s@%s:%s/%s", user, password, host, port, vhost)
+}
+
+// parseDisallowedDomains reads WEBHOOK_DISALLOWED_DOMAINS the way settings.py does: split on commas, trimmed, with a trailing dot removed and the case flattened.
+func parseDisallowedDomains(raw string) []string {
+	domains := []string{}
+	for _, entry := range strings.Split(raw, ",") {
+		entry = strings.ToLower(strings.TrimSuffix(strings.TrimSpace(entry), "."))
+		if entry != "" {
+			domains = append(domains, entry)
+		}
+	}
+	return domains
+}
+
+// validURLOrEmpty keeps a base url only when it really is one, which is what settings.py does with ADMIN_BASE_URL.
+func validURLOrEmpty(raw string) string {
+	parsed, err := url.Parse(raw)
+	if err != nil || parsed.Scheme == "" || parsed.Host == "" {
+		return ""
+	}
+	return raw
+}

@@ -17,7 +17,7 @@ This repository is the Pace application and its gradual backend migration. The w
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for local development instructions. The existing Docker and Kubernetes deployment configuration is still supported while the migration is in progress.
 
-For the Go API, see [`apps/api-go/README.md`](./apps/api-go/README.md).
+For the Go API, see [`apps/api/README.md`](./apps/api/README.md).
 
 ## Built with
 
@@ -53,7 +53,7 @@ Migration rules:
 ### Verify the Go API
 
 ```bash
-cd apps/api-go
+cd apps/api
 go test -count=1 ./...
 go test -race -count=1 ./...
 go vet ./...

@@ -22,7 +22,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-plane}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-plane}
@@ -52,7 +52,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-plane}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-plane}
@@ -71,7 +71,7 @@ services:
     networks:
       - test_env
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-access-key}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-secret-key}
@@ -94,14 +94,14 @@ services:
 
   api-tests:
     build:
-      context: ./apps/api-go
+      context: ./apps/api
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
     networks:
       - test_env
     env_file:
-      - ./apps/api-go/.env
+      - ./apps/api/.env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}
       REDIS_URL: redis://test-redis:6379/
@@ -116,7 +116,7 @@ services:
       WORKER_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
       BEAT_TEST_DATABASE_URL: postgresql://${POSTGRES_USER:-plane}:${POSTGRES_PASSWORD:-plane}@test-db:5432/${POSTGRES_DB:-plane}?sslmode=disable
     volumes:
-      - ./apps/api-go:/src
+      - ./apps/api:/src
     working_dir: /src
     depends_on:
       test-db:
