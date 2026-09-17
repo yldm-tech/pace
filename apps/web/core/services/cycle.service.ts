@@ -15,7 +15,7 @@ import type {
   TProgressSnapshot,
   TCycleEstimateDistribution,
 } from "@pace/types";
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 
 export class CycleService extends APIService {
   constructor() {

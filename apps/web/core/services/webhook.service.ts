@@ -7,7 +7,7 @@
 // api services
 import { API_BASE_URL } from "@pace/constants";
 import type { IWebhook } from "@pace/types";
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 // helpers
 // types
 

@@ -8,7 +8,7 @@
 import { API_BASE_URL } from "@pace/constants";
 import type { AI_EDITOR_TASKS } from "@pace/constants";
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 // types
 // FIXME:
 // import { IGptResponse } from "@pace/types";

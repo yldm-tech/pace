@@ -5,12 +5,17 @@
  */
 
 import { initPromise } from "@pace/i18n";
+import { setUnauthorizedHandler } from "@pace/services";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
 
 import polyfills from "@/lib/polyfills";
 import { isStaleAssetErrorMessage, recoverFromStaleAsset } from "@/lib/stale-asset-error";
+// A 401 from any service sends the person to sign-in and remembers where they were, which is what web's own APIService used to do before that class became the shared one. space and admin install no handler and so are unaffected.
+setUnauthorizedHandler((currentPath) => {
+  window.location.replace(`/${currentPath ? `?next_path=${currentPath}` : ``}`);
+});
 
 void polyfills;
 

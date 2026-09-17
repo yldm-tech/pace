@@ -12,7 +12,7 @@ import type { EFileAssetType, TFileEntityInfo, TFileSignedURLResponse } from "@p
 import { getAssetIdFromUrl } from "@pace/utils";
 // helpers
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 import { FileUploadService } from "@pace/services";
 
 export interface UnSplashImage {

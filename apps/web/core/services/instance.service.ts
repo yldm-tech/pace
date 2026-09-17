@@ -9,7 +9,7 @@ import { API_BASE_URL } from "@pace/constants";
 import type { IInstanceInfo } from "@pace/types";
 // helpers
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 
 export class InstanceService extends APIService {
   constructor() {

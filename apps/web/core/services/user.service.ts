@@ -19,7 +19,7 @@ import type {
   TUserProfile,
   IEmailCheckResponse,
 } from "@pace/types";
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 // types
 // helpers
 

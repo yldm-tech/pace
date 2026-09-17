@@ -28,7 +28,7 @@ import type {
   IWorkspaceUserPropertiesResponse,
 } from "@pace/types";
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 
 export class WorkspaceService extends APIService {
   constructor() {

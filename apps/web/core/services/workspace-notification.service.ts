@@ -15,7 +15,7 @@ import type {
 } from "@pace/types";
 // helpers
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 
 export class WorkspaceNotificationService extends APIService {
   constructor() {

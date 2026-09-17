@@ -6,7 +6,7 @@
 
 import { API_BASE_URL } from "@pace/constants";
 import type { THomeDashboardResponse, TWidget, TWidgetStatsResponse, TWidgetStatsRequestParams } from "@pace/types";
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 // helpers
 // types
 

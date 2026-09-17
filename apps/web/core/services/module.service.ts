@@ -8,7 +8,7 @@
 import { API_BASE_URL } from "@pace/constants";
 import type { IModule, ILinkDetails, ModuleLink, TIssuesResponse } from "@pace/types";
 // services
-import { APIService } from "@/services/api.service";
+import { APIService } from "@pace/services";
 
 export class ModuleService extends APIService {
   constructor() {
