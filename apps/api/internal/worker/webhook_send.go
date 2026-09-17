@@ -1,13 +1,13 @@
 package worker
 
 import (
+	"bytes"
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"math/rand"
 	"sort"
@@ -243,10 +243,32 @@ func webhookPayload(delivery webhookDelivery, webhook webhookRow, verb string) (
 	if err != nil {
 		return nil, err
 	}
-	// Written by hand rather than through a map, so the keys keep the order the payload is documented in.
-	return []byte(fmt.Sprintf(
-		`{"event": %s, "action": %s, "webhook_id": %s, "workspace_id": %s, "workspace_slug": %s, "data": %s, "activity": %s}`,
-		event, action, webhookID, workspaceID, slug, data, activity)), nil
+	// Assembled a piece at a time rather than through a map or a format string. The key order is the order the payload is documented in, and the spacing is json.dumps's default separators -- a space after every colon and comma -- because X-Plane-Signature is an HMAC over exactly these bytes and Django produced them that way.
+	var body bytes.Buffer
+	for index, field := range []struct {
+		key   string
+		value []byte
+	}{
+		{"event", event},
+		{"action", action},
+		{"webhook_id", webhookID},
+		{"workspace_id", workspaceID},
+		{"workspace_slug", slug},
+		{"data", data},
+		{"activity", activity},
+	} {
+		if index == 0 {
+			body.WriteString("{")
+		} else {
+			body.WriteString(", ")
+		}
+		// The key is a constant from the list above and the value has already been through json.Marshal, so neither is a string this function built out of anything a caller chose.
+		body.WriteString(strconv.Quote(field.key))
+		body.WriteString(": ")
+		body.Write(field.value)
+	}
+	body.WriteString("}")
+	return body.Bytes(), nil
 }
 
 // renderHeaderMap is what str() of a python dict looks like, which is what the log column holds today.

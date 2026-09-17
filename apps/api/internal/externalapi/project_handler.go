@@ -240,11 +240,17 @@ func (handler *Handler) projectSummary(c *gin.Context, user *auth.User, _ APITok
 	}
 	requested := []string{}
 	seen := map[string]bool{}
-	for _, field := range strings.Split(c.Query("fields"), ",") {
-		field = strings.TrimSpace(field)
-		if known[field] && !seen[field] {
-			requested = append(requested, field)
-			seen[field] = true
+	for _, raw := range strings.Split(c.Query("fields"), ",") {
+		raw = strings.TrimSpace(raw)
+		if !known[raw] {
+			continue
+		}
+		// Collect the name as this file spells it rather than as the request spelled it, so the string that ends up in the SELECT is one of ours even though the two compare equal.
+		for _, field := range projectSummaryFields {
+			if field == raw && !seen[field] {
+				requested = append(requested, field)
+				seen[field] = true
+			}
 		}
 	}
 	if len(requested) == 0 {

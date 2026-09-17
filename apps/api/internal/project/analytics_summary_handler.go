@@ -219,9 +219,15 @@ func (handler *Handler) projectStats(c *gin.Context, user *auth.User) {
 		return
 	}
 	requested := []string{}
-	for _, field := range strings.Split(c.Query("fields"), ",") {
-		if projectStatsValidFields[field] {
-			requested = append(requested, field)
+	for _, raw := range strings.Split(c.Query("fields"), ",") {
+		if !projectStatsValidFields[raw] {
+			continue
+		}
+		// The name that reaches the SELECT is the key from the table, not the one the request sent, even though they compare equal.
+		for field := range projectStatsValidFields {
+			if field == raw {
+				requested = append(requested, field)
+			}
 		}
 	}
 	if len(requested) == 0 {
