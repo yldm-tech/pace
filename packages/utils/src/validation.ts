@@ -78,10 +78,10 @@ export const validatePersonName = (name: string): boolean | string => {
     return "Name must be 50 characters or less";
   }
 
-  if (hasInjectionRiskChars(name)) {
-    return "Names cannot contain special characters like < > ' \" { } [ ] * ^ ! # %";
-  }
-
+  // No blocklist here. PERSON_NAME_REGEX allows letters, spaces, hyphens and apostrophes and nothing
+  // else, so none of the characters a blocklist would look for can reach the end of this function --
+  // and the blocklist that used to run first rejected the apostrophe the regex and the message below
+  // both promise, so nobody called O'Neill could save their own name.
   if (!PERSON_NAME_REGEX.test(name)) {
     return "Names can only contain letters, spaces, hyphens, and apostrophes";
   }
