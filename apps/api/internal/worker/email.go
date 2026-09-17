@@ -10,7 +10,6 @@ import (
 	"net"
 	"net/smtp"
 	"regexp"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -141,24 +140,25 @@ func (err BadHeaderError) Error() string {
 	return fmt.Sprintf("header values can't contain newlines (got %q for header %q)", err.Value, err.Header)
 }
 
-// forbidMultiLineHeaders reproduces django.core.mail.message.forbid_multi_line_headers. Every header this package writes is assembled by hand, so nothing else stands between a value and the wire: a CR or LF in one ends the header and starts another, which turns a display name or a workspace name into whatever headers the person who chose it wants. Django refuses to send in that case rather than stripping, and refusing is what a caller can notice.
-func forbidMultiLineHeaders(headers map[string]string) error {
-	// Sorted so that a message with more than one bad header always names the same one, which keeps the error a test can assert on.
-	names := make([]string, 0, len(headers))
-	for name := range headers {
-		names = append(names, name)
+// headerValue returns the value only if it can safely be written as a header, which is what django.core.mail.message.forbid_multi_line_headers decides. A CR or an LF ends the header and starts another, so a display name or a workspace name could otherwise add headers of its own choosing.
+func headerValue(name, value string) (string, error) {
+	if strings.ContainsAny(value, "\r\n") {
+		return "", BadHeaderError{Header: name, Value: value}
 	}
-	sort.Strings(names)
-	for _, name := range names {
-		if strings.ContainsAny(headers[name], "\r\n") {
-			return BadHeaderError{Header: name, Value: headers[name]}
-		}
-	}
-	return nil
+	return value, nil
 }
 
 func buildMultipartMessage(from, to, subject, text, html string) (string, error) {
-	if err := forbidMultiLineHeaders(map[string]string{"From": from, "To": to, "Subject": subject}); err != nil {
+	from, err := headerValue("From", from)
+	if err != nil {
+		return "", err
+	}
+	to, err = headerValue("To", to)
+	if err != nil {
+		return "", err
+	}
+	subject, err = headerValue("Subject", subject)
+	if err != nil {
 		return "", err
 	}
 	boundary := "pace-go-boundary-0f2a1c"
@@ -180,11 +180,25 @@ func buildMultipartMessage(from, to, subject, text, html string) (string, error)
 
 // buildAttachmentMessage is a plain text body with one file beside it, which is what Django's attach() produces when nothing was attached as an alternative.
 func buildAttachmentMessage(from, to, subject, text, filename, contentType string, content []byte) (string, error) {
-	// The filename and the content type are header values too -- they go into Content-Disposition and Content-Type -- so they are checked beside the three obvious ones.
-	if err := forbidMultiLineHeaders(map[string]string{
-		"From": from, "To": to, "Subject": subject,
-		"Content-Disposition": filename, "Content-Type": contentType,
-	}); err != nil {
+	// The filename and the content type are header values too -- they go into Content-Disposition and Content-Type -- so they pass the same guard as the three obvious ones.
+	from, err := headerValue("From", from)
+	if err != nil {
+		return "", err
+	}
+	to, err = headerValue("To", to)
+	if err != nil {
+		return "", err
+	}
+	subject, err = headerValue("Subject", subject)
+	if err != nil {
+		return "", err
+	}
+	filename, err = headerValue("Content-Disposition", filename)
+	if err != nil {
+		return "", err
+	}
+	contentType, err = headerValue("Content-Type", contentType)
+	if err != nil {
 		return "", err
 	}
 	boundary := "pace-go-mixed-0f2a1c"
