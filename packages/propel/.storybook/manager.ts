@@ -11,7 +11,7 @@ const planeTheme = create({
   base: "dark",
   brandTitle: "Pace UI",
   brandUrl: "https://pace.yldm.ai",
-  brandImage: "plane-lockup-light.svg",
+  brandImage: "pace-lockup-light.svg",
   brandTarget: "_self",
 });
 

@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 import useSWR from "swr";
 // pace imports
 import { SPACE_BASE_PATH } from "@pace/constants";
-import { PlaneLockup } from "@pace/propel/icons";
+import { PaceLockup } from "@pace/propel/icons";
 // assets
 import PlaneBackgroundPatternDark from "@/app/assets/auth/background-pattern-dark.svg?url";
 import PlaneBackgroundPattern from "@/app/assets/auth/background-pattern.svg?url";
@@ -53,7 +53,7 @@ export const InstanceProvider = observer(function InstanceProvider({ children }:
           <div className="z-50 container mx-auto flex h-[110px] flex-shrink-0 items-center justify-between gap-5 px-5 lg:px-0">
             <div className="flex items-center gap-x-2 py-10">
               <Link to={`${SPACE_BASE_PATH}/`}>
-                <PlaneLockup className="h-7 w-auto text-primary" />
+                <PaceLockup className="h-7 w-auto text-primary" />
               </Link>
             </div>
           </div>

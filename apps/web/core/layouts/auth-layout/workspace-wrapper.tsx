@@ -13,7 +13,7 @@ import useSWR from "swr";
 import { LogOutOutline } from "@makeplane/propel/icons";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { Button, getButtonStyling } from "@pace/propel/button";
-import { PlaneLogo } from "@pace/propel/icons";
+import { PaceLogo } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { cn } from "@pace/utils";
@@ -155,7 +155,7 @@ export const WorkspaceAuthWrapper = observer(function WorkspaceAuthWrapper(props
         <div className="relative container mx-auto flex h-full w-full flex-col overflow-hidden overflow-y-auto px-5 py-14 md:px-0">
           <div className="relative flex flex-shrink-0 items-center justify-between gap-4">
             <div className="z-10 flex-shrink-0 bg-surface-2 py-4">
-              <PlaneLogo className="h-9 w-auto text-primary" />
+              <PaceLogo className="h-9 w-auto text-primary" />
             </div>
             <div className="relative flex items-center gap-2">
               <div className="text-13 font-medium">{currentUser?.email}</div>

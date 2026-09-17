@@ -10,7 +10,7 @@ import { GOD_MODE_URL } from "@pace/constants";
 import GradientLogo from "@/app/assets/auth/gradient-logo.webp?url";
 import GradientBgLogo from "@/app/assets/auth/gradient-bg-logo.webp?url";
 import DefaultLayout from "@/layouts/default-layout";
-import { PlaneLockup } from "@pace/propel/icons";
+import { PaceLockup } from "@pace/propel/icons";
 import { Button } from "@pace/propel/button";
 
 export function InstanceNotReady() {
@@ -33,7 +33,7 @@ export function InstanceNotReady() {
         {/* Main content */}
         <div className="flex h-full w-full flex-col items-center px-8 pt-6 pb-10">
           <div className="sticky top-0 flex w-full shrink-0 items-center justify-between gap-6">
-            <PlaneLockup height={20} width={95} className="text-primary" />
+            <PaceLockup height={20} width={76} className="text-primary" />
           </div>
           <div className="flex h-full w-full flex-col items-center justify-center gap-7">
             <div className="flex flex-col items-center gap-11">

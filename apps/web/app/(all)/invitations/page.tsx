@@ -15,7 +15,7 @@ import { ROLE } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // types
 import { Button } from "@pace/propel/button";
-import { PlaneLogo } from "@pace/propel/icons";
+import { PaceLogo } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceMemberInvitation } from "@pace/types";
 import { truncateText } from "@pace/utils";
@@ -117,7 +117,7 @@ function UserInvitationsPage() {
             href="/"
             className="absolute top-1/2 left-5 z-10 grid -translate-y-1/2 place-items-center px-3 sm:top-12 sm:left-1/2 sm:-translate-x-[15px] sm:translate-y-0 sm:px-0 sm:py-5 md:left-1/3"
           >
-            <PlaneLogo className="h-9 w-auto text-primary" />
+            <PaceLogo className="h-9 w-auto text-primary" />
           </Link>
           <div className="absolute top-1/4 right-4 -translate-y-1/2 text-13 text-primary sm:fixed sm:top-12 sm:right-16 sm:translate-y-0 sm:py-5">
             {currentUser?.email}
