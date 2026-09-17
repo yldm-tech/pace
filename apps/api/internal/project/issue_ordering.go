@@ -6,11 +6,11 @@ import (
 )
 
 // issueOrderAllowlist is ISSUE_ORDER_BY_ALLOWLIST. Anything outside it is replaced with the default rather than reaching the query, which is what sanitize_order_by does to keep an order_by parameter from being injected.
-var issueOrderAllowlist = map[string]bool{
-	"created_at": true, "updated_at": true, "sequence_id": true, "sort_order": true,
-	"target_date": true, "start_date": true, "completed_at": true, "archived_at": true,
-	"priority": true, "state__name": true, "state__group": true,
-	"assignees__first_name": true, "labels__name": true, "issue_module__module__name": true,
+var issueOrderAllowlist = map[string]string{
+	"created_at": "created_at", "updated_at": "updated_at", "sequence_id": "sequence_id", "sort_order": "sort_order",
+	"target_date": "target_date", "start_date": "start_date", "completed_at": "completed_at", "archived_at": "archived_at",
+	"priority": "priority", "state__name": "state__name", "state__group": "state__group",
+	"assignees__first_name": "assignees__first_name", "labels__name": "labels__name", "issue_module__module__name": "issue_module__module__name",
 }
 
 // issueOrderColumns maps the allowlisted names onto the expressions the Go queries order by. Django reaches state__name through a LEFT OUTER JOIN, which a scalar subquery reproduces: both yield NULL for an issue with no state.
@@ -43,10 +43,15 @@ func sanitizeIssueOrderBy(value string) string {
 	if descending {
 		bare = value[1:]
 	}
-	if strings.HasPrefix(bare, "-") || !issueOrderAllowlist[bare] {
+	column, permitted := issueOrderAllowlist[bare]
+	if strings.HasPrefix(bare, "-") || !permitted {
 		return fallback
 	}
-	return value
+	// The column comes out of the allowlist rather than out of the parameter, so nothing derived from the request reaches the clause built from this.
+	if descending {
+		return "-" + column
+	}
+	return column
 }
 
 // issueOrderClause turns an order_by parameter into SQL, reproducing order_issue_queryset.

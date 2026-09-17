@@ -65,7 +65,7 @@ func (handler *Handler) workspaceViewScope(c *gin.Context, user *auth.User, slug
 }
 
 // viewOrderByAllowlist is VIEW_ORDER_BY_ALLOWLIST: the three fields a caller may order the list by.
-var viewOrderByAllowlist = map[string]bool{"created_at": true, "updated_at": true, "name": true}
+var viewOrderByAllowlist = map[string]string{"created_at": "created_at", "updated_at": "updated_at", "name": "name"}
 
 // sanitizeOrderBy is plane.utils.order_queryset.sanitize_order_by. It strips at most one leading dash, so a doubled one is rejected rather than reaching the ORM.
 // orderClause turns what sanitizeOrderBy returns into SQL. Its result is Django's ordering syntax, where a leading minus means descending -- "-created_at" -- and that is not something a database understands: concatenating it after a table alias produces `p.-created_at`, which Postgres rejects with `syntax error at or near "-"` and the request answers 500.
@@ -77,22 +77,23 @@ func orderClause(alias, order string) string {
 	return alias + column + " ASC"
 }
 
-func sanitizeOrderBy(value string, allowed map[string]bool, fallback string) string {
+// sanitizeOrderBy maps the order_by query parameter onto the column it is allowed to produce.
+//
+// The return value is read out of the allowlist rather than built from the parameter, so the string that reaches the query is always one this file wrote. That is what makes it safe, and it is also what makes the safety visible: nothing derived from the request survives the lookup.
+func sanitizeOrderBy(value string, allowed map[string]string, fallback string) string {
 	if value == "" {
 		return fallback
 	}
 	descending := strings.HasPrefix(value, "-")
-	bare := value
-	if descending {
-		bare = value[1:]
-	}
-	if strings.HasPrefix(bare, "-") || !allowed[bare] {
+	bare := strings.TrimPrefix(value, "-")
+	column, permitted := allowed[bare]
+	if !permitted || strings.HasPrefix(bare, "-") {
 		return fallback
 	}
 	if descending {
-		return "-" + bare
+		return "-" + column
 	}
-	return bare
+	return column
 }
 
 // workspaceViewRetrieve returns one view.

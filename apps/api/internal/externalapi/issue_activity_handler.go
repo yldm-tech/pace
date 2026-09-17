@@ -49,7 +49,7 @@ func (IssueActivity) TableName() string { return "issue_activities" }
 var hiddenActivityFields = []string{"comment", "vote", "reaction", "draft"}
 
 // activityOrderByAllowlist is ACTIVITY_ORDER_BY_ALLOWLIST: two fields and nothing else.
-var activityOrderByAllowlist = map[string]bool{"created_at": true, "updated_at": true}
+var activityOrderByAllowlist = map[string]string{"created_at": "created_at", "updated_at": "updated_at"}
 
 // issueActivityList returns a work item's history, oldest first.
 //

@@ -352,7 +352,7 @@ func (handler *Handler) workspaceUserActivity(c *gin.Context, user *auth.User) {
 }
 
 // activityOrderByAllowlist is ACTIVITY_ORDER_BY_ALLOWLIST: two fields and nothing else, so an ordering the caller invents falls back to newest first rather than reaching the database.
-var activityOrderByAllowlist = map[string]bool{"created_at": true, "updated_at": true}
+var activityOrderByAllowlist = map[string]string{"created_at": "created_at", "updated_at": "updated_at"}
 
 // workspaceUserActivityExport answers with a csv of one day's activity rather than with json.
 func (handler *Handler) workspaceUserActivityExport(c *gin.Context, user *auth.User) {

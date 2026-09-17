@@ -233,7 +233,6 @@ func (repository *GORMRepository) CreateOAuthUser(ctx context.Context, identity 
 	return user, repository.db.WithContext(ctx).Model(&User{}).Where("id = ?", user.ID).Update("avatar_asset_id", assetID).Error
 }
 
-
 // NewUserRecords builds the three rows a new account is: the user, the profile the preferences moved to, and the notification preference.
 //
 // It is one function because a second caller writing these by hand got them wrong in four separate ways — naming columns that had moved to the profile, naming audit columns the profile does not have, and leaving out nine of the user's and ten of the profile's NOT NULL columns. Every default here is Django's, taken from what the recorded migrations set the column to when they added it.

@@ -141,7 +141,7 @@ func (handler *Handler) pageList(c *gin.Context, user *auth.User) {
 }
 
 // pageOrderByAllowlist is PAGE_ORDER_BY_ALLOWLIST. Django resolves an order field at call time, so an unknown one raises and a relation path walks the ORM — which is what the allowlist is there to stop.
-var pageOrderByAllowlist = map[string]bool{"created_at": true, "updated_at": true, "name": true}
+var pageOrderByAllowlist = map[string]string{"created_at": "created_at", "updated_at": "updated_at", "name": "name"}
 
 // pageScope is the queryset every page route reads through.
 func (handler *Handler) pageScope(c *gin.Context, user *auth.User, slug, projectID string) *gorm.DB {

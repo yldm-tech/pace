@@ -21,7 +21,7 @@ func TestUUIDPathParametersMatchDjangosConverter(t *testing.T) {
 		status int
 	}{
 		{
-			name: "a project id that is not a uuid is a route that does not exist",
+			name:  "a project id that is not a uuid is a route that does not exist",
 			route: "/api/public/workspaces/:slug/projects/:project/anchor/",
 			path:  "/api/public/workspaces/accounts/projects/sign-in/anchor/", status: http.StatusNotFound,
 		},

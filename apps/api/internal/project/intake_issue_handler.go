@@ -69,11 +69,11 @@ type intakeIssueRow struct {
 }
 
 // intakeIssueOrderByAllowlist is INTAKE_ISSUE_ORDER_BY_ALLOWLIST. Most of its entries reach through the issue, which is why the default is the issue's creation time rather than the link's.
-var intakeIssueOrderByAllowlist = map[string]bool{
-	"issue__created_at": true, "issue__updated_at": true, "issue__sequence_id": true,
-	"issue__sort_order": true, "issue__target_date": true, "issue__start_date": true,
-	"issue__priority": true, "issue__state__name": true,
-	"created_at": true, "updated_at": true, "status": true,
+var intakeIssueOrderByAllowlist = map[string]string{
+	"issue__created_at": "issue__created_at", "issue__updated_at": "issue__updated_at", "issue__sequence_id": "issue__sequence_id",
+	"issue__sort_order": "issue__sort_order", "issue__target_date": "issue__target_date", "issue__start_date": "issue__start_date",
+	"issue__priority": "issue__priority", "issue__state__name": "issue__state__name",
+	"created_at": "created_at", "updated_at": "updated_at", "status": "status",
 }
 
 // intakeOrderColumn turns an allowlisted order field into the column it names.

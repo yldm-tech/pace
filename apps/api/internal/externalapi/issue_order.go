@@ -6,11 +6,11 @@ import (
 )
 
 // issueOrderAllowlist is ISSUE_ORDER_BY_ALLOWLIST, the same fourteen fields the session API allows.
-var issueOrderAllowlist = map[string]bool{
-	"created_at": true, "updated_at": true, "sequence_id": true, "sort_order": true,
-	"target_date": true, "start_date": true, "completed_at": true, "archived_at": true,
-	"priority": true, "state__name": true, "state__group": true,
-	"assignees__first_name": true, "labels__name": true, "issue_module__module__name": true,
+var issueOrderAllowlist = map[string]string{
+	"created_at": "created_at", "updated_at": "updated_at", "sequence_id": "sequence_id", "sort_order": "sort_order",
+	"target_date": "target_date", "start_date": "start_date", "completed_at": "completed_at", "archived_at": "archived_at",
+	"priority": "priority", "state__name": "state__name", "state__group": "state__group",
+	"assignees__first_name": "assignees__first_name", "labels__name": "labels__name", "issue_module__module__name": "issue_module__module__name",
 }
 
 // issueOrderColumns maps the plain fields onto their columns.

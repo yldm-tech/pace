@@ -14,7 +14,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 // newIssueView is a view with every NOT NULL column already holding what Django's model default would have put there.
 //
 // The six jsonb columns are backed by []byte fields, and a nil one is written as null rather than as an empty object — which is why creating any view at all failed on filters. The two display objects are not empty: their defaults are the whole shape the editor expects.
