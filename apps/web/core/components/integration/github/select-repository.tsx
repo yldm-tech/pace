@@ -13,7 +13,7 @@ import type { IWorkspaceIntegration } from "@pace/types";
 import { CustomSearchSelect } from "@pace/ui";
 // helpers
 import { truncateText } from "@pace/utils";
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 // types
 
 type Props = {

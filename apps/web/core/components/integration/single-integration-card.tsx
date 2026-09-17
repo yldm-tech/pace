@@ -27,7 +27,7 @@ import { useUserPermissions } from "@/hooks/store/user";
 import useIntegrationPopup from "@/hooks/use-integration-popup";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // services
-import { IntegrationService } from "@/services/integrations";
+import { IntegrationService } from "@pace/services";
 
 type Props = {
   integration: IAppIntegration;

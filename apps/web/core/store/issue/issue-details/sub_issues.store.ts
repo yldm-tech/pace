@@ -18,7 +18,7 @@ import type {
   TLoader,
 } from "@pace/types";
 // services
-import { IssueService } from "@/services/issue";
+import { IssueService } from "@pace/services";
 // store
 import type { IIssueDetail } from "./root.store";
 import type { IWorkItemSubIssueFiltersStore } from "./sub_issues_filter.store";

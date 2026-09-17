@@ -12,7 +12,7 @@ import type { TPage } from "@pace/types";
 // pace web store
 import type { RootStore } from "@/store/root.store";
 // services
-import { ProjectPageService } from "@/services/page";
+import { ProjectPageService } from "@pace/services";
 const projectPageService = new ProjectPageService();
 // store
 import { BasePage } from "./base-page";

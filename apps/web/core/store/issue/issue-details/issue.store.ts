@@ -10,7 +10,7 @@ import { computedFn } from "mobx-utils";
 import type { TIssue, TIssueServiceType } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 // services
-import { IssueArchiveService, WorkspaceDraftService, IssueService } from "@/services/issue";
+import { IssueArchiveService, WorkspaceDraftService, IssueService } from "@pace/services";
 // types
 import type { IIssueDetail } from "./root.store";
 

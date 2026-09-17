@@ -19,7 +19,7 @@ import { APP_INTEGRATIONS } from "@pace/constants";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserPermissions } from "@/hooks/store/user";
 // services
-import { IntegrationService } from "@/services/integrations";
+import { IntegrationService } from "@pace/services";
 
 const integrationService = new IntegrationService();
 

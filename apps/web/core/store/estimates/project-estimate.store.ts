@@ -10,7 +10,7 @@ import { computedFn } from "mobx-utils";
 // types
 import type { IEstimate as IEstimateType, IEstimateFormData, TEstimateSystemKeys } from "@pace/types";
 // pace web services
-import estimateService from "@/services/estimate.service";
+import { estimateService } from "@pace/services";
 // pace web store
 import type { IEstimate } from "@/store/estimates/estimate";
 import { Estimate } from "@/store/estimates/estimate";

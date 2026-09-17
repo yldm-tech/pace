@@ -20,7 +20,7 @@ import { useProject } from "@/hooks/store/use-project";
 // pace web
 import { ProjectBreadcrumb } from "@/components/breadcrumbs/project";
 // services
-import { IssueService } from "@/services/issue";
+import { IssueService } from "@pace/services";
 
 const issueService = new IssueService();
 

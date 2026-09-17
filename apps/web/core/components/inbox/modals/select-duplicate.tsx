@@ -25,7 +25,7 @@ import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-ro
 import { useProject } from "@/hooks/store/use-project";
 import useDebounce from "@/hooks/use-debounce";
 // services
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 
 type Props = {
   isOpen: boolean;

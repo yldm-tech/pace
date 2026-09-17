@@ -23,7 +23,7 @@ import type {
 import { EIssuesStoreType } from "@pace/types";
 import { handleIssueQueryParamsByLayout } from "@pace/utils";
 // services
-import { IssueFiltersService } from "@/services/issue_filter.service";
+import { IssueFiltersService } from "@pace/services";
 // helpers
 import type { IBaseIssueFilterStore } from "../helpers/issue-filter-helper.store";
 import { IssueFilterHelperStore } from "../helpers/issue-filter-helper.store";

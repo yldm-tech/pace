@@ -24,7 +24,7 @@ import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifi
 import useDebounce from "@/hooks/use-debounce";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // services
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 
 type Props = {
   isOpen: boolean;

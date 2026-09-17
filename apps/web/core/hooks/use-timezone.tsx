@@ -7,7 +7,7 @@
 import useSWR from "swr";
 import type { TTimezoneObject } from "@pace/types";
 // services
-import timezoneService from "@/services/timezone.service";
+import { timezoneService } from "@pace/services";
 
 // group timezones by value
 const groupTimezones = (timezones: TTimezoneObject[]): TTimezoneObject[] => {

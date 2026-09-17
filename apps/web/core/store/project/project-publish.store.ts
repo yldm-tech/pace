@@ -9,7 +9,7 @@ import { observable, action, makeObservable, runInAction } from "mobx";
 // types
 import type { TProjectPublishSettings } from "@pace/types";
 // services
-import { ProjectPublishService } from "@/services/project";
+import { ProjectPublishService } from "@pace/services";
 // store
 import type { ProjectRootStore } from "@/store/project";
 

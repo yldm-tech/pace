@@ -32,7 +32,7 @@ import { convertToISODateString } from "@pace/utils";
 // pace web imports
 // services
 import { CycleService } from "@/services/cycle.service";
-import { IssueArchiveService, IssueService } from "@/services/issue";
+import { IssueArchiveService, IssueService } from "@pace/services";
 import { ModuleService } from "@/services/module.service";
 //
 import type { IIssueRootStore } from "../root.store";

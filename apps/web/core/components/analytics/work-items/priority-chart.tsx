@@ -24,7 +24,7 @@ import { generateExtendedColors, parseChartData } from "@/components/chart/utils
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 import { useProjectState } from "@/hooks/store/use-project-state";
-import { AnalyticsService } from "@/services/analytics.service";
+import { AnalyticsService } from "@pace/services";
 import { exportCSV } from "../export";
 import { DataTable } from "../insight-table/data-table";
 import { ChartLoader } from "../loaders";

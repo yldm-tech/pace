@@ -21,7 +21,7 @@ import { getFileURL } from "@pace/utils";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 import { useProject } from "@/hooks/store/use-project";
-import { AnalyticsService } from "@/services/analytics.service";
+import { AnalyticsService } from "@pace/services";
 // pace web components
 import { exportCSV } from "../export";
 import { InsightTable } from "../insight-table";

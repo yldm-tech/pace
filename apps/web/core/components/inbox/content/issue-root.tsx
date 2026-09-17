@@ -28,7 +28,7 @@ import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 import { useUser } from "@/hooks/store/user";
 import useReloadConfirmations from "@/hooks/use-reload-confirmation";
 // services
-import { IntakeWorkItemVersionService } from "@/services/inbox";
+import { IntakeWorkItemVersionService } from "@pace/services";
 // stores
 import type { IInboxIssueStore } from "@/store/inbox/inbox-issue.store";
 // local imports

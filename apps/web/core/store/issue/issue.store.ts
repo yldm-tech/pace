@@ -13,7 +13,7 @@ import type { TIssue } from "@pace/types";
 import { getCurrentDateTimeInISO } from "@pace/utils";
 import { rootStore } from "@/lib/store-context";
 // services
-import { IssueService } from "@/services/issue";
+import { IssueService } from "@pace/services";
 
 export type IIssueStore = {
   // observables

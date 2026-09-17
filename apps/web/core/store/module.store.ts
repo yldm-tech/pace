@@ -14,8 +14,8 @@ import { updateDistribution, orderModules, shouldFilterModule } from "@pace/util
 // helpers
 // services
 import { ModuleService } from "@/services/module.service";
-import { ModuleArchiveService } from "@/services/module_archive.service";
-import { ProjectService } from "@/services/project";
+import { ModuleArchiveService } from "@pace/services";
+import { ProjectService } from "@pace/services";
 // store
 import type { CoreRootStore } from "./root.store";
 

@@ -5,5 +5,7 @@
  */
 
 export * from "./favorite.service";
-export * from "./user.service";
 export * from "./sites-member.service";
+export * from "./sticky.service";
+export * from "./user.service";
+export * from "./workspace-favorite.service";

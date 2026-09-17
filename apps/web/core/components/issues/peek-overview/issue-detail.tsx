@@ -23,7 +23,7 @@ import useReloadConfirmations from "@/hooks/use-reload-confirmation";
 import { IssueTypeSwitcher } from "@/components/issues/issue-type-switcher";
 // pace web hooks
 // services
-import { WorkItemVersionService } from "@/services/issue";
+import { WorkItemVersionService } from "@pace/services";
 // local components
 import type { TIssueOperations } from "../issue-detail";
 import { IssueParentDetail } from "../issue-detail/parent";

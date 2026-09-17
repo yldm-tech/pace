@@ -17,7 +17,7 @@ import { renderFormattedDate } from "@pace/utils";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 // services
-import { AnalyticsService } from "@/services/analytics.service";
+import { AnalyticsService } from "@pace/services";
 // pace web components
 import AnalyticsSectionWrapper from "../analytics-section-wrapper";
 import { ChartLoader } from "../loaders";

@@ -8,7 +8,7 @@ import { orderBy, uniqBy, set } from "lodash-es";
 import { action, observable, makeObservable, runInAction, computed } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import type { IFavorite } from "@pace/types";
-import { FavoriteService } from "@/services/favorite";
+import { FavoriteService } from "@pace/services";
 import type { CoreRootStore } from "./root.store";
 
 export interface IFavoriteStore {

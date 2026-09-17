@@ -26,7 +26,7 @@ import { CustomSearchSelect, CustomSelect } from "@pace/ui";
 // import { WorkItemFiltersRow } from "@/components/work-item-filters/filters-row";
 import { useProject } from "@/hooks/store/use-project";
 import { useUser, useUserPermissions } from "@/hooks/store/user";
-import { ProjectExportService } from "@/services/project/project-export.service";
+import { ProjectExportService } from "@pace/services";
 // local imports
 import { SettingsBoxedControlItem } from "../settings/boxed-control-item";
 

@@ -9,7 +9,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 // Plane Imports
 import type { TIssueComment, TIssueCommentMap, TIssueCommentIdMap, TIssueServiceType } from "@pace/types";
 // services
-import { IssueCommentService } from "@/services/issue";
+import { IssueCommentService } from "@pace/services";
 // types
 import type { IIssueDetail } from "./root.store";
 

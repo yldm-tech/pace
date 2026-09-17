@@ -19,7 +19,7 @@ import type {
 } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 // services
-import { IssueActivityService } from "@/services/issue";
+import { IssueActivityService } from "@pace/services";
 // store
 import type { CoreRootStore } from "@/store/root.store";
 

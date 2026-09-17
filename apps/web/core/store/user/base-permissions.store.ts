@@ -20,7 +20,7 @@ import { EUserWorkspaceRoles } from "@pace/types";
 import { WorkspaceService } from "@/services/workspace.service";
 import type { RootStore } from "@/store/root.store";
 // services
-import projectMemberService from "@/services/project/project-member.service";
+import { projectMemberService } from "@pace/services";
 import userService from "@/services/user.service";
 
 // derived services

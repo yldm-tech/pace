@@ -16,7 +16,7 @@ import { LogoSpinner } from "@/components/common/logo-spinner";
 // hooks
 import { useAppRouter } from "@/hooks/use-app-router";
 // services
-import { IssueService } from "@/services/issue/issue.service";
+import { IssueService } from "@pace/services";
 // types
 import type { Route } from "./+types/page";
 

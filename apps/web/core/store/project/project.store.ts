@@ -13,8 +13,8 @@ import type { TFetchStatus, TLoader, TProjectAnalyticsCount, TProjectAnalyticsCo
 import { orderProjects, shouldFilterProject } from "@pace/utils";
 // services
 import type { TProject, TPartialProject } from "@pace/types";
-import { IssueLabelService, IssueService } from "@/services/issue";
-import { ProjectService, ProjectStateService, ProjectArchiveService } from "@/services/project";
+import { IssueLabelService, IssueService } from "@pace/services";
+import { ProjectService, ProjectStateService, ProjectArchiveService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 
