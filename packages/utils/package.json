@@ -1,6 +1,6 @@
 {
   "name": "@pace/utils",
-  "version": "1.4.17",
+  "version": "1.4.18",
   "private": true,
   "description": "Helper functions shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -14,13 +14,14 @@
   },
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch --no-clean",
+    "check:format": "oxfmt --check .",
     "check:lint": "oxlint --max-warnings=38 .",
     "check:types": "tsc --noEmit",
-    "check:format": "oxfmt --check .",
-    "fix:lint": "oxlint --fix .",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsdown --watch --no-clean",
     "fix:format": "oxfmt .",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "fix:lint": "oxlint --fix .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@makeplane/propel": "catalog:",
@@ -54,6 +55,7 @@
     "@types/react": "catalog:",
     "@types/sanitize-html": "catalog:",
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
