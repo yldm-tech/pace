@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { isEmpty } from "lodash-es";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { useForm } from "react-hook-form";
 // pace internal packages
 import { API_BASE_URL } from "@pace/constants";

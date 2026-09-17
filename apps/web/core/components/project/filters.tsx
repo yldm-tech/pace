@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { FilterOutline } from "@makeplane/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";

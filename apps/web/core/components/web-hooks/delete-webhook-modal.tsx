@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // ui
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { AlertModalCore } from "@pace/ui";

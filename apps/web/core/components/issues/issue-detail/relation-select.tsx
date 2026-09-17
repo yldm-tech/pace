@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 
 import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
 // Plane

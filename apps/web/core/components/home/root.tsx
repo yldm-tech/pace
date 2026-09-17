@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace imports
 import { ContentWrapper } from "@pace/ui";

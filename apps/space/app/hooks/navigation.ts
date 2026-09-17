@@ -37,6 +37,9 @@ export function useSearchParams(): URLSearchParams {
   return searchParams;
 }
 
-export function useParams() {
-  return useParamsRR();
+// useParams reads the route parameters, with the values typed as present.
+//
+// react-router types every parameter as `string | undefined`, because as far as its type is concerned any of them may be missing. A component here renders under a route that names the ones it reads, so the cast says what the route already guarantees. It used to live in app/types/next-navigation.d.ts, where it silently contradicted what this function returns; it is visible now.
+export function useParams<T extends Record<string, string> = Record<string, string>>(): T {
+  return useParamsRR() as T;
 }

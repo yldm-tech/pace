@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Placement } from "@popperjs/core";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { usePopper } from "react-popper";
 // components
 import { Combobox } from "@headlessui/react";

@@ -6,7 +6,8 @@
 
 import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace imports
 import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";

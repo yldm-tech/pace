@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 import {
   BoxesOutline,

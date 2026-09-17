@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 // headless ui
 import { Dialog, Transition } from "@headlessui/react";
 // ui

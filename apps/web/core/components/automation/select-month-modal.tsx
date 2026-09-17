@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // react-hook-form
 import { Controller, useForm } from "react-hook-form";
 import { Field } from "@makeplane/propel/components/field";

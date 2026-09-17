@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { useTheme } from "next-themes";
 // pace imports
 import { Button, getButtonStyling } from "@pace/propel/button";

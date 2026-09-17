@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 import { Outlet } from "react-router";
 // hooks
 import { useUser } from "@/hooks/store/use-user";

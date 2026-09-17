@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 // types
 import type { TPageNavigationTabs } from "@pace/types";
 // helpers

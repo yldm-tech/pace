@@ -5,7 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";

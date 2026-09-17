@@ -5,8 +5,8 @@
  */
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useRouter } from "@/app/hooks/navigation";
 import { Controller, useForm } from "react-hook-form";
 // pace imports
 import { WEB_BASE_URL, ORGANIZATION_SIZE, RESTRICTED_URLS } from "@pace/constants";

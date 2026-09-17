@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { GOD_MODE_URL } from "@pace/constants";
 // assets
 import GradientLogo from "@/app/assets/auth/gradient-logo.webp?url";

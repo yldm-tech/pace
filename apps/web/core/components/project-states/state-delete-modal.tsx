@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // Plane imports
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IState } from "@pace/types";

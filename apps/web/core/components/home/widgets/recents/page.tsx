@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Logo } from "@pace/propel/emoji-icon-picker";
 import { PagesOutline } from "@makeplane/propel/icons";

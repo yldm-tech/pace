@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 
 // pace ui
 import { AddOutline, CloseOutline, MultipleStickyOutline } from "@makeplane/propel/icons";

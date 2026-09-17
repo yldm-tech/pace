@@ -5,7 +5,7 @@
  */
 
 import { createContext, useContext } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { EIssuesStoreType } from "@pace/types";
 import { useIssues } from "./store/use-issues";
 

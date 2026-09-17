@@ -8,7 +8,7 @@ import type React from "react";
 import type { LucideIcon } from "lucide-react";
 import { KeyOutline, LockOutline, SettingsOutline, SubscribeOutline, UserOutline } from "@makeplane/propel/icons";
 import { observer } from "mobx-react";
-import { useParams } from "react-router";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import {
   GROUPED_PROFILE_SETTINGS,

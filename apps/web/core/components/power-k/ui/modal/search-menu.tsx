@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { WORKSPACE_DEFAULT_SEARCH_RESULT } from "@pace/constants";
 import type { IWorkspaceSearchResults } from "@pace/types";

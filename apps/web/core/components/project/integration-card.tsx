@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import useSWR, { mutate } from "swr";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceIntegration } from "@pace/types";

@@ -6,8 +6,8 @@
 
 import React, { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
 import {
   DeleteOutline,
   LinkOutline,

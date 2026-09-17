@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 // pace types
 import { Logo } from "@pace/propel/emoji-icon-picker";
 import type { TActivityEntityData, TProjectEntityData } from "@pace/types";

@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams, usePathname } from "@/app/hooks/navigation";
 
 type TParamsToAdd = {
   [key: string]: string;

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { ChevronRightOutline } from "@makeplane/propel/icons";
 import { EPillVariant, Pill, EPillSize } from "@pace/propel/pill";
 import { Switch } from "@makeplane/propel/components/switch";

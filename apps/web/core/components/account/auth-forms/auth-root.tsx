@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 // pace imports
 import { Banner } from "@makeplane/propel/components/banner";
 import { OAuthOptions } from "@pace/ui";

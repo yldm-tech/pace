@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { CircleDashed } from "lucide-react";
 import { AddOutline } from "@makeplane/propel/icons";
 // types

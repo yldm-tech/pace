@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useSearchParams } from "@/app/hooks/navigation";
 import { Controller, useForm } from "react-hook-form";
 // icons
 import { TickCircleOutline } from "@makeplane/propel/icons";

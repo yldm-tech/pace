@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
 // ui
 import { MODULE_STATUS } from "@pace/constants";
 import { ModuleStatusIcon } from "@pace/propel/icons";

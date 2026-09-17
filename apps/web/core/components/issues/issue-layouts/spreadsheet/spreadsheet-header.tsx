@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // constants
 import { SPREADSHEET_SELECT_GROUP } from "@pace/constants";
 // ui

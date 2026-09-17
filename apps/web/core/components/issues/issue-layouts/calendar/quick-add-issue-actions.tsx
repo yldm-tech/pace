@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { differenceInCalendarDays } from "date-fns/differenceInCalendarDays";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 
 import { useTranslation } from "@pace/i18n";
 // pace imports

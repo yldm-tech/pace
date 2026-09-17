@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { cloneDeep } from "lodash-es";
 import { observer } from "mobx-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 // hooks
 import { useIssueFilter } from "@/hooks/store/use-issue-filter";
 // store

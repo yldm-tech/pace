@@ -6,7 +6,7 @@
 
 import { useState, useRef } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { Transition } from "@headlessui/react";
 import { WEB_BASE_URL } from "@pace/constants";
 // pace internal packages
