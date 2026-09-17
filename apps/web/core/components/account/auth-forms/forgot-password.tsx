@@ -21,7 +21,7 @@ import { cn, checkEmailValidity } from "@pace/utils";
 // hooks
 import useTimer from "@/hooks/use-timer";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 // local components
 import { FormContainer } from "./common/container";
 import { AuthFormHeader } from "./common/header";

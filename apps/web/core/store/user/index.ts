@@ -14,7 +14,7 @@ import type { RootStore } from "@/store/root.store";
 import type { IUserPermissionStore } from "@/store/user/base-permissions.store";
 import { UserPermissionStore } from "@/store/user/base-permissions.store";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 import { UserService } from "@/services/user.service";
 // stores
 import type { IAccountStore } from "@/store/user/account.store";

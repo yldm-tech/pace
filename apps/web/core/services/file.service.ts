@@ -13,7 +13,7 @@ import { getAssetIdFromUrl } from "@pace/utils";
 // helpers
 // services
 import { APIService } from "@/services/api.service";
-import { FileUploadService } from "@/services/file-upload.service";
+import { FileUploadService } from "@pace/services";
 
 export interface UnSplashImage {
   id: string;

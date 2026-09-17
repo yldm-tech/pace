@@ -21,7 +21,7 @@ import { UserImageUploadModal } from "@/components/core/modals/user-image-upload
 import { useInstance } from "@/hooks/store/use-instance";
 import { useUser, useUserProfile } from "@/hooks/store/user";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 // local components
 import { CommonOnboardingHeader } from "../common";
 import { MarketingConsent } from "./consent";
