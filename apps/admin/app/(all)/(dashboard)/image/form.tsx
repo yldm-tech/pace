@@ -12,6 +12,7 @@ import { ControllerInput } from "@/components/common/controller-input";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 type IInstanceImageConfigForm = {
   config: IFormattedInstanceConfiguration;
@@ -20,6 +21,7 @@ type IInstanceImageConfigForm = {
 type ImageConfigFormValues = Record<TInstanceImageConfigurationKeys, string>;
 
 export function InstanceImageConfigForm(props: IInstanceImageConfigForm) {
+  const { t } = useTranslation();
   const { config } = props;
   // store hooks
   const { updateInstanceConfigurations } = useInstance();
@@ -41,7 +43,7 @@ export function InstanceImageConfigForm(props: IInstanceImageConfigForm) {
       .then(() =>
         setToast({
           type: TOAST_TYPE.SUCCESS,
-          title: "Success",
+          title: t("admin.toast.success"),
           message: "Image Configuration Settings updated successfully",
         })
       )
@@ -83,7 +85,7 @@ export function InstanceImageConfigForm(props: IInstanceImageConfigForm) {
           stretch="auto"
           onClick={handleSubmit(onSubmit)}
           loading={isSubmitting}
-          label={isSubmitting ? "Saving" : "Save changes"}
+          label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
         />
       </div>
     </div>

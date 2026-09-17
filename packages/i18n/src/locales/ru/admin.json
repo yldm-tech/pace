@@ -55,6 +55,37 @@
       },
       "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
       "saved": "AI settings updated successfully"
+    },
+    "general": {
+      "heading": "Instance details",
+      "name": {
+        "label": "Name of instance",
+        "placeholder": "Instance name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Admin email"
+      },
+      "instance_id": "Instance ID",
+      "telemetry": {
+        "label": "Telemetry",
+        "description": "Let Pace collect anonymous usage data"
+      },
+      "saved": "Settings updated successfully"
+    },
+    "images": {
+      "heading": "Third-party image libraries",
+      "subheading": "Let your users search and choose images from third-party libraries",
+      "saved": "Image settings updated successfully"
+    },
+    "email": {
+      "heading": "Secure emails from your own instance",
+      "subheading": "Misconfigs can lead to email bounces and errors.",
+      "disabled_title": "Email feature disabled",
+      "disabled_message": "Email feature has been disabled",
+      "disable_error_title": "Error disabling email",
+      "disable_error_message": "Failed to disable email feature. Please try again.",
+      "saved": "Email settings updated successfully"
     }
   }
 }
