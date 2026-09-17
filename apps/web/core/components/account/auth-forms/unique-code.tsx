@@ -15,7 +15,7 @@ import { Spinner } from "@pace/ui";
 // helpers
 import { EAuthModes } from "@/helpers/authentication.helper";
 // hooks
-import useTimer from "@/hooks/use-timer";
+import { useTimer } from "@pace/hooks";
 // services
 import { AuthService } from "@pace/services";
 

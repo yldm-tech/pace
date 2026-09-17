@@ -6,7 +6,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { SWRConfig } from "swr";
-import { AppProgressBar } from "@/lib/b-progress";
+import { AppProgressBar } from "@pace/ui";
 // local imports
 import { ToastWithTheme } from "./toast";
 import { StoreProvider } from "./store.provider";

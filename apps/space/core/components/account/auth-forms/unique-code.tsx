@@ -12,7 +12,7 @@ import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
 import { Input, Spinner } from "@pace/ui";
 // hooks
-import useTimer from "@/hooks/use-timer";
+import { useTimer } from "@pace/hooks";
 // types
 import { EAuthModes } from "@/types/auth";
 
