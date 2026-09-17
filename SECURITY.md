@@ -1,8 +1,8 @@
 # Security policy
-This document outlines the security protocols and vulnerability reporting guidelines for the Plane project. Ensuring the security of our systems is a top priority, and while we work diligently to maintain robust protection, vulnerabilities may still occur. We highly value the community’s role in identifying and reporting security concerns to uphold the integrity of our systems and safeguard our users.
+This document outlines the security protocols and vulnerability reporting guidelines for the Pace project. Ensuring the security of our systems is a top priority, and while we work diligently to maintain robust protection, vulnerabilities may still occur. We highly value the community’s role in identifying and reporting security concerns to uphold the integrity of our systems and safeguard our users.
 
 ## Reporting a vulnerability
-If you have identified a security vulnerability, submit your findings to [security@plane.so](mailto:security@plane.so). 
+If you have identified a security vulnerability, submit your findings to [support@yldm.ai](mailto:support@yldm.ai). 
 Ensure your report includes all relevant information needed for us to reproduce and assess the issue. Include the IP address or URL of the affected system.
 
 To ensure a responsible and effective disclosure process, please adhere to the following:
