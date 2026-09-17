@@ -198,6 +198,9 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			SecretKey:             dependencies.AuthSettings.SecretKey,
 			SkipEnvironmentConfig: dependencies.AuthSkipEnvironmentConfig,
 			Environment:           dependencies.AuthSettings.Environment,
+			// The webhook allowlists, reused: the console dials a language-model endpoint the same way a webhook dials its target, and a deployment should not have to name its reachable private ranges twice.
+			LLMAllowedIPs:   dependencies.AuthSettings.WebhookAllowedIPs,
+			LLMAllowedHosts: dependencies.AuthSettings.WebhookAllowedHosts,
 		})
 		if dependencies.InstanceMailer != nil {
 			instancesHandler.SetMailer(dependencies.InstanceMailer)

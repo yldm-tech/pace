@@ -14,6 +14,7 @@ import { ControllerInput } from "@/components/common/controller-input";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { ModelPicker } from "./model-picker";
 import { ProviderPicker } from "./provider-picker";
 
 type IInstanceAIForm = {
@@ -31,6 +32,7 @@ export function InstanceAIForm(props: IInstanceAIForm) {
     handleSubmit,
     control,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<AIFormValues>({
     // Every field the form submits has to be seeded here. What is submitted is the whole form object, so a field left out of this arrives as an empty string and overwrites whatever the instance had configured.
@@ -55,20 +57,6 @@ export function InstanceAIForm(props: IInstanceAIForm) {
       ),
       placeholder: "https://api.openai.com/v1",
       error: Boolean(errors.LLM_BASE_URL),
-      required: false,
-    },
-    {
-      key: "LLM_MODEL",
-      type: "text",
-      label: "Model",
-      description: (
-        <>
-          Sent through as written, so whatever the endpoint above serves is what can go here. Required unless the
-          provider is one with a default.
-        </>
-      ),
-      placeholder: "gpt-4o-mini",
-      error: Boolean(errors.LLM_MODEL),
       required: false,
     },
     {
@@ -113,20 +101,35 @@ export function InstanceAIForm(props: IInstanceAIForm) {
             setValue("LLM_BASE_URL", baseURL ?? "", { shouldDirty: true });
           }}
         />
-        <div className="grid-col grid w-full grid-cols-1 items-center justify-between gap-x-12 gap-y-8 lg:grid-cols-3">
-          {aiFormFields.map((field) => (
-            <ControllerInput
-              key={field.key}
-              control={control}
-              type={field.type}
-              name={field.key}
-              label={field.label}
-              description={field.description}
-              placeholder={field.placeholder}
-              error={field.error}
-              required={field.required}
-            />
-          ))}
+        <div className="grid-col grid w-full grid-cols-1 items-start justify-between gap-x-12 gap-y-8 lg:grid-cols-3">
+          <ControllerInput
+            control={control}
+            type={aiFormFields[0].type}
+            name={aiFormFields[0].key}
+            label={aiFormFields[0].label}
+            description={aiFormFields[0].description}
+            placeholder={aiFormFields[0].placeholder}
+            error={aiFormFields[0].error}
+            required={aiFormFields[0].required}
+          />
+          <ModelPicker
+            control={control}
+            currentValues={() => ({
+              baseURL: getValues("LLM_BASE_URL") ?? "",
+              apiKey: getValues("LLM_API_KEY") ?? "",
+              provider: getValues("LLM_PROVIDER") ?? "",
+            })}
+          />
+          <ControllerInput
+            control={control}
+            type={aiFormFields[1].type}
+            name={aiFormFields[1].key}
+            label={aiFormFields[1].label}
+            description={aiFormFields[1].description}
+            placeholder={aiFormFields[1].placeholder}
+            error={aiFormFields[1].error}
+            required={aiFormFields[1].required}
+          />
         </div>
       </div>
 
