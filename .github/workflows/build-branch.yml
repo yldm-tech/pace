@@ -168,6 +168,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Admin Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -194,6 +197,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_admin]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge Admin Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -215,6 +221,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Web Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -241,6 +250,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_web]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge Web Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -262,6 +274,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Space Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -288,6 +303,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_space]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge Space Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -309,6 +327,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Live Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -335,6 +356,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_live]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge Live Collaboration Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -356,6 +380,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Backend Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -382,6 +409,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_api]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge API Server Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -403,6 +433,9 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.branch_build_setup.outputs.gh_build_matrix) }}
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Proxy Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -429,6 +462,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_proxy]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge Proxy Manifest
         uses: ./.github/actions/merge-manifest
         with:
@@ -496,6 +532,9 @@ jobs:
       - branch_merge_api
       - branch_merge_proxy
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: AIO Build and Push
         uses: ./.github/actions/build-push
         with:
@@ -525,6 +564,9 @@ jobs:
     timeout-minutes: 15
     needs: [branch_build_setup, branch_build_push_aio]
     steps:
+      # The step below runs an action from this repository, so the repository has to be on disk.
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Merge AIO Manifest
         uses: ./.github/actions/merge-manifest
         with:
