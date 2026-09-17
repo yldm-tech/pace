@@ -1,0 +1,103 @@
+{
+  "admin": {
+    "language": {
+      "label": "Language",
+      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+    },
+    "nav": {
+      "general": "General",
+      "email": "Email",
+      "authentication": "Authentication",
+      "ai": "Artificial intelligence",
+      "images": "Images",
+      "workspace": "Workspaces"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving",
+      "cancel": "Cancel",
+      "load_more": "Load more"
+    },
+    "toast": {
+      "success": "Success",
+      "error": "Error"
+    },
+    "ai": {
+      "heading": "Language model",
+      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "provider": {
+        "label": "Provider",
+        "custom": "Custom",
+        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+      },
+      "base_url": {
+        "label": "Base URL",
+        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "placeholder": "https://api.openai.com/v1"
+      },
+      "model": {
+        "label": "Model",
+        "fetch": "Fetch models",
+        "refresh": "Refresh",
+        "fetching": "Asking…",
+        "placeholder": "gpt-4o-mini",
+        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
+        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
+        "error_none": "The endpoint answered, but listed no models.",
+        "error_key": "The endpoint rejected the API key.",
+        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
+        "error_unreachable": "The endpoint could not be reached."
+      },
+      "api_key": {
+        "label": "API key",
+        "description": "Sent as a bearer token to the base URL above.",
+        "placeholder": "sk-..."
+      },
+      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
+      "saved": "AI settings updated successfully"
+    },
+    "general": {
+      "heading": "Instance details",
+      "name": {
+        "label": "Name of instance",
+        "placeholder": "Instance name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Admin email"
+      },
+      "instance_id": "Instance ID",
+      "telemetry": {
+        "label": "Telemetry",
+        "description": "Let Pace collect anonymous usage data"
+      },
+      "saved": "Settings updated successfully"
+    },
+    "images": {
+      "heading": "Third-party image libraries",
+      "subheading": "Let your users search and choose images from third-party libraries",
+      "saved": "Image settings updated successfully"
+    },
+    "email": {
+      "heading": "Secure emails from your own instance",
+      "subheading": "Misconfigs can lead to email bounces and errors.",
+      "disabled_title": "Email feature disabled",
+      "disabled_message": "Email feature has been disabled",
+      "disable_error_title": "Error disabling email",
+      "disable_error_message": "Failed to disable email feature. Please try again.",
+      "saved": "Email settings updated successfully"
+    },
+    "auth": {
+      "heading": "Manage authentication modes for your instance",
+      "available_modes": "Available authentication modes",
+      "allow_signup": "Allow anyone to sign up even without an invite",
+      "cannot_disable": "Cannot disable authentication",
+      "saving": "Saving configuration",
+      "saved": "Configuration saved successfully",
+      "save_failed": "Failed to save configuration",
+      "client_id": "Client ID",
+      "client_secret": "Client secret",
+      "host": "Host"
+    }
+  }
+}

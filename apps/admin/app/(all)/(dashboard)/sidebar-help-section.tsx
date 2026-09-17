@@ -11,6 +11,7 @@ import { Transition } from "@headlessui/react";
 import { WEB_BASE_URL } from "@pace/constants";
 // pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
+import { LanguageSwitcher } from "@/components/common/language-switcher";
 import {
   ArrowNarrowLeftOutline,
   ChatOutline,
@@ -62,6 +63,12 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
         }
       )}
     >
+      {/* Hidden when the sidebar is collapsed: a select is the wrong shape for a strip of icons, and the setting is not one anybody reaches for often enough to need it there. */}
+      {!isSidebarCollapsed && (
+        <div className="w-full pb-2">
+          <LanguageSwitcher />
+        </div>
+      )}
       <div className={`flex items-center gap-1 ${isSidebarCollapsed ? "flex-col justify-center" : "w-full"}`}>
         {!isSidebarCollapsed ? (
           <>

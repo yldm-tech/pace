@@ -7,6 +7,7 @@
 import { useForm } from "react-hook-form";
 import { ThoughtsOutline } from "@makeplane/propel/icons";
 import { Button } from "@makeplane/propel/components/button";
+import { useTranslation } from "@pace/i18n";
 import type { IFormattedInstanceConfiguration, TInstanceAIConfigurationKeys } from "@pace/types";
 // components
 import type { TControllerInputFormField } from "@/components/common/controller-input";
@@ -27,6 +28,7 @@ export function InstanceAIForm(props: IInstanceAIForm) {
   const { config } = props;
   // store
   const { updateInstanceConfigurations } = useInstance();
+  const { t } = useTranslation();
   // form data
   const {
     handleSubmit,
@@ -48,23 +50,18 @@ export function InstanceAIForm(props: IInstanceAIForm) {
     {
       key: "LLM_BASE_URL",
       type: "text",
-      label: "Base URL",
-      description: (
-        <>
-          Where completions are asked for. Anything that answers an OpenAI-shaped <code>POST /chat/completions</code>{" "}
-          works here — a gateway, a self-hosted server, or a provider&apos;s own endpoint. Leave it empty for OpenAI.
-        </>
-      ),
-      placeholder: "https://api.openai.com/v1",
+      label: t("admin.ai.base_url.label"),
+      description: t("admin.ai.base_url.description"),
+      placeholder: t("admin.ai.base_url.placeholder"),
       error: Boolean(errors.LLM_BASE_URL),
       required: false,
     },
     {
       key: "LLM_API_KEY",
       type: "password",
-      label: "API key",
-      description: <>Sent as a bearer token to the base URL above.</>,
-      placeholder: "sk-...",
+      label: t("admin.ai.api_key.label"),
+      description: t("admin.ai.api_key.description"),
+      placeholder: t("admin.ai.api_key.placeholder"),
       error: Boolean(errors.LLM_API_KEY),
       required: false,
     },
@@ -77,8 +74,8 @@ export function InstanceAIForm(props: IInstanceAIForm) {
       .then(() =>
         setToast({
           type: TOAST_TYPE.SUCCESS,
-          title: "Success",
-          message: "AI Settings updated successfully",
+          title: t("admin.toast.success"),
+          message: t("admin.ai.saved"),
         })
       )
       .catch((err) => console.error(err));
@@ -88,11 +85,8 @@ export function InstanceAIForm(props: IInstanceAIForm) {
     <div className="space-y-8">
       <div className="space-y-3">
         <div>
-          <div className="pb-1 text-18 font-medium text-primary">Language model</div>
-          <div className="text-13 font-regular text-tertiary">
-            The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve
-            it.
-          </div>
+          <div className="pb-1 text-18 font-medium text-primary">{t("admin.ai.heading")}</div>
+          <div className="text-13 font-regular text-tertiary">{t("admin.ai.subheading")}</div>
         </div>
         <ProviderPicker
           control={control}
@@ -140,12 +134,12 @@ export function InstanceAIForm(props: IInstanceAIForm) {
           stretch="auto"
           onClick={handleSubmit(onSubmit)}
           loading={isSubmitting}
-          label={isSubmitting ? "Saving" : "Save changes"}
+          label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
         />
 
         <div className="relative inline-flex items-center gap-1.5 rounded-sm border border-accent-subtle bg-accent-subtle px-4 py-2 text-caption-sm-regular text-accent-secondary">
           <ThoughtsOutline className="size-4" />
-          <div>Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.</div>
+          <div>{t("admin.ai.not_listed")}</div>
         </div>
       </div>
     </div>

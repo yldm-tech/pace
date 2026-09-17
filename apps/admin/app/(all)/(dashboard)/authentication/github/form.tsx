@@ -25,6 +25,7 @@ import type { TCopyField } from "@/components/common/copy-field";
 import { CopyField } from "@/components/common/copy-field";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 
 type Props = {
   config: IFormattedInstanceConfiguration;
@@ -38,6 +39,7 @@ const GITHUB_FORM_SWITCH_FIELD: TControllerSwitchFormField<GithubConfigFormValue
 };
 
 export function InstanceGithubConfigForm(props: Props) {
+  const { t } = useTranslation();
   const { config } = props;
   // states
   const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
@@ -64,7 +66,7 @@ export function InstanceGithubConfigForm(props: Props) {
     {
       key: "GITHUB_CLIENT_ID",
       type: "text",
-      label: "Client ID",
+      label: t("admin.auth.client_id"),
       description: (
         <>
           You will get this from your{" "}
@@ -85,7 +87,7 @@ export function InstanceGithubConfigForm(props: Props) {
     {
       key: "GITHUB_CLIENT_SECRET",
       type: "password",
-      label: "Client secret",
+      label: t("admin.auth.client_secret"),
       description: (
         <>
           Your client secret is also found in your{" "}
@@ -221,7 +223,7 @@ export function InstanceGithubConfigForm(props: Props) {
                   onClick={(e) => void handleSubmit(onSubmit)(e)}
                   loading={isSubmitting}
                   disabled={!isDirty}
-                  label={isSubmitting ? "Saving" : "Save changes"}
+                  label={isSubmitting ? t("admin.actions.saving") : t("admin.actions.save")}
                 />
                 <Button
                   variant="secondary"

@@ -101,6 +101,6 @@ const InstanceGiteaAuthenticationPage = observer(function InstanceGiteaAuthentic
     </PageWrapper>
   );
 });
-export const meta: Route.MetaFunction = () => [{ title: "Gitea Authentication - God Mode" }];
+export const meta: Route.MetaFunction = () => [{ title: "Gitea Authentication - Pace Admin" }];
 
 export default InstanceGiteaAuthenticationPage;

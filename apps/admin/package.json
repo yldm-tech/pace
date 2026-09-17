@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "1.4.25",
+  "version": "1.4.26",
   "private": true,
   "description": "Admin UI for Pace",
   "license": "AGPL-3.0",
@@ -26,6 +26,7 @@
     "@makeplane/propel": "catalog:",
     "@pace/constants": "workspace:*",
     "@pace/hooks": "workspace:*",
+    "@pace/i18n": "workspace:*",
     "@pace/services": "workspace:*",
     "@pace/types": "workspace:*",
     "@pace/ui": "workspace:*",

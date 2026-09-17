@@ -8,6 +8,7 @@ import { useState } from "react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Button } from "@makeplane/propel/components/button";
+import { useTranslation } from "@pace/i18n";
 import type { TInstanceAIConfigurationKeys } from "@pace/types";
 import { InstanceService } from "@pace/services";
 
@@ -24,6 +25,7 @@ type ModelPickerProps = {
 // It stays a text input rather than becoming a select. The list is a convenience, not a constraint: an endpoint may serve a model it does not advertise, and an operator who knows the name should not be blocked by a listing that omits it.
 export function ModelPicker(props: ModelPickerProps) {
   const { control, currentValues } = props;
+  const { t } = useTranslation();
   const [models, setModels] = useState<string[] | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [problem, setProblem] = useState<string | undefined>(undefined);
@@ -39,17 +41,17 @@ export function ModelPicker(props: ModelPickerProps) {
         provider: provider || undefined,
       });
       setModels(response.models);
-      if (response.models.length === 0) setProblem("The endpoint answered, but listed no models.");
+      if (response.models.length === 0) setProblem(t("admin.ai.model.error_none"));
     } catch (error) {
       // The server passes the endpoint's own status through, because 401 and 404 mean different things to whoever is filling this in.
       const detail = error as { error?: string; status?: number };
       const status = detail?.status;
       setProblem(
         status === 401 || status === 403
-          ? "The endpoint rejected the API key."
+          ? t("admin.ai.model.error_key")
           : status === 404
-            ? "No model list at that URL. It usually needs the version segment, as in /v1."
-            : (detail?.error ?? "The endpoint could not be reached.")
+            ? t("admin.ai.model.error_not_found")
+            : (detail?.error ?? t("admin.ai.model.error_unreachable"))
       );
       setModels(undefined);
     } finally {
@@ -65,7 +67,7 @@ export function ModelPicker(props: ModelPickerProps) {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between gap-2">
             <label htmlFor="llm-model" className="text-13 font-medium text-primary">
-              Model
+              {t("admin.ai.model.label")}
             </label>
             <Button
               variant="ghost"
@@ -73,7 +75,13 @@ export function ModelPicker(props: ModelPickerProps) {
               stretch="auto"
               onClick={fetchModels}
               disabled={loading}
-              label={loading ? "Asking…" : models ? "Refresh" : "Fetch models"}
+              label={
+                loading
+                  ? t("admin.ai.model.fetching")
+                  : models
+                    ? t("admin.ai.model.refresh")
+                    : t("admin.ai.model.fetch")
+              }
             />
           </div>
           <input
@@ -96,9 +104,9 @@ export function ModelPicker(props: ModelPickerProps) {
             {problem ? (
               <span className="text-danger">{problem}</span>
             ) : models ? (
-              `${models.length} models. Start typing to filter, or leave it empty for the provider's default.`
+              t("admin.ai.model.hint_loaded", { count: models.length })
             ) : (
-              "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default."
+              t("admin.ai.model.hint_empty")
             )}
           </div>
         </div>

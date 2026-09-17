@@ -540,6 +540,9 @@ importers:
       '@pace/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
+      '@pace/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@pace/services':
         specifier: workspace:*
         version: link:../../packages/services
