@@ -5,7 +5,7 @@
  */
 
 import Link from "@/app/hooks/link";
-import { GOD_MODE_URL } from "@pace/constants";
+import { ADMIN_URL } from "@pace/constants";
 // assets
 import GradientLogo from "@/app/assets/auth/gradient-logo.webp?url";
 import GradientBgLogo from "@/app/assets/auth/gradient-bg-logo.webp?url";
@@ -45,7 +45,7 @@ export function InstanceNotReady() {
                 </p>
               </div>
             </div>
-            <a href={GOD_MODE_URL} className="w-72">
+            <a href={ADMIN_URL} className="w-72">
               <Button variant="primary" className="w-full" size="xl">
                 Get started
               </Button>

@@ -61,7 +61,7 @@ RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 COPY --from=web-img /usr/share/caddy/html /app/web
 COPY --from=space-img /app /app/space
-COPY --from=admin-img /usr/share/caddy/html/god-mode /app/admin
+COPY --from=admin-img /usr/share/caddy/html/admin /app/admin
 # The collaborative editor is a binary too, and comes with its own entrypoint script.
 COPY --from=live-img /usr/local/bin/pace-live /usr/local/bin/pace-live
 COPY --from=live-img /usr/local/bin/pace-entrypoint-live /usr/local/bin/pace-entrypoint-live

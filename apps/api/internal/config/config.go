@@ -110,7 +110,7 @@ func Load() (Config, error) {
 			AuthenticationRateLimit: envOrDefault("AUTHENTICATION_RATE_LIMIT", "10/minute"),
 			SkipEnvironmentConfig:   boolOrDefault(os.Getenv("SKIP_ENV_VAR"), true),
 			AdminBaseURL:            validURLOrEmpty(os.Getenv("ADMIN_BASE_URL")),
-			AdminBasePath:           envOrDefault("ADMIN_BASE_PATH", "/god-mode/"),
+			AdminBasePath:           envOrDefault("ADMIN_BASE_PATH", "/admin/"),
 			InstanceChangelogURL:    os.Getenv("INSTANCE_CHANGELOG_URL"),
 			// IS_SELF_MANAGED is a literal in settings.py rather than an environment variable, and the community edition is always self managed.
 			IsSelfManaged:            true,

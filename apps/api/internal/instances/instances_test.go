@@ -19,15 +19,15 @@ func TestTheAdminConsoleOrigin(t *testing.T) {
 		settings Settings
 		want     string
 	}{
-		{Settings{AdminBaseURL: "https://admin.test", AdminBasePath: "/god-mode/"}, "https://admin.test/god-mode/"},
+		{Settings{AdminBaseURL: "https://admin.test", AdminBasePath: "/admin/"}, "https://admin.test/admin/"},
 		// A path with no slashes on either end gets both.
 		{Settings{AdminBaseURL: "https://admin.test", AdminBasePath: "console"}, "https://admin.test/console/"},
-		// No path at all falls back to god-mode.
-		{Settings{AdminBaseURL: "https://admin.test"}, "https://admin.test/god-mode/"},
+		// No path at all falls back to admin.
+		{Settings{AdminBaseURL: "https://admin.test"}, "https://admin.test/admin/"},
 		// No origin of its own means the web origin.
-		{Settings{WebURL: "https://plane.test", AdminBasePath: "/god-mode/"}, "https://plane.test/god-mode/"},
+		{Settings{WebURL: "https://plane.test", AdminBasePath: "/admin/"}, "https://plane.test/admin/"},
 		// And failing that the app origin.
-		{Settings{AppBaseURL: "https://app.test", AdminBasePath: "/god-mode/"}, "https://app.test/god-mode/"},
+		{Settings{AppBaseURL: "https://app.test", AdminBasePath: "/admin/"}, "https://app.test/admin/"},
 	}
 	for _, testCase := range cases {
 		if got := testHandler(testCase.settings).adminBaseURL(); got != testCase.want {
@@ -39,7 +39,7 @@ func TestTheAdminConsoleOrigin(t *testing.T) {
 // A refusal redirects back to the console with the reason in the query string, which is the only way the console learns what went wrong.
 func TestARefusalRedirectsWithItsReason(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := testHandler(Settings{AdminBaseURL: "https://admin.test", AdminBasePath: "/god-mode/"})
+	handler := testHandler(Settings{AdminBaseURL: "https://admin.test", AdminBasePath: "/admin/"})
 	router := gin.New()
 	router.POST("/refuse", func(c *gin.Context) {
 		handler.redirectError(c, handler.adminBaseURL(), errorAdminUserDoesNotExist, "ADMIN_USER_DOES_NOT_EXIST",
@@ -53,7 +53,7 @@ func TestARefusalRedirectsWithItsReason(t *testing.T) {
 	}
 	location := recorder.Header().Get("Location")
 	for _, part := range []string{
-		"https://admin.test/god-mode/?",
+		"https://admin.test/admin/?",
 		"error_code=5185",
 		"error_message=ADMIN_USER_DOES_NOT_EXIST",
 		"email=ada%40example.test",

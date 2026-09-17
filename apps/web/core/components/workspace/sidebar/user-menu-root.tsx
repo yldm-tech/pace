@@ -10,7 +10,7 @@ import { useRouter } from "@/app/hooks/navigation";
 import { LogOutOutline, SettingsOutline } from "@makeplane/propel/icons";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { GOD_MODE_URL } from "@pace/constants";
+import { ADMIN_URL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { CustomMenu } from "@pace/ui";
@@ -139,7 +139,7 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
       </CustomMenu.MenuItem>
       {isUserInstanceAdmin && (
         <CustomMenu.MenuItem
-          onClick={() => router.push(GOD_MODE_URL)}
+          onClick={() => router.push(ADMIN_URL)}
           className="bg-accent-primary/20 text-accent-primary hover:bg-accent-primary/30 hover:text-accent-secondary"
         >
           {t("enter_god_mode")}
