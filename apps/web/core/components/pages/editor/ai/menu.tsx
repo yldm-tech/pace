@@ -22,8 +22,8 @@ import { RichTextEditor } from "@/components/editor/rich-text";
 // pace web constants
 import { AI_EDITOR_TASKS, LOADING_TEXTS } from "@pace/constants";
 // pace web services
-import type { TTaskPayload } from "@/services/ai.service";
-import { AIService } from "@/services/ai.service";
+import type { TTaskPayload } from "@pace/services";
+import { AIService } from "@pace/services";
 import { AskPiMenu } from "./ask-pi-menu";
 const aiService = new AIService();
 
@@ -79,7 +79,7 @@ export function EditorAIMenu(props: Props) {
   // params
   const handleGenerateResponse = async (payload: TTaskPayload) => {
     if (!workspaceSlug) return;
-    await aiService.performEditorTask(workspaceSlug.toString(), payload).then((res) => setResponse(res.response));
+    await aiService.rephraseGrammar(workspaceSlug.toString(), payload).then((res) => setResponse(res.response));
   };
   // handle task click
   const handleClick = async (key: AI_EDITOR_TASKS) => {

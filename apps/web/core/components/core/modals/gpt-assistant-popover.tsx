@@ -20,7 +20,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text";
 // services
-import { AIService } from "@/services/ai.service";
+import { AIService } from "@pace/services";
 const aiService = new AIService();
 
 type Props = {
@@ -107,7 +107,7 @@ export function GptAssistantPopover(props: Props) {
 
   const callAIService = async (formData: FormData) => {
     try {
-      const res = await aiService.createGptTask(workspaceSlug.toString(), {
+      const res = await aiService.prompt(workspaceSlug.toString(), {
         prompt: prompt || "",
         task: formData.task,
       });

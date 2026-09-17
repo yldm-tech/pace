@@ -31,7 +31,7 @@ import { usePlatformOS } from "@/hooks/use-platform-os";
 // pace web services
 import { WorkspaceService } from "@/services/workspace.service";
 // services
-import { AIService } from "@/services/ai.service";
+import { AIService } from "@pace/services";
 const workspaceService = new WorkspaceService();
 const aiService = new AIService();
 
@@ -120,7 +120,7 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
     setIAmFeelingLucky(true);
 
     aiService
-      .createGptTask(workspaceSlug.toString(), {
+      .prompt(workspaceSlug.toString(), {
         prompt: issueName,
         task: "Generate a proper description for this work item.",
       })
