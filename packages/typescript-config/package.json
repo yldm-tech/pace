@@ -1,6 +1,6 @@
 {
   "name": "@pace/typescript-config",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "private": true,
   "license": "AGPL-3.0",
   "files": [
@@ -8,5 +8,9 @@
     "nextjs.json",
     "react-library.json",
     "node-library.json"
-  ]
+  ],
+  "scripts": {
+    "check:format": "oxfmt --check .",
+    "fix:format": "oxfmt ."
+  }
 }

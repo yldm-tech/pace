@@ -469,16 +469,20 @@ export const MyObserverComponent = observer(() => {
   });
 
   it("should preserve dependency arrays when transforming wrapped components", async () => {
+    // The path rides on the input, not the options: applyTransform reads only `parser` off its third argument, so a path passed there never reaches `file.path` and the transform's `.tsx` branch goes untested.
     const result = await applyTransform(
       transformer,
-      `
+      {
+        path: "file.tsx",
+        source: `
       import { useMemo } from "react";
 
       const MyComponent = useMemo(() => {
         return () => <div>Hello</div>;
       }, [dep]);
       `,
-      { parser: "tsx", path: "file.tsx" }
+      },
+      { parser: "tsx" }
     );
 
     expect(result).toMatchInlineSnapshot(`
@@ -493,7 +497,9 @@ export const MyObserverComponent = observer(() => {
   it("should preserve dependency arrays for constants that look like components", async () => {
     const result = await applyTransform(
       transformer,
-      `
+      {
+        path: "file.tsx",
+        source: `
       import { useMemo } from "react";
 
       const ACTION_HANDLERS = useMemo(function ACTION_HANDLERS() {
@@ -502,7 +508,8 @@ export const MyObserverComponent = observer(() => {
         };
       }, []);
       `,
-      { parser: "tsx", path: "file.tsx" }
+      },
+      { parser: "tsx" }
     );
 
     expect(result).toMatchInlineSnapshot(`
@@ -514,6 +521,29 @@ export const MyObserverComponent = observer(() => {
               };
             }, []);"
     `);
+  });
+
+  // The transform only converts a JSX-free arrow function when the file is .tsx. Nothing covered that branch before: the two tests above pass a path, but one of them contains JSX and the other produces the same output either way, so neither can tell the two file kinds apart.
+  it("should leave a JSX-free arrow function alone outside a .tsx file", async () => {
+    const source = `
+      const Widget = () => {
+        return "no jsx here";
+      };
+      `;
+
+    const inTsx = await applyTransform(
+      transformer,
+      { path: "widget.tsx", source },
+      { parser: "tsx" }
+    );
+    const inTs = await applyTransform(
+      transformer,
+      { path: "widget.ts", source },
+      { parser: "tsx" }
+    );
+
+    expect(inTsx).toContain("function Widget()");
+    expect(inTs).toContain("const Widget = () =>");
   });
 
   it("should handle memo with generic type arguments correctly", async () => {

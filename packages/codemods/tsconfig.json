@@ -1,13 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
-  }
+  "extends": "@pace/typescript-config/node-library.json",
+  "include": ["*.ts", "tests/**/*"],
+  "exclude": ["node_modules"]
 }

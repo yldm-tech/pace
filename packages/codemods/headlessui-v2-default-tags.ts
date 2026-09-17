@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { API, FileInfo, JSXOpeningElement, Options } from "jscodeshift";
+import type { API, FileInfo, JSXOpeningElement, Options } from "jscodeshift";
 
 /**
  * Headless UI v1 -> v2 default-tag preservation.
@@ -56,11 +56,14 @@ export default function transform(file: FileInfo, api: API, options: Options) {
     .find(j.ImportDeclaration, { source: { value: "@headlessui/react" } })
     .forEach((path) => {
       for (const specifier of path.node.specifiers ?? []) {
-        if (specifier.type === "ImportSpecifier" && specifier.local) {
-          importedNameByLocal.set(
-            specifier.local.name,
-            specifier.imported.name as string
-          );
+        if (specifier.type !== "ImportSpecifier" || !specifier.local) {
+          continue;
+        }
+        // ast-types types both names as `string | IdentifierKind`. Only the string form can key this map, and only the string form can index the lookup tables further down, so a node-shaped name is skipped rather than cast. The cast that used to be here would have put a node in as the value and made every later lookup miss without saying so.
+        const localName = specifier.local.name;
+        const importedName = specifier.imported.name;
+        if (typeof localName === "string" && typeof importedName === "string") {
+          importedNameByLocal.set(localName, importedName);
         }
       }
     });
