@@ -6,7 +6,7 @@
 
 import { WEBSITE_URL } from "@pace/constants";
 // assets
-import { PlaneLogo } from "@pace/propel/icons";
+import { PaceLogo } from "@pace/propel/icons";
 
 type TPoweredBy = {
   disabled?: boolean;
@@ -25,7 +25,7 @@ export function PoweredBy(props: TPoweredBy) {
       target="_blank"
       rel="noreferrer noopener"
     >
-      <PlaneLogo className="h-3 w-auto text-primary" />
+      <PaceLogo className="h-3 w-auto text-primary" />
       <div className="text-11">
         Powered by <span className="font-semibold">Pace Publish</span>
       </div>

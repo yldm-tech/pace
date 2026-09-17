@@ -7,7 +7,7 @@
 import { useTranslation } from "@pace/i18n";
 // ui
 import { getButtonStyling } from "@pace/propel/button";
-import { PlaneLogo } from "@pace/propel/icons";
+import { PaceLogo } from "@pace/propel/icons";
 // helpers
 import { cn } from "@pace/utils";
 
@@ -67,7 +67,7 @@ export function ProductUpdatesFooter() {
         )}
         rel="noreferrer"
       >
-        <PlaneLogo className="h-4 w-auto text-primary" />
+        <PaceLogo className="h-4 w-auto text-primary" />
         {t("powered_by_plane_pages")}
       </a>
     </div>

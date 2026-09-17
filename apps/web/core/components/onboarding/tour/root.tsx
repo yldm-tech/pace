@@ -8,7 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 // pace imports
 import { Button } from "@pace/propel/button";
-import { PlaneLockup } from "@pace/propel/icons";
+import { PaceLockup } from "@pace/propel/icons";
 import { CloseOutline } from "@makeplane/propel/icons";
 // assets
 import CyclesTour from "@/app/assets/onboarding/cycles.webp?url";
@@ -96,7 +96,7 @@ export const TourRoot = observer(function TourRoot(props: TOnboardingTourProps) 
         <div className="w-4/5 overflow-hidden rounded-[10px] bg-surface-1 md:w-1/2 lg:w-2/5">
           <div className="h-full overflow-hidden">
             <div className="grid h-64 place-items-center bg-accent-primary">
-              <PlaneLockup className="h-10 w-auto text-on-color" />
+              <PaceLockup className="h-10 w-auto text-on-color" />
             </div>
             <div className="flex flex-col overflow-y-auto p-6">
               <h3 className="font-semibold sm:text-18">

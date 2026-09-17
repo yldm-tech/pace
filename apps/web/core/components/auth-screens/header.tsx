@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useTranslation } from "@pace/i18n";
-import { PlaneLockup } from "@pace/propel/icons";
+import { PaceLockup } from "@pace/propel/icons";
 import { PageHead } from "@/components/core/page-title";
 import { EAuthModes } from "@/helpers/authentication.helper";
 import { useInstance } from "@/hooks/store/use-instance";
@@ -71,7 +71,7 @@ export function AuthHeaderBase(props: TAuthHeaderBase) {
       <PageHead title={pageTitle + " - Pace"} />
       <div className="sticky top-0 flex w-full flex-shrink-0 items-center justify-between gap-6">
         <Link href="/">
-          <PlaneLockup height={20} width={95} className="text-primary" />
+          <PaceLockup height={20} width={76} className="text-primary" />
         </Link>
         {additionalAction}
       </div>

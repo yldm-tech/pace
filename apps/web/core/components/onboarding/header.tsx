@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { PlaneLockup } from "@pace/propel/icons";
+import { PaceLockup } from "@pace/propel/icons";
 import { ChevronLeftOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TOnboardingStep } from "@pace/types";
@@ -84,7 +84,7 @@ export const OnboardingHeader = observer(function OnboardingHeader(props: Onboar
               <ChevronLeftOutline className="size-6 text-placeholder" />
             </button>
           )}
-          <PlaneLockup height={20} width={95} className="text-primary" />
+          <PaceLockup height={20} width={76} className="text-primary" />
         </div>
         <SwitchAccountDropdown fullName={userName} />
       </div>
