@@ -7,7 +7,7 @@
 import React, { useMemo, useState } from "react";
 import { sortBy } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // components
 import { ModuleOutline } from "@makeplane/propel/icons";
 import { Loader } from "@pace/ui";

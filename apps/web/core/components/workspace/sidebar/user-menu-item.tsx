@@ -5,8 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 // pace imports
 import { EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { useTranslation } from "@pace/i18n";
 import { PaceLockup } from "@pace/propel/icons";
 import { PageHead } from "@/components/core/page-title";

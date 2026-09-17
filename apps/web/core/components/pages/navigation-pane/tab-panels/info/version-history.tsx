@@ -6,8 +6,8 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useSearchParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";

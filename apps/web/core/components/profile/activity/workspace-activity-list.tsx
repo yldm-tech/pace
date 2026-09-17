@@ -5,7 +5,7 @@
  */
 
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // services
 import { USER_PROFILE_ACTIVITY } from "@pace/constants";

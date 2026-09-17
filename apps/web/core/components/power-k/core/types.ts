@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { useRouter } from "next/navigation";
+import type { useRouter } from "@/app/hooks/navigation";
 
 export type TPowerKContextType = "work-item" | "page" | "cycle" | "module";
 

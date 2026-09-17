@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import type { ComponentType, SVGProps } from "react";
 // hooks
 import { useMember } from "@/hooks/store/use-member";

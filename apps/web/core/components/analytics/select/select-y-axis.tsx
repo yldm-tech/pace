@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { EEstimateSystem } from "@pace/constants";
 import { ProjectsOutline } from "@makeplane/propel/icons";
 import type { ChartYAxisMetric } from "@pace/types";

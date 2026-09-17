@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import useSWR from "swr";
 import { LoadingOutline as LoaderIcon } from "@makeplane/propel/icons";
 // types

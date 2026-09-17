@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // icons
 import { Circle } from "lucide-react";
 // pace imports

@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo } from "react";
 import type { RefObject } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 import type { EditorRefApi } from "@pace/editor";
 import {
   PAGE_NAVIGATION_PANE_TAB_KEYS,

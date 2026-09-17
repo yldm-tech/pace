@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { useTranslation } from "@pace/i18n";

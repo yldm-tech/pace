@@ -6,7 +6,8 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 // types
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

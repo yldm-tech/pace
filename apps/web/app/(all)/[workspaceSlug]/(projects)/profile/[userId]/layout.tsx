@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { Outlet } from "react-router";
 import useSWR from "swr";
 // components

@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import { usePathname } from "next/navigation";
-import { useParams } from "react-router";
+import { usePathname } from "@/app/hooks/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import {
   EUserPermissionsLevel,

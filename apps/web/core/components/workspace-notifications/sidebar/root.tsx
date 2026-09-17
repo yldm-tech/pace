@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import type { TNotificationTab } from "@pace/constants";
 import { NOTIFICATION_TABS } from "@pace/constants";

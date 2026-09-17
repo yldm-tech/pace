@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { range } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // icons
 import { CopyOutline, HideOutline, RefreshOutline, ShowOutline } from "@makeplane/propel/icons";
 import { useTranslation } from "@pace/i18n";

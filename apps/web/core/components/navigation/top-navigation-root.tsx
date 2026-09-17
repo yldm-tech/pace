@@ -6,7 +6,8 @@
 
 // components
 import { observer } from "mobx-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { cn } from "@pace/utils";
 import { TopNavPowerK } from "@/components/navigation";
 import { HelpMenuRoot } from "@/components/workspace/sidebar/help-section/root";

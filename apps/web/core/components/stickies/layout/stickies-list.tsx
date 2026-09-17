@@ -11,7 +11,7 @@ import type {
 } from "@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types";
 import type { ElementDragPayload } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { observer } from "mobx-react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { useTheme } from "next-themes";
 import Masonry from "react-masonry-component";
 

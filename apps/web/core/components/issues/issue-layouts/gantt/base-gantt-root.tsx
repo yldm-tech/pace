@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { ALL_ISSUES, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

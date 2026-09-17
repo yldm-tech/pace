@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
 import { ChatOutline, HistoryOutline } from "@makeplane/propel/icons";
 // pace imports
 import type { IUserActivityResponse } from "@pace/types";

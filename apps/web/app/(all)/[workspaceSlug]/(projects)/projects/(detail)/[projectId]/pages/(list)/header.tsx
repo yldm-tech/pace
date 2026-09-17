@@ -6,7 +6,8 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/app/hooks/navigation";
 // constants
 import { EPageAccess } from "@pace/constants";
 // pace types

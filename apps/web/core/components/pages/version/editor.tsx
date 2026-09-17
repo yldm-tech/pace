@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import type { TDisplayConfig } from "@pace/editor";
 import type { JSONContent, TPageVersion } from "@pace/types";

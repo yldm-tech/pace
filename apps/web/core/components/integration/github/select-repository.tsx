@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import useSWRInfinite from "swr/infinite";
 import type { IWorkspaceIntegration } from "@pace/types";
 // services

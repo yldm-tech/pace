@@ -6,7 +6,7 @@
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace constants
 import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";

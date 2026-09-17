@@ -7,8 +7,9 @@
 import type { SyntheticEvent } from "react";
 import React, { useRef } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname, useSearchParams } from "@/app/hooks/navigation";
 import { InfoOutline, UserAltOutline, WorkItemsOutline } from "@makeplane/propel/icons";
 // pace package imports
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";

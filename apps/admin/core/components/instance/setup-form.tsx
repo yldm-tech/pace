@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace internal packages

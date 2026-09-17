@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 import { EAuthModes } from "@pace/constants";
 
 interface TermsAndConditionsProps {

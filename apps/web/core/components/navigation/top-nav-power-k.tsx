@@ -7,7 +7,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // hooks
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
 import { cn } from "@pace/utils";

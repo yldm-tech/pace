@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceView } from "@pace/types";

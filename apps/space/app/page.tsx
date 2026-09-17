@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "@/app/hooks/navigation";
 // pace imports
 import { isValidNextPath } from "@pace/utils";
 // components

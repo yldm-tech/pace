@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { useTheme } from "next-themes";
 // helpers
 import { applyCustomTheme, clearCustomTheme } from "@pace/utils";

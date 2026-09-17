@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // components
 import { useTranslation } from "@pace/i18n";
 import { EmptyStateDetailed } from "@pace/propel/empty-state";

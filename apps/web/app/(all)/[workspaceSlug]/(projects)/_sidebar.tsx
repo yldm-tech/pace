@@ -7,7 +7,8 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { SIDEBAR_WIDTH } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";
 // components

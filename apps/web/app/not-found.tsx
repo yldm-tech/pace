@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 // ui
 import { Button } from "@pace/propel/button";
 // images

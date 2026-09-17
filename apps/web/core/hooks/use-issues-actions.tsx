@@ -7,7 +7,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useMemo } from "react";
 // types
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import type { TSupportedFilterTypeForUpdate } from "@pace/constants";
 import { EDraftIssuePaginationType } from "@pace/constants";
 import type {

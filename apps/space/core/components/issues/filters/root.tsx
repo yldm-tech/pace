@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { cloneDeep } from "lodash-es";
 import { observer } from "mobx-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 // constants
 import { ISSUE_DISPLAY_FILTERS_BY_LAYOUT } from "@pace/constants";
 // components

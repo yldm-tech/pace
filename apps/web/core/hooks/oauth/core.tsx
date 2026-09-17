@@ -5,7 +5,7 @@
  */
 
 // pace imports
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/app/hooks/navigation";
 import { useTheme } from "next-themes";
 import { API_BASE_URL } from "@pace/constants";
 import type { TOAuthConfigs, TOAuthOption } from "@pace/types";

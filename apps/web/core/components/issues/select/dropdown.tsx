@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { EUserPermissionsLevel } from "@pace/constants";
 import type { IIssueLabel } from "@pace/types";
 import { EUserPermissions } from "@pace/types";

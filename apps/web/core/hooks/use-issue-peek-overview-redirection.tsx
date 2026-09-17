@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/hooks/navigation";
 // types
 import type { TIssue } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";

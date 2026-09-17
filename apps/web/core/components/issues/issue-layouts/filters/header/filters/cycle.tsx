@@ -7,7 +7,7 @@
 import React, { useMemo, useState } from "react";
 import { sortBy } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { CycleGroupIcon } from "@pace/propel/icons";
 import type { TCycleGroups } from "@pace/types";
 // components

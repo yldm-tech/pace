@@ -6,7 +6,7 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
 // types
 import type { IIssueLabel } from "@pace/types";

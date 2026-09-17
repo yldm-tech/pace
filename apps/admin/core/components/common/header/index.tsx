@@ -6,8 +6,8 @@
 
 import { Fragment } from "react";
 import { observer } from "mobx-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { usePathname } from "@/app/hooks/navigation";
 // icons
 import { Menu } from "lucide-react";
 import { SettingsOutline } from "@makeplane/propel/icons";

@@ -6,7 +6,8 @@
 
 "use client";
 import { observer } from "mobx-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 import { SettingsOutline, TickOutline } from "@makeplane/propel/icons";
 import { ContextMenu } from "@pace/propel/context-menu";
 import { cn } from "@pace/utils";

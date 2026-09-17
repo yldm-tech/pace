@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // types
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

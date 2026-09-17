@@ -4,8 +4,9 @@
  * See the LICENSE file for details.
  */
 
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import Link from "@/app/hooks/link";
+import { useParams } from "@/app/hooks/navigation";
+import { usePathname } from "@/app/hooks/navigation";
 // pace imports
 import { PROFILE_VIEWER_TAB, PROFILE_ADMINS_TAB } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

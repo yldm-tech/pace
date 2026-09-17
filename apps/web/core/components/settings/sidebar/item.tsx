@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import Link from "next/link";
+import Link from "@/app/hooks/link";
 // pace imports
 import { cn } from "@pace/utils";
 import type { LucideIcon } from "lucide-react";

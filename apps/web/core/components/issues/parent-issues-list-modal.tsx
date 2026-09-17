@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // icons
 import { RocketOutline, SearchOutline } from "@makeplane/propel/icons";
 // headless ui

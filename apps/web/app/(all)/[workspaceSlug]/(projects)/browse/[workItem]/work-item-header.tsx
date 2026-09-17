@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // pace ui
 import { WorkItemsOutline } from "@makeplane/propel/icons";
 import { Breadcrumbs, Header } from "@pace/ui";

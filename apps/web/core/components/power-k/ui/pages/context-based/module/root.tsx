@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "next/navigation";
+import { useParams } from "@/app/hooks/navigation";
 // components
 import type { TPowerKPageType } from "@/components/power-k/core/types";
 import { PowerKMembersMenu } from "@/components/power-k/menus/members";

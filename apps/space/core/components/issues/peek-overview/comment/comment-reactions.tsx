@@ -6,7 +6,7 @@
 
 import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "@/app/hooks/navigation";
 // pace imports
 import { stringToEmoji } from "@pace/propel/emoji-icon-picker";
 import { EmojiReactionGroup, EmojiReactionPicker } from "@pace/propel/emoji-reaction";

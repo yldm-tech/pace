@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // components
 import { IssuesLayoutsRoot } from "@/components/issues/issue-layouts";

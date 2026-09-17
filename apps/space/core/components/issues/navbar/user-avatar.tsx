@@ -7,7 +7,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "@/app/hooks/navigation";
 import { usePopper } from "react-popper";
 import { LogOutOutline } from "@makeplane/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
