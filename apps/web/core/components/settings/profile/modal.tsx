@@ -7,9 +7,9 @@
 import { useCallback } from "react";
 import { CloseOutline } from "@makeplane/propel/icons";
 import { observer } from "mobx-react";
-// plane imports
-import { IconButton } from "@plane/propel/icon-button";
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+// pace imports
+import { IconButton } from "@pace/propel/icon-button";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 // local imports

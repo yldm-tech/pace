@@ -5,13 +5,13 @@
  */
 
 // helpers
-import { API_BASE_URL } from "@plane/constants";
-import type { AI_EDITOR_TASKS } from "@plane/constants";
+import { API_BASE_URL } from "@pace/constants";
+import type { AI_EDITOR_TASKS } from "@pace/constants";
 // services
 import { APIService } from "@/services/api.service";
 // types
 // FIXME:
-// import { IGptResponse } from "@plane/types";
+// import { IGptResponse } from "@pace/types";
 // helpers
 
 export type TTaskPayload = {

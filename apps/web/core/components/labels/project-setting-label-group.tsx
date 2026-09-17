@@ -8,9 +8,9 @@ import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
+// pace imports
 import { ChevronDownOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
-import type { IIssueLabel } from "@plane/types";
+import type { IIssueLabel } from "@pace/types";
 // components
 import type { TLabelOperationsCallbacks } from "./create-update-label-inline";
 import { CreateUpdateLabelInline } from "./create-update-label-inline";

@@ -5,11 +5,11 @@
  */
 
 import { action, observable, runInAction, makeObservable } from "mobx";
-// plane internal packages
-import type { TUserStatus } from "@plane/constants";
-import { EUserStatus } from "@plane/constants";
-import { AuthService, UserService } from "@plane/services";
-import type { IUser } from "@plane/types";
+// pace internal packages
+import type { TUserStatus } from "@pace/constants";
+import { EUserStatus } from "@pace/constants";
+import { AuthService, UserService } from "@pace/services";
+import type { IUser } from "@pace/types";
 // root store
 import type { RootStore } from "@/store/root.store";
 

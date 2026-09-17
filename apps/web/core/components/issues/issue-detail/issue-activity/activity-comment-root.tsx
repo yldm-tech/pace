@@ -5,10 +5,10 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { E_SORT_ORDER, TActivityFilters, EActivityFilterType } from "@plane/constants";
-import { BASE_ACTIVITY_FILTER_TYPES, filterActivityOnSelectedFilters } from "@plane/constants";
-import type { TCommentsOperations } from "@plane/types";
+// pace imports
+import type { E_SORT_ORDER, TActivityFilters, EActivityFilterType } from "@pace/constants";
+import { BASE_ACTIVITY_FILTER_TYPES, filterActivityOnSelectedFilters } from "@pace/constants";
+import type { TCommentsOperations } from "@pace/types";
 // components
 import { CommentCard } from "@/components/comments/card/root";
 // hooks

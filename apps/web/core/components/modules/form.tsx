@@ -6,15 +6,15 @@
 
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-// plane imports
+// pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { TextArea, TextAreaGroup } from "@makeplane/propel/components/text-area";
-import { ETabIndices } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import type { IModule } from "@plane/types";
-import { getDate, renderFormattedPayloadDate, getTabIndex } from "@plane/utils";
+import { ETabIndices } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import type { IModule } from "@pace/types";
+import { getDate, renderFormattedPayloadDate, getTabIndex } from "@pace/utils";
 // components
 import { DateRangeDropdown } from "@/components/dropdowns/date-range";
 import { MemberDropdown } from "@/components/dropdowns/member/dropdown";

@@ -6,9 +6,9 @@
 
 import { observer } from "mobx-react";
 import { ArchiveOutline, RestoreOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 // store
 import type { INotification } from "@/store/notifications/notification";
 // local imports

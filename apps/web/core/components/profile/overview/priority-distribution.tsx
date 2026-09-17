@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { BarChart } from "@plane/propel/charts/bar-chart";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { IUserProfileData } from "@plane/types";
-import { Loader, Card } from "@plane/ui";
-import { capitalizeFirstLetter } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { BarChart } from "@pace/propel/charts/bar-chart";
+import { EmptyStateCompact } from "@pace/propel/empty-state";
+import type { IUserProfileData } from "@pace/types";
+import { Loader, Card } from "@pace/ui";
+import { capitalizeFirstLetter } from "@pace/utils";
 
 type Props = {
   userProfile: IUserProfileData | undefined;

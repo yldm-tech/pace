@@ -5,13 +5,13 @@
  */
 
 import { SignalHigh } from "lucide-react";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // types
-import { PriorityIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-import type { TIssuePriorities } from "@plane/types";
+import { PriorityIcon } from "@pace/propel/icons";
+import { Tooltip } from "@pace/propel/tooltip";
+import type { TIssuePriorities } from "@pace/types";
 // constants
-import { cn, getIssuePriorityFilters } from "@plane/utils";
+import { cn, getIssuePriorityFilters } from "@pace/utils";
 
 export function IssueBlockPriority({
   priority,

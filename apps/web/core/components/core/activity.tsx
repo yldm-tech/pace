@@ -27,10 +27,10 @@ import {
   RelatesToOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-import { BlockedIcon, BlockerIcon } from "@plane/propel/icons";
+import { BlockedIcon, BlockerIcon } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IIssueActivity } from "@plane/types";
-import { renderFormattedDate, generateWorkItemLink, capitalizeFirstLetter } from "@plane/utils";
+import type { IIssueActivity } from "@pace/types";
+import { renderFormattedDate, generateWorkItemLink, capitalizeFirstLetter } from "@pace/utils";
 // helpers
 import { useLabel } from "@/hooks/store/use-label";
 import { usePlatformOS } from "@/hooks/use-platform-os";

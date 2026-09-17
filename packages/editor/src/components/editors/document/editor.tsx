@@ -7,8 +7,8 @@
 import type { Extensions } from "@tiptap/core";
 import type { MutableRefObject } from "react";
 import { forwardRef, useMemo } from "react";
-// plane imports
-import { cn } from "@plane/utils";
+// pace imports
+import { cn } from "@pace/utils";
 // components
 import { PageRenderer } from "@/components/editors";
 // constants
@@ -19,7 +19,7 @@ import { HeadingListExtension, SideMenuExtension } from "@/extensions";
 import { getEditorClassNames } from "@/helpers/common";
 // hooks
 import { useEditor } from "@/hooks/use-editor";
-// plane editor extensions
+// pace editor extensions
 import { DocumentEditorAdditionalExtensions } from "@/extensions/document-extensions";
 // types
 import type { EditorRefApi, IDocumentEditorProps } from "@/types";

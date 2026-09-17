@@ -5,7 +5,7 @@
  *
  * The lookup tries a shortcode against each entry's name and then its aliases, first match winning, so the table is flattened in that order and a key already claimed is left alone. Regenerate from the repository root:
  *
- *     pnpm install --filter @plane/editor...
+ *     pnpm install --filter @pace/editor...
  *     node apps/api-go/tools/generate_ydoc_emoji.mjs > apps/api-go/internal/ydoc/emoji.tsv
  */
 

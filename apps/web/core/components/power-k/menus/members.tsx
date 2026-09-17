@@ -6,10 +6,10 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@pace/utils";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 // local imports

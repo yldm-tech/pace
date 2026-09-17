@@ -4,14 +4,14 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
+// pace package imports
 import type { ReactNode } from "react";
 import React from "react";
 import { CalendarOutline } from "@makeplane/propel/icons";
-// plane package imports
-import { ANALYTICS_DURATION_FILTER_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { CustomSearchSelect } from "@plane/ui";
+// pace package imports
+import { ANALYTICS_DURATION_FILTER_OPTIONS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { CustomSearchSelect } from "@pace/ui";
 // types
 import type { TDropdownProps } from "@/components/dropdowns/types";
 

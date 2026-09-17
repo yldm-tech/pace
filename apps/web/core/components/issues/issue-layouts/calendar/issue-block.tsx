@@ -8,12 +8,12 @@ import { useState, useRef, forwardRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { MoreHorizontalOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { Popover } from "@plane/propel/popover";
-import type { TIssue } from "@plane/types";
-import { ControlLink } from "@plane/ui";
-import { cn, generateWorkItemLink } from "@plane/utils";
+// pace imports
+import { useOutsideClickDetector } from "@pace/hooks";
+import { Popover } from "@pace/propel/popover";
+import type { TIssue } from "@pace/types";
+import { ControlLink } from "@pace/ui";
+import { cn, generateWorkItemLink } from "@pace/utils";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";

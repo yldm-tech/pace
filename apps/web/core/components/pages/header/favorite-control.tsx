@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import { StarOutline } from "@makeplane/propel/icons";
 // ui
-import { IconButton } from "@plane/propel/icon-button";
+import { IconButton } from "@pace/propel/icon-button";
 // hooks
 import { usePageOperations } from "@/hooks/use-page-operations";
 // store

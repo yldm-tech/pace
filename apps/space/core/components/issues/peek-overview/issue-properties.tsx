@@ -6,12 +6,12 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { StateGroupIcon, PriorityIcon } from "@plane/propel/icons";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { StateGroupIcon, PriorityIcon } from "@pace/propel/icons";
 import { DueDateOutline, LinkOutline, PriorityOutline, StateOutline } from "@makeplane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { cn, getIssuePriorityFilters } from "@plane/utils";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import { cn, getIssuePriorityFilters } from "@pace/utils";
 // helpers
 import { renderFormattedDate } from "@/helpers/date-time.helper";
 import { shouldHighlightIssueDueDate } from "@/helpers/issue.helper";

@@ -7,9 +7,9 @@
 import React from "react";
 import { observer } from "mobx-react";
 // ui
-import { Button } from "@plane/propel/button";
+import { Button } from "@pace/propel/button";
 // utils
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type EmptyStateSize = "sm" | "base" | "lg";
 

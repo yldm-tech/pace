@@ -7,10 +7,10 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { ReplyOutline } from "@makeplane/propel/icons";
-import type { TIssueComment } from "@plane/types";
-import { cn } from "@plane/utils";
+import type { TIssueComment } from "@pace/types";
+import { cn } from "@pace/utils";
 // hooks
 
 type TCommentBlock = {

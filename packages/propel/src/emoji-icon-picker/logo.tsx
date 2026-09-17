@@ -8,8 +8,8 @@
 // should be after the imported here rather than some below helper functions as it is in the original file
 
 import useFontFaceObserver from "use-font-face-observer";
-// plane imports
-import type { TLogoProps } from "@plane/types";
+// pace imports
+import type { TLogoProps } from "@pace/types";
 // local imports
 import { getEmojiSize, stringToEmoji } from "./helper";
 import { LUCIDE_ICONS_LIST } from "./lucide-icons";

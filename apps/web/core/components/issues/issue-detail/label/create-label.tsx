@@ -12,7 +12,7 @@ import { AddOutline, CloseOutline, LoadingOutline } from "@makeplane/propel/icon
 import { Popover } from "@headlessui/react";
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import type { IIssueLabel } from "@plane/types";
+import type { IIssueLabel } from "@pace/types";
 // hooks
 
 // ui

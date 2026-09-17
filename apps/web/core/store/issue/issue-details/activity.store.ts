@@ -7,17 +7,17 @@
 import { concat, orderBy, set, uniq, update } from "lodash-es";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane package imports
-import type { E_SORT_ORDER } from "@plane/constants";
-import { EActivityFilterType } from "@plane/constants";
+// pace package imports
+import type { E_SORT_ORDER } from "@pace/constants";
+import { EActivityFilterType } from "@pace/constants";
 import type {
   TIssueActivityComment,
   TIssueActivity,
   TIssueActivityMap,
   TIssueActivityIdMap,
   TIssueServiceType,
-} from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
+} from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
 // services
 import { IssueActivityService } from "@/services/issue";
 // store

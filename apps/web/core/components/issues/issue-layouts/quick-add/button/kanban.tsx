@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { AddOutline } from "@makeplane/propel/icons";
 import type { TQuickAddIssueButton } from "../root";
 

@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { ScrollArea } from "@plane/propel/scrollarea";
-import { cn } from "@plane/utils";
+// pace imports
+import { ScrollArea } from "@pace/propel/scrollarea";
+import { cn } from "@pace/utils";
 // components
 import { AppHeader } from "@/components/core/app-header";
 

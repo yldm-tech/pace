@@ -5,9 +5,9 @@
  */
 
 import { differenceInCalendarDays } from "date-fns/differenceInCalendarDays";
-// plane internal
-import { STATE_GROUPS } from "@plane/constants";
-import type { TStateGroups } from "@plane/types";
+// pace internal
+import { STATE_GROUPS } from "@pace/constants";
+import type { TStateGroups } from "@pace/types";
 // helpers
 import { getDate } from "@/helpers/date-time.helper";
 

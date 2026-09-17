@@ -8,9 +8,9 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
+// pace imports
 import { AnalyticsOutline, CyclesOutline, ProjectsOutline, ViewsOutline } from "@makeplane/propel/icons";
-import { EUserWorkspaceRoles } from "@plane/types";
+import { EUserWorkspaceRoles } from "@pace/types";
 // hooks
 import useLocalStorage from "@/hooks/use-local-storage";
 // local imports

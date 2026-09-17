@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TBaseLayoutType } from "@plane/types";
-import { cn } from "@plane/utils";
+import type { TBaseLayoutType } from "@pace/types";
+import { cn } from "@pace/utils";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 import { BASE_LAYOUTS } from "./constants";
 

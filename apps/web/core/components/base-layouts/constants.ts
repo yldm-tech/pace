@@ -5,7 +5,7 @@
  */
 
 import { BoardOutline, ListOutline, TimelineOutline } from "@makeplane/propel/icons";
-import type { IBaseLayoutConfig } from "@plane/types";
+import type { IBaseLayoutConfig } from "@pace/types";
 
 export const BASE_LAYOUTS: IBaseLayoutConfig[] = [
   {

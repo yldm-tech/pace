@@ -10,12 +10,12 @@ import { useParams } from "next/navigation";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from "react-hook-form";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-// plane helpers
-// plane ui
-import { FavoriteFolderIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { useOutsideClickDetector } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
+// pace helpers
+// pace ui
+import { FavoriteFolderIcon } from "@pace/propel/icons";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 
 // hooks
 import { useFavorite } from "@/hooks/store/use-favorite";

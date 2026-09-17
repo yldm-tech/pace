@@ -24,15 +24,15 @@ import {
   ShareAltOutline,
 } from "@makeplane/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { IconButton } from "@plane/propel/icon-button";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
+import { useOutsideClickDetector } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
+import { Logo } from "@pace/propel/emoji-icon-picker";
+import { IconButton } from "@pace/propel/icon-button";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { CustomMenu, DropIndicator, DragHandle, ControlLink } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { CustomMenu, DropIndicator, DragHandle, ControlLink } from "@pace/ui";
+import { cn } from "@pace/utils";
 // components
 import { DEFAULT_TAB_KEY, getTabUrl } from "@/components/navigation/tab-navigation-utils";
 import { useTabPreferences } from "@/components/navigation/use-tab-preferences";

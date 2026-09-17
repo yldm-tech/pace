@@ -5,9 +5,9 @@
  */
 
 import { TickCircleOutline } from "@makeplane/propel/icons";
-// plane internal packages
-import { E_PASSWORD_STRENGTH } from "@plane/constants";
-import { cn, getPasswordCriteria, getPasswordStrength } from "@plane/utils";
+// pace internal packages
+import { E_PASSWORD_STRENGTH } from "@pace/constants";
+import { cn, getPasswordCriteria, getPasswordStrength } from "@pace/utils";
 
 interface StrengthInfo {
   message: string;

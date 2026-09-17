@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-// plane admin store
+// pace admin store
 import { StoreContext, rootStore } from "./store-context";
 
 function initializeStore(initialData = {}) {

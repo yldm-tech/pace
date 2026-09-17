@@ -6,8 +6,8 @@
 
 import React, { useState, useCallback, useMemo } from "react";
 import { ChevronDownOutline, LockOutline } from "@makeplane/propel/icons";
-import { PasswordInput, PasswordStrengthIndicator } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { PasswordInput, PasswordStrengthIndicator } from "@pace/ui";
+import { cn } from "@pace/utils";
 
 interface PasswordState {
   password: string;

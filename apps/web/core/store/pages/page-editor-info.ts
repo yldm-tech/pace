@@ -5,8 +5,8 @@
  */
 
 import { action, makeObservable, observable, runInAction } from "mobx";
-// plane imports
-import type { EditorRefApi, TEditorAsset } from "@plane/editor";
+// pace imports
+import type { EditorRefApi, TEditorAsset } from "@pace/editor";
 
 export type TPageEditorInstance = {
   // observables

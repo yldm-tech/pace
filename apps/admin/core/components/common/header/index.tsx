@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation";
 // icons
 import { Menu } from "lucide-react";
 import { SettingsOutline } from "@makeplane/propel/icons";
-// plane internal packages
+// pace internal packages
 import {
   Breadcrumb,
   BreadcrumbItem,

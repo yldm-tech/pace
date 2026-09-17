@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { RefreshOutline } from "@makeplane/propel/icons";
 // types
-import type { TNameDescriptionLoader } from "@plane/types";
+import type { TNameDescriptionLoader } from "@pace/types";
 
 type Props = {
   isSubmitting: TNameDescriptionLoader;

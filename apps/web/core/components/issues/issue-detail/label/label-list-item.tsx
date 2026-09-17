@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { Button } from "@plane/propel/button";
+import { Button } from "@pace/propel/button";
 import { CloseOutline, LabelsFilled } from "@makeplane/propel/icons";
 // types
 import { useLabel } from "@/hooks/store/use-label";

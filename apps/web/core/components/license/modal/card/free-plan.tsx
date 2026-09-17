@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 import { CloseCircleOutline } from "@makeplane/propel/icons";
-// plane constants
-import { FREE_PLAN_UPGRADE_FEATURES } from "@plane/constants";
+// pace constants
+import { FREE_PLAN_UPGRADE_FEATURES } from "@pace/constants";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type FreePlanCardProps = {
   isOnFreePlan: boolean;

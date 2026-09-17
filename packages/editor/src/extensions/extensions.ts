@@ -33,7 +33,7 @@ import {
   TableRow,
   UtilityExtension,
 } from "@/extensions";
-// plane editor extensions
+// pace editor extensions
 import { CoreEditorAdditionalExtensions } from "@/extensions/core";
 // types
 import type { IEditorProps } from "@/types";

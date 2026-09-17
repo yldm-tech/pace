@@ -7,7 +7,7 @@
  *
  * Run from the repository root:
  *
- *     pnpm install --filter @plane/editor...
+ *     pnpm install --filter @pace/editor...
  *     node apps/api-go/tools/generate_parse_rules.mjs > apps/api-go/internal/ydoc/parse_rules.json
  *     node apps/api-go/tools/generate_parse_rules.mjs --variant=rich > apps/api-go/internal/ydoc/parse_rules_rich.json
  */

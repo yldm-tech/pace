@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { Loader } from "@plane/ui";
+// pace imports
+import { Loader } from "@pace/ui";
 
 export function IssueActivityLoader() {
   return (

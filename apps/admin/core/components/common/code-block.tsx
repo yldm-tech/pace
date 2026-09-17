@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type TProps = {
   children: React.ReactNode;

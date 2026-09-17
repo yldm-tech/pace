@@ -12,9 +12,9 @@ import {
   MembersOutline,
   WebhooksOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import type { ISvgIcons } from "@plane/propel/icons";
-import type { TWorkspaceSettingsTabs } from "@plane/types";
+// pace imports
+import type { ISvgIcons } from "@pace/propel/icons";
+import type { TWorkspaceSettingsTabs } from "@pace/types";
 
 export const WORKSPACE_SETTINGS_ICONS: Record<TWorkspaceSettingsTabs, LucideIcon | React.FC<ISvgIcons>> = {
   general: BuildingOutline,

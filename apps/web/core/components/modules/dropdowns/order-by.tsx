@@ -5,14 +5,14 @@
  */
 
 import { ChevronDownOutline, SortAscendingOutline, SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
-import { MODULE_ORDER_BY_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { getButtonStyling } from "@plane/propel/button";
-import type { TModuleOrderByOptions } from "@plane/types";
+import { MODULE_ORDER_BY_OPTIONS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { getButtonStyling } from "@pace/propel/button";
+import type { TModuleOrderByOptions } from "@pace/types";
 // ui
-import { CustomMenu } from "@plane/ui";
+import { CustomMenu } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // types
 // constants
 

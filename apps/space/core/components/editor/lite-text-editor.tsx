@@ -5,16 +5,16 @@
  */
 
 import React from "react";
-// plane imports
-import { LiteTextEditorWithRef } from "@plane/editor";
-import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@plane/editor";
-import type { MakeOptional } from "@plane/types";
-import { cn, isCommentEmpty } from "@plane/utils";
+// pace imports
+import { LiteTextEditorWithRef } from "@pace/editor";
+import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@pace/editor";
+import type { MakeOptional } from "@pace/types";
+import { cn, isCommentEmpty } from "@pace/utils";
 // helpers
 import { getEditorFileHandlers } from "@/helpers/editor.helper";
 // hooks
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web imports
+// pace web imports
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
 // local imports
 import { EditorMentionsRoot } from "./embeds/mentions";

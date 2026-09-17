@@ -14,14 +14,14 @@ import {
   LockOutline,
   MoreHorizontalOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { EIssueCommentAccessSpecifier } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
-import type { TIssueComment, TCommentsOperations } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { CustomMenu } from "@plane/ui";
-import { cn } from "@plane/utils";
+// pace imports
+import { EIssueCommentAccessSpecifier } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { IconButton } from "@pace/propel/icon-button";
+import type { TIssueComment, TCommentsOperations } from "@pace/types";
+import type { TContextMenuItem } from "@pace/ui";
+import { CustomMenu } from "@pace/ui";
+import { cn } from "@pace/utils";
 // hooks
 import { useUser } from "@/hooks/store/user";
 

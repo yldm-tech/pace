@@ -14,9 +14,9 @@ import {
   StateOutline,
 } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TInboxDuplicateIssueDetails, TIssue } from "@plane/types";
-import { ControlLink } from "@plane/ui";
-import { getDate, renderFormattedPayloadDate, generateWorkItemLink } from "@plane/utils";
+import type { TInboxDuplicateIssueDetails, TIssue } from "@pace/types";
+import { ControlLink } from "@pace/ui";
+import { getDate, renderFormattedPayloadDate, generateWorkItemLink } from "@pace/utils";
 // components
 import { DateDropdown } from "@/components/dropdowns/date";
 import { IntakeStateDropdown } from "@/components/dropdowns/intake-state/dropdown";

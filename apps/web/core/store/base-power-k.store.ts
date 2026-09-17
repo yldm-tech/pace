@@ -5,8 +5,8 @@
  */
 
 import { observable, action, makeObservable } from "mobx";
-// plane imports
-import type { EIssuesStoreType } from "@plane/types";
+// pace imports
+import type { EIssuesStoreType } from "@pace/types";
 // components
 import type { IPowerKCommandRegistry } from "@/components/power-k/core/registry";
 import { PowerKCommandRegistry } from "@/components/power-k/core/registry";

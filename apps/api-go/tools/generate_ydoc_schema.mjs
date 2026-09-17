@@ -5,7 +5,7 @@
  *
  * None of that is behaviour, it is data, so it is generated rather than transcribed. Regenerate whenever an extension is added, removed or reordered:
  *
- *     pnpm install --filter @plane/editor...
+ *     pnpm install --filter @pace/editor...
  *     node apps/api-go/tools/generate_ydoc_schema.mjs > apps/api-go/internal/ydoc/schema.json
  *     node apps/api-go/tools/generate_ydoc_schema.mjs --variant=rich > apps/api-go/internal/ydoc/schema_rich.json
  */

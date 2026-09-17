@@ -6,10 +6,10 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-// plane constants
-import { PROJECT_CREATED_AT_FILTER_OPTIONS } from "@plane/constants";
+// pace constants
+import { PROJECT_CREATED_AT_FILTER_OPTIONS } from "@pace/constants";
 // components
-import { isInDateFormat } from "@plane/utils";
+import { isInDateFormat } from "@pace/utils";
 import { DateFilterModal } from "@/components/core/filters/date-filter-modal";
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 

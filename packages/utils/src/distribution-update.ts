@@ -6,9 +6,9 @@
 
 import { format } from "date-fns";
 import { get, set } from "lodash-es";
-// plane imports
-import { COMPLETED_STATE_GROUPS, STATE_DISTRIBUTION } from "@plane/constants";
-import type { ICycle, IEstimatePoint, IModule, IState, TIssue } from "@plane/types";
+// pace imports
+import { COMPLETED_STATE_GROUPS, STATE_DISTRIBUTION } from "@pace/constants";
+import type { ICycle, IEstimatePoint, IModule, IState, TIssue } from "@pace/types";
 // helper
 import { getDate } from "./datetime";
 

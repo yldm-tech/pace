@@ -5,9 +5,9 @@
  */
 
 import { redirect } from "react-router";
-// plane imports
-import { SitesProjectPublishService } from "@plane/services";
-import type { TProjectPublishSettings } from "@plane/types";
+// pace imports
+import { SitesProjectPublishService } from "@pace/services";
+import type { TProjectPublishSettings } from "@pace/types";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import type { Route } from "./+types/page";

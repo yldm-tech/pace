@@ -7,12 +7,12 @@
 import { useEffect, useState } from "react";
 import { mutate } from "swr";
 // types
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { CycleDateCheckData, ICycle, TCycleTabOptions } from "@plane/types";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { CycleDateCheckData, ICycle, TCycleTabOptions } from "@pace/types";
 // ui
-import { EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // hooks
-import { renderFormattedPayloadDate } from "@plane/utils";
+import { renderFormattedPayloadDate } from "@pace/utils";
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useProject } from "@/hooks/store/use-project";
 import useKeypress from "@/hooks/use-keypress";

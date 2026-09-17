@@ -12,8 +12,8 @@ import { ChevronLeftOutline, ChevronRightOutline } from "@makeplane/propel/icons
 //hooks
 // icons
 // constants
-import { getDate } from "@plane/utils";
-import { MONTHS_LIST } from "@plane/constants";
+import { getDate } from "@pace/utils";
+import { MONTHS_LIST } from "@pace/constants";
 import { useCalendarView } from "@/hooks/store/use-calendar-view";
 import type { ICycleIssuesFilter } from "@/store/issue/cycle";
 import type { IModuleIssuesFilter } from "@/store/issue/module";

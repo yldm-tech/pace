@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { StateGroupIcon } from "@plane/propel/icons";
-import type { TStateGroups } from "@plane/types";
+// pace imports
+import { StateGroupIcon } from "@pace/propel/icons";
+import type { TStateGroups } from "@pace/types";
 // components
 import { SingleProgressStats } from "@/components/core/sidebar/single-progress-stats";
 

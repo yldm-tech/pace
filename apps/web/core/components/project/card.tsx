@@ -18,18 +18,18 @@ import {
   TickOutline,
   UserPlusOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
+import { useLocalStorage } from "@pace/hooks";
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { Button } from "@plane/propel/button";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { setPromiseToast, setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { Button } from "@pace/propel/button";
+import { Logo } from "@pace/propel/emoji-icon-picker";
+import { setPromiseToast, setToast, TOAST_TYPE } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IProject } from "@plane/types";
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, FavoriteStar } from "@plane/ui";
-import { copyUrlToClipboard, cn, getFileURL, renderFormattedDate } from "@plane/utils";
+import type { IProject } from "@pace/types";
+import type { TContextMenuItem } from "@pace/ui";
+import { ContextMenu, FavoriteStar } from "@pace/ui";
+import { copyUrlToClipboard, cn, getFileURL, renderFormattedDate } from "@pace/utils";
 // components
 // hooks
 import { useMember } from "@/hooks/store/use-member";

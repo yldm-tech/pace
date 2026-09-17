@@ -8,11 +8,11 @@ import { useState } from "react";
 import { isEmpty } from "lodash-es";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-// plane internal packages
-import { API_BASE_URL } from "@plane/constants";
+// pace internal packages
+import { API_BASE_URL } from "@pace/constants";
 import { Button } from "@makeplane/propel/components/button";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
-import type { IFormattedInstanceConfiguration, TInstanceGiteaAuthenticationConfigurationKeys } from "@plane/types";
+import type { IFormattedInstanceConfiguration, TInstanceGiteaAuthenticationConfigurationKeys } from "@pace/types";
 // components
 import { CodeBlock } from "@/components/common/code-block";
 import { ConfirmDiscardModal } from "@/components/common/confirm-discard-modal";

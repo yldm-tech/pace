@@ -10,10 +10,10 @@ import Link from "next/link";
 
 import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
 // Plane
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { ISearchIssueResponse } from "@plane/types";
-import { cn, generateWorkItemLink } from "@plane/utils";
+import type { ISearchIssueResponse } from "@pace/types";
+import { cn, generateWorkItemLink } from "@pace/utils";
 // components
 import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
 // hooks
@@ -23,7 +23,7 @@ import { useProject } from "@/hooks/store/use-project";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // Plane web imports
 import { useTimeLineRelationOptions } from "@/components/relations";
-import type { TIssueRelationTypes } from "@plane/types";
+import type { TIssueRelationTypes } from "@pace/types";
 import type { TRelationObject } from "../issue-detail-widgets/relations";
 
 type TIssueRelationSelect = {

@@ -1,6 +1,6 @@
 {
-  "name": "@plane/utils",
-  "version": "1.4.3",
+  "name": "@pace/utils",
+  "version": "1.4.4",
   "private": true,
   "description": "Helper functions shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@makeplane/propel": "catalog:",
-    "@plane/constants": "workspace:*",
-    "@plane/types": "workspace:*",
+    "@pace/constants": "workspace:*",
+    "@pace/types": "workspace:*",
     "chroma-js": "catalog:",
     "clsx": "catalog:",
     "date-fns": "catalog:",
@@ -45,7 +45,7 @@
     "uuid": "catalog:"
   },
   "devDependencies": {
-    "@plane/typescript-config": "workspace:*",
+    "@pace/typescript-config": "workspace:*",
     "@types/chroma-js": "catalog:",
     "@types/hast": "catalog:",
     "@types/lodash-es": "catalog:",

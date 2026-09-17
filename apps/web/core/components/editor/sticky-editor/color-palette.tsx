@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import type { TSticky } from "@plane/types";
+import type { TSticky } from "@pace/types";
 
 export const STICKY_COLORS_LIST: {
   key: string;

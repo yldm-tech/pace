@@ -8,10 +8,10 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-// plane imports
+// pace imports
 import { DeleteOutline, EditOutline } from "@makeplane/propel/icons";
-import { CustomMenu } from "@plane/ui";
-import { truncateText } from "@plane/utils";
+import { CustomMenu } from "@pace/ui";
+import { truncateText } from "@pace/utils";
 // hooks
 import { useGlobalView } from "@/hooks/store/use-global-view";
 // local imports

@@ -7,8 +7,8 @@
 import { clone, update, unset, orderBy, set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import { EDraftIssuePaginationType } from "@plane/constants";
+// pace imports
+import { EDraftIssuePaginationType } from "@pace/constants";
 import type {
   TWorkspaceDraftIssue,
   TWorkspaceDraftPaginationInfo,
@@ -21,8 +21,8 @@ import type {
   ViewFlags,
   TIssue,
   TBulkOperationsPayload,
-} from "@plane/types";
-import { getCurrentDateTimeInISO, convertToISODateString } from "@plane/utils";
+} from "@pace/types";
+import { getCurrentDateTimeInISO, convertToISODateString } from "@pace/utils";
 // services
 import workspaceDraftService from "@/services/issue/workspace_draft.service";
 // types

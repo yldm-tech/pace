@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import type { TIssueIdentifierProps } from "@plane/types";
+// pace imports
+import type { TIssueIdentifierProps } from "@pace/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useProject } from "@/hooks/store/use-project";

@@ -6,11 +6,11 @@
 
 import { observer } from "mobx-react";
 // icons
-// plane imports
-import { EIconSize } from "@plane/constants";
-import { StateGroupIcon } from "@plane/propel/icons";
+// pace imports
+import { EIconSize } from "@pace/constants";
+import { StateGroupIcon } from "@pace/propel/icons";
 import { CloseOutline } from "@makeplane/propel/icons";
-import type { IState } from "@plane/types";
+import type { IState } from "@pace/types";
 
 type Props = {
   handleRemove: (val: string) => void;

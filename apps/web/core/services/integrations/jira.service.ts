@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import { API_BASE_URL } from "@plane/constants";
-import type { IJiraMetadata, IJiraResponse, IJiraImporterForm } from "@plane/types";
+import { API_BASE_URL } from "@pace/constants";
+import type { IJiraMetadata, IJiraResponse, IJiraImporterForm } from "@pace/types";
 import { APIService } from "@/services/api.service";
 // types
 

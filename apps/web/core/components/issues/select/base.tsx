@@ -10,12 +10,12 @@ import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
 import { GroupOutline, LabelsOutline, LoadingOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
 import { Combobox } from "@headlessui/react";
-import { getRandomLabelColor } from "@plane/constants";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import type { IIssueLabel } from "@plane/types";
-import { cn } from "@plane/utils";
+import { getRandomLabelColor } from "@pace/constants";
+// pace imports
+import { useOutsideClickDetector } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
+import type { IIssueLabel } from "@pace/types";
+import { cn } from "@pace/utils";
 // components
 import { IssueLabelsList } from "@/components/ui/labels-list";
 // hooks
@@ -63,7 +63,7 @@ export const WorkItemLabelSelectBase = observer(function WorkItemLabelSelectBase
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // store hooks
   const { isMobile } = usePlatformOS();

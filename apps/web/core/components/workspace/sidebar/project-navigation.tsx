@@ -8,8 +8,8 @@ import React, { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { EUserPermissionsLevel, EUserPermissions } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { EUserPermissionsLevel, EUserPermissions } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import {
   CyclesOutline,
   IntakeOutline,
@@ -18,8 +18,8 @@ import {
   ViewsOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-import type { EUserProjectRoles } from "@plane/types";
-// plane ui
+import type { EUserProjectRoles } from "@pace/types";
+// pace ui
 // components
 import { SidebarNavItem } from "@/components/sidebar/sidebar-navigation";
 // hooks

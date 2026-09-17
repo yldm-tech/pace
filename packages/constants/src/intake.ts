@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import type { TInboxIssueStatus } from "@plane/types";
-import { EInboxIssueStatus } from "@plane/types";
+import type { TInboxIssueStatus } from "@pace/types";
+import { EInboxIssueStatus } from "@pace/types";
 
 export const INBOX_STATUS: {
   key: string;

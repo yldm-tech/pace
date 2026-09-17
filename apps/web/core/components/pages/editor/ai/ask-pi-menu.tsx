@@ -10,7 +10,7 @@ import { AiStar1Outline, CornerRightDownOutline, RefreshOutline } from "@makepla
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { RichTextEditor } from "@/components/editor/rich-text";
 // helpers
 // hooks

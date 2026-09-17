@@ -6,11 +6,11 @@
 
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-// plane package imports
-import { ModalPortal, EPortalWidth, EPortalPosition } from "@plane/propel/portal";
-import type { ICycle, IModule, IProject } from "@plane/types";
+// pace package imports
+import { ModalPortal, EPortalWidth, EPortalPosition } from "@pace/propel/portal";
+import type { ICycle, IModule, IProject } from "@pace/types";
 import { useAnalytics } from "@/hooks/store/use-analytics";
-// plane web components
+// pace web components
 import { WorkItemsModalMainContent } from "./content";
 import { WorkItemsModalHeader } from "./header";
 

@@ -17,7 +17,7 @@ import {
   getFileURL,
   renderFormattedDate,
   truncateText,
-} from "@plane/utils";
+} from "@pace/utils";
 // icons
 //
 import { getFileIcon } from "@/components/icons";

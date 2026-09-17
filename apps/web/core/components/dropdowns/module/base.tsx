@@ -7,11 +7,11 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { IModule } from "@plane/types";
-import { ComboDropDown } from "@plane/ui";
-import { cn } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import type { IModule } from "@pace/types";
+import { ComboDropDown } from "@pace/ui";
+import { cn } from "@pace/utils";
 // hooks
 import { useDropdown } from "@/hooks/use-dropdown";
 import { usePlatformOS } from "@/hooks/use-platform-os";

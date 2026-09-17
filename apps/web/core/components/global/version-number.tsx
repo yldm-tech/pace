@@ -5,7 +5,7 @@
  */
 
 // assets
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import packageJson from "package.json";
 
 export function PlaneVersionNumber() {

@@ -6,8 +6,8 @@
 
 import { observer } from "mobx-react";
 import { LabelsOutline } from "@makeplane/propel/icons";
-// plane imports
-import { Tooltip } from "@plane/propel/tooltip";
+// pace imports
+import { Tooltip } from "@pace/propel/tooltip";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 

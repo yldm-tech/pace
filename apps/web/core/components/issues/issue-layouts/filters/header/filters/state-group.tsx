@@ -6,9 +6,9 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { STATE_GROUPS } from "@plane/constants";
-import { StateGroupIcon } from "@plane/propel/icons";
+// pace imports
+import { STATE_GROUPS } from "@pace/constants";
+import { StateGroupIcon } from "@pace/propel/icons";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 

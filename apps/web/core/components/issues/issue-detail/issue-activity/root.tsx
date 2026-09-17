@@ -7,14 +7,14 @@
 import { useMemo } from "react";
 import uniq from "lodash-es/uniq";
 import { observer } from "mobx-react";
-// plane package imports
-import type { TActivityFilters } from "@plane/constants";
-import { E_SORT_ORDER, defaultActivityFilters } from "@plane/constants";
-import { useLocalStorage } from "@plane/hooks";
+// pace package imports
+import type { TActivityFilters } from "@pace/constants";
+import { E_SORT_ORDER, defaultActivityFilters } from "@pace/constants";
+import { useLocalStorage } from "@pace/hooks";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 //types
-import type { TFileSignedURLResponse, TIssueComment } from "@plane/types";
+import type { TFileSignedURLResponse, TIssueComment } from "@pace/types";
 // components
 import { CommentCreate } from "@/components/comments/comment-create";
 // hooks

@@ -6,8 +6,8 @@
 
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-// plane helpers
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
+// pace helpers
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // components
 import { SidebarWrapper } from "@/components/sidebar/sidebar-wrapper";
 import { SidebarFavoritesMenu } from "@/components/workspace/sidebar/favorites/favorites-menu";

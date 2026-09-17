@@ -12,10 +12,10 @@ import {
   ModuleOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
+// pace imports
+import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // components
-import { EUserProjectRoles } from "@plane/types";
+import { EUserProjectRoles } from "@pace/types";
 import type { TPowerKCommandConfig, TPowerKContext } from "@/components/power-k/core/types";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";

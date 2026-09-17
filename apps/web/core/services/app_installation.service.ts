@@ -5,7 +5,7 @@
  */
 
 // services
-import { API_BASE_URL } from "@plane/constants";
+import { API_BASE_URL } from "@pace/constants";
 import { APIService } from "@/services/api.service";
 // helpers
 

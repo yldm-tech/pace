@@ -7,11 +7,11 @@
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { DeleteOutline, DragDropOutline, EditOutline } from "@makeplane/propel/icons";
-// plane imports
-import { EEstimateSystem, estimateCount } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeErrorObject } from "@plane/types";
-import { convertMinutesToHoursMinutesString } from "@plane/utils";
+// pace imports
+import { EEstimateSystem, estimateCount } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeErrorObject } from "@pace/types";
+import { convertMinutesToHoursMinutesString } from "@pace/utils";
 // local imports
 import { EstimatePointUpdate } from "./update";
 

@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane package imports
+// pace package imports
 import { ArrowCollapseOutline, CloseOutline, FullScreenOutline } from "@makeplane/propel/icons";
-import type { ICycle, IModule } from "@plane/types";
+import type { ICycle, IModule } from "@pace/types";
 // icons
 
 type Props = {

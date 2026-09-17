@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
-import type { ChartYAxisMetric, IState } from "@plane/types";
-import { ChartXAxisProperty } from "@plane/types";
+// pace package imports
+import type { ChartYAxisMetric, IState } from "@pace/types";
+import { ChartXAxisProperty } from "@pace/types";
 
 interface ParamsProps {
   x_axis: ChartXAxisProperty;

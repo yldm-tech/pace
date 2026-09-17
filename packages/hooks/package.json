@@ -1,6 +1,6 @@
 {
-  "name": "@plane/hooks",
-  "version": "1.4.3",
+  "name": "@pace/hooks",
+  "version": "1.4.4",
   "private": true,
   "description": "React hooks that are shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -26,7 +26,7 @@
     "react": "catalog:"
   },
   "devDependencies": {
-    "@plane/typescript-config": "workspace:*",
+    "@pace/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "tsdown": "catalog:",

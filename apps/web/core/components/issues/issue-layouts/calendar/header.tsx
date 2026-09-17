@@ -7,11 +7,11 @@
 import { observer } from "mobx-react";
 
 // components
-import type { TSupportedFilterTypeForUpdate } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import type { TSupportedFilterTypeForUpdate } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { ChevronLeftOutline, ChevronRightOutline } from "@makeplane/propel/icons";
-import type { TSupportedFilterForUpdate } from "@plane/types";
-import { Row } from "@plane/ui";
+import type { TSupportedFilterForUpdate } from "@pace/types";
+import { Row } from "@pace/ui";
 // icons
 import { useCalendarView } from "@/hooks/store/use-calendar-view";
 import type { ICycleIssuesFilter } from "@/store/issue/cycle";

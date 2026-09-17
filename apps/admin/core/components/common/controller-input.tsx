@@ -9,7 +9,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
-// plane internal packages
+// pace internal packages
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 
 // Generic over the form's values because react-hook-form's Control is invariant: its

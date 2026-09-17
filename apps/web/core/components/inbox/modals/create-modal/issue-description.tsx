@@ -6,14 +6,14 @@
 
 import type { RefObject } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import type { EditorRefApi } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import type { TIssue } from "@plane/types";
-import { EFileAssetType } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { getDescriptionPlaceholderI18n, getTabIndex } from "@plane/utils";
+// pace imports
+import { ETabIndices } from "@pace/constants";
+import type { EditorRefApi } from "@pace/editor";
+import { useTranslation } from "@pace/i18n";
+import type { TIssue } from "@pace/types";
+import { EFileAssetType } from "@pace/types";
+import { Loader } from "@pace/ui";
+import { getDescriptionPlaceholderI18n, getTabIndex } from "@pace/utils";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text/editor";
 // hooks

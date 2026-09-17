@@ -8,11 +8,11 @@ import { memo } from "react";
 import { Ban } from "lucide-react";
 import { TextOutline } from "@makeplane/propel/icons";
 import { Popover } from "@headlessui/react";
-// plane editor
-import { COLORS_LIST } from "@plane/editor";
-import type { TEditorCommands } from "@plane/editor";
+// pace editor
+import { COLORS_LIST } from "@pace/editor";
+import type { TEditorCommands } from "@pace/editor";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 
 type Props = {
   handleColorSelect: (

@@ -5,9 +5,9 @@
  */
 
 import { CalendarOutline, DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TStateGroups } from "@plane/types";
-import { cn, renderFormattedDate, shouldHighlightIssueDueDate } from "@plane/utils";
+// pace imports
+import type { TStateGroups } from "@pace/types";
+import { cn, renderFormattedDate, shouldHighlightIssueDueDate } from "@pace/utils";
 
 type Props = {
   startDate: string | null;

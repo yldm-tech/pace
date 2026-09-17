@@ -10,16 +10,16 @@ import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
 // types
-import { SPACE_BASE_PATH, SPACE_BASE_URL } from "@plane/constants";
-import { Button } from "@plane/propel/button";
+import { SPACE_BASE_PATH, SPACE_BASE_URL } from "@pace/constants";
+import { Button } from "@pace/propel/button";
 import { GlobeOutline, NewTabOutline, TickOutline } from "@makeplane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TProjectPublishLayouts, TProjectPublishSettings } from "@plane/types";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TProjectPublishLayouts, TProjectPublishSettings } from "@pace/types";
 // ui
 import { Switch } from "@makeplane/propel/components/switch";
-import { Loader, CustomSelect, ModalCore, EModalWidth } from "@plane/ui";
+import { Loader, CustomSelect, ModalCore, EModalWidth } from "@pace/ui";
 // helpers
-import { copyTextToClipboard } from "@plane/utils";
+import { copyTextToClipboard } from "@pace/utils";
 // hooks
 import { useProjectPublish } from "@/hooks/store/use-project-publish";
 

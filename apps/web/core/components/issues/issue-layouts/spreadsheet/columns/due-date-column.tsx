@@ -8,8 +8,8 @@ import React from "react";
 import { observer } from "mobx-react";
 import { DueDateOutline } from "@makeplane/propel/icons";
 // types
-import type { TIssue } from "@plane/types";
-import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@plane/utils";
+import type { TIssue } from "@pace/types";
+import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";
 // components
 import { DateDropdown } from "@/components/dropdowns/date";
 // helpers

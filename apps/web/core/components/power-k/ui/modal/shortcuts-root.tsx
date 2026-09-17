@@ -6,10 +6,10 @@
 
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-// plane imports
+// pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
-import { ScrollArea } from "@plane/propel/scrollarea";
+import { ScrollArea } from "@pace/propel/scrollarea";
 
 // hooks
 import { usePowerK } from "@/hooks/store/use-power-k";

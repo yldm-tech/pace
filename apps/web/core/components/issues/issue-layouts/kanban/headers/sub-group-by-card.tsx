@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { Circle } from "lucide-react";
 import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
 // Plane
-import type { TIssueGroupByOptions, TIssueKanbanFilters } from "@plane/types";
+import type { TIssueGroupByOptions, TIssueKanbanFilters } from "@pace/types";
 
 interface IHeaderSubGroupByCard {
   icon?: React.ReactNode;

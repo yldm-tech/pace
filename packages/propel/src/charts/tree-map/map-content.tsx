@@ -5,8 +5,8 @@
  */
 
 import React, { useMemo } from "react";
-// plane imports
-import type { TBottomSectionConfig, TContentVisibility, TTopSectionConfig } from "@plane/types";
+// pace imports
+import type { TBottomSectionConfig, TContentVisibility, TTopSectionConfig } from "@pace/types";
 import { cn } from "../../utils/classname";
 
 const LAYOUT = {

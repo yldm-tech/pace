@@ -8,9 +8,9 @@ import React from "react";
 import { observer } from "mobx-react";
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { DragHandle } from "@plane/ui";
+import { DragHandle } from "@pace/ui";
 // helper
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 

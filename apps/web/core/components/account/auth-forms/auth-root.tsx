@@ -7,9 +7,9 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
-// plane imports
+// pace imports
 import { Banner } from "@makeplane/propel/components/banner";
-import { OAuthOptions } from "@plane/ui";
+import { OAuthOptions } from "@pace/ui";
 // helpers
 import type { TAuthErrorInfo } from "@/helpers/authentication.helper";
 import {

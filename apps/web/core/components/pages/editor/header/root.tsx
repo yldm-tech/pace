@@ -7,9 +7,9 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { ReactionOutline } from "@makeplane/propel/icons";
-// plane imports
-import { EmojiPicker, EmojiIconPickerTypes } from "@plane/propel/emoji-icon-picker";
-import { cn } from "@plane/utils";
+// pace imports
+import { EmojiPicker, EmojiIconPickerTypes } from "@pace/propel/emoji-icon-picker";
+import { cn } from "@pace/utils";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";
 // local imports

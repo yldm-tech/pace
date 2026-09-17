@@ -5,7 +5,7 @@
  */
 
 import { BrainCog } from "lucide-react";
-// plane imports
+// pace imports
 import { ImageOutline, LockOutline, MailOutline, SettingsOutline, WorkspaceOutline } from "@makeplane/propel/icons";
 // types
 import type { TSidebarMenuItem } from "./types";

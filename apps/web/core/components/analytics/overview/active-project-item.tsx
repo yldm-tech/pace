@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
-import { Logo } from "@plane/propel/emoji-icon-picker";
+// pace package imports
+import { Logo } from "@pace/propel/emoji-icon-picker";
 import { ProjectsOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { cn } from "@plane/utils";
-// plane web hooks
+import { cn } from "@pace/utils";
+// pace web hooks
 import { useProject } from "@/hooks/store/use-project";
 
 type Props = {

@@ -8,13 +8,13 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { AutoCloseOutline, StateOutline } from "@makeplane/propel/icons";
-// plane imports
-import { PROJECT_AUTOMATION_MONTHS, EUserPermissions, EUserPermissionsLevel, EIconSize } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { StateGroupIcon } from "@plane/propel/icons";
-import type { IProject } from "@plane/types";
+// pace imports
+import { PROJECT_AUTOMATION_MONTHS, EUserPermissions, EUserPermissionsLevel, EIconSize } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { StateGroupIcon } from "@pace/propel/icons";
+import type { IProject } from "@pace/types";
 import { Switch } from "@makeplane/propel/components/switch";
-import { CustomSelect, CustomSearchSelect, Loader } from "@plane/ui";
+import { CustomSelect, CustomSearchSelect, Loader } from "@pace/ui";
 import { SelectMonthModal } from "@/components/automation";
 import { SettingsControlItem } from "@/components/settings/control-item";
 // hooks

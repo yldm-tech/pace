@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { IFavorite } from "@plane/types";
+// pace imports
+import type { IFavorite } from "@pace/types";
 // components
-import { getPageName } from "@plane/utils";
+import { getPageName } from "@pace/utils";
 import {
   FavoriteItemIcon,
   generateFavoriteItemLink,
@@ -18,7 +18,7 @@ import { useCycle } from "@/hooks/store/use-cycle";
 import { useModule } from "@/hooks/store/use-module";
 import { useProject } from "@/hooks/store/use-project";
 import { useProjectView } from "@/hooks/store/use-project-view";
-// plane web hooks
+// pace web hooks
 import { EPageStoreType, usePage } from "@/hooks/store";
 import { useAdditionalFavoriteItemDetails } from "@/hooks/use-additional-favorite-item-details";
 

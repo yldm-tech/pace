@@ -7,12 +7,12 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import type { TNotificationTab } from "@plane/constants";
-import { NOTIFICATION_TABS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Header, Row, ERowVariant, EHeaderVariant, ContentWrapper } from "@plane/ui";
-import { cn, getNumberCount } from "@plane/utils";
+// pace imports
+import type { TNotificationTab } from "@pace/constants";
+import { NOTIFICATION_TABS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { Header, Row, ERowVariant, EHeaderVariant, ContentWrapper } from "@pace/ui";
+import { cn, getNumberCount } from "@pace/utils";
 // components
 import { CountChip } from "@/components/common/count-chip";
 // hooks

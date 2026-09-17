@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
-import { Header, EHeaderVariant } from "@plane/ui";
+// pace imports
+import { Header, EHeaderVariant } from "@pace/ui";
 // hooks
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 // local imports

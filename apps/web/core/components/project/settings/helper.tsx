@@ -6,9 +6,9 @@
 
 import Link from "next/link";
 import { ChevronRightOutline } from "@makeplane/propel/icons";
-import { EPillVariant, Pill, EPillSize } from "@plane/propel/pill";
+import { EPillVariant, Pill, EPillSize } from "@pace/propel/pill";
 import { Switch } from "@makeplane/propel/components/switch";
-import { joinUrlPath } from "@plane/utils";
+import { joinUrlPath } from "@pace/utils";
 
 type Props = {
   workspaceSlug: string;

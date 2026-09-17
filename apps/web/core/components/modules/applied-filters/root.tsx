@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { PillButton } from "@makeplane/propel/components/pill";
 import { CloseOutline } from "@makeplane/propel/icons";
-import type { TModuleDisplayFilters, TModuleFilters } from "@plane/types";
+import type { TModuleDisplayFilters, TModuleFilters } from "@pace/types";
 // components
-import { Header, EHeaderVariant } from "@plane/ui";
-import { replaceUnderscoreIfSnakeCase } from "@plane/utils";
+import { Header, EHeaderVariant } from "@pace/ui";
+import { replaceUnderscoreIfSnakeCase } from "@pace/utils";
 import { AppliedDateFilters, AppliedMembersFilters, AppliedStatusFilters } from "@/components/modules";
 // helpers
 // types

@@ -9,10 +9,10 @@ import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
 import { ChatOutline, CloseOutline, MoreVerticalOutline, TickOutline } from "@makeplane/propel/icons";
 import { Menu, Transition } from "@headlessui/react";
-// plane imports
-import type { EditorRefApi } from "@plane/editor";
-import type { TIssuePublicComment } from "@plane/types";
-import { getFileURL } from "@plane/utils";
+// pace imports
+import type { EditorRefApi } from "@pace/editor";
+import type { TIssuePublicComment } from "@pace/types";
+import { getFileURL } from "@pace/utils";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text-editor";
 import { CommentReactions } from "@/components/issues/peek-overview/comment/comment-reactions";

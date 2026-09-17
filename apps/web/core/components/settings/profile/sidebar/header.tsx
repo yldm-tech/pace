@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@pace/utils";
 // hooks
 import { useUser } from "@/hooks/store/user";
 

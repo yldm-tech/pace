@@ -6,10 +6,10 @@
 
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
-// plane imports
-import { ISSUE_PRIORITIES } from "@plane/constants";
-import { PriorityIcon } from "@plane/propel/icons";
-import type { TIssue, TIssuePriorities } from "@plane/types";
+// pace imports
+import { ISSUE_PRIORITIES } from "@pace/constants";
+import { PriorityIcon } from "@pace/propel/icons";
+import type { TIssue, TIssuePriorities } from "@pace/types";
 // local imports
 import { PowerKModalCommandItem } from "../../../modal/command-item";
 

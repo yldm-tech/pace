@@ -6,8 +6,8 @@
 
 import { set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
-// plane imports
-import { SitesMemberService } from "@plane/services";
+// pace imports
+import { SitesMemberService } from "@pace/services";
 import type { TPublicMember } from "@/types/member";
 import type { RootStore } from "./root.store";
 

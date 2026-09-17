@@ -8,16 +8,16 @@ import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR, { mutate } from "swr";
 import { ArrowNarrowLeftOutline, ArrowNarrowRightOutline, RefreshOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import type { IExportData } from "@plane/types";
-import { Table } from "@plane/ui";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import { EmptyStateCompact } from "@pace/propel/empty-state";
+import type { IExportData } from "@pace/types";
+import { Table } from "@pace/ui";
 // components
 import { ImportExportSettingsLoader } from "@/components/ui/loader/settings/import-and-export";
 // constants
-import { EXPORT_SERVICES_LIST } from "@plane/constants";
+import { EXPORT_SERVICES_LIST } from "@pace/constants";
 // services
 import { IntegrationService } from "@/services/integrations";
 // local imports

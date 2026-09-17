@@ -10,9 +10,9 @@ import useSWR from "swr";
 // ui
 import { Banner } from "@makeplane/propel/components/banner";
 import { ArchiveOutline } from "@makeplane/propel/icons";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { Loader } from "@plane/ui";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import { Loader } from "@pace/ui";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { IssueDetailRoot } from "@/components/issues/issue-detail";

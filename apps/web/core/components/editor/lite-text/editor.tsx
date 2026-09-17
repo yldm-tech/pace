@@ -5,14 +5,14 @@
  */
 
 import React, { useState } from "react";
-// plane constants
-import type { EIssueCommentAccessSpecifier } from "@plane/constants";
-// plane imports
-import { LiteTextEditorWithRef } from "@plane/editor";
-import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@plane/editor";
-import { useTranslation } from "@plane/i18n";
-import type { MakeOptional } from "@plane/types";
-import { cn, isCommentEmpty } from "@plane/utils";
+// pace constants
+import type { EIssueCommentAccessSpecifier } from "@pace/constants";
+// pace imports
+import { LiteTextEditorWithRef } from "@pace/editor";
+import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@pace/editor";
+import { useTranslation } from "@pace/i18n";
+import type { MakeOptional } from "@pace/types";
+import { cn, isCommentEmpty } from "@pace/utils";
 // components
 import { EditorMentionsRoot } from "@/components/editor/embeds/mentions";
 import { IssueCommentToolbar } from "@/components/editor/lite-text/toolbar";
@@ -20,9 +20,9 @@ import { IssueCommentToolbar } from "@/components/editor/lite-text/toolbar";
 import { useEditorConfig, useEditorMention } from "@/hooks/editor";
 import { useMember } from "@/hooks/store/use-member";
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web hooks
+// pace web hooks
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
-// plane web service
+// pace web service
 import { WorkspaceService } from "@/services/workspace.service";
 import { LiteToolbar } from "./lite-toolbar";
 const workspaceService = new WorkspaceService();

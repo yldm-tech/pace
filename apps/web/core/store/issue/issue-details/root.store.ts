@@ -16,8 +16,8 @@ import type {
   TIssueRelationTypes,
   TIssueServiceType,
   TWorkItemWidgets,
-} from "@plane/types";
-// plane web store
+} from "@pace/types";
+// pace web store
 import { IssueActivityStore } from "./activity.store";
 import type { IIssueActivityStore, IIssueActivityStoreActions, TActivityLoader } from "./activity.store";
 import type { IIssueRootStore } from "../root.store";

@@ -8,8 +8,8 @@ import React from "react";
 import { Command } from "cmdk";
 
 import { TickOutline } from "@makeplane/propel/icons";
-// plane imports
-import { cn } from "@plane/utils";
+// pace imports
+import { cn } from "@pace/utils";
 // local imports
 import { KeySequenceBadge, ShortcutBadge } from "./command-item-shortcut-badge";
 

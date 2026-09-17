@@ -6,8 +6,8 @@
 
 import { TickCircleOutline } from "@makeplane/propel/icons";
 import React from "react";
-import { E_PASSWORD_STRENGTH } from "@plane/constants";
-import { cn, getPasswordStrength, getPasswordCriteria } from "@plane/utils";
+import { E_PASSWORD_STRENGTH } from "@pace/constants";
+import { cn, getPasswordStrength, getPasswordCriteria } from "@pace/utils";
 import { getStrengthInfo, getFragmentColor } from "./helper";
 
 export interface PasswordStrengthIndicatorProps {

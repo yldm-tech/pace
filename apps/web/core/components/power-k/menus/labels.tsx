@@ -6,8 +6,8 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import type { IIssueLabel } from "@plane/types";
+// pace imports
+import type { IIssueLabel } from "@pace/types";
 // local imports
 import { PowerKMenuBuilder } from "./builder";
 

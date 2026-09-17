@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-import type { TPartialProject } from "@plane/types";
-// plane propel imports
-import { Logo } from "@plane/propel/emoji-icon-picker";
+import type { TPartialProject } from "@pace/types";
+// pace propel imports
+import { Logo } from "@pace/propel/emoji-icon-picker";
 import { ChevronDownOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 

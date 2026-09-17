@@ -5,14 +5,14 @@
  */
 
 import { InfoOutline } from "@makeplane/propel/icons";
-// plane imports
-import { EEstimateSystem, ESTIMATE_SYSTEMS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { EEstimateSystem, ESTIMATE_SYSTEMS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TEstimateSystemKeys } from "@plane/types";
+import type { TEstimateSystemKeys } from "@pace/types";
 // helpers
 import { isEstimateSystemEnabled } from "./helper";
-import { convertMinutesToHoursMinutesString } from "@plane/utils";
+import { convertMinutesToHoursMinutesString } from "@pace/utils";
 // components
 import { UpgradeBadge } from "@/components/workspace/upgrade-badge";
 import { RadioInput } from "../radio-select";

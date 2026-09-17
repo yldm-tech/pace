@@ -8,16 +8,16 @@ import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Disclosure, Transition } from "@headlessui/react";
-// plane imports
-import { useOutsideClickDetector } from "@plane/hooks";
-import { useTranslation } from "@plane/i18n";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import { IconButton } from "@plane/propel/icon-button";
+// pace imports
+import { useOutsideClickDetector } from "@pace/hooks";
+import { useTranslation } from "@pace/i18n";
+import { Logo } from "@pace/propel/emoji-icon-picker";
+import { IconButton } from "@pace/propel/icon-button";
 import { ChevronDownOutline, EditOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IUserProfileProjectSegregation } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { cn, renderFormattedDate, getFileURL } from "@plane/utils";
+import type { IUserProfileProjectSegregation } from "@pace/types";
+import { Loader } from "@pace/ui";
+import { cn, renderFormattedDate, getFileURL } from "@pace/utils";
 // components
 import { CoverImage } from "@/components/common/cover-image";
 // hooks

@@ -6,12 +6,12 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Collapsible } from "@makeplane/propel/components/collapsible";
-import { useTranslation } from "@plane/i18n";
-import type { TIssue, TIssueServiceType, TIssueRelationTypes } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
-import { cn } from "@plane/utils";
+import { useTranslation } from "@pace/i18n";
+import type { TIssue, TIssueServiceType, TIssueRelationTypes } from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
+import { cn } from "@pace/utils";
 // components
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";
 import { useTimeLineRelationOptions } from "@/components/relations";
@@ -42,7 +42,7 @@ export type TRelationObject = {
 
 export const RelationsCollapsibleContent = observer(function RelationsCollapsibleContent(props: Props) {
   const { workspaceSlug, issueId, disabled = false, issueServiceType = EIssueServiceType.ISSUES } = props;
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // state
   const [issueCrudState, setIssueCrudState] = useState<{

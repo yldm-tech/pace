@@ -5,7 +5,7 @@
  */
 
 import { Disclosure, Transition } from "@headlessui/react";
-import { Button } from "@plane/propel/button";
+import { Button } from "@pace/propel/button";
 import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
 
 type Props = {

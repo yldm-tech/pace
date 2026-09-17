@@ -6,9 +6,9 @@
 
 import React from "react";
 import { Transition } from "@headlessui/react";
-// plane imports
-import type { SingleOrArray, IFilterOption, TFilterValue } from "@plane/types";
-import { cn, toFilterArray } from "@plane/utils";
+// pace imports
+import type { SingleOrArray, IFilterOption, TFilterValue } from "@pace/types";
+import { cn, toFilterArray } from "@pace/utils";
 import { EMPTY_FILTER_PLACEHOLDER_TEXT } from "../../shared";
 
 type TSelectedOptionsDisplayProps<V extends TFilterValue> = {

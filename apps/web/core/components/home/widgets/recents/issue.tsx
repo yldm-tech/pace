@@ -5,14 +5,14 @@
  */
 
 import { observer } from "mobx-react";
-// plane types
-import { PriorityIcon, StateGroupIcon } from "@plane/propel/icons";
+// pace types
+import { PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
 import { WorkItemsOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { TActivityEntityData, TIssueEntityData } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
-// plane ui
-import { calculateTimeAgo, generateWorkItemLink } from "@plane/utils";
+import type { TActivityEntityData, TIssueEntityData } from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
+// pace ui
+import { calculateTimeAgo, generateWorkItemLink } from "@pace/utils";
 // components
 import { ListItem } from "@/components/core/list";
 import { MemberDropdown } from "@/components/dropdowns/member/dropdown";

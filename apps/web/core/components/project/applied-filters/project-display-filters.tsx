@@ -7,10 +7,10 @@
 import { observer } from "mobx-react";
 // icons
 // types
-import { PROJECT_DISPLAY_FILTER_OPTIONS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { PROJECT_DISPLAY_FILTER_OPTIONS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { CloseOutline } from "@makeplane/propel/icons";
-import type { TProjectAppliedDisplayFilterKeys } from "@plane/types";
+import type { TProjectAppliedDisplayFilterKeys } from "@pace/types";
 // constants
 
 type Props = {

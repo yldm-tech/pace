@@ -6,7 +6,7 @@
  * extension's name, attributes and renderers, and never renders a node view, so pulling in a component
  * library to get at a schema would cost a build and buy nothing.
  *
- * This used to say that @plane/propel could not compile at all, which was true when it was written --
+ * This used to say that @pace/propel could not compile at all, which was true when it was written --
  * its icon picker imported a directory that existed in no commit. That was fixed; the proxy stays
  * because the reason above outlived the reason it was born with.
  */
@@ -32,7 +32,7 @@ const stubWorkspaceUI = (editorSrc, deterministic) => ({
       build.onResolve({ filter: /^lib0\/webcrypto$/ }, () => ({ path: "random", namespace: "deterministic" }));
       build.onLoad({ filter: /.*/, namespace: "deterministic" }, () => ({ contents: DETERMINISTIC_RANDOM, loader: "js" }));
     }
-    build.onResolve({ filter: /^@plane\/(propel|hooks)(\/.*)?$/ }, () => ({ path: "stub", namespace: "stub" }));
+    build.onResolve({ filter: /^@pace\/(propel|hooks)(\/.*)?$/ }, () => ({ path: "stub", namespace: "stub" }));
     build.onResolve({ filter: /^@\// }, (args) => {
       const base = path.join(editorSrc, args.path.slice(2));
       const candidates = [base, `${base}.ts`, `${base}.tsx`, path.join(base, "index.ts"), path.join(base, "index.tsx")];
@@ -64,7 +64,7 @@ export const loadEditorModule = async (root, { entry, source, deterministic = fa
   } catch {
     const store = path.join(root, "node_modules/.pnpm");
     const hit = fs.existsSync(store) ? fs.readdirSync(store).find((name) => name.startsWith("esbuild@")) : undefined;
-    if (!hit) throw new Error("esbuild is not installed; run pnpm install --filter @plane/editor...");
+    if (!hit) throw new Error("esbuild is not installed; run pnpm install --filter @pace/editor...");
     esbuildEntry = path.join(store, hit, "node_modules/esbuild/lib/main.js");
   }
   const esbuild = require(esbuildEntry);

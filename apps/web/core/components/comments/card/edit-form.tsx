@@ -7,11 +7,11 @@
 import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
 import { useForm } from "react-hook-form";
-import type { EditorRefApi } from "@plane/editor";
+import type { EditorRefApi } from "@pace/editor";
 import { CloseOutline, TickOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TCommentsOperations, TIssueComment } from "@plane/types";
-import { cn, isCommentEmpty } from "@plane/utils";
+// pace imports
+import type { TCommentsOperations, TIssueComment } from "@pace/types";
+import { cn, isCommentEmpty } from "@pace/utils";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 

@@ -6,11 +6,11 @@
 
 import { observable, action, computed, makeObservable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane imports
-import type { TCreateModalStoreTypes, TCreatePageModal } from "@plane/constants";
-import { DEFAULT_CREATE_PAGE_MODAL_DATA, EPageAccess } from "@plane/constants";
-import type { TProfileSettingsTabs } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
+// pace imports
+import type { TCreateModalStoreTypes, TCreatePageModal } from "@pace/constants";
+import { DEFAULT_CREATE_PAGE_MODAL_DATA, EPageAccess } from "@pace/constants";
+import type { TProfileSettingsTabs } from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
 // lib
 import { store } from "@/lib/store-context";
 

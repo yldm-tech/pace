@@ -7,14 +7,14 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-import { useTranslation } from "@plane/i18n";
-// plane types
+import { useTranslation } from "@pace/i18n";
+// pace types
 import { PagesOutline, ProjectsOutline, WorkItemsOutline } from "@makeplane/propel/icons";
-import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@plane/types";
-// plane ui
+import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@pace/types";
+// pace ui
 // components
 import { ContentOverflowWrapper } from "@/components/core/content-overflow-HOC";
-// plane web services
+// pace web services
 import { WorkspaceService } from "@/services/workspace.service";
 import { RecentsEmptyState } from "../empty-states";
 import { EWidgetKeys, WidgetLoader } from "../loaders";

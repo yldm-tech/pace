@@ -10,8 +10,8 @@ import { useParams } from "next/navigation";
 // icons
 import { DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
 // types
-import type { TIssuePriorities, TWorkspaceDraftIssue } from "@plane/types";
-import { getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@plane/utils";
+import type { TIssuePriorities, TWorkspaceDraftIssue } from "@pace/types";
+import { getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";
 // components
 import { CycleDropdown } from "@/components/dropdowns/cycle";
 import { DateDropdown } from "@/components/dropdowns/date";

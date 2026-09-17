@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-// plane imports
+// pace imports
 import { TickOutline } from "@makeplane/propel/icons";
 
 type Props = {

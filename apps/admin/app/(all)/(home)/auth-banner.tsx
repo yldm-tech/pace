@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane constants
-import type { TAdminAuthErrorInfo } from "@plane/constants";
+// pace constants
+import type { TAdminAuthErrorInfo } from "@pace/constants";
 // icons
 import { CloseOutline, InfoOutline } from "@makeplane/propel/icons";
 

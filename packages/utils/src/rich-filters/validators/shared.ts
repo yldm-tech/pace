@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TFilterGroupNode, TFilterProperty } from "@plane/types";
+// pace imports
+import type { TFilterGroupNode, TFilterProperty } from "@pace/types";
 // local imports
 import { getGroupChildren } from "../types/shared";
 

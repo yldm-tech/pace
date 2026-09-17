@@ -7,8 +7,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { WorkItemsOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { IProjectView } from "@plane/types";
+// pace imports
+import type { IProjectView } from "@pace/types";
 // local imports
 import { PowerKMenuBuilder } from "./builder";
 

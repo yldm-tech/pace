@@ -15,11 +15,11 @@ import {
   TickOutline,
   ViewsOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TUserProfile } from "@plane/types";
-import { EOnboardingSteps } from "@plane/types";
+// pace imports
+import { Button } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TUserProfile } from "@pace/types";
+import { EOnboardingSteps } from "@pace/types";
 // hooks
 import { useUserProfile } from "@/hooks/store/user";
 // local components

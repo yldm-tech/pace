@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { TabsPanel } from "@makeplane/propel/components/tabs";
 // components
 import type { TPageRootHandlers } from "@/components/pages/editor/page-root";

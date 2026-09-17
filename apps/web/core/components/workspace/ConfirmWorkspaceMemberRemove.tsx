@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { WarningTriangleOutline } from "@makeplane/propel/icons";
 import { Dialog, Transition } from "@headlessui/react";
-import { Button } from "@plane/propel/button";
+import { Button } from "@pace/propel/button";
 import { useUser } from "@/hooks/store/user";
 import type { Props } from "./confirm-workspace-member-remove";
 

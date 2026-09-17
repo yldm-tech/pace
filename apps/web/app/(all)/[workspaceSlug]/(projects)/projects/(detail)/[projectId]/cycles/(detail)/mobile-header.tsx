@@ -7,13 +7,13 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane imports
-import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { BoardOutline, CalendarOutline, ChevronDownOutline, ListOutline } from "@makeplane/propel/icons";
-import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, EIssueLayoutTypes } from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, EIssueLayoutTypes } from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
 // components
 import { WorkItemsModal } from "@/components/analytics/work-items/modal";
 import { DisplayFiltersSelection, FiltersDropdown } from "@/components/issues/issue-layouts/filters";
@@ -34,7 +34,7 @@ export const CycleIssuesMobileHeader = observer(function CycleIssuesMobileHeader
   const { workspaceSlug, projectId, cycleId } = useParams();
   // states
   const [analyticsModal, setAnalyticsModal] = useState(false);
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // store hooks
   const { currentProjectDetails } = useProject();

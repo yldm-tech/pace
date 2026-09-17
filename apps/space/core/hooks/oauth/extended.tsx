@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { TOAuthConfigs } from "@plane/types";
+// pace imports
+import type { TOAuthConfigs } from "@pace/types";
 
 export const useExtendedOAuthConfig = (_oauthActionText: string): TOAuthConfigs => ({
   isOAuthEnabled: false,

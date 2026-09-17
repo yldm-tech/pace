@@ -8,9 +8,9 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
-// plane internal packages
+// pace internal packages
 import { Switch } from "@makeplane/propel/components/switch";
-import { resolveGeneralTheme } from "@plane/utils";
+import { resolveGeneralTheme } from "@pace/utils";
 // assets
 import githubLightModeImage from "@/app/assets/logos/github-black.png?url";
 import githubDarkModeImage from "@/app/assets/logos/github-white.png?url";

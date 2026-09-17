@@ -6,10 +6,10 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
+// pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { DEFAULT_GLOBAL_VIEWS_LIST } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+import { DEFAULT_GLOBAL_VIEWS_LIST } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { SearchOutline } from "@makeplane/propel/icons";
 
 // components

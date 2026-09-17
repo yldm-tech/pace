@@ -6,10 +6,10 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { MODULE_STATUS } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { ModuleStatusIcon } from "@plane/propel/icons";
-import type { TModuleStatus } from "@plane/types";
+import { MODULE_STATUS } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { ModuleStatusIcon } from "@pace/propel/icons";
+import type { TModuleStatus } from "@pace/types";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 

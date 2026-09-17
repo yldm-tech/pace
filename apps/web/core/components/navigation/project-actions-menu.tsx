@@ -14,9 +14,9 @@ import {
   SettingsOutline,
   ShareAltOutline,
 } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { CustomMenu } from "@plane/ui";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { CustomMenu } from "@pace/ui";
 
 type Props = {
   workspaceSlug: string;

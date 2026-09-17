@@ -8,16 +8,16 @@ import { useEffect, useState, useRef } from "react";
 import { CloseOutline, RocketOutline, SearchOutline } from "@makeplane/propel/icons";
 import { Combobox } from "@headlessui/react";
 // i18n
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 // types
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { Button } from "@pace/propel/button";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { ISearchIssueResponse, TProjectIssuesSearchParams } from "@plane/types";
+import type { ISearchIssueResponse, TProjectIssuesSearchParams } from "@pace/types";
 // ui
 import { Switch } from "@makeplane/propel/components/switch";
-import { Loader, EModalPosition, EModalWidth, ModalCore } from "@plane/ui";
-import { generateWorkItemLink, getTabIndex } from "@plane/utils";
+import { Loader, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 // helpers
 // hooks
 import useDebounce from "@/hooks/use-debounce";

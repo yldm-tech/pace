@@ -10,12 +10,12 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { ChevronDownOutline, EstimateOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
-import { EEstimateSystem } from "@plane/types";
-import { ComboDropDown } from "@plane/ui";
-import { convertMinutesToHoursMinutesString, cn } from "@plane/utils";
+import { EEstimateSystem } from "@pace/types";
+import { ComboDropDown } from "@pace/ui";
+import { convertMinutesToHoursMinutesString, cn } from "@pace/utils";
 // hooks
 import { useProjectEstimates } from "@/hooks/store/estimates";
 import { useEstimate } from "@/hooks/store/estimates/use-estimate";

@@ -6,11 +6,11 @@
 
 import { Fragment } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import type { TCycleEstimateType } from "@plane/types";
-import { Loader } from "@plane/ui";
-import { getDate } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import type { TCycleEstimateType } from "@pace/types";
+import { Loader } from "@pace/ui";
+import { getDate } from "@pace/utils";
 // components
 import ProgressChart from "@/components/core/sidebar/progress-chart";
 import { validateCycleSnapshot } from "@/components/cycles/analytics-sidebar/issue-progress";

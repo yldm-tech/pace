@@ -6,15 +6,15 @@
 
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-// plane imports
-import { ETabIndices } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@plane/propel/emoji-icon-picker";
+// pace imports
+import { ETabIndices } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
 import { CloseOutline } from "@makeplane/propel/icons";
-// plane types
-import type { IProject } from "@plane/types";
-// plane ui
-import { getTabIndex } from "@plane/utils";
+// pace types
+import type { IProject } from "@pace/types";
+// pace ui
+import { getTabIndex } from "@pace/utils";
 // components
 import { CoverImage } from "@/components/common/cover-image";
 import { ImagePickerPopover } from "@/components/core/image-picker-popover";

@@ -6,7 +6,7 @@
 
 import { BlockingOutline, CloseCircleOutline, DuplicateOfOutline, RelatesToOutline } from "@makeplane/propel/icons";
 import type { TRelationObject } from "@/components/issues/issue-detail-widgets/relations";
-import type { TIssueRelationTypes } from "@plane/types";
+import type { TIssueRelationTypes } from "@pace/types";
 
 export const ISSUE_RELATION_OPTIONS: Record<TIssueRelationTypes, TRelationObject> = {
   relates_to: {

@@ -8,11 +8,11 @@ import { observer } from "mobx-react";
 import Link from "next/link";
 // icons
 import { SettingsOutline } from "@makeplane/propel/icons";
-// plane internal packages
+// pace internal packages
 import { AnchorButton } from "@makeplane/propel/components/anchor-button";
 import { Button } from "@makeplane/propel/components/button";
 import { Switch } from "@makeplane/propel/components/switch";
-import type { TInstanceAuthenticationMethodKeys } from "@plane/types";
+import type { TInstanceAuthenticationMethodKeys } from "@pace/types";
 // hooks
 import { useInstance } from "@/hooks/store";
 

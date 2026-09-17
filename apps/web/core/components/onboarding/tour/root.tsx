@@ -6,9 +6,9 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { Button } from "@plane/propel/button";
-import { PlaneLockup } from "@plane/propel/icons";
+// pace imports
+import { Button } from "@pace/propel/button";
+import { PlaneLockup } from "@pace/propel/icons";
 import { CloseOutline } from "@makeplane/propel/icons";
 // assets
 import CyclesTour from "@/app/assets/onboarding/cycles.webp?url";

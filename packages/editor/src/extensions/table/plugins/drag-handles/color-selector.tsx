@@ -8,8 +8,8 @@ import { Disclosure } from "@headlessui/react";
 import type { Editor } from "@tiptap/core";
 import { Ban } from "lucide-react";
 import { ChevronRightOutline, PaletteOutline } from "@makeplane/propel/icons";
-// plane imports
-import { cn } from "@plane/utils";
+// pace imports
+import { cn } from "@pace/utils";
 // constants
 import { COLORS_LIST } from "@/constants/common";
 import { CORE_EXTENSIONS } from "@/constants/extension";

@@ -25,12 +25,12 @@ import {
   StateOutline,
   WorkItemsOutline,
 } from "@makeplane/propel/icons";
-// plane types
+// pace types
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@plane/constants";
-import { Logo } from "@plane/propel/emoji-icon-picker";
-import type { ISvgIcons } from "@plane/propel/icons";
-import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@plane/propel/icons";
+import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@pace/constants";
+import { Logo } from "@pace/propel/emoji-icon-picker";
+import type { ISvgIcons } from "@pace/propel/icons";
+import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
 import type {
   GroupByColumnTypes,
   IGroupByColumn,
@@ -45,17 +45,17 @@ import type {
   IIssueDisplayFilterOptions,
   TGetColumns,
   TSpreadsheetColumn,
-} from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
-// plane ui
+} from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
+// pace ui
 
-import { renderFormattedDate, getFileURL } from "@plane/utils";
+import { renderFormattedDate, getFileURL } from "@pace/utils";
 // store
 import { store } from "@/lib/store-context";
 import { ISSUE_FILTER_DEFAULT_DATA } from "@/store/issue/helpers/base-issues.store";
 import { DEFAULT_DISPLAY_PROPERTIES } from "@/store/issue/issue-details/sub_issues_filter.store";
 // constants
-import { ISSUE_GROUP_BY_OPTIONS } from "@plane/constants";
+import { ISSUE_GROUP_BY_OPTIONS } from "@pace/constants";
 // components
 import {
   SpreadsheetAssigneeColumn,

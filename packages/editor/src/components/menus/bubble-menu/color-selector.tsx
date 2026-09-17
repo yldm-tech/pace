@@ -8,8 +8,8 @@ import type { Editor } from "@tiptap/react";
 import { Ban } from "lucide-react";
 import { TextOutline } from "@makeplane/propel/icons";
 import { useMemo } from "react";
-// plane utils
-import { cn } from "@plane/utils";
+// pace utils
+import { cn } from "@pace/utils";
 // constants
 import { COLORS_LIST } from "@/constants/common";
 // local imports

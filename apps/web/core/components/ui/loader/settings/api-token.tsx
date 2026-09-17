@@ -5,7 +5,7 @@
  */
 
 import { range } from "lodash-es";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 export function APITokenSettingsLoader() {
   const { t } = useTranslation();
   return (

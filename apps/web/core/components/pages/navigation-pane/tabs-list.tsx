@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
+// pace imports
 import { Tab, TabsList } from "@makeplane/propel/components/tabs";
-import { useTranslation } from "@plane/i18n";
-// plane web components
+import { useTranslation } from "@pace/i18n";
+// pace web components
 import { ORDERED_PAGE_NAVIGATION_TABS_LIST } from "@/components/pages/navigation-pane/tab-panels";
 
 export function PageNavigationPaneTabsList() {

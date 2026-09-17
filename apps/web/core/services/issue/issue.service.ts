@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { API_BASE_URL } from "@plane/constants";
-import { EIssueServiceType } from "@plane/types";
+// pace imports
+import { API_BASE_URL } from "@pace/constants";
+import { EIssueServiceType } from "@pace/types";
 import type {
   TIssueParams,
   IIssueDisplayProperties,
@@ -17,7 +17,7 @@ import type {
   TIssueServiceType,
   TIssuesResponse,
   TIssueSubIssues,
-} from "@plane/types";
+} from "@pace/types";
 // services
 import { APIService } from "@/services/api.service";
 

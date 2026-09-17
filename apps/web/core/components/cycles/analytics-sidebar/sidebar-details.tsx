@@ -8,19 +8,19 @@ import React from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
 import { MembersOutline, UserAltOutline, WorkItemsOutline } from "@makeplane/propel/icons";
-// plane types
-import { EEstimateSystem } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace types
+import { EEstimateSystem } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { TextArea } from "@makeplane/propel/components/text-area";
-import type { ICycle } from "@plane/types";
+import type { ICycle } from "@pace/types";
 // helpers
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@pace/utils";
 // hooks
 import { AvatarGroupOverflow } from "@/components/common/avatar-group-overflow";
 import { useProjectEstimates } from "@/hooks/store/estimates";
 import { useMember } from "@/hooks/store/use-member";
-// plane web constants
+// pace web constants
 
 type Props = {
   projectId: string;

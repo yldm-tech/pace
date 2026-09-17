@@ -5,11 +5,11 @@
  */
 
 import { observer } from "mobx-react";
-// plane ui
+// pace ui
 import { CyclesOutline } from "@makeplane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
-// plane utils
-import { cn } from "@plane/utils";
+import { Tooltip } from "@pace/propel/tooltip";
+// pace utils
+import { cn } from "@pace/utils";
 //hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 

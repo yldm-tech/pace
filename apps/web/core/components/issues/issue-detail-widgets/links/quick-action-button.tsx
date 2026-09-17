@@ -7,8 +7,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { AddOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { TIssueServiceType } from "@plane/types";
+// pace imports
+import type { TIssueServiceType } from "@pace/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 

@@ -6,11 +6,11 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { AddOutline, WorkItemsOutline } from "@makeplane/propel/icons";
-import type { TIssue, TIssueServiceType } from "@plane/types";
-import { CustomMenu } from "@plane/ui";
+import type { TIssue, TIssueServiceType } from "@pace/types";
+import { CustomMenu } from "@pace/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 

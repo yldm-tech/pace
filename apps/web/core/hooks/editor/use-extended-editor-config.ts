@@ -5,8 +5,8 @@
  */
 
 import { useCallback } from "react";
-// plane imports
-import type { TExtendedFileHandler } from "@plane/editor";
+// pace imports
+import type { TExtendedFileHandler } from "@pace/editor";
 
 export type TExtendedEditorFileHandlersArgs = {
   projectId?: string;

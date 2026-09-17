@@ -7,8 +7,8 @@
 import { isEqual, concat, get, indexOf, isEmpty, orderBy, pull, set, uniq, update, clone } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
-// plane constants
-import { ALL_ISSUES, ISSUE_PRIORITIES } from "@plane/constants";
+// pace constants
+import { ALL_ISSUES, ISSUE_PRIORITIES } from "@pace/constants";
 // types
 import type {
   TIssue,
@@ -25,11 +25,11 @@ import type {
   TPaginationData,
   TBulkOperationsPayload,
   IBlockUpdateDependencyData,
-} from "@plane/types";
-import { EIssueServiceType, EIssueLayoutTypes } from "@plane/types";
+} from "@pace/types";
+import { EIssueServiceType, EIssueLayoutTypes } from "@pace/types";
 // helpers
-import { convertToISODateString } from "@plane/utils";
-// plane web imports
+import { convertToISODateString } from "@pace/utils";
+// pace web imports
 // services
 import { CycleService } from "@/services/cycle.service";
 import { IssueArchiveService, IssueService } from "@/services/issue";

@@ -5,19 +5,19 @@
  */
 
 import React, { useState } from "react";
-// plane constants
-import type { EIssueCommentAccessSpecifier } from "@plane/constants";
-// plane editor
-import { LiteTextEditorWithRef } from "@plane/editor";
-import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@plane/editor";
+// pace constants
+import type { EIssueCommentAccessSpecifier } from "@pace/constants";
+// pace editor
+import { LiteTextEditorWithRef } from "@pace/editor";
+import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@pace/editor";
 // components
-import type { TSticky } from "@plane/types";
+import type { TSticky } from "@pace/types";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useEditorConfig } from "@/hooks/editor";
 import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
-// plane web hooks
+// pace web hooks
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
 import { StickyEditorToolbar } from "./toolbar";
 

@@ -5,12 +5,12 @@
  */
 
 import { useMemo } from "react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import type { TIssue, TIssueServiceType } from "@plane/types";
-import { EIssueServiceType } from "@plane/types";
-import { copyUrlToClipboard } from "@plane/utils";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { TOAST_TYPE, setToast } from "@pace/propel/toast";
+import type { TIssue, TIssueServiceType } from "@pace/types";
+import { EIssueServiceType } from "@pace/types";
+import { copyUrlToClipboard } from "@pace/utils";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 

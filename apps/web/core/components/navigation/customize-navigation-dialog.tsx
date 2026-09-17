@@ -8,12 +8,12 @@ import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { CloseOutline, DragDropOutline } from "@makeplane/propel/icons";
-// plane imports
-import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
 import { Checkbox } from "@makeplane/propel/components/checkbox";
-import { EModalPosition, EModalWidth, ModalCore, Sortable } from "@plane/ui";
-import { cn } from "@plane/utils";
+import { EModalPosition, EModalWidth, ModalCore, Sortable } from "@pace/ui";
+import { cn } from "@pace/utils";
 // hooks
 import { useUserPermissions } from "@/hooks/store/user";
 import {
@@ -24,7 +24,7 @@ import {
 // helpers
 import { getSidebarNavigationItemIcon } from "@/components/workspace/sidebar/helper";
 // types
-import type { TPersonalNavigationItemKey } from "@plane/types";
+import type { TPersonalNavigationItemKey } from "@pace/types";
 
 type TCustomizeNavigationDialogProps = {
   isOpen: boolean;

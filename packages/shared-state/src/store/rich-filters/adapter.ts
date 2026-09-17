@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import type { IFilterAdapter, TExternalFilter, TFilterExpression, TFilterProperty } from "@plane/types";
+// pace imports
+import type { IFilterAdapter, TExternalFilter, TFilterExpression, TFilterProperty } from "@pace/types";
 
 /**
  * Abstract base class for converting between external filter formats and internal filter expressions.

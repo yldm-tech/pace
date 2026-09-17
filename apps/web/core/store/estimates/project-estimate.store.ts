@@ -8,10 +8,10 @@ import { unset, orderBy, set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
 // types
-import type { IEstimate as IEstimateType, IEstimateFormData, TEstimateSystemKeys } from "@plane/types";
-// plane web services
+import type { IEstimate as IEstimateType, IEstimateFormData, TEstimateSystemKeys } from "@pace/types";
+// pace web services
 import estimateService from "@/services/estimate.service";
-// plane web store
+// pace web store
 import type { IEstimate } from "@/store/estimates/estimate";
 import { Estimate } from "@/store/estimates/estimate";
 // store

@@ -9,14 +9,14 @@ import { observer } from "mobx-react";
 import Link from "next/link";
 // icons
 import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/icons";
-// plane imports
+// pace imports
 import { Banner } from "@makeplane/propel/components/banner";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@plane/constants";
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { PasswordStrengthIndicator, Spinner } from "@plane/ui";
-import { getPasswordStrength } from "@plane/utils";
+import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import { PasswordStrengthIndicator, Spinner } from "@pace/ui";
+import { getPasswordStrength } from "@pace/utils";
 // components
 import { ForgotPasswordPopover } from "@/components/account/auth-forms/forgot-password-popover";
 // constants
@@ -49,7 +49,7 @@ const authService = new AuthService();
 
 export const AuthPasswordForm = observer(function AuthPasswordForm(props: Props) {
   const { email, isSMTPConfigured, handleAuthStep, handleEmailClear, mode, nextPath } = props;
-  // plane imports
+  // pace imports
   const { t } = useTranslation();
   // ref
   const formRef = useRef<HTMLFormElement>(null);

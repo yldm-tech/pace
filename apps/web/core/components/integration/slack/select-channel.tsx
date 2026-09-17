@@ -9,11 +9,11 @@ import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
 // types
-import type { IWorkspaceIntegration, ISlackIntegration } from "@plane/types";
+import type { IWorkspaceIntegration, ISlackIntegration } from "@pace/types";
 // ui
-import { Loader } from "@plane/ui";
+import { Loader } from "@pace/ui";
 // fetch-keys
-import { SLACK_CHANNEL_INFO } from "@plane/constants";
+import { SLACK_CHANNEL_INFO } from "@pace/constants";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import useIntegrationPopup from "@/hooks/use-integration-popup";

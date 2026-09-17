@@ -6,10 +6,10 @@
 
 import { Link } from "react-router";
 import { DefaultTabOutline, UnpinOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { ContextMenu } from "@plane/propel/context-menu";
-import { TabNavigationItem } from "@plane/propel/tab-navigation";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { ContextMenu } from "@pace/propel/context-menu";
+import { TabNavigationItem } from "@pace/propel/tab-navigation";
 // local imports
 import type { TNavigationItem } from "./tab-navigation-root";
 import type { TTabPreferences } from "./tab-navigation-utils";

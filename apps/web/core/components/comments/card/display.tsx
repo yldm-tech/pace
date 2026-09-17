@@ -8,21 +8,21 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { usePathname } from "next/navigation";
-// plane imports
+// pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { EditorRefApi } from "@plane/editor";
-import { useHashScroll } from "@plane/hooks";
+import type { EditorRefApi } from "@pace/editor";
+import { useHashScroll } from "@pace/hooks";
 import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
-import { EIssueCommentAccessSpecifier } from "@plane/types";
-import type { TCommentsOperations, TIssueComment } from "@plane/types";
-import { calculateTimeAgo, cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@plane/utils";
+import { EIssueCommentAccessSpecifier } from "@pace/types";
+import type { TCommentsOperations, TIssueComment } from "@pace/types";
+import { calculateTimeAgo, cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@pace/utils";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 // local imports
 import { CommentReactions } from "../comment-reaction";
 import { CommentCardEditForm } from "./edit-form";
-import { EmojiReactionButton, EmojiReactionPicker } from "@plane/propel/emoji-reaction";
+import { EmojiReactionButton, EmojiReactionPicker } from "@pace/propel/emoji-reaction";
 import { useMember } from "@/hooks/store/use-member";
 
 export type TCommentCardDisplayProps = {

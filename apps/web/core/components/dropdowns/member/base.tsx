@@ -7,13 +7,13 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import type { ComponentType, SVGProps } from "react";
-import { useTranslation } from "@plane/i18n";
+import { useTranslation } from "@pace/i18n";
 import { ChevronDownOutline } from "@makeplane/propel/icons";
-// plane imports
-import type { IUserLite } from "@plane/types";
-import { ComboDropDown } from "@plane/ui";
+// pace imports
+import type { IUserLite } from "@pace/types";
+import { ComboDropDown } from "@pace/ui";
 // helpers
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useDropdown } from "@/hooks/use-dropdown";
 // local imports

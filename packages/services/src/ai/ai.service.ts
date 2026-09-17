@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane web constants
-import type { AI_EDITOR_TASKS } from "@plane/constants";
-import { API_BASE_URL } from "@plane/constants";
+// pace web constants
+import type { AI_EDITOR_TASKS } from "@pace/constants";
+import { API_BASE_URL } from "@pace/constants";
 // services
 import { APIService } from "../api.service";
 

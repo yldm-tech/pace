@@ -5,8 +5,8 @@
  */
 
 // helpers
-import { useTranslation } from "@plane/i18n";
-import { cn } from "@plane/utils";
+import { useTranslation } from "@pace/i18n";
+import { cn } from "@pace/utils";
 
 type TUpgradeBadge = {
   className?: string;

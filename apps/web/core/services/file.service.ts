@@ -5,11 +5,11 @@
  */
 
 import type { AxiosRequestConfig } from "axios";
-// plane types
-import { API_BASE_URL } from "@plane/constants";
-import { getFileMetaDataForUpload, generateFileUploadPayload } from "@plane/services";
-import type { EFileAssetType, TFileEntityInfo, TFileSignedURLResponse } from "@plane/types";
-import { getAssetIdFromUrl } from "@plane/utils";
+// pace types
+import { API_BASE_URL } from "@pace/constants";
+import { getFileMetaDataForUpload, generateFileUploadPayload } from "@pace/services";
+import type { EFileAssetType, TFileEntityInfo, TFileSignedURLResponse } from "@pace/types";
+import { getAssetIdFromUrl } from "@pace/utils";
 // helpers
 // services
 import { APIService } from "@/services/api.service";

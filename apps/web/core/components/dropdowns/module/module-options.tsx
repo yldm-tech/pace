@@ -9,11 +9,11 @@ import type { Placement } from "@popperjs/core";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
-// plane imports
-import { useTranslation } from "@plane/i18n";
+// pace imports
+import { useTranslation } from "@pace/i18n";
 import { ModuleOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
-import type { IModule } from "@plane/types";
-import { cn, sortBySelectedFirst } from "@plane/utils";
+import type { IModule } from "@pace/types";
+import { cn, sortBySelectedFirst } from "@pace/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 
@@ -43,7 +43,7 @@ export const ModuleOptions = observer(function ModuleOptions(props: Props) {
   // states
   const [query, setQuery] = useState("");
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  // plane hooks
+  // pace hooks
   const { t } = useTranslation();
   // store hooks
   const { isMobile } = usePlatformOS();

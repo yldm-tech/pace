@@ -6,14 +6,14 @@
 
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { EEstimateSystem } from "@plane/constants";
+import { EEstimateSystem } from "@pace/constants";
 import { ProjectsOutline } from "@makeplane/propel/icons";
-import type { ChartYAxisMetric } from "@plane/types";
-// plane package imports
-import { CustomSelect } from "@plane/ui";
+import type { ChartYAxisMetric } from "@pace/types";
+// pace package imports
+import { CustomSelect } from "@pace/ui";
 // hooks
 import { useProjectEstimates } from "@/hooks/store/estimates";
-// plane web constants
+// pace web constants
 type Props = {
   value: ChartYAxisMetric;
   onChange: (val: ChartYAxisMetric | null) => void;

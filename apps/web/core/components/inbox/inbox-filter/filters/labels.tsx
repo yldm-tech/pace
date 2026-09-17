@@ -6,8 +6,8 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import type { IIssueLabel } from "@plane/types";
-import { Loader } from "@plane/ui";
+import type { IIssueLabel } from "@pace/types";
+import { Loader } from "@pace/ui";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 // hooks

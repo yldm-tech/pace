@@ -4,10 +4,10 @@
  * See the LICENSE file for details.
  */
 
-// plane imports
-import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@plane/propel/emoji-icon-picker";
-import type { TLogoProps } from "@plane/types";
-import { cn } from "@plane/utils";
+// pace imports
+import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
+import type { TLogoProps } from "@pace/types";
+import { cn } from "@pace/utils";
 // types
 import type { TCalloutBlockAttributes } from "./types";
 // utils

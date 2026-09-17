@@ -7,10 +7,10 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-// plane constants
-import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@plane/constants";
-// plane i18n
-import { useTranslation } from "@plane/i18n";
+// pace constants
+import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
+// pace i18n
+import { useTranslation } from "@pace/i18n";
 // icons
 import { ChevronDownOutline } from "@makeplane/propel/icons";
 // types
@@ -19,10 +19,10 @@ import type {
   IIssueDisplayProperties,
   TIssueLayouts,
   EIssueLayoutTypes,
-} from "@plane/types";
-import { EIssuesStoreType } from "@plane/types";
+} from "@pace/types";
+import { EIssuesStoreType } from "@pace/types";
 // ui
-import { CustomMenu } from "@plane/ui";
+import { CustomMenu } from "@pace/ui";
 // components
 import { DisplayFiltersSelection, FiltersDropdown } from "@/components/issues/issue-layouts/filters";
 import { IssueLayoutIcon } from "@/components/issues/issue-layouts/layout-icon";
@@ -30,7 +30,7 @@ import { IssueLayoutIcon } from "@/components/issues/issue-layouts/layout-icon";
 import { useIssues } from "@/hooks/store/use-issues";
 
 export const ProfileIssuesMobileHeader = observer(function ProfileIssuesMobileHeader() {
-  // plane i18n
+  // pace i18n
   const { t } = useTranslation();
   // router
   const { workspaceSlug, userId } = useParams();

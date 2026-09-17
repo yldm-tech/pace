@@ -8,13 +8,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
-// plane internal packages
-import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@plane/constants";
+// pace internal packages
+import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@makeplane/propel/components/button";
 import { Checkbox } from "@makeplane/propel/components/checkbox";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { AuthService } from "@plane/services";
-import { getPasswordStrength, validatePersonName, validateCompanyName } from "@plane/utils";
+import { AuthService } from "@pace/services";
+import { getPasswordStrength, validatePersonName, validateCompanyName } from "@pace/utils";
 // components
 import { AuthHeader } from "@/app/(all)/(home)/auth-header";
 import { PasswordStrengthIndicator } from "@/components/common/password-strength-indicator";

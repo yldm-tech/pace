@@ -13,8 +13,8 @@ import { LoadingOutline as LoaderIcon } from "@makeplane/propel/icons";
 import { AnchorButton } from "@makeplane/propel/components/anchor-button";
 import { Button } from "@makeplane/propel/components/button";
 import { Switch } from "@makeplane/propel/components/switch";
-import type { TInstanceConfigurationKeys } from "@plane/types";
-import { cn } from "@plane/utils";
+import type { TInstanceConfigurationKeys } from "@pace/types";
+import { cn } from "@pace/utils";
 // components
 import { PageWrapper } from "@/components/common/page-wrapper";
 import { Skeleton } from "@/components/common/skeleton";

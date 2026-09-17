@@ -21,17 +21,17 @@ import {
   UnlockedOutline,
 } from "@makeplane/propel/icons";
 // constants
-import { EPageAccess } from "@plane/constants";
-// plane editor
-// plane ui
-import type { TContextMenuItem } from "@plane/ui";
-import { ContextMenu, CustomMenu } from "@plane/ui";
+import { EPageAccess } from "@pace/constants";
+// pace editor
+// pace ui
+import type { TContextMenuItem } from "@pace/ui";
+import { ContextMenu, CustomMenu } from "@pace/ui";
 // components
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 import { DeletePageModal } from "@/components/pages/modals/delete-page-modal";
 // hooks
 import { usePageOperations } from "@/hooks/use-page-operations";
-// plane web hooks
+// pace web hooks
 import type { EPageStoreType } from "@/hooks/store";
 import { usePageFlag } from "@/hooks/use-page-flag";
 // store types

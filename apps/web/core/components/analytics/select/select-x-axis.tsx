@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-// plane package imports
-import type { ChartXAxisProperty } from "@plane/types";
-import { CustomSelect } from "@plane/ui";
+// pace package imports
+import type { ChartXAxisProperty } from "@pace/types";
+import { CustomSelect } from "@pace/ui";
 
 type Props = {
   value?: ChartXAxisProperty;

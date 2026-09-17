@@ -5,8 +5,8 @@
  */
 
 //
-import type { ChartDataType } from "@plane/types";
-import { EStartOfTheWeek } from "@plane/types";
+import type { ChartDataType } from "@pace/types";
+import { EStartOfTheWeek } from "@pace/types";
 import { months, generateWeeks } from "../data";
 import { getNumberOfDaysBetweenTwoDates, getWeekNumberByDate } from "./helpers";
 export interface IDayBlock {

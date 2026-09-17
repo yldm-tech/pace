@@ -6,10 +6,10 @@
 
 import { observer } from "mobx-react";
 import { CloseOutline } from "@makeplane/propel/icons";
-// plane ui
+// pace ui
 import { Avatar } from "@makeplane/propel/components/avatar";
 // helpers
-import { getFileURL } from "@plane/utils";
+import { getFileURL } from "@pace/utils";
 // types
 import { useMember } from "@/hooks/store/use-member";
 

@@ -8,10 +8,10 @@ import { useCallback } from "react";
 import { useTheme } from "next-themes";
 import { Languages } from "lucide-react";
 import { CalendarOutline, GlobeOutline, PaletteOutline } from "@makeplane/propel/icons";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
-import type { EStartOfTheWeek, TUserProfile } from "@plane/types";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { setToast, TOAST_TYPE } from "@pace/propel/toast";
+import type { EStartOfTheWeek, TUserProfile } from "@pace/types";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks

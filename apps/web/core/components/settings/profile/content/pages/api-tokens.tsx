@@ -7,18 +7,18 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
-// plane imports
-import { useTranslation } from "@plane/i18n";
-import { Button } from "@plane/propel/button";
-import { EmptyStateCompact } from "@plane/propel/empty-state";
-import { APITokenService } from "@plane/services";
+// pace imports
+import { useTranslation } from "@pace/i18n";
+import { Button } from "@pace/propel/button";
+import { EmptyStateCompact } from "@pace/propel/empty-state";
+import { APITokenService } from "@pace/services";
 // components
 import { CreateApiTokenModal } from "@/components/api-token/modal/create-token-modal";
 import { ApiTokenListItem } from "@/components/api-token/token-list-item";
 import { ProfileSettingsHeading } from "@/components/settings/profile/heading";
 import { APITokenSettingsLoader } from "@/components/ui/loader/settings/api-token";
 // constants
-import { API_TOKENS_LIST } from "@plane/constants";
+import { API_TOKENS_LIST } from "@pace/constants";
 
 const apiTokenService = new APITokenService();
 

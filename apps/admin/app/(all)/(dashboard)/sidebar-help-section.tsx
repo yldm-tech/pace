@@ -8,8 +8,8 @@ import { useState, useRef } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
-import { WEB_BASE_URL } from "@plane/constants";
-// plane internal packages
+import { WEB_BASE_URL } from "@pace/constants";
+// pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import {
   ArrowNarrowLeftOutline,
@@ -19,7 +19,7 @@ import {
   NewTabOutline,
   PagesOutline,
 } from "@makeplane/propel/icons";
-import { cn } from "@plane/utils";
+import { cn } from "@pace/utils";
 // hooks
 import { useInstance, useTheme } from "@/hooks/store";
 // assets

@@ -5,14 +5,14 @@
  */
 
 import type { ReactNode } from "react";
-// plane imports
-import type { TNotification } from "@plane/types";
+// pace imports
+import type { TNotification } from "@pace/types";
 import {
   convertMinutesToHoursMinutesString,
   renderFormattedDate,
   sanitizeCommentForNotification,
   stripAndTruncateHTML,
-} from "@plane/utils";
+} from "@pace/utils";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 import {

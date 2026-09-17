@@ -5,14 +5,14 @@
  */
 
 import { useCallback } from "react";
-// plane editor
+// pace editor
 import { Avatar } from "@makeplane/propel/components/avatar";
-import type { TMentionSection, TMentionSuggestion } from "@plane/editor";
-// plane types
-import type { TSearchEntities, TSearchEntityRequestPayload, TSearchResponse, TUserSearchResponse } from "@plane/types";
+import type { TMentionSection, TMentionSuggestion } from "@pace/editor";
+// pace types
+import type { TSearchEntities, TSearchEntityRequestPayload, TSearchResponse, TUserSearchResponse } from "@pace/types";
 // helpers
-import { getFileURL } from "@plane/utils";
-// plane web hooks
+import { getFileURL } from "@pace/utils";
+// pace web hooks
 import { useAdditionalEditorMention } from "@/hooks/use-additional-editor-mention";
 
 type TArgs = {

@@ -10,9 +10,9 @@ import { observer } from "mobx-react";
 import { AddOutline } from "@makeplane/propel/icons";
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import type { IBlockUpdateData, IGanttBlock } from "@plane/types";
+import type { IBlockUpdateData, IGanttBlock } from "@pace/types";
 // helpers
-import { renderFormattedDate, renderFormattedPayloadDate } from "@plane/utils";
+import { renderFormattedDate, renderFormattedPayloadDate } from "@pace/utils";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 import { useTimeLineChartStore } from "@/hooks/use-timeline-chart";
