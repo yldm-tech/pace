@@ -14,6 +14,7 @@ import { ControllerInput } from "@/components/common/controller-input";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+import { ProviderPicker } from "./provider-picker";
 
 type IInstanceAIForm = {
   config: IFormattedInstanceConfiguration;
@@ -29,11 +30,15 @@ export function InstanceAIForm(props: IInstanceAIForm) {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<AIFormValues>({
+    // Every field the form submits has to be seeded here. What is submitted is the whole form object, so a field left out of this arrives as an empty string and overwrites whatever the instance had configured.
     defaultValues: {
       LLM_API_KEY: config["LLM_API_KEY"],
       LLM_MODEL: config["LLM_MODEL"],
+      LLM_BASE_URL: config["LLM_BASE_URL"],
+      LLM_PROVIDER: config["LLM_PROVIDER"],
     },
   });
 
@@ -50,21 +55,6 @@ export function InstanceAIForm(props: IInstanceAIForm) {
       ),
       placeholder: "https://api.openai.com/v1",
       error: Boolean(errors.LLM_BASE_URL),
-      required: false,
-    },
-    {
-      key: "LLM_PROVIDER",
-      type: "text",
-      label: "Provider",
-      description: (
-        <>
-          Only two things depend on this: it supplies a default model when the field below is empty, and{" "}
-          <code>gemini</code> prefixes the model name the way Gemini expects. Any other value is accepted and simply
-          means the model has to be named.
-        </>
-      ),
-      placeholder: "openai",
-      error: Boolean(errors.LLM_PROVIDER),
       required: false,
     },
     {
@@ -116,6 +106,13 @@ export function InstanceAIForm(props: IInstanceAIForm) {
             it.
           </div>
         </div>
+        <ProviderPicker
+          control={control}
+          onProviderChange={(baseURL) => {
+            // Only the endpoint is filled in. The model is left as it is, because a model the operator typed is a deliberate choice and the backend already falls back to the provider's default when the field is empty.
+            setValue("LLM_BASE_URL", baseURL ?? "", { shouldDirty: true });
+          }}
+        />
         <div className="grid-col grid w-full grid-cols-1 items-center justify-between gap-x-12 gap-y-8 lg:grid-cols-3">
           {aiFormFields.map((field) => (
             <ControllerInput
@@ -145,12 +142,7 @@ export function InstanceAIForm(props: IInstanceAIForm) {
 
         <div className="relative inline-flex items-center gap-1.5 rounded-sm border border-accent-subtle bg-accent-subtle px-4 py-2 text-caption-sm-regular text-accent-secondary">
           <ThoughtsOutline className="size-4" />
-          <div>
-            If you have a preferred AI models vendor, please get in{" "}
-            <a className="font-medium underline" href="https://pace.yldm.ai/contact">
-              touch with us.
-            </a>
-          </div>
+          <div>Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.</div>
         </div>
       </div>
     </div>

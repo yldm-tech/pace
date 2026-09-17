@@ -77,10 +77,13 @@ func (handler *Handler) unsplashSearch(c *gin.Context, _ *auth.User) {
 var llmProviders = map[string]struct {
 	Name         string
 	DefaultModel string
+	// DefaultBaseURL is where this provider answers, so choosing one is enough and the URL only has to be typed for something not listed here. Empty means OpenAI's own, which is also the fallback when nothing is configured at all.
+	DefaultBaseURL string
 }{
-	"openai":    {"OpenAI", "gpt-4o-mini"},
-	"anthropic": {"Anthropic", "claude-3-5-sonnet-20240620"},
-	"gemini":    {"Gemini", "gemini-1.5-pro-latest"},
+	"openai":    {"OpenAI", "gpt-4o-mini", ""},
+	"anthropic": {"Anthropic", "claude-3-5-sonnet-20240620", "https://api.anthropic.com/v1"},
+	"gemini":    {"Gemini", "gemini-1.5-pro-latest", "https://generativelanguage.googleapis.com/v1beta/openai"},
+	"everyapi":  {"EveryAPI", "claude-sonnet-5", "https://api.everyapi.ai/v1"},
 }
 
 // llmConfig is the key, the model and the provider, or nothing at all when there is no key or no model to ask for.
@@ -106,13 +109,19 @@ func (handler *Handler) llmConfig(c *gin.Context) (key, model, provider string, 
 	return key, model, provider, true
 }
 
-// llmBaseURL is where the completion is asked for: the instance configuration first, so an operator can change it without a redeploy, then the LLM_BASE_URL the process was started with, then OpenAI.
+// llmBaseURL is where the completion is asked for, in the order a deployment can override it: the instance configuration, so an operator can change it without a redeploy; the LLM_BASE_URL the process was started with; the chosen provider's own endpoint; and OpenAI.
+//
+// The provider's default sits below the two explicit settings rather than above them, so naming a provider is a convenience and never overrides an address somebody wrote down.
 func (handler *Handler) llmBaseURL(c *gin.Context) string {
 	if configured := strings.TrimSpace(handler.configurationValue(c, "LLM_BASE_URL", "")); configured != "" {
 		return configured
 	}
 	if handler.settings.LLMBaseURL != "" {
 		return handler.settings.LLMBaseURL
+	}
+	provider := handler.configurationValue(c, "LLM_PROVIDER", "openai")
+	if definition, known := llmProviders[strings.ToLower(provider)]; known && definition.DefaultBaseURL != "" {
+		return definition.DefaultBaseURL
 	}
 	return "https://api.openai.com/v1"
 }

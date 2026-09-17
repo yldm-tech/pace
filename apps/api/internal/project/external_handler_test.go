@@ -37,10 +37,12 @@ func TestTheLanguageModelConfiguration(t *testing.T) {
 			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "openai"}, "gpt-4o-mini", true},
 		{"a model the old list never held is accepted",
 			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "openai", "LLM_MODEL": "gpt-5-turbo-2027"}, "gpt-5-turbo-2027", true},
+		{"everyapi is known and carries its own default",
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "everyapi"}, "claude-sonnet-5", true},
 		{"a provider nobody has heard of is accepted when the model is named",
-			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "everyapi", "LLM_MODEL": "claude-opus-5"}, "claude-opus-5", true},
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "my-own-gateway", "LLM_MODEL": "llama-4"}, "llama-4", true},
 		{"a provider with no default and no model is refused",
-			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "everyapi"}, "", false},
+			map[string]string{"LLM_API_KEY": "k", "LLM_PROVIDER": "my-own-gateway"}, "", false},
 		{"no key is refused",
 			map[string]string{"LLM_PROVIDER": "openai", "LLM_MODEL": "gpt-4o"}, "", false},
 	} {
@@ -70,7 +72,13 @@ func TestWhereCompletionsAreAskedFor(t *testing.T) {
 	}{
 		{"configuration wins", map[string]string{"LLM_BASE_URL": "https://api.everyapi.ai/v1"}, "https://other.example/v1", "https://api.everyapi.ai/v1"},
 		{"then the process environment", map[string]string{}, "https://other.example/v1", "https://other.example/v1"},
+		{"then the provider's own endpoint",
+			map[string]string{"LLM_PROVIDER": "everyapi"}, "", "https://api.everyapi.ai/v1"},
+		{"a named provider never beats an address somebody wrote down",
+			map[string]string{"LLM_PROVIDER": "everyapi", "LLM_BASE_URL": "https://mine.example/v1"}, "", "https://mine.example/v1"},
 		{"then OpenAI", map[string]string{}, "", "https://api.openai.com/v1"},
+		{"openai is listed with no endpoint of its own, so it lands on the same default",
+			map[string]string{"LLM_PROVIDER": "openai"}, "", "https://api.openai.com/v1"},
 		{"blank configuration does not win", map[string]string{"LLM_BASE_URL": "   "}, "https://other.example/v1", "https://other.example/v1"},
 	} {
 		t.Run(testCase.name, func(t *testing.T) {
