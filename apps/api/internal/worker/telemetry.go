@@ -29,8 +29,9 @@ const (
 	exportInterval        = 20 * time.Second
 )
 
-// defaultOTLPEndpoint is where the metrics go when nothing says otherwise.
-const defaultOTLPEndpoint = "https://telemetry.plane.so"
+// There is no default endpoint on purpose. Metrics describe the instance and the workspaces inside it, and there is no address this project could pick that the operator did not choose: an unset OTLP_ENDPOINT means nothing is sent.
+//
+// This used to default to the upstream project's collector, so a deployment that configured nothing reported to a third party out of the box.
 
 // TelemetryTasks pushes those numbers.
 type TelemetryTasks struct {
@@ -74,6 +75,11 @@ func (tasks *TelemetryTasks) pushInstanceMetrics(ctx context.Context, _ []any, _
 	}
 	if !instance.IsTelemetryEnabled {
 		tasks.logger.Debug("telemetry disabled, skipping metrics push")
+		return nil
+	}
+	// Nowhere to send it. An instance reports only to a collector its operator named.
+	if os.Getenv("OTLP_ENDPOINT") == "" {
+		tasks.logger.Debug("OTLP_ENDPOINT is not set, skipping metrics push")
 		return nil
 	}
 
@@ -305,17 +311,20 @@ const (
 
 // otlpGRPCEndpoint is grpc_endpoint_from_url: the host and port to dial, derived from the one url both metrics and traces are configured with.
 func otlpGRPCEndpoint() string {
-	raw := envOrFallback("OTLP_ENDPOINT", defaultOTLPEndpoint)
+	raw := os.Getenv("OTLP_ENDPOINT")
+	if raw == "" {
+		return ""
+	}
 	if !strings.Contains(raw, "://") {
 		raw = "//" + raw
 	}
 	parsed, err := url.Parse(raw)
 	if err != nil {
-		return "telemetry.plane.so:" + otlpGRPCDefaultPort
+		return ""
 	}
 	host := parsed.Hostname()
 	if host == "" {
-		host = "telemetry.plane.so"
+		return ""
 	}
 	if port := parsed.Port(); port != "" {
 		return host + ":" + port
@@ -328,7 +337,11 @@ func otlpGRPCEndpoint() string {
 
 // otlpHTTPMetricsURL is get_otlp_http_metrics_url: the same url with the metrics path on the end.
 func otlpHTTPMetricsURL() string {
-	return strings.TrimRight(envOrFallback("OTLP_ENDPOINT", defaultOTLPEndpoint), "/") + "/v1/metrics"
+	endpoint := os.Getenv("OTLP_ENDPOINT")
+	if endpoint == "" {
+		return ""
+	}
+	return strings.TrimRight(endpoint, "/") + "/v1/metrics"
 }
 
 func envOrFallback(name, fallback string) string {
