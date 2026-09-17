@@ -9,7 +9,7 @@ import (
 
 // TestEveryColumnWrittenByHandExists is the guard against writing to a column that is not there.
 //
-// A table's columns move. db.0065 took is_onboarded, is_tour_completed, the theme and the billing address off users and put them on profiles, and two inserts elsewhere in this repository went on naming them — so god-mode's first admin could never be created, and the workspace seed's bot user could never be made. Both failed with "column does not exist", and both were only found by running them.
+// A table's columns move. db.0065 took is_onboarded, is_tour_completed, the theme and the billing address off users and put them on profiles, and two inserts elsewhere in this repository went on naming them — so admin's first admin could never be created, and the workspace seed's bot user could never be made. Both failed with "column does not exist", and both were only found by running them.
 //
 // Every literal column name handed to a Table(...).Create map is checked against the schema recorded from a fully migrated database. It is a blunt check and that is the point: it reads the names out of the source rather than being told what to look for, so a table renamed tomorrow is caught without anybody remembering to add it here.
 func TestEveryColumnWrittenByHandExists(t *testing.T) {

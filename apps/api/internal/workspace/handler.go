@@ -38,13 +38,13 @@ var workspaceURLPattern = regexp.MustCompile(`(?i)(https?://\S+|www\.[a-z0-9][a-
 var uuidPattern = regexp.MustCompile(`(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`)
 
 var restrictedWorkspaceSlugs = map[string]struct{}{
-	"404": {}, "accounts": {}, "api": {}, "create-workspace": {}, "god-mode": {},
+	"404": {}, "accounts": {}, "api": {}, "create-workspace": {}, "admin": {},
 	"installations": {}, "invitations": {}, "onboarding": {}, "profile": {}, "spaces": {},
 	"workspace-invitations": {}, "password": {}, "flags": {}, "monitor": {}, "monitoring": {},
 	"ingest": {}, "plane-pro": {}, "plane-ultimate": {}, "enterprise": {}, "plane-enterprise": {},
 	"disco": {}, "silo": {}, "chat": {}, "calendar": {}, "drive": {}, "channels": {},
 	"upgrade": {}, "billing": {}, "sign-in": {}, "sign-up": {}, "signin": {}, "signup": {},
-	"config": {}, "live": {}, "admin": {}, "m": {}, "import": {}, "importers": {},
+	"config": {}, "live": {}, "m": {}, "import": {}, "importers": {},
 	"integrations": {}, "integration": {}, "configuration": {}, "initiatives": {}, "initiative": {},
 	"workflow": {}, "workflows": {}, "epics": {}, "epic": {}, "story": {}, "mobile": {},
 	"dashboard": {}, "desktop": {}, "onload": {}, "real-time": {}, "one": {}, "pages": {},

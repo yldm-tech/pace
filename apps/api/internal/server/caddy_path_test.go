@@ -43,7 +43,7 @@ func TestTheGuardReadsBothKindsOfProxiedPath(t *testing.T) {
 	// And something the proxy sends elsewhere, so the guard is not matching everything.
 	//
 	// It cannot be a path under /api/ any more. The fallback there is `reverse_proxy /api/* api:8000`, which claims the whole subtree, so the paths that are not cut over are the ones belonging to another service entirely.
-	for _, path := range []string{"/live/collaboration/", "/spaces/an-anchor", "/god-mode/general"} {
+	for _, path := range []string{"/live/collaboration/", "/spaces/an-anchor", "/admin/general"} {
 		if anyMatcherCovers(matchers, path) {
 			t.Errorf("%q belongs to another service and the guard thinks the API cuts it over", path)
 		}

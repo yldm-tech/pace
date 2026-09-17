@@ -1,4 +1,4 @@
-// Package instances is the admin console's API: the god-mode screens an operator signs into to configure the installation itself.
+// Package instances is the admin console's API: the admin screens an operator signs into to configure the installation itself.
 //
 // It is its own app rather than part of the workspace API, and its own idea of who may call it. Every route here asks whether the caller is an instance administrator, which has nothing to do with being an administrator of any workspace — and the two sign-in routes are form posts that answer with a redirect rather than json, because the admin console is a separate front end that reads its errors out of the query string.
 package instances
@@ -156,7 +156,7 @@ func (handler *Handler) admin(next func(*gin.Context, *auth.User, *Instance)) gi
 func (handler *Handler) adminBaseURL() string {
 	path := handler.settings.AdminBasePath
 	if path == "" {
-		path = "/god-mode/"
+		path = "/admin/"
 	}
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path

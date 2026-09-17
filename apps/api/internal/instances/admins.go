@@ -379,7 +379,7 @@ func (handler *Handler) adminSignUp(c *gin.Context) {
 		}
 
 		now := handler.clock().UTC()
-		// The same three rows the ordinary sign-up writes, built by the same function. Writing them here by hand is what left god-mode unable to create its first admin at all: the insert named columns that had moved to the profile, named audit columns the profile does not have, and left out nineteen NOT NULL columns between the two tables.
+		// The same three rows the ordinary sign-up writes, built by the same function. Writing them here by hand is what left admin unable to create its first admin at all: the insert named columns that had moved to the profile, named audit columns the profile does not have, and left out nineteen NOT NULL columns between the two tables.
 		created, profile, preference, err := auth.NewUserRecords(email, hashed, firstName, lastName, "", false, false, now)
 		if err != nil {
 			return err
