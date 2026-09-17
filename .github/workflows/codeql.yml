@@ -3,9 +3,9 @@ name: "CodeQL"
 on:
   workflow_dispatch:
   push:
-    branches: ["preview", "canary", "master"]
+    branches: ["main"]
   pull_request:
-    branches: ["preview", "canary", "master"]
+    branches: ["main"]
 
 jobs:
   analyze:
@@ -22,7 +22,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["python", "javascript"]
+        # The backend is Go. "python" was scanning a language this repository no longer contains: git ls-files '*.py' is empty, while there are 536 tracked .go files that nothing was looking at.
+        language: ["go", "javascript-typescript"]
 
     steps:
       - name: Checkout repository

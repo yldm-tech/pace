@@ -8,3 +8,5 @@ node_modules/
 out/
 pnpm-lock.yaml
 storybook-static/
+# Written by `generate:types` during the build. The root .gitignore already lists it, but oxfmt reads ignore files from the directory it runs in, and this package has no .gitignore of its own -- so without this line `pnpm check:format` fails on a file nobody wrote as soon as anyone has run a build.
+src/types/keys.generated.ts
