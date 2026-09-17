@@ -1,243 +1,189 @@
+# Every upstream below is `{$SOMETHING_UPSTREAM:host:port}`, and the default is the compose service name, so a compose or all-in-one deployment behaves exactly as it did before this was parameterised -- nothing needs to set these.
+#
+# They exist because the names are otherwise unreachable outside compose. An orchestrator that does not let a service be called plain `api` cannot use this file at all: Kubernetes resolves a bare `api` to a Service literally named `api` in the same namespace, and a shared namespace where sixteen other applications already live is not somewhere `api`, `web` and `admin` can be claimed. Forking the file for that deployment was the alternative, and a fork of ninety-odd routing rules drifts the first time a route is added here and not there.
+#
+# TestEveryProxyUpstreamIsOverridable keeps them all in this form; the guard that every upstream names a real compose service reads the default out of the placeholder.
 (plane_proxy) {
 	request_body {
 		max_size {$FILE_SIZE_LIMIT}
 	}
 
   redir /spaces /spaces/ permanent
-	reverse_proxy /spaces/* space:3000
-
+	reverse_proxy /spaces/* {$SPACE_UPSTREAM:space:3000}
   redir /god-mode /god-mode/ permanent
-	reverse_proxy /god-mode/* admin:3000
-	
-	reverse_proxy /live/* live:3000
-
-	reverse_proxy /api/users/me/ api:8000
-	reverse_proxy /api/users/session/ api:8000
-	reverse_proxy /api/users/me/settings/ api:8000
-	reverse_proxy /api/users/me/email/generate-code/ api:8000
-	reverse_proxy /api/users/me/email/ api:8000
-	reverse_proxy /api/users/me/profile/ api:8000
-	reverse_proxy /api/users/me/accounts/ api:8000
-	reverse_proxy /api/users/me/accounts/* api:8000
-	reverse_proxy /api/users/me/instance-admin/ api:8000
-	reverse_proxy /api/users/me/onboard/ api:8000
-	reverse_proxy /api/users/me/tour-completed/ api:8000
-	reverse_proxy /api/users/me/notification-preferences/ api:8000
-	reverse_proxy /api/users/me/activities/ api:8000
-	reverse_proxy /api/users/last-visited-workspace/ api:8000
-	reverse_proxy /api/users/me/workspaces/*/activity-graph/ api:8000
-	reverse_proxy /api/users/me/workspaces/*/issues-completed-graph/ api:8000
-	reverse_proxy /api/users/me/workspaces/*/dashboard/ api:8000
-	reverse_proxy /api/v1/users/me/ api:8000
-
+	reverse_proxy /god-mode/* {$ADMIN_UPSTREAM:admin:3000}
+	reverse_proxy /live/* {$LIVE_UPSTREAM:live:3000}
+	reverse_proxy /api/users/me/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/session/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/settings/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/email/generate-code/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/email/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/profile/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/accounts/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/accounts/* {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/instance-admin/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/onboard/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/tour-completed/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/notification-preferences/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/activities/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/last-visited-workspace/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/*/activity-graph/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/*/issues-completed-graph/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/*/dashboard/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/v1/users/me/ {$API_UPSTREAM:api:8000}
 	@go_external_work_items path_regexp go_external_work_items ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues|work-items)/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_work_items api:8000
-
+	reverse_proxy @go_external_work_items {$API_UPSTREAM:api:8000}
 	@go_external_user_assets path_regexp go_external_user_assets ^/api/v1/assets/user-assets/([0-9A-Fa-f-]+/)?(server/)?$
-	reverse_proxy @go_external_user_assets api:8000
-
+	reverse_proxy @go_external_user_assets {$API_UPSTREAM:api:8000}
 	@go_external_attachments path_regexp go_external_attachments ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues/[0-9A-Fa-f-]+/issue-attachments|work-items/[0-9A-Fa-f-]+/attachments)/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_attachments api:8000
-
+	reverse_proxy @go_external_attachments {$API_UPSTREAM:api:8000}
 	@go_external_issue_search path_regexp go_external_issue_search ^/api/v1/workspaces/[^/]+/(issues|work-items)/(search/|[^/]+-[^/-]*/)$
-	reverse_proxy @go_external_issue_search api:8000
-
+	reverse_proxy @go_external_issue_search {$API_UPSTREAM:api:8000}
 	@go_external_relations path_regexp go_external_relations ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/work-items/[0-9A-Fa-f-]+/relations/$
-	reverse_proxy @go_external_relations api:8000
-
+	reverse_proxy @go_external_relations {$API_UPSTREAM:api:8000}
 	@go_external_activities path_regexp go_external_activities ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues|work-items)/[0-9A-Fa-f-]+/activities/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_activities api:8000
-
+	reverse_proxy @go_external_activities {$API_UPSTREAM:api:8000}
 	@go_external_comments path_regexp go_external_comments ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues|work-items)/[0-9A-Fa-f-]+/comments/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_comments api:8000
-
+	reverse_proxy @go_external_comments {$API_UPSTREAM:api:8000}
 	@go_external_links path_regexp go_external_links ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issues|work-items)/[0-9A-Fa-f-]+/links/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_links api:8000
-
+	reverse_proxy @go_external_links {$API_UPSTREAM:api:8000}
 	@go_external_project_crud path_regexp go_external_project_crud ^/api/v1/workspaces/[^/]+/projects/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_project_crud api:8000
-
+	reverse_proxy @go_external_project_crud {$API_UPSTREAM:api:8000}
 	@go_external_modules path_regexp go_external_modules ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(modules-lite/|archived-modules/([0-9A-Fa-f-]+/unarchive/)?|modules/([0-9A-Fa-f-]+/(archive/|module-issues/([0-9A-Fa-f-]+/)?)?)?)$
-	reverse_proxy @go_external_modules api:8000
-
+	reverse_proxy @go_external_modules {$API_UPSTREAM:api:8000}
 	@go_external_cycles path_regexp go_external_cycles ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles-lite/|archived-cycles/([0-9A-Fa-f-]+/unarchive/)?|cycles/([0-9A-Fa-f-]+/(archive/|transfer-issues/|cycle-issues/([0-9A-Fa-f-]+/)?)?)?)$
-	reverse_proxy @go_external_cycles api:8000
-
+	reverse_proxy @go_external_cycles {$API_UPSTREAM:api:8000}
 	@go_external_assets path_regexp go_external_assets ^/api/v1/workspaces/[^/]+/assets/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_assets api:8000
-
+	reverse_proxy @go_external_assets {$API_UPSTREAM:api:8000}
 	@go_external_intake path_regexp go_external_intake ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/intake-issues/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_intake api:8000
-
+	reverse_proxy @go_external_intake {$API_UPSTREAM:api:8000}
 	@go_external_stickies path_regexp go_external_stickies ^/api/v1/workspaces/[^/]+/((stickies|invitations)(\.[a-z0-9]+/?|/([0-9A-Fa-f-]+(\.[a-z0-9]+)?/?)?)|(\.[a-z0-9]+)?/?)$
-	reverse_proxy @go_external_stickies api:8000
-
+	reverse_proxy @go_external_stickies {$API_UPSTREAM:api:8000}
 	@go_external_labels path_regexp go_external_labels ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/labels/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_labels api:8000
-
+	reverse_proxy @go_external_labels {$API_UPSTREAM:api:8000}
 	@go_external_members path_regexp go_external_members ^/api/v1/workspaces/[^/]+/(members/|members-lite/|projects/[0-9A-Fa-f-]+/(members|project-members)/([0-9A-Fa-f-]+/)?|projects/[0-9A-Fa-f-]+/project-members-lite/)$
-	reverse_proxy @go_external_members api:8000
-
+	reverse_proxy @go_external_members {$API_UPSTREAM:api:8000}
 	@go_external_projects path_regexp go_external_projects ^/api/v1/workspaces/[^/]+/(projects-lite/|projects/[0-9A-Fa-f-]+/(archive|summary)/)$
-	reverse_proxy @go_external_projects api:8000
-
+	reverse_proxy @go_external_projects {$API_UPSTREAM:api:8000}
 	@go_external_states path_regexp go_external_states ^/api/v1/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/states/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_external_states api:8000
-	reverse_proxy /api/workspace-slug-check/ api:8000
-	reverse_proxy /api/workspaces/ api:8000
-	reverse_proxy /api/users/me/workspaces/ api:8000
-	reverse_proxy /api/users/me/workspaces/invitations/ api:8000
-
+	reverse_proxy @go_external_states {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/workspace-slug-check/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/workspaces/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/invitations/ {$API_UPSTREAM:api:8000}
 	@go_workspace_core path_regexp go_workspace_core ^/api/workspaces/[^/]+/(members/(leave/|[0-9A-Fa-f-]+/)?|workspace-members/me/|workspace-views/|invitations/([0-9A-Fa-f-]+/(join/)?)?)?$
-	reverse_proxy @go_workspace_core api:8000
+	reverse_proxy @go_workspace_core {$API_UPSTREAM:api:8000}
 	@go_workspace_themes path_regexp go_workspace_themes ^/api/workspaces/[^/]+/workspace-themes/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_workspace_themes api:8000
+	reverse_proxy @go_workspace_themes {$API_UPSTREAM:api:8000}
 	@go_workspace_user_properties path_regexp go_workspace_user_properties ^/api/workspaces/[^/]+/user-properties/$
-	reverse_proxy @go_workspace_user_properties api:8000
+	reverse_proxy @go_workspace_user_properties {$API_UPSTREAM:api:8000}
 	@go_workspace_sidebar_preferences path_regexp go_workspace_sidebar_preferences ^/api/workspaces/[^/]+/sidebar-preferences/$
-	reverse_proxy @go_workspace_sidebar_preferences api:8000
+	reverse_proxy @go_workspace_sidebar_preferences {$API_UPSTREAM:api:8000}
 	@go_workspace_home_preferences path_regexp go_workspace_home_preferences ^/api/workspaces/[^/]+/home-preferences/([^/]+/)?$
-	reverse_proxy @go_workspace_home_preferences api:8000
+	reverse_proxy @go_workspace_home_preferences {$API_UPSTREAM:api:8000}
 	@go_workspace_quick_links path_regexp go_workspace_quick_links ^/api/workspaces/[^/]+/quick-links/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_workspace_quick_links api:8000
+	reverse_proxy @go_workspace_quick_links {$API_UPSTREAM:api:8000}
 	@go_project_core path_regexp go_project_core ^/api/workspaces/[^/]+/projects/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_project_core api:8000
+	reverse_proxy @go_project_core {$API_UPSTREAM:api:8000}
 	@go_project_members path_regexp go_project_members ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(members/([0-9A-Fa-f-]+/|leave/)?|project-members/me/|project-views/|preferences/member/[0-9A-Fa-f-]+/)$
-	reverse_proxy @go_project_members api:8000
+	reverse_proxy @go_project_members {$API_UPSTREAM:api:8000}
 	@go_project_labels path_regexp go_project_labels ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(issue-labels/([0-9A-Fa-f-]+/)?|bulk-create-labels/)$
-	reverse_proxy @go_project_labels api:8000
+	reverse_proxy @go_project_labels {$API_UPSTREAM:api:8000}
 	@go_project_issue_operations path_regexp go_project_issue_operations ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(bulk-archive-issues/|bulk-delete-issues/|deleted-issues/|user-properties/|archived-issues/|issue-dates/|issues-detail/|issues/[0-9A-Fa-f-]+/modules/)$
-	reverse_proxy @go_project_issue_operations api:8000
+	reverse_proxy @go_project_issue_operations {$API_UPSTREAM:api:8000}
 	@go_work_item_description_versions path_regexp go_work_item_description_versions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/work-items/[0-9A-Fa-f-]+/description-versions/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_work_item_description_versions api:8000
+	reverse_proxy @go_work_item_description_versions {$API_UPSTREAM:api:8000}
 	@go_issue_interactions path_regexp go_issue_interactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/(reactions/([^/]+/)?|issue-subscribers/([0-9A-Fa-f-]+/)?|subscribe/|issue-links/([0-9A-Fa-f-]+/)?|comments/([0-9A-Fa-f-]+/)?|sub-issues/|issue-relation/|remove-relation/|archive/|history/|meta/|versions/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_issue_interactions api:8000
+	reverse_proxy @go_issue_interactions {$API_UPSTREAM:api:8000}
 	@go_work_item_identifier path_regexp go_work_item_identifier ^/api/workspaces/[^/]+/work-items/[^/]+/$
-	reverse_proxy @go_work_item_identifier api:8000
+	reverse_proxy @go_work_item_identifier {$API_UPSTREAM:api:8000}
 	@go_analytic_views path_regexp go_analytic_views ^/api/workspaces/[^/]+/(analytic-view/([0-9A-Fa-f-]+/)?|export-analytics/|analytics/|saved-analytic-view/[0-9A-Fa-f-]+/|default-analytics/|project-stats/)$
-	reverse_proxy @go_analytic_views api:8000
-
+	reverse_proxy @go_analytic_views {$API_UPSTREAM:api:8000}
 	@go_webhooks path_regexp go_webhooks ^/api/workspaces/[^/]+/(webhooks/([0-9A-Fa-f-]+/(regenerate/)?)?|webhook-logs/[0-9A-Fa-f-]+/)$
-	reverse_proxy @go_webhooks api:8000
-
+	reverse_proxy @go_webhooks {$API_UPSTREAM:api:8000}
 	@go_global_search path_regexp go_global_search ^/api/workspaces/[^/]+/(search|entity-search)/$
-	reverse_proxy @go_global_search api:8000
-
+	reverse_proxy @go_global_search {$API_UPSTREAM:api:8000}
 	@go_issue_search path_regexp go_issue_search ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/search-issues/$
-	reverse_proxy @go_issue_search api:8000
-
+	reverse_proxy @go_issue_search {$API_UPSTREAM:api:8000}
 	@go_intakes path_regexp go_intakes ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/((intakes|inboxes|intake-issues|inbox-issues)/([0-9A-Fa-f-]+/)?|intake-work-items/[0-9A-Fa-f-]+/description-versions/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_intakes api:8000
-
+	reverse_proxy @go_intakes {$API_UPSTREAM:api:8000}
 	@go_pages path_regexp go_pages ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(pages-summary/|pages/([0-9A-Fa-f-]+/(lock/|access/|archive/|description/|duplicate/|versions/([0-9A-Fa-f-]+/)?)?)?|favorite-pages/[0-9A-Fa-f-]+/)$
-	reverse_proxy @go_pages api:8000
-
+	reverse_proxy @go_pages {$API_UPSTREAM:api:8000}
 	@go_notifications path_regexp go_notifications ^/api/workspaces/[^/]+/users/notifications/(unread/|mark-all-read/|[0-9A-Fa-f-]+/(read/|archive/)?)?$
-	reverse_proxy @go_notifications api:8000
-
+	reverse_proxy @go_notifications {$API_UPSTREAM:api:8000}
 	@go_workspace_views path_regexp go_workspace_views ^/api/workspaces/[^/]+/views/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_workspace_views api:8000
-
+	reverse_proxy @go_workspace_views {$API_UPSTREAM:api:8000}
 	@go_project_views path_regexp go_project_views ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(views/([0-9A-Fa-f-]+/)?|user-favorite-views/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_project_views api:8000
-
+	reverse_proxy @go_project_views {$API_UPSTREAM:api:8000}
 	@go_module_basics path_regexp go_module_basics ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(modules/([0-9A-Fa-f-]+/)?|user-favorite-modules/([0-9A-Fa-f-]+/)?|modules/[0-9A-Fa-f-]+/(user-properties/|archive/|module-links/([0-9A-Fa-f-]+/)?|issues/([0-9A-Fa-f-]+/)?)|archived-modules/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_module_basics api:8000
+	reverse_proxy @go_module_basics {$API_UPSTREAM:api:8000}
 	@go_cycle_basics path_regexp go_cycle_basics ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(cycles/([0-9A-Fa-f-]+/)?|cycles/date-check/|user-favorite-cycles/([0-9A-Fa-f-]+/)?|cycles/[0-9A-Fa-f-]+/(user-properties/|archive/|cycle-issues/([0-9A-Fa-f-]+/)?|progress/|analytics/|transfer-issues/)|archived-cycles/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_cycle_basics api:8000
+	reverse_proxy @go_cycle_basics {$API_UPSTREAM:api:8000}
 	@go_issue_sync path_regexp go_issue_sync ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/v2/issues/$
-	reverse_proxy @go_issue_sync api:8000
+	reverse_proxy @go_issue_sync {$API_UPSTREAM:api:8000}
 	@go_estimates path_regexp go_estimates ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(project-estimates/|estimates/([0-9A-Fa-f-]+/(estimate-points/([0-9A-Fa-f-]+/)?)?)?)$
-	reverse_proxy @go_estimates api:8000
-
+	reverse_proxy @go_estimates {$API_UPSTREAM:api:8000}
 	@go_project_invites path_regexp go_project_invites ^(/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(invitations/([0-9A-Fa-f-]+/)?|join/[0-9A-Fa-f-]+/)|/api/users/me/workspaces/[^/]+/projects/invitations/)$
-	reverse_proxy @go_project_invites api:8000
-
+	reverse_proxy @go_project_invites {$API_UPSTREAM:api:8000}
 	@go_deploy_boards path_regexp go_deploy_boards ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/project-deploy-boards/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_deploy_boards api:8000
-
+	reverse_proxy @go_deploy_boards {$API_UPSTREAM:api:8000}
 	@go_space_assets path_regexp go_space_assets ^/api/public/assets/v2/anchor/[^/]+/([0-9A-Fa-f-]+/(bulk/)?|restore/[0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_space_assets api:8000
-
+	reverse_proxy @go_space_assets {$API_UPSTREAM:api:8000}
 	@go_space_read path_regexp go_space_read ^(/api/public/anchor/[^/]+/((settings|meta|members|states|labels|cycles|modules)/|issues/[0-9A-Fa-f-]+/(votes|reactions|comments)/|issues/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/|issues/([0-9A-Fa-f-]+/)?|issues/[0-9A-Fa-f-]+/reactions/[^/]+/|comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?|intakes/[0-9A-Fa-f-]+/(intake-issues/([0-9A-Fa-f-]+/)?|inbox-issues/))|/api/public/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/anchor/)$
-	reverse_proxy @go_space_read api:8000
-
+	reverse_proxy @go_space_read {$API_UPSTREAM:api:8000}
 	@go_project_details path_regexp go_project_details ^/api/workspaces/[^/]+/(projects/details/|project-identifiers/|projects/[0-9A-Fa-f-]+/archive/)$
-	reverse_proxy @go_project_details api:8000
-
+	reverse_proxy @go_project_details {$API_UPSTREAM:api:8000}
 	@go_workspace_aggregates path_regexp go_workspace_aggregates ^/api/workspaces/[^/]+/(labels|states|cycles|modules)/$
-	reverse_proxy @go_workspace_aggregates api:8000
-
+	reverse_proxy @go_workspace_aggregates {$API_UPSTREAM:api:8000}
 	@go_api_tokens path_regexp go_api_tokens ^/api/users/api-tokens/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_api_tokens api:8000
-
+	reverse_proxy @go_api_tokens {$API_UPSTREAM:api:8000}
 	@go_workspace_issues path_regexp go_workspace_issues ^/api/workspaces/[^/]+/issues/$
-	reverse_proxy @go_workspace_issues api:8000
-
+	reverse_proxy @go_workspace_issues {$API_UPSTREAM:api:8000}
 	@go_advance_analytics path_regexp go_advance_analytics ^/api/workspaces/[^/]+/(projects/[0-9A-Fa-f-]+/)?advance-analytics(-stats|-charts)?/$
-	reverse_proxy @go_advance_analytics api:8000
-
+	reverse_proxy @go_advance_analytics {$API_UPSTREAM:api:8000}
 	@go_workspace_user path_regexp go_workspace_user ^/api/workspaces/[^/]+/(user-profile/[0-9A-Fa-f-]+/|user-stats/[0-9A-Fa-f-]+/|user-issues/[0-9A-Fa-f-]+/|user-activity/[0-9A-Fa-f-]+/(export/)?|recent-visits/|project-members/)$
-	reverse_proxy @go_workspace_user api:8000
-
+	reverse_proxy @go_workspace_user {$API_UPSTREAM:api:8000}
 	@go_draft_issues path_regexp go_draft_issues ^/api/workspaces/[^/]+/(draft-issues/([0-9A-Fa-f-]+/)?|draft-to-issue/[0-9A-Fa-f-]+/)$
-	reverse_proxy @go_draft_issues api:8000
-
+	reverse_proxy @go_draft_issues {$API_UPSTREAM:api:8000}
 	@go_legacy_assets path_regexp go_legacy_assets ^/api/(users/file-assets/([^/]+/)?|workspaces/[^/]+/file-assets/|workspaces/file-assets/[0-9A-Fa-f-]+/[^/]+/(restore/)?)$
-	reverse_proxy @go_legacy_assets api:8000
-
+	reverse_proxy @go_legacy_assets {$API_UPSTREAM:api:8000}
 	@go_legacy_attachments path_regexp go_legacy_attachments ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/issue-attachments/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_legacy_attachments api:8000
-
-	reverse_proxy /api/timezones/ api:8000
-	reverse_proxy /api/unsplash/ api:8000
-
+	reverse_proxy @go_legacy_attachments {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/timezones/ {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/unsplash/ {$API_UPSTREAM:api:8000}
 	@go_workspace_estimates path_regexp go_workspace_estimates ^/api/workspaces/[^/]+/estimates/$
-	reverse_proxy @go_workspace_estimates api:8000
-
+	reverse_proxy @go_workspace_estimates {$API_UPSTREAM:api:8000}
 	@go_ai_assistant path_regexp go_ai_assistant ^/api/workspaces/[^/]+/(projects/[0-9A-Fa-f-]+/)?ai-assistant/$
-	reverse_proxy @go_ai_assistant api:8000
-
+	reverse_proxy @go_ai_assistant {$API_UPSTREAM:api:8000}
 	@go_instances path_regexp go_instances ^/api/instances/(admins/([0-9A-Fa-f-]+/|me/|session/|sign-in/|sign-out/|sign-up/|sign-up-screen-visited/)?|configurations/(disable-email-feature/)?|email-credentials-check/|workspace-slug-check/|workspaces/)?$
-	reverse_proxy @go_instances api:8000
-
+	reverse_proxy @go_instances {$API_UPSTREAM:api:8000}
 	@go_export_issues path_regexp go_export_issues ^/api/workspaces/[^/]+/export-issues/$
-	reverse_proxy @go_export_issues api:8000
-
+	reverse_proxy @go_export_issues {$API_UPSTREAM:api:8000}
 	@go_stickies path_regexp go_stickies ^/api/workspaces/[^/]+/stickies/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_stickies api:8000
-
+	reverse_proxy @go_stickies {$API_UPSTREAM:api:8000}
 	@go_favorites path_regexp go_favorites ^/api/workspaces/[^/]+/(user-favorites/([0-9A-Fa-f-]+/(group/)?)?|user-favorite-projects/([0-9A-Fa-f-]+/)?)$
-	reverse_proxy @go_favorites api:8000
-
+	reverse_proxy @go_favorites {$API_UPSTREAM:api:8000}
 	@go_states path_regexp go_states ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/(states/([0-9A-Fa-f-]+/(mark-default/)?)?|intake-state/)$
-	reverse_proxy @go_states api:8000
-
+	reverse_proxy @go_states {$API_UPSTREAM:api:8000}
 	@go_issue_list path_regexp go_issue_list ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/(list/)?$
-	reverse_proxy @go_issue_list api:8000
+	reverse_proxy @go_issue_list {$API_UPSTREAM:api:8000}
 	@go_issue_detail path_regexp go_issue_detail ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/$
-	reverse_proxy @go_issue_detail api:8000
+	reverse_proxy @go_issue_detail {$API_UPSTREAM:api:8000}
 	@go_workspace_assets path_regexp go_workspace_assets ^/api/assets/v2/(user-assets/([0-9A-Fa-f-]+/)?|static/[0-9A-Fa-f-]+/|workspaces/[^/]+/([0-9A-Fa-f-]+/|(check|download|restore|duplicate-assets)/[0-9A-Fa-f-]+/|projects/[0-9A-Fa-f-]+/([0-9A-Fa-f-]+/(bulk/)?|download/[0-9A-Fa-f-]+/)?)?)$
-	reverse_proxy @go_workspace_assets api:8000
-
+	reverse_proxy @go_workspace_assets {$API_UPSTREAM:api:8000}
 	@go_issue_attachments path_regexp go_issue_attachments ^/api/assets/v2/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/issues/[0-9A-Fa-f-]+/attachments/([0-9A-Fa-f-]+/)?$
-	reverse_proxy @go_issue_attachments api:8000
+	reverse_proxy @go_issue_attachments {$API_UPSTREAM:api:8000}
 	@go_comment_reactions path_regexp go_comment_reactions ^/api/workspaces/[^/]+/projects/[0-9A-Fa-f-]+/comments/[0-9A-Fa-f-]+/reactions/([^/]+/)?$
-	reverse_proxy @go_comment_reactions api:8000
-	reverse_proxy /api/users/me/workspaces/*/project-roles/ api:8000
-
+	reverse_proxy @go_comment_reactions {$API_UPSTREAM:api:8000}
+	reverse_proxy /api/users/me/workspaces/*/project-roles/ {$API_UPSTREAM:api:8000}
 	# Everything the route inventory knows about is matched above, so this catches only paths the Django app would have answered with a 404 as well. It points at Go because nothing is left behind it.
-	reverse_proxy /api/* api:8000
-
-	reverse_proxy /auth/* api:8000
-
+	reverse_proxy /api/* {$API_UPSTREAM:api:8000}
+	reverse_proxy /auth/* {$API_UPSTREAM:api:8000}
 	# Django served this through whitenoise. The only thing that ever asked for it was drf-spectacular's Swagger UI, which ENABLE_DRF_SPECTACULAR leaves switched off, so in a default deployment every request here is a miss on both sides.
-	reverse_proxy /static/* api:8000
-
-	reverse_proxy /{$BUCKET_NAME}/* plane-minio:9000
-	reverse_proxy /{$BUCKET_NAME} plane-minio:9000
-
-	reverse_proxy /* web:3000
+	reverse_proxy /static/* {$API_UPSTREAM:api:8000}
+	reverse_proxy /{$BUCKET_NAME}/* {$MINIO_UPSTREAM:plane-minio:9000}
+	reverse_proxy /{$BUCKET_NAME} {$MINIO_UPSTREAM:plane-minio:9000}
+	reverse_proxy /* {$WEB_UPSTREAM:web:3000}
 }
 
 {
