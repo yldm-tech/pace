@@ -12,7 +12,7 @@ import type { IIssueLabel, IIssueLabelTree } from "@pace/types";
 // helpers
 import { buildTree } from "@pace/utils";
 // services
-import { IssueLabelService } from "@/services/issue";
+import { IssueLabelService } from "@pace/services";
 // store
 import type { CoreRootStore } from "./root.store";
 

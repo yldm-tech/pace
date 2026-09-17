@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 // services
 import { USER_PROFILE_ACTIVITY } from "@pace/constants";
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 // components
 import { ActivityList } from "./activity-list";
 // fetch-keys

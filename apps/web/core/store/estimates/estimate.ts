@@ -14,7 +14,7 @@ import type {
   TEstimateSystemKeys,
 } from "@pace/types";
 // pace web services
-import estimateService from "@/services/estimate.service";
+import { estimateService } from "@pace/services";
 // store
 import type { IEstimatePoint } from "@/store/estimates/estimate-point";
 import { EstimatePoint } from "@/store/estimates/estimate-point";

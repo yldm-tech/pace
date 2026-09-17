@@ -16,7 +16,7 @@ import { authErrorHandler } from "@/helpers/authentication.helper";
 import { useInstance } from "@/hooks/store/use-instance";
 import { useAppRouter } from "@/hooks/use-app-router";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 // local components
 import { AuthEmailForm } from "./email";
 import { AuthPasswordForm } from "./password";

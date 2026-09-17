@@ -21,7 +21,7 @@ import { USER_PROFILE_ACTIVITY } from "@pace/constants";
 // hooks
 import { useUser } from "@/hooks/store/user";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 
 const userService = new UserService();
 

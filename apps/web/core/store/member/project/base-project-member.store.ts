@@ -19,7 +19,7 @@ import type {
 // pace web imports
 import type { RootStore } from "@/store/root.store";
 // services
-import { ProjectMemberService, ProjectService } from "@/services/project";
+import { ProjectMemberService, ProjectService } from "@pace/services";
 // store
 import type { IProjectStore } from "@/store/project/project.store";
 import type { IRouterStore } from "@/store/router.store";

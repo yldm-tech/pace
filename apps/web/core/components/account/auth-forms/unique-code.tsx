@@ -17,7 +17,7 @@ import { EAuthModes } from "@/helpers/authentication.helper";
 // hooks
 import useTimer from "@/hooks/use-timer";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 
 // services
 const authService = new AuthService();

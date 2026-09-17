@@ -17,7 +17,7 @@ import { SelectRepository } from "@/components/integration/github/select-reposit
 // constants
 import { PROJECT_GITHUB_REPOSITORY } from "@pace/constants";
 // services
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 
 type Props = {
   integration: IWorkspaceIntegration;

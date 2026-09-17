@@ -16,7 +16,7 @@ import { filterPagesByPageType, getPageName, orderPages, shouldFilterPage } from
 // pace web constants
 // pace web store
 // services
-import { ProjectPageService } from "@/services/page";
+import { ProjectPageService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 import type { TProjectPage } from "./project-page";

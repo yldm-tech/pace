@@ -5,11 +5,16 @@
  */
 
 // types
+import { API_BASE_URL } from "@pace/constants";
 import type { IModule, ILinkDetails, ModuleLink, TIssuesResponse } from "@pace/types";
 // services
 import { APIService } from "../api.service";
 
 export class ModuleService extends APIService {
+  constructor() {
+    super(API_BASE_URL);
+  }
+
   async workspaceModulesList(workspaceSlug: string): Promise<IModule[]> {
     return this.get(`/api/workspaces/${workspaceSlug}/modules/`)
       .then((response) => response?.data)
@@ -34,21 +39,21 @@ export class ModuleService extends APIService {
       });
   }
 
-  async retrieve(workspaceSlug: string, projectId: string, moduleId: string): Promise<IModule> {
-    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`)
+  async updateModule(workspaceSlug: string, projectId: string, moduleId: string, data: any): Promise<any> {
+    return this.put(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;
       });
   }
 
-  //   async update(workspaceSlug: string, projectId: string, moduleId: string, data: any): Promise<any> {
-  //     return this.put(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`, data)
-  //       .then((response) => response?.data)
-  //       .catch((error) => {
-  //         throw error?.response?.data;
-  //       });
-  //   }
+  async getModuleDetails(workspaceSlug: string, projectId: string, moduleId: string): Promise<IModule> {
+    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
 
   async update(workspaceSlug: string, projectId: string, moduleId: string, data: Partial<IModule>): Promise<IModule> {
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`, data)
@@ -206,6 +211,14 @@ export class ModuleService extends APIService {
 
   async removeModuleFromFavorites(workspaceSlug: string, projectId: string, moduleId: string): Promise<any> {
     return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/user-favorite-modules/${moduleId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async retrieve(workspaceSlug: string, projectId: string, moduleId: string): Promise<IModule> {
+    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/modules/${moduleId}/`)
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;

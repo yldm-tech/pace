@@ -13,7 +13,7 @@ import type { TLanguage } from "@pace/i18n";
 import type { IUserTheme, TUserProfile } from "@pace/types";
 import { EStartOfTheWeek } from "@pace/types";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 
@@ -106,7 +106,7 @@ export class ProfileStore implements IUserProfileStore {
         this.isLoading = true;
         this.error = undefined;
       });
-      const userProfile = await this.userService.getCurrentUserProfile();
+      const userProfile = await this.userService.profile();
       runInAction(() => {
         this.isLoading = false;
         this.data = userProfile;
@@ -141,7 +141,7 @@ export class ProfileStore implements IUserProfileStore {
       if (data.language) {
         void setLanguage(data.language as TLanguage);
       }
-      const userProfile = await this.userService.updateCurrentUserProfile(data);
+      const userProfile = await this.userService.updateProfile(data);
       return userProfile;
     } catch {
       if (currentUserProfileData) {
@@ -174,7 +174,7 @@ export class ProfileStore implements IUserProfileStore {
       };
 
       // update user onboarding steps
-      await this.userService.updateCurrentUserProfile(dataToUpdate);
+      await this.userService.updateProfile(dataToUpdate);
 
       // update user onboarding status
       await this.userService.updateUserOnBoard();
@@ -235,7 +235,7 @@ export class ProfileStore implements IUserProfileStore {
           if (this.data.theme) set(this.data.theme, dataKey, data[dataKey]);
         });
       });
-      const userProfile = await this.userService.updateCurrentUserProfile({
+      const userProfile = await this.userService.updateProfile({
         theme: this.data.theme,
       });
       return userProfile;

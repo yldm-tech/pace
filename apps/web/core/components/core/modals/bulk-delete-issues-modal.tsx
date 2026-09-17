@@ -30,7 +30,7 @@ import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-ro
 import { useIssues } from "@/hooks/store/use-issues";
 import useDebounce from "@/hooks/use-debounce";
 // services
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 // local components
 import { BulkDeleteIssuesModalItem } from "./bulk-delete-issues-modal-item";
 

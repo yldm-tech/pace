@@ -13,7 +13,7 @@ import type { TIssueRelationIdMap, TIssueRelationMap, TIssueRelation, TIssue, TI
 import type { TRelationObject } from "@/components/issues/issue-detail-widgets/relations";
 import { REVERSE_RELATIONS } from "@pace/constants";
 // services
-import { IssueRelationService } from "@/services/issue";
+import { IssueRelationService } from "@pace/services";
 // types
 import type { IIssueDetail } from "./root.store";
 export interface IIssueRelationStoreActions {

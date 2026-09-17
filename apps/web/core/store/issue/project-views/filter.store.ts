@@ -24,7 +24,7 @@ import type {
 import { EIssuesStoreType } from "@pace/types";
 import { handleIssueQueryParamsByLayout } from "@pace/utils";
 // services
-import { ViewService } from "@/services/view.service";
+import { ViewService } from "@pace/services";
 import type { IBaseIssueFilterStore } from "../helpers/issue-filter-helper.store";
 import { IssueFilterHelperStore } from "../helpers/issue-filter-helper.store";
 // helpers

@@ -23,7 +23,7 @@ import { ForgotPasswordPopover } from "@/components/account/auth-forms/forgot-pa
 // helpers
 import { EAuthModes, EAuthSteps } from "@/helpers/authentication.helper";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 
 type Props = {
   email: string;

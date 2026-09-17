@@ -27,7 +27,7 @@ import { STATIC_COVER_IMAGES, getCoverImageDisplayURL } from "@/helpers/cover-im
 import { useInstance } from "@/hooks/store/use-instance";
 import { useDropdownKeyDown } from "@/hooks/use-dropdown-key-down";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 
 type TTabOption = {
   key: string;

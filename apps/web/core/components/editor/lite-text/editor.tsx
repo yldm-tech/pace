@@ -23,7 +23,7 @@ import { useParseEditorContent } from "@/hooks/use-parse-editor-content";
 // pace web hooks
 import { useEditorFlagging } from "@/hooks/use-editor-flagging";
 // pace web service
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 import { LiteToolbar } from "./lite-toolbar";
 const workspaceService = new WorkspaceService();
 

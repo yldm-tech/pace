@@ -31,9 +31,9 @@ import { EIssueServiceType, EIssueLayoutTypes } from "@pace/types";
 import { convertToISODateString } from "@pace/utils";
 // pace web imports
 // services
-import { CycleService } from "@/services/cycle.service";
-import { IssueArchiveService, IssueService } from "@/services/issue";
-import { ModuleService } from "@/services/module.service";
+import { CycleService } from "@pace/services";
+import { IssueArchiveService, IssueService } from "@pace/services";
+import { ModuleService } from "@pace/services";
 //
 import type { IIssueRootStore } from "../root.store";
 import {

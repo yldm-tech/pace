@@ -23,7 +23,7 @@ import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 import useDebounce from "@/hooks/use-debounce";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // services
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 // components
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 import { IssueSearchModalEmptyState } from "./issue-search-modal-empty-state";

@@ -16,7 +16,7 @@ import { cn } from "@pace/utils";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 // services
-import { AnalyticsService } from "@/services/analytics.service";
+import { AnalyticsService } from "@pace/services";
 // local imports
 import InsightCard from "./insight-card";
 

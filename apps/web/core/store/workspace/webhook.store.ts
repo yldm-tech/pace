@@ -10,7 +10,7 @@ import { computedFn } from "mobx-utils";
 // types
 import type { IWebhook } from "@pace/types";
 // services
-import { WebhookService } from "@/services/webhook.service";
+import { WebhookService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 
@@ -95,7 +95,7 @@ export class WebhookStore implements IWebhookStore {
    * @param workspaceSlug
    */
   fetchWebhooks = async (workspaceSlug: string) =>
-    await this.webhookService.fetchWebhooksList(workspaceSlug).then((response) => {
+    await this.webhookService.list(workspaceSlug).then((response) => {
       const webHookObject: { [webhookId: string]: IWebhook } = response.reduce((accumulator, currentWebhook) => {
         if (currentWebhook && currentWebhook.id) {
           return { ...accumulator, [currentWebhook.id]: currentWebhook };
@@ -114,7 +114,7 @@ export class WebhookStore implements IWebhookStore {
    * @param webhookId
    */
   fetchWebhookById = async (workspaceSlug: string, webhookId: string) =>
-    await this.webhookService.fetchWebhookDetails(workspaceSlug, webhookId).then((response) => {
+    await this.webhookService.retrieve(workspaceSlug, webhookId).then((response) => {
       runInAction(() => {
         this.webhooks = {
           ...this.webhooks,
@@ -130,7 +130,7 @@ export class WebhookStore implements IWebhookStore {
    * @param data
    */
   createWebhook = async (workspaceSlug: string, data: Partial<IWebhook>) =>
-    await this.webhookService.createWebhook(workspaceSlug, data).then((response) => {
+    await this.webhookService.create(workspaceSlug, data).then((response) => {
       const _secretKey = response?.secret_key ?? null;
       delete response?.secret_key;
       const _webhooks = this.webhooks;
@@ -149,7 +149,7 @@ export class WebhookStore implements IWebhookStore {
    * @param data
    */
   updateWebhook = async (workspaceSlug: string, webhookId: string, data: Partial<IWebhook>) =>
-    await this.webhookService.updateWebhook(workspaceSlug, webhookId, data).then((response) => {
+    await this.webhookService.update(workspaceSlug, webhookId, data).then((response) => {
       let _webhooks = this.webhooks;
       if (webhookId && _webhooks && this.webhooks)
         _webhooks = { ..._webhooks, [webhookId]: { ...this.webhooks[webhookId], ...data } };
@@ -165,7 +165,7 @@ export class WebhookStore implements IWebhookStore {
    * @param webhookId
    */
   removeWebhook = async (workspaceSlug: string, webhookId: string) =>
-    await this.webhookService.deleteWebhook(workspaceSlug, webhookId).then(() => {
+    await this.webhookService.destroy(workspaceSlug, webhookId).then(() => {
       const _webhooks = this.webhooks ?? {};
       delete _webhooks[webhookId];
       runInAction(() => {

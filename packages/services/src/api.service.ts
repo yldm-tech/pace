@@ -8,6 +8,15 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { create } from "axios";
 
 /**
+ * What to do when a request comes back 401. web sends the person to the sign-in page and remembers where they were; space and admin install nothing and so keep axios's own behaviour, which is to reject and let the caller decide.
+ */
+let unauthorizedHandler: ((path: string) => void) | undefined;
+
+export function setUnauthorizedHandler(handler: (path: string) => void): void {
+  unauthorizedHandler = handler;
+}
+
+/**
  * Abstract base class for making HTTP requests using axios
  * @abstract
  */
@@ -25,6 +34,15 @@ export abstract class APIService {
       baseURL,
       withCredentials: true,
     });
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401 && unauthorizedHandler) {
+          unauthorizedHandler(window.location.pathname);
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   /**

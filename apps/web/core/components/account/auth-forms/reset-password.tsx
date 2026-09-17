@@ -22,7 +22,7 @@ import { getPasswordStrength } from "@pace/utils";
 import type { EAuthenticationErrorCodes, TAuthErrorInfo } from "@/helpers/authentication.helper";
 import { EErrorAlertType, authErrorHandler } from "@/helpers/authentication.helper";
 // services
-import { AuthService } from "@/services/auth.service";
+import { AuthService } from "@pace/services";
 // local imports
 import { FormContainer } from "./common/container";
 import { AuthFormHeader } from "./common/header";

@@ -17,7 +17,7 @@ import { LiteTextEditor } from "@/components/editor/lite-text";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 
 type TCommentCreate = {
   entityId: string;

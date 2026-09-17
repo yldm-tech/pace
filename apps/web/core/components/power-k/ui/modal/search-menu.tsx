@@ -13,7 +13,7 @@ import { cn } from "@pace/utils";
 // hooks
 import { usePowerK } from "@/hooks/store/use-power-k";
 import useDebounce from "@/hooks/use-debounce";
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // local imports
 import type { TPowerKContext, TPowerKPageType } from "../../core/types";
 import { PowerKModalNoSearchResultsCommand } from "./no-results-command";
@@ -48,7 +48,7 @@ export function PowerKModalSearchMenu(props: Props) {
 
     if (debouncedSearchTerm) {
       workspaceService
-        .searchWorkspace(workspaceSlug.toString(), {
+        .search(workspaceSlug.toString(), {
           ...(projectId ? { project_id: projectId.toString() } : {}),
           search: debouncedSearchTerm,
           workspace_search: !projectId ? true : isWorkspaceLevel,

@@ -18,7 +18,7 @@ import { SLACK_CHANNEL_INFO } from "@pace/constants";
 import { useInstance } from "@/hooks/store/use-instance";
 import useIntegrationPopup from "@/hooks/use-integration-popup";
 // services
-import { AppInstallationService } from "@/services/app_installation.service";
+import { AppInstallationService } from "@pace/services";
 
 type Props = {
   integration: IWorkspaceIntegration;

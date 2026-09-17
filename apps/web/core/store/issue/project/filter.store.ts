@@ -27,7 +27,7 @@ import { IssueFilterHelperStore } from "../helpers/issue-filter-helper.store";
 // helpers
 // types
 import type { IIssueRootStore } from "../root.store";
-import { ProjectService } from "@/services/project";
+import { ProjectService } from "@pace/services";
 // constants
 // services
 

@@ -12,7 +12,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 // helpers
 import { renderFormattedPayloadDate } from "@pace/utils";
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 
 const userService = new UserService();
 

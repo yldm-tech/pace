@@ -16,7 +16,7 @@ import { EFileAssetType } from "@pace/types";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { getAssetIdFromUrl, getFileURL, checkURLValidity } from "@pace/utils";
 // services
-import { FileService } from "@/services/file.service";
+import { FileService } from "@pace/services";
 const fileService = new FileService();
 
 type Props = {

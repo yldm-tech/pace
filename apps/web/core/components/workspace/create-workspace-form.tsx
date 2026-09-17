@@ -22,7 +22,7 @@ import { validateWorkspaceName, validateSlug } from "@pace/utils";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useAppRouter } from "@/hooks/use-app-router";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 
 type Props = {
   onSubmit?: (res: IWorkspace) => Promise<void>;
@@ -71,7 +71,7 @@ export const CreateWorkspaceForm = observer(function CreateWorkspaceForm(props: 
 
   const handleCreateWorkspace = async (formData: IWorkspace) => {
     try {
-      const res = (await workspaceService.workspaceSlugCheck(formData.slug)) as { status: boolean };
+      const res = (await workspaceService.slugCheck(formData.slug)) as { status: boolean };
       if (res.status === true && !RESTRICTED_URLS.includes(formData.slug)) {
         setSlugError(false);
         try {

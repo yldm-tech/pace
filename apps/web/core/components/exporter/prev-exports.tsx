@@ -19,7 +19,7 @@ import { ImportExportSettingsLoader } from "@/components/ui/loader/settings/impo
 // constants
 import { EXPORT_SERVICES_LIST } from "@pace/constants";
 // services
-import { IntegrationService } from "@/services/integrations";
+import { IntegrationService } from "@pace/services";
 // local imports
 import { useExportColumns } from "./column";
 

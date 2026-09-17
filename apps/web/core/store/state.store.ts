@@ -13,7 +13,7 @@ import type { IIntakeState, IState } from "@pace/types";
 // helpers
 import { sortStates } from "@pace/utils";
 // pace web
-import { ProjectStateService } from "@/services/project/project-state.service";
+import { ProjectStateService } from "@pace/services";
 import type { RootStore } from "@/store/root.store";
 
 export interface IStateStore {

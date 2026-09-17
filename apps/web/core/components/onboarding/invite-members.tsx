@@ -32,7 +32,7 @@ import type { IUser, IWorkspace } from "@pace/types";
 // ui
 import { Spinner } from "@pace/ui";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 // components
 import { SwitchAccountDropdown } from "./switch-account-dropdown";
 

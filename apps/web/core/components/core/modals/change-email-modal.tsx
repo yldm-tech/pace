@@ -21,8 +21,8 @@ import type { EAuthenticationErrorCodes } from "@/helpers/authentication.helper"
 // hooks
 import { useUser } from "@/hooks/store/user";
 // services
-import { AuthService } from "@/services/auth.service";
-import userService from "@/services/user.service";
+import { AuthService } from "@pace/services";
+import { userService } from "@pace/services";
 
 type Props = { isOpen: boolean; onClose: () => void };
 

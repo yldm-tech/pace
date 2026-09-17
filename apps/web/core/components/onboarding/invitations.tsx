@@ -21,7 +21,7 @@ import { WorkspaceLogo } from "@/components/workspace/logo";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserSettings } from "@/hooks/store/user";
 // services
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 
 type Props = {
   invitations: IWorkspaceMemberInvitation[];

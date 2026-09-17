@@ -21,7 +21,7 @@ import { EInboxIssueCurrentTab, EInboxIssueStatus } from "@pace/types";
 import { getCustomDates } from "@pace/utils";
 // helpers
 // services
-import { InboxIssueService } from "@/services/inbox";
+import { InboxIssueService } from "@pace/services";
 // root store
 import type { IInboxIssueStore } from "@/store/inbox/inbox-issue.store";
 import { InboxIssueStore } from "@/store/inbox/inbox-issue.store";

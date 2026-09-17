@@ -9,7 +9,7 @@ import { observable, action, makeObservable, runInAction } from "mobx";
 import { computedFn } from "mobx-utils";
 import { STICKIES_PER_PAGE } from "@pace/constants";
 import type { InstructionType, TLoader, TPaginationInfo, TSticky } from "@pace/types";
-import { StickyService } from "@/services/sticky.service";
+import { StickyService } from "@pace/services";
 
 export interface IStickyStore {
   creatingSticky: boolean;

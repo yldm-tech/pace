@@ -24,7 +24,7 @@ import type {
 } from "@pace/types";
 import { getCurrentDateTimeInISO, convertToISODateString } from "@pace/utils";
 // services
-import workspaceDraftService from "@/services/issue/workspace_draft.service";
+import { workspaceDraftService } from "@pace/services";
 // types
 import type { IIssueRootStore } from "../root.store";
 

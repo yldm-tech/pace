@@ -15,7 +15,7 @@ import { Switch } from "@makeplane/propel/components/switch";
 // components
 import { SettingsControlItem } from "@/components/settings/control-item";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 
 type Props = {
   data: IUserEmailNotificationSettings;

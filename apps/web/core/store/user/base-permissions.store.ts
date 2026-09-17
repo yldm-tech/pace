@@ -17,11 +17,11 @@ import {
 import type { EUserProjectRoles, IUserProjectsRole, IWorkspaceMemberMe, TProjectMembership } from "@pace/types";
 import { EUserWorkspaceRoles } from "@pace/types";
 // pace web imports
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 import type { RootStore } from "@/store/root.store";
 // services
-import projectMemberService from "@/services/project/project-member.service";
-import userService from "@/services/user.service";
+import { projectMemberService } from "@pace/services";
+import { userService } from "@pace/services";
 
 // derived services
 const workspaceService = new WorkspaceService();

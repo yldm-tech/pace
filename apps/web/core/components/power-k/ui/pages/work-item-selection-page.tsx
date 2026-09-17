@@ -18,7 +18,7 @@ import type { TIssueEntityData, TIssueSearchResponse, TActivityEntityData } from
 // import { useAppRouter } from "@/hooks/use-app-router";
 // pace web imports
 // import { IssueIdentifier } from "@/plane-web/components/issues/issue-details/issue-identifier";
-import { WorkspaceService } from "@/services/workspace.service";
+import { WorkspaceService } from "@pace/services";
 
 const workspaceService = new WorkspaceService();
 

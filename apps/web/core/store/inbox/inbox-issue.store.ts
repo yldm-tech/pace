@@ -16,8 +16,8 @@ import type {
 import { EInboxIssueStatus } from "@pace/types";
 // helpers
 // services
-import { InboxIssueService } from "@/services/inbox";
-import { IssueService } from "@/services/issue";
+import { InboxIssueService } from "@pace/services";
+import { IssueService } from "@pace/services";
 // store
 import type { CoreRootStore } from "../root.store";
 

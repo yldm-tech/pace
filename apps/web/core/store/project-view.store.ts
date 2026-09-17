@@ -13,7 +13,7 @@ import type { IProjectView, TViewFilters } from "@pace/types";
 // helpers
 import { getValidatedViewFilters, getViewName, orderViews, shouldFilterView } from "@pace/utils";
 // services
-import { ViewService } from "@/services/view.service";
+import { ViewService } from "@pace/services";
 // store
 import type { CoreRootStore } from "./root.store";
 

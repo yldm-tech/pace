@@ -20,7 +20,7 @@ import { ProfileWorkload } from "@/components/profile/overview/workload";
 // constants
 import { USER_PROFILE_DATA } from "@pace/constants";
 // services
-import { UserService } from "@/services/user.service";
+import { UserService } from "@pace/services";
 import type { Route } from "./+types/page";
 const userService = new UserService();
 
