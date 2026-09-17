@@ -9,7 +9,8 @@ node_modules
 .pnp.js
 
 # Testing
-/coverage
+# Unanchored: coverage is written under whichever app or package ran the tests, never at the repo root.
+coverage/
 
 # Next.js
 /.next/
@@ -25,7 +26,8 @@ build/
 .DS_Store
 *.pem
 .history
-tsconfig.tsbuildinfo
+# Every app writes one, and the names vary with the tsconfig they come from, so the rule has to be the glob rather than the single tsconfig.tsbuildinfo it used to name.
+*.tsbuildinfo
 
 # Debug
 npm-debug.log*
@@ -70,6 +72,7 @@ pnpm-debug.log
 
 # Sentry
 .sentryclirc
+.env.sentry-build-plugin
 
 # lock files
 package-lock.json
