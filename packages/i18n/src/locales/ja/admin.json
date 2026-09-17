@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "言語",
+      "description": "このコンソール自体の言語です。このブラウザーに記憶され、他のユーザーの表示は変わりません。"
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "一般",
+      "email": "メール",
+      "authentication": "認証",
+      "ai": "人工知能",
+      "images": "画像",
+      "workspace": "ワークスペース"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "変更を保存",
+      "saving": "保存中",
+      "cancel": "キャンセル",
+      "load_more": "もっと読み込む"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "成功",
+      "error": "エラー"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "言語モデル",
+      "subheading": "アシスタントが話すプロトコルは1つだけなので、OpenAI 互換のチャット補完を返すエンドポイントであればどれでも利用できます。",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "プロバイダー",
+        "custom": "カスタム",
+        "description": "プロバイダーを選ぶと、そのエンドポイントが入力され、モデルにデフォルトが設定されます。カスタムでは両方の入力が必要で、OpenAI 互換のチャット補完を返すものであれば何とでも連携します。"
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "補完のリクエスト先です。OpenAI 互換の POST /chat/completions に応答するものであれば、ゲートウェイでも、セルフホストのサーバーでも、プロバイダー自身のエンドポイントでも利用できます。OpenAI の場合は空欄のままにしてください。",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "モデル",
+        "fetch": "モデルを取得",
+        "refresh": "更新",
+        "fetching": "問い合わせ中…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "上のエンドポイントから一覧を取得するか、名前を入力してください。空欄の場合はプロバイダーのデフォルトを使用します。",
+        "hint_loaded": "{{count}} 件のモデル。入力すると絞り込めます。空欄のままにするとプロバイダーのデフォルトを使用します。",
+        "error_none": "エンドポイントは応答しましたが、モデルが1つも返されませんでした。",
+        "error_key": "エンドポイントがAPIキーを拒否しました。",
+        "error_not_found": "そのURLにはモデル一覧がありません。通常は /v1 のようにバージョンのセグメントが必要です。",
+        "error_unreachable": "エンドポイントに接続できませんでした。"
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "APIキー",
+        "description": "上の Base URL に Bearer トークンとして送信されます。",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "上の一覧にない場合は、カスタムを選んで Base URL を指定してください。OpenAI 互換のものであれば何でも使えます。",
+      "saved": "AI設定が正常に更新されました"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "インスタンスの詳細",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "インスタンス名",
+        "placeholder": "インスタンス名"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "メールアドレス",
+        "placeholder": "管理者のメールアドレス"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "インスタンスID",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "テレメトリー",
+        "description": "Paceが匿名の利用データを収集することを許可します"
       },
-      "saved": "Settings updated successfully"
+      "saved": "設定が正常に更新されました"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "サードパーティの画像ライブラリ",
+      "subheading": "ユーザーがサードパーティのライブラリから画像を検索して選べるようにします",
+      "saved": "画像設定が正常に更新されました"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "自分のインスタンスから安全にメールを送信",
+      "subheading": "設定に誤りがあると、メールの不達やエラーにつながります。",
+      "disabled_title": "メール機能を無効化しました",
+      "disabled_message": "メール機能が無効になりました",
+      "disable_error_title": "メールの無効化エラー",
+      "disable_error_message": "メール機能を無効にできませんでした。もう一度お試しください。",
+      "saved": "メール設定が正常に更新されました",
+      "host": "ホスト",
+      "port": "ポート",
+      "sender": "送信元のメールアドレス",
+      "username": "ユーザー名",
+      "security": "メールのセキュリティ",
+      "authentication": "認証"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "インスタンスの認証方法を管理",
+      "available_modes": "利用可能な認証方法",
+      "allow_signup": "招待がなくても誰でもサインアップできるようにする",
+      "cannot_disable": "認証を無効にできません",
+      "saving": "設定を保存中",
+      "saved": "設定が正常に保存されました",
+      "save_failed": "設定の保存に失敗しました",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "client_secret": "Client Secret",
+      "host": "ホスト",
+      "origin_url": "オリジンURL",
+      "callback_uri": "コールバックURI",
+      "callback_url": "コールバックURL",
+      "redirect_uri": "リダイレクトURI",
+      "application_id": "アプリケーションID",
+      "secret": "シークレット",
+      "organization_id": "組織ID",
+      "gitea_host": "Giteaホスト",
+      "authorized_origins": "許可されたJavaScriptオリジン",
+      "authorized_redirect": "許可されたリダイレクトURI",
+      "authorized_callback": "許可されたコールバックURI",
+      "authorized_origin_url": "許可されたオリジンURL"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "continue": "続行",
+      "sign_in": "サインイン",
+      "show_password": "パスワードを表示",
+      "hide_password": "パスワードを非表示",
+      "see_more": "もっと見る",
+      "first_name": "名",
+      "last_name": "姓",
+      "company_name": "会社名",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "パスワードを入力してください",
+      "password_short": "パスワードが短すぎます",
+      "password_weak": "パスワードの強度が弱いです",
+      "password_strong": "パスワードの強度が強いです",
+      "keep_editing": "編集を続ける",
+      "owned_by": "所有者：",
+      "total_projects": "プロジェクト総数：",
+      "total_members": "メンバー総数：",
+      "unique_codes": "ユニークコード",
+      "passwords": "パスワード"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Paceインスタンスをセットアップ",
+      "set_password": "パスワードを設定",
+      "new_password": "新しいパスワード",
+      "confirm_password": "パスワードを確認",
+      "telemetry": "Paceが利用イベントを匿名で収集することを許可する"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Paceインスタンスを管理",
+      "password_placeholder": "パスワードを入力"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "ワークスペース",
+      "create": "ワークスペースを作成",
+      "prevent_creation": "他のユーザーがワークスペースを作成できないようにします。",
+      "created": "ワークスペースが正常に作成されました。",
+      "create_failed": "ワークスペースを作成できませんでした。もう一度お試しください。",
+      "create_error": "ワークスペースの作成中にエラーが発生しました。もう一度お試しください。",
+      "name_placeholder": "親しみやすく、すぐに分かる名前が一番です。",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "戻る"
     }
   }
 }

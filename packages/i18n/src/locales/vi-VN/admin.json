@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Ngôn ngữ",
+      "description": "Ngôn ngữ của riêng bảng điều khiển này. Lựa chọn được ghi nhớ trong trình duyệt này và không làm thay đổi những gì người khác nhìn thấy."
     },
     "nav": {
-      "general": "General",
+      "general": "Chung",
       "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "authentication": "Xác thực",
+      "ai": "Trí tuệ nhân tạo",
+      "images": "Hình ảnh",
+      "workspace": "Không gian làm việc"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Lưu thay đổi",
+      "saving": "Đang lưu",
+      "cancel": "Hủy",
+      "load_more": "Tải thêm"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Thành công",
+      "error": "Lỗi"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Mô hình ngôn ngữ",
+      "subheading": "Trợ lý chỉ nói một giao thức, nên bất kỳ endpoint nào trả lời chat completion OpenAI-shaped đều có thể phục vụ nó.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Nhà cung cấp",
+        "custom": "Tùy chỉnh",
+        "description": "Chọn một nhà cung cấp sẽ tự điền endpoint của nó và đặt sẵn một mô hình mặc định. Tùy chỉnh yêu cầu bạn nhập cả hai, và hoạt động với bất cứ thứ gì trả lời chat completion OpenAI-shaped."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Nơi các completion được yêu cầu. Bất cứ thứ gì trả lời POST /chat/completions OpenAI-shaped đều dùng được ở đây — một gateway, một máy chủ tự vận hành, hoặc endpoint riêng của nhà cung cấp. Để trống nếu dùng OpenAI.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "Mô hình",
+        "fetch": "Lấy danh sách mô hình",
+        "refresh": "Làm mới",
+        "fetching": "Đang hỏi…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Lấy danh sách từ endpoint ở trên, hoặc tự nhập tên. Để trống sẽ dùng mô hình mặc định của nhà cung cấp.",
+        "hint_loaded": "{{count}} mô hình. Bắt đầu gõ để lọc, hoặc để trống để dùng mặc định của nhà cung cấp.",
+        "error_none": "Endpoint đã trả lời, nhưng không liệt kê mô hình nào.",
+        "error_key": "Endpoint đã từ chối khóa API.",
+        "error_not_found": "Không có danh sách mô hình tại URL đó. Thường thì URL cần phần phiên bản, như /v1.",
+        "error_unreachable": "Không thể kết nối tới endpoint."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "Khóa API",
+        "description": "Được gửi dưới dạng bearer token tới Base URL ở trên.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Không có trong danh sách trên? Hãy chọn Tùy chỉnh và nhập Base URL — bất cứ thứ gì OpenAI-shaped đều được.",
+      "saved": "Đã cập nhật cài đặt AI thành công"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Chi tiết instance",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Tên của instance",
+        "placeholder": "Tên instance"
       },
       "email": {
         "label": "Email",
-        "placeholder": "Admin email"
+        "placeholder": "Email quản trị viên"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ID instance",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Dữ liệu đo từ xa",
+        "description": "Cho phép Pace thu thập dữ liệu sử dụng ẩn danh"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Đã cập nhật cài đặt thành công"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Thư viện ảnh của bên thứ ba",
+      "subheading": "Cho phép người dùng của bạn tìm và chọn ảnh từ các thư viện của bên thứ ba",
+      "saved": "Đã cập nhật cài đặt hình ảnh thành công"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "Email an toàn từ chính instance của bạn",
+      "subheading": "Cấu hình sai có thể khiến email bị trả lại và phát sinh lỗi.",
+      "disabled_title": "Đã tắt tính năng email",
+      "disabled_message": "Tính năng email đã được tắt",
+      "disable_error_title": "Lỗi khi tắt email",
+      "disable_error_message": "Không thể tắt tính năng email. Vui lòng thử lại.",
+      "saved": "Đã cập nhật cài đặt email thành công",
+      "host": "Máy chủ",
+      "port": "Cổng",
+      "sender": "Địa chỉ email người gửi",
+      "username": "Tên người dùng",
+      "security": "Bảo mật email",
+      "authentication": "Xác thực"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Quản lý các phương thức xác thực cho instance của bạn",
+      "available_modes": "Các phương thức xác thực khả dụng",
+      "allow_signup": "Cho phép bất kỳ ai đăng ký ngay cả khi không có lời mời",
+      "cannot_disable": "Không thể tắt xác thực",
+      "saving": "Đang lưu cấu hình",
+      "saved": "Đã lưu cấu hình thành công",
+      "save_failed": "Không thể lưu cấu hình",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
+      "client_secret": "Client Secret",
+      "host": "Máy chủ",
+      "origin_url": "URL nguồn gốc",
+      "callback_uri": "URI gọi lại",
+      "callback_url": "URL gọi lại",
+      "redirect_uri": "URI chuyển hướng",
+      "application_id": "ID ứng dụng",
       "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "organization_id": "ID tổ chức",
+      "gitea_host": "Máy chủ Gitea",
+      "authorized_origins": "Các nguồn gốc JavaScript được ủy quyền",
+      "authorized_redirect": "URI chuyển hướng được ủy quyền",
+      "authorized_callback": "URI gọi lại được ủy quyền",
+      "authorized_origin_url": "URL nguồn gốc được ủy quyền"
     },
     "common": {
       "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "password": "Mật khẩu",
+      "continue": "Tiếp tục",
+      "sign_in": "Đăng nhập",
+      "show_password": "Hiện mật khẩu",
+      "hide_password": "Ẩn mật khẩu",
+      "see_more": "Xem thêm",
+      "first_name": "Tên",
+      "last_name": "Họ",
+      "company_name": "Tên công ty",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Vui lòng nhập mật khẩu của bạn",
+      "password_short": "Mật khẩu quá ngắn",
+      "password_weak": "Mật khẩu yếu",
+      "password_strong": "Mật khẩu mạnh",
+      "keep_editing": "Tiếp tục chỉnh sửa",
+      "owned_by": "Sở hữu bởi:",
+      "total_projects": "Tổng số dự án:",
+      "total_members": "Tổng số thành viên:",
+      "unique_codes": "Mã duy nhất",
+      "passwords": "Mật khẩu"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Thiết lập instance Pace của bạn",
+      "set_password": "Đặt mật khẩu",
+      "new_password": "Mật khẩu mới",
+      "confirm_password": "Xác nhận mật khẩu",
+      "telemetry": "Cho phép Pace thu thập ẩn danh các sự kiện sử dụng"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Quản lý instance Pace của bạn",
+      "password_placeholder": "Nhập mật khẩu của bạn"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Không gian làm việc",
+      "create": "Tạo không gian làm việc",
+      "prevent_creation": "Ngăn bất kỳ ai khác tạo không gian làm việc.",
+      "created": "Đã tạo không gian làm việc thành công.",
+      "create_failed": "Không thể tạo không gian làm việc. Vui lòng thử lại.",
+      "create_error": "Đã xảy ra lỗi khi tạo không gian làm việc. Vui lòng thử lại.",
+      "name_placeholder": "Một cái tên quen thuộc và dễ nhận ra luôn là tốt nhất.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Quay lại"
     }
   }
 }

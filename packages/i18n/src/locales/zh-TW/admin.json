@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "語言",
+      "description": "主控台本身使用的語言。設定會記在這個瀏覽器中，不會改變其他人看到的內容。"
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "一般",
+      "email": "電子郵件",
+      "authentication": "驗證",
+      "ai": "人工智慧",
+      "images": "圖片",
+      "workspace": "工作區"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "儲存變更",
+      "saving": "儲存中",
+      "cancel": "取消",
+      "load_more": "載入更多"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "成功",
+      "error": "錯誤"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "語言模型",
+      "subheading": "助理只使用一種協定，因此任何能回應 OpenAI 格式聊天補全的端點都能為它服務。",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "提供者",
+        "custom": "自訂",
+        "description": "選擇其中一項會自動填入它的端點，並給模型一個預設值。自訂則兩者都要自行填寫，而且適用於任何能回應 OpenAI 格式聊天補全的服務。"
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "向這裡索取補全結果。任何能回應 OpenAI 格式 POST /chat/completions 的服務都可以用——閘道、自架伺服器，或提供者自己的端點。使用 OpenAI 時請留空。",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "模型",
+        "fetch": "取得模型清單",
+        "refresh": "重新整理",
+        "fetching": "查詢中…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "從上方的端點取得清單，或直接輸入名稱。留空則使用提供者的預設模型。",
+        "hint_loaded": "{{count}} 個模型。開始輸入即可篩選，或留空以使用提供者的預設模型。",
+        "error_none": "端點有回應，但沒有列出任何模型。",
+        "error_key": "端點拒絕了這組 API 金鑰。",
+        "error_not_found": "該 URL 上沒有模型清單。通常需要加上版本路徑，例如 /v1。",
+        "error_unreachable": "無法連線到該端點。"
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API 金鑰",
+        "description": "會以 bearer token 的形式傳送到上方的 Base URL。",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "上面沒有列出您要用的？請選擇「自訂」並填入它的 Base URL——只要相容 OpenAI 格式的服務都可以。",
+      "saved": "AI 設定更新成功"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "執行個體詳細資料",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "執行個體名稱",
+        "placeholder": "執行個體名稱"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "電子郵件",
+        "placeholder": "管理員電子郵件"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "執行個體 ID",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "遙測",
+        "description": "允許 Pace 收集匿名使用資料"
       },
-      "saved": "Settings updated successfully"
+      "saved": "設定更新成功"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "第三方圖片庫",
+      "subheading": "讓您的使用者從第三方圖片庫搜尋並挑選圖片",
+      "saved": "圖片設定更新成功"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "從您自己的執行個體安全地寄送電子郵件",
+      "subheading": "設定錯誤可能導致郵件退信與錯誤。",
+      "disabled_title": "電子郵件功能已停用",
+      "disabled_message": "電子郵件功能已被停用",
+      "disable_error_title": "停用電子郵件時發生錯誤",
+      "disable_error_message": "停用電子郵件功能失敗。請再試一次。",
+      "saved": "電子郵件設定更新成功",
+      "host": "主機",
+      "port": "連接埠",
+      "sender": "寄件者電子郵件地址",
+      "username": "使用者名稱",
+      "security": "電子郵件安全性",
+      "authentication": "驗證"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "管理您執行個體的驗證方式",
+      "available_modes": "可用的驗證方式",
+      "allow_signup": "允許任何人在沒有邀請的情況下註冊",
+      "cannot_disable": "無法停用驗證",
+      "saving": "儲存設定中",
+      "saved": "設定儲存成功",
+      "save_failed": "儲存設定失敗",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "client_secret": "Client Secret",
+      "host": "主機",
+      "origin_url": "來源 URL",
+      "callback_uri": "回呼 URI",
+      "callback_url": "回呼 URL",
+      "redirect_uri": "重新導向 URI",
+      "application_id": "應用程式 ID",
+      "secret": "密鑰",
+      "organization_id": "組織 ID",
+      "gitea_host": "Gitea 主機",
+      "authorized_origins": "已授權的 JavaScript 來源",
+      "authorized_redirect": "已授權的重新導向 URI",
+      "authorized_callback": "已授權的回呼 URI",
+      "authorized_origin_url": "已授權的來源 URL"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "電子郵件",
+      "password": "密碼",
+      "continue": "繼續",
+      "sign_in": "登入",
+      "show_password": "顯示密碼",
+      "hide_password": "隱藏密碼",
+      "see_more": "查看更多",
+      "first_name": "名字",
+      "last_name": "姓氏",
+      "company_name": "公司名稱",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "請輸入您的密碼",
+      "password_short": "密碼太短",
+      "password_weak": "密碼強度弱",
+      "password_strong": "密碼強度強",
+      "keep_editing": "繼續編輯",
+      "owned_by": "擁有者：",
+      "total_projects": "專案總數：",
+      "total_members": "成員總數：",
+      "unique_codes": "唯一代碼",
+      "passwords": "密碼"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "設定您的 Pace 執行個體",
+      "set_password": "設定密碼",
+      "new_password": "新密碼",
+      "confirm_password": "確認密碼",
+      "telemetry": "允許 Pace 匿名收集使用事件"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "管理您的 Pace 執行個體",
+      "password_placeholder": "請輸入您的密碼"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "工作區",
+      "create": "建立工作區",
+      "prevent_creation": "禁止其他人建立工作區。",
+      "created": "工作區建立成功。",
+      "create_failed": "無法建立工作區。請再試一次。",
+      "create_error": "建立工作區時發生錯誤。請再試一次。",
+      "name_placeholder": "取一個熟悉好記的名稱總是最好的。",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "返回"
     }
   }
 }

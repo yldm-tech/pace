@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Dil",
+      "description": "Konsolun kendi dili. Bu tarayıcıda hatırlanır ve başkalarının gördüğü dili değiştirmez."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "Genel",
+      "email": "E-posta",
+      "authentication": "Kimlik Doğrulama",
+      "ai": "Yapay zeka",
+      "images": "Görseller",
+      "workspace": "Çalışma alanları"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Değişiklikleri kaydet",
+      "saving": "Kaydediliyor",
+      "cancel": "İptal",
+      "load_more": "Daha fazla yükle"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Başarılı",
+      "error": "Hata"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Dil modeli",
+      "subheading": "Asistan tek bir protokol konuşur; bu nedenle OpenAI-shaped bir sohbet tamamlama yanıtı veren her uç nokta ona hizmet edebilir.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Sağlayıcı",
+        "custom": "Özel",
+        "description": "Bir sağlayıcı seçmek onun uç noktasını doldurur ve modele bir varsayılan verir. Özel seçeneği her ikisini de sizden ister ve OpenAI-shaped bir sohbet tamamlama yanıtı veren her şeyle çalışır."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Tamamlamaların istendiği adres. OpenAI-shaped bir POST /chat/completions isteğine yanıt veren her şey burada çalışır — bir ağ geçidi, kendi barındırdığınız bir sunucu ya da sağlayıcının kendi uç noktası. OpenAI için boş bırakın.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
         "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "fetch": "Modelleri getir",
+        "refresh": "Yenile",
+        "fetching": "Soruluyor…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Listeyi yukarıdaki uç noktadan getirin veya bir ad yazın. Boş bırakılırsa sağlayıcının varsayılanı kullanılır.",
+        "hint_loaded": "{{count}} model. Filtrelemek için yazmaya başlayın veya sağlayıcının varsayılanı için boş bırakın.",
+        "error_none": "Uç nokta yanıt verdi ama hiç model listelemedi.",
+        "error_key": "Uç nokta API anahtarını reddetti.",
+        "error_not_found": "Bu URL'de model listesi yok. Genellikle /v1 gibi bir sürüm bölümü gerekir.",
+        "error_unreachable": "Uç noktaya ulaşılamadı."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API anahtarı",
+        "description": "Yukarıdaki Base URL adresine bearer token olarak gönderilir.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Yukarıda yok mu? Özel'i seçin ve Base URL bilgisini girin — OpenAI-shaped olan her şey iş görür.",
+      "saved": "Yapay zeka ayarları başarıyla güncellendi"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Örnek ayrıntıları",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Örneğin adı",
+        "placeholder": "Örnek adı"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "E-posta",
+        "placeholder": "Yönetici e-postası"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "Örnek kimliği",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Telemetri",
+        "description": "Pace'in anonim kullanım verisi toplamasına izin verin"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Ayarlar başarıyla güncellendi"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Üçüncü taraf görsel kitaplıkları",
+      "subheading": "Kullanıcılarınızın üçüncü taraf kitaplıklarından görsel aramasına ve seçmesine izin verin",
+      "saved": "Görsel ayarları başarıyla güncellendi"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
+      "heading": "Kendi örneğinizden güvenli e-postalar",
+      "subheading": "Hatalı yapılandırmalar e-postaların geri dönmesine ve hatalara yol açabilir.",
+      "disabled_title": "E-posta özelliği devre dışı bırakıldı",
+      "disabled_message": "E-posta özelliği devre dışı bırakıldı",
+      "disable_error_title": "E-posta devre dışı bırakılırken hata",
+      "disable_error_message": "E-posta özelliği devre dışı bırakılamadı. Lütfen tekrar deneyin.",
+      "saved": "E-posta ayarları başarıyla güncellendi",
+      "host": "Sunucu",
       "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "sender": "Gönderenin e-posta adresi",
+      "username": "Kullanıcı adı",
+      "security": "E-posta güvenliği",
+      "authentication": "Kimlik Doğrulama"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Örneğiniz için kimlik doğrulama modlarını yönetin",
+      "available_modes": "Kullanılabilir kimlik doğrulama modları",
+      "allow_signup": "Daveti olmayanlar dahil herkesin kaydolmasına izin ver",
+      "cannot_disable": "Kimlik doğrulama devre dışı bırakılamaz",
+      "saving": "Yapılandırma kaydediliyor",
+      "saved": "Yapılandırma başarıyla kaydedildi",
+      "save_failed": "Yapılandırma kaydedilemedi",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "client_secret": "Client Secret",
+      "host": "Sunucu",
+      "origin_url": "Kaynak URL'si",
+      "callback_uri": "Geri çağırma URI'si",
+      "callback_url": "Geri çağırma URL'si",
+      "redirect_uri": "Yönlendirme URI'si",
+      "application_id": "Uygulama kimliği",
+      "secret": "Gizli anahtar",
+      "organization_id": "Kuruluş kimliği",
+      "gitea_host": "Gitea Sunucusu",
+      "authorized_origins": "Yetkilendirilmiş JavaScript kaynakları",
+      "authorized_redirect": "Yetkilendirilmiş Yönlendirme URI'si",
+      "authorized_callback": "Yetkilendirilmiş Geri Çağırma URI'si",
+      "authorized_origin_url": "Yetkilendirilmiş kaynak URL'si"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "E-posta",
+      "password": "Şifre",
+      "continue": "Devam et",
+      "sign_in": "Giriş yap",
+      "show_password": "Şifreyi göster",
+      "hide_password": "Şifreyi gizle",
+      "see_more": "Daha Fazla Gör",
+      "first_name": "Ad",
+      "last_name": "Soyad",
+      "company_name": "Şirket adı",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Lütfen şifrenizi girin",
+      "password_short": "Şifre çok kısa",
+      "password_weak": "Şifre zayıf",
+      "password_strong": "Şifre güçlü",
+      "keep_editing": "Düzenlemeye devam et",
+      "owned_by": "Sahibi:",
+      "total_projects": "Toplam proje:",
+      "total_members": "Toplam üye:",
+      "unique_codes": "Benzersiz kodlar",
+      "passwords": "Şifreler"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Pace örneğinizi kurun",
+      "set_password": "Şifre belirle",
+      "new_password": "Yeni şifre",
+      "confirm_password": "Şifreyi onayla",
+      "telemetry": "Pace'in kullanım olaylarını anonim olarak toplamasına izin verin"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Pace örneğinizi yönetin",
+      "password_placeholder": "Şifrenizi girin"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Çalışma alanları",
+      "create": "Çalışma alanı oluştur",
+      "prevent_creation": "Başka kimsenin çalışma alanı oluşturmasını engelle.",
+      "created": "Çalışma alanı başarıyla oluşturuldu.",
+      "create_failed": "Çalışma alanı oluşturulamadı. Lütfen tekrar deneyin.",
+      "create_error": "Çalışma alanı oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.",
+      "name_placeholder": "Tanıdık ve akılda kalıcı bir ad her zaman en iyisidir.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Geri dön"
     }
   }
 }

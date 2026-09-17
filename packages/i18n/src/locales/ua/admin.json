@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Мова",
+      "description": "Мова самої консолі. Вона запам'ятовується в цьому браузері й не змінює того, що бачать інші."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "Загальне",
+      "email": "Електронна пошта",
+      "authentication": "Автентифікація",
+      "ai": "Штучний інтелект",
+      "images": "Зображення",
+      "workspace": "Робочі простори"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Зберегти зміни",
+      "saving": "Збереження",
+      "cancel": "Скасувати",
+      "load_more": "Завантажити ще"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Успіх",
+      "error": "Помилка"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Мовна модель",
+      "subheading": "Асистент спілкується одним протоколом, тож обслуговувати його може будь-яка кінцева точка, яка відповідає на OpenAI-сумісні запити чату.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Провайдер",
+        "custom": "Власний",
+        "description": "Вибір провайдера підставляє його кінцеву точку й задає модель за замовчуванням. Варіант «Власний» запитує і те, і інше та працює з будь-чим, що відповідає на OpenAI-сумісні запити чату."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Куди надсилаються запити на генерацію відповідей. Тут підійде будь-що, що відповідає на OpenAI-сумісний POST /chat/completions — шлюз, сервер на власному хостингу або власна кінцева точка провайдера. Для OpenAI залиште порожнім.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
-        "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "label": "Модель",
+        "fetch": "Отримати моделі",
+        "refresh": "Оновити",
+        "fetching": "Запит…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Отримайте список із кінцевої точки вище або введіть назву вручну. Порожнє поле означає модель провайдера за замовчуванням.",
+        "hint_loaded": "Моделей: {{count}}. Почніть вводити, щоб відфільтрувати, або залиште порожнім для моделі провайдера за замовчуванням.",
+        "error_none": "Кінцева точка відповіла, але не повернула жодної моделі.",
+        "error_key": "Кінцева точка відхилила API-ключ.",
+        "error_not_found": "За цією URL немає списку моделей. Зазвичай потрібен сегмент версії, як-от /v1.",
+        "error_unreachable": "Не вдалося зв'язатися з кінцевою точкою."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API-ключ",
+        "description": "Надсилається як bearer token на Base URL вище.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Немає у списку вище? Виберіть «Власний» і вкажіть Base URL — підійде будь-що OpenAI-сумісне.",
+      "saved": "Налаштування штучного інтелекту успішно оновлено"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Дані інстансу",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Назва інстансу",
+        "placeholder": "Назва інстансу"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "Електронна пошта",
+        "placeholder": "Електронна пошта адміністратора"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ID інстансу",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Телеметрія",
+        "description": "Дозволити Pace збирати анонімні дані про використання"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Налаштування успішно оновлено"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Сторонні бібліотеки зображень",
+      "subheading": "Дозвольте своїм користувачам шукати та вибирати зображення зі сторонніх бібліотек",
+      "saved": "Налаштування зображень успішно оновлено"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
-      "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "heading": "Безпечна електронна пошта з вашого власного інстансу",
+      "subheading": "Помилки в конфігурації можуть призводити до повернення листів і збоїв.",
+      "disabled_title": "Електронну пошту вимкнено",
+      "disabled_message": "Функцію електронної пошти вимкнено",
+      "disable_error_title": "Помилка вимкнення електронної пошти",
+      "disable_error_message": "Не вдалося вимкнути функцію електронної пошти. Будь ласка, спробуйте ще раз.",
+      "saved": "Налаштування електронної пошти успішно оновлено",
+      "host": "Хост",
+      "port": "Порт",
+      "sender": "Адреса електронної пошти відправника",
+      "username": "Ім'я користувача",
+      "security": "Безпека електронної пошти",
+      "authentication": "Автентифікація"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Керуйте режимами автентифікації для свого інстансу",
+      "available_modes": "Доступні режими автентифікації",
+      "allow_signup": "Дозволити реєструватися будь-кому, навіть без запрошення",
+      "cannot_disable": "Неможливо вимкнути автентифікацію",
+      "saving": "Збереження конфігурації",
+      "saved": "Конфігурацію успішно збережено",
+      "save_failed": "Не вдалося зберегти конфігурацію",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "client_secret": "Client Secret",
+      "host": "Хост",
+      "origin_url": "URL джерела",
+      "callback_uri": "URI зворотного виклику",
+      "callback_url": "URL зворотного виклику",
+      "redirect_uri": "URI перенаправлення",
+      "application_id": "ID застосунку",
+      "secret": "Секрет",
+      "organization_id": "ID організації",
+      "gitea_host": "Хост Gitea",
+      "authorized_origins": "Авторизовані джерела JavaScript",
+      "authorized_redirect": "Авторизований URI перенаправлення",
+      "authorized_callback": "Авторизований URI зворотного виклику",
+      "authorized_origin_url": "Авторизований URL джерела"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "Електронна пошта",
+      "password": "Пароль",
+      "continue": "Продовжити",
+      "sign_in": "Увійти",
+      "show_password": "Показати пароль",
+      "hide_password": "Сховати пароль",
+      "see_more": "Переглянути більше",
+      "first_name": "Ім'я",
+      "last_name": "Прізвище",
+      "company_name": "Назва компанії",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Будь ласка, введіть свій пароль",
+      "password_short": "Пароль занадто короткий",
+      "password_weak": "Пароль слабкий",
+      "password_strong": "Пароль надійний",
+      "keep_editing": "Продовжити редагування",
+      "owned_by": "Власник:",
+      "total_projects": "Усього проєктів:",
+      "total_members": "Усього учасників:",
+      "unique_codes": "Унікальні коди",
+      "passwords": "Паролі"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Налаштуйте свій інстанс Pace",
+      "set_password": "Встановіть пароль",
+      "new_password": "Новий пароль",
+      "confirm_password": "Підтвердьте пароль",
+      "telemetry": "Дозволити Pace анонімно збирати події використання"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Керуйте своїм інстансом Pace",
+      "password_placeholder": "Введіть свій пароль"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Робочі простори",
+      "create": "Створити робочий простір",
+      "prevent_creation": "Заборонити всім іншим створювати робочі простори.",
+      "created": "Робочий простір успішно створено.",
+      "create_failed": "Не вдалося створити робочий простір. Будь ласка, спробуйте ще раз.",
+      "create_error": "Під час створення робочого простору сталася помилка. Будь ласка, спробуйте ще раз.",
+      "name_placeholder": "Щось знайоме й упізнаване — завжди найкращий варіант.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Назад"
     }
   }
 }

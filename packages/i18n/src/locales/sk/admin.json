@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Jazyk",
+      "description": "Jazyk samotnej konzoly. Zapamätá sa v tomto prehliadači a nemení to, čo vidia ostatní."
     },
     "nav": {
-      "general": "General",
-      "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "general": "Všeobecné",
+      "email": "E-mail",
+      "authentication": "Overovanie",
+      "ai": "Umelá inteligencia",
+      "images": "Obrázky",
+      "workspace": "Pracovné priestory"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Uložiť zmeny",
+      "saving": "Ukladanie",
+      "cancel": "Zrušiť",
+      "load_more": "Načítať viac"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Úspech",
+      "error": "Chyba"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Jazykový model",
+      "subheading": "Asistent hovorí jediným protokolom, takže ho dokáže obslúžiť ktorýkoľvek endpoint, ktorý odpovedá OpenAI-shaped chat completion.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Poskytovateľ",
+        "custom": "Vlastný",
+        "description": "Výber poskytovateľa doplní jeho endpoint a modelu priradí predvolenú hodnotu. Vlastný si vyžiada oboje a funguje s čímkoľvek, čo odpovedá OpenAI-shaped chat completion."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Kam sa posielajú žiadosti o completions. Funguje tu čokoľvek, čo odpovedá na OpenAI-shaped POST /chat/completions — brána, vlastný server alebo endpoint samotného poskytovateľa. Pre OpenAI nechajte pole prázdne.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
         "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "fetch": "Načítať modely",
+        "refresh": "Obnoviť",
+        "fetching": "Zisťuje sa…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Načítajte zoznam z endpointu vyššie alebo zadajte názov. Prázdne pole použije predvolený model poskytovateľa.",
+        "hint_loaded": "Počet modelov: {{count}}. Začnite písať pre filtrovanie alebo nechajte pole prázdne pre predvolený model poskytovateľa.",
+        "error_none": "Endpoint odpovedal, ale neuviedol žiadne modely.",
+        "error_key": "Endpoint odmietol API kľúč.",
+        "error_not_found": "Na tejto URL nie je žiadny zoznam modelov. Zvyčajne treba doplniť segment s verziou, napríklad /v1.",
+        "error_unreachable": "Endpoint sa nepodarilo kontaktovať."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "API kľúč",
+        "description": "Odosiela sa ako bearer token na Base URL uvedenú vyššie.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Nie je vo výbere vyššie? Zvoľte Vlastný a zadajte base URL — postačí čokoľvek OpenAI-shaped.",
+      "saved": "Nastavenia AI boli úspešne aktualizované"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Podrobnosti o inštancii",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Názov inštancie",
+        "placeholder": "Názov inštancie"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "Admin email"
+        "label": "E-mail",
+        "placeholder": "E-mail správcu"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ID inštancie",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Telemetria",
+        "description": "Povoliť Pace zbierať anonymné údaje o používaní"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Nastavenia boli úspešne aktualizované"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Knižnice obrázkov tretích strán",
+      "subheading": "Umožnite svojim používateľom vyhľadávať a vyberať obrázky z knižníc tretích strán",
+      "saved": "Nastavenia obrázkov boli úspešne aktualizované"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
-      "host": "Host",
+      "heading": "Zabezpečené e-maily z vašej vlastnej inštancie",
+      "subheading": "Nesprávna konfigurácia môže viesť k nedoručeným e-mailom a chybám.",
+      "disabled_title": "Funkcia e-mailu je vypnutá",
+      "disabled_message": "Funkcia e-mailu bola vypnutá",
+      "disable_error_title": "Chyba pri vypínaní e-mailu",
+      "disable_error_message": "Funkciu e-mailu sa nepodarilo vypnúť. Skúste to prosím znova.",
+      "saved": "Nastavenia e-mailu boli úspešne aktualizované",
+      "host": "Hostiteľ",
       "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "sender": "E-mailová adresa odosielateľa",
+      "username": "Používateľské meno",
+      "security": "Zabezpečenie e-mailu",
+      "authentication": "Overovanie"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Spravujte režimy overovania pre svoju inštanciu",
+      "available_modes": "Dostupné režimy overovania",
+      "allow_signup": "Povoliť komukoľvek zaregistrovať sa aj bez pozvánky",
+      "cannot_disable": "Overovanie sa nedá vypnúť",
+      "saving": "Ukladanie konfigurácie",
+      "saved": "Konfigurácia bola úspešne uložená",
+      "save_failed": "Konfiguráciu sa nepodarilo uložiť",
       "client_id": "Client ID",
       "client_secret": "Client secret",
-      "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "host": "Hostiteľ",
+      "origin_url": "URL zdroja",
+      "callback_uri": "URI spätného volania",
+      "callback_url": "URL spätného volania",
+      "redirect_uri": "URI presmerovania",
+      "application_id": "ID aplikácie",
+      "secret": "Tajný kľúč",
+      "organization_id": "ID organizácie",
+      "gitea_host": "Hostiteľ Gitea",
+      "authorized_origins": "Autorizované zdroje JavaScriptu",
+      "authorized_redirect": "Autorizovaná URI presmerovania",
+      "authorized_callback": "Autorizovaná URI spätného volania",
+      "authorized_origin_url": "Autorizovaná URL zdroja"
     },
     "common": {
-      "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "email": "E-mail",
+      "password": "Heslo",
+      "continue": "Pokračovať",
+      "sign_in": "Prihlásiť sa",
+      "show_password": "Zobraziť heslo",
+      "hide_password": "Skryť heslo",
+      "see_more": "Zobraziť viac",
+      "first_name": "Krstné meno",
+      "last_name": "Priezvisko",
+      "company_name": "Názov spoločnosti",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Zadajte prosím svoje heslo",
+      "password_short": "Heslo je príliš krátke",
+      "password_weak": "Heslo je slabé",
+      "password_strong": "Heslo je silné",
+      "keep_editing": "Pokračovať v úpravách",
+      "owned_by": "Vlastník:",
+      "total_projects": "Počet projektov:",
+      "total_members": "Počet členov:",
+      "unique_codes": "Jedinečné kódy",
+      "passwords": "Heslá"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Nastavte svoju inštanciu Pace",
+      "set_password": "Nastaviť heslo",
+      "new_password": "Nové heslo",
+      "confirm_password": "Potvrďte heslo",
+      "telemetry": "Povoliť Pace anonymne zbierať udalosti o používaní"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Spravujte svoju inštanciu Pace",
+      "password_placeholder": "Zadajte svoje heslo"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Pracovné priestory",
+      "create": "Vytvoriť pracovný priestor",
+      "prevent_creation": "Zabrániť komukoľvek ďalšiemu vo vytvorení pracovného priestoru.",
+      "created": "Pracovný priestor bol úspešne vytvorený.",
+      "create_failed": "Pracovný priestor sa nepodarilo vytvoriť. Skúste to prosím znova.",
+      "create_error": "Pri vytváraní pracovného priestoru nastala chyba. Skúste to prosím znova.",
+      "name_placeholder": "Vždy je najlepšie niečo známe a ľahko rozpoznateľné.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Späť"
     }
   }
 }

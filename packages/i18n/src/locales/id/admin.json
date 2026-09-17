@@ -1,166 +1,166 @@
 {
   "admin": {
     "language": {
-      "label": "Language",
-      "description": "The console's own language. It is remembered in this browser and does not change what anyone else sees."
+      "label": "Bahasa",
+      "description": "Bahasa tampilan konsol ini sendiri. Pilihan ini diingat di browser ini dan tidak mengubah apa yang dilihat orang lain."
     },
     "nav": {
-      "general": "General",
+      "general": "Umum",
       "email": "Email",
-      "authentication": "Authentication",
-      "ai": "Artificial intelligence",
-      "images": "Images",
-      "workspace": "Workspaces"
+      "authentication": "Autentikasi",
+      "ai": "Kecerdasan buatan",
+      "images": "Gambar",
+      "workspace": "Ruang kerja"
     },
     "actions": {
-      "save": "Save changes",
-      "saving": "Saving",
-      "cancel": "Cancel",
-      "load_more": "Load more"
+      "save": "Simpan perubahan",
+      "saving": "Menyimpan",
+      "cancel": "Batal",
+      "load_more": "Muat lebih banyak"
     },
     "toast": {
-      "success": "Success",
-      "error": "Error"
+      "success": "Sukses",
+      "error": "Kesalahan"
     },
     "ai": {
-      "heading": "Language model",
-      "subheading": "The assistant speaks one protocol, so any endpoint that answers an OpenAI-shaped chat completion can serve it.",
+      "heading": "Model bahasa",
+      "subheading": "Asisten hanya berbicara satu protokol, jadi endpoint apa pun yang menjawab chat completion OpenAI-shaped dapat melayaninya.",
       "provider": {
-        "label": "Provider",
-        "custom": "Custom",
-        "description": "Choosing one fills in its endpoint and gives the model a default. Custom asks for both, and works with anything that answers an OpenAI-shaped chat completion."
+        "label": "Penyedia",
+        "custom": "Kustom",
+        "description": "Memilih salah satunya akan mengisi endpoint-nya dan memberi model sebuah nilai default. Kustom meminta keduanya, dan bekerja dengan apa pun yang menjawab chat completion OpenAI-shaped."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Where completions are asked for. Anything that answers an OpenAI-shaped POST /chat/completions works here — a gateway, a self-hosted server, or a provider's own endpoint. Leave it empty for OpenAI.",
+        "description": "Tempat permintaan completion dikirim. Apa pun yang menjawab POST /chat/completions OpenAI-shaped bisa dipakai di sini — sebuah gateway, server yang Anda hosting sendiri, atau endpoint milik penyedia. Biarkan kosong untuk OpenAI.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
         "label": "Model",
-        "fetch": "Fetch models",
-        "refresh": "Refresh",
-        "fetching": "Asking…",
+        "fetch": "Ambil daftar model",
+        "refresh": "Segarkan",
+        "fetching": "Meminta…",
         "placeholder": "gpt-4o-mini",
-        "hint_empty": "Fetch the list from the endpoint above, or type a name. Empty uses the provider's default.",
-        "hint_loaded": "{{count}} models. Start typing to filter, or leave it empty for the provider's default.",
-        "error_none": "The endpoint answered, but listed no models.",
-        "error_key": "The endpoint rejected the API key.",
-        "error_not_found": "No model list at that URL. It usually needs the version segment, as in /v1.",
-        "error_unreachable": "The endpoint could not be reached."
+        "hint_empty": "Ambil daftarnya dari endpoint di atas, atau ketik sebuah nama. Kosong berarti memakai default penyedia.",
+        "hint_loaded": "{{count}} model. Mulai mengetik untuk menyaring, atau biarkan kosong untuk memakai default penyedia.",
+        "error_none": "Endpoint menjawab, tetapi tidak mencantumkan model apa pun.",
+        "error_key": "Endpoint menolak API key tersebut.",
+        "error_not_found": "Tidak ada daftar model di URL tersebut. Biasanya URL perlu segmen versi, seperti /v1.",
+        "error_unreachable": "Endpoint tidak dapat dihubungi."
       },
       "api_key": {
-        "label": "API key",
-        "description": "Sent as a bearer token to the base URL above.",
+        "label": "Kunci API",
+        "description": "Dikirim sebagai bearer token ke Base URL di atas.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Not listed above? Choose Custom and give it the base URL — anything OpenAI-shaped will do.",
-      "saved": "AI settings updated successfully"
+      "not_listed": "Tidak ada di daftar di atas? Pilih Kustom lalu isikan Base URL-nya — apa pun yang OpenAI-shaped bisa dipakai.",
+      "saved": "Pengaturan AI berhasil diperbarui"
     },
     "general": {
-      "heading": "Instance details",
+      "heading": "Detail instansi",
       "name": {
-        "label": "Name of instance",
-        "placeholder": "Instance name"
+        "label": "Nama instansi",
+        "placeholder": "Nama instansi"
       },
       "email": {
         "label": "Email",
-        "placeholder": "Admin email"
+        "placeholder": "Email admin"
       },
-      "instance_id": "Instance ID",
+      "instance_id": "ID instansi",
       "telemetry": {
-        "label": "Telemetry",
-        "description": "Let Pace collect anonymous usage data"
+        "label": "Telemetri",
+        "description": "Izinkan Pace mengumpulkan data penggunaan anonim"
       },
-      "saved": "Settings updated successfully"
+      "saved": "Pengaturan berhasil diperbarui"
     },
     "images": {
-      "heading": "Third-party image libraries",
-      "subheading": "Let your users search and choose images from third-party libraries",
-      "saved": "Image settings updated successfully"
+      "heading": "Pustaka gambar pihak ketiga",
+      "subheading": "Izinkan pengguna Anda mencari dan memilih gambar dari pustaka pihak ketiga",
+      "saved": "Pengaturan gambar berhasil diperbarui"
     },
     "email": {
-      "heading": "Secure emails from your own instance",
-      "subheading": "Misconfigs can lead to email bounces and errors.",
-      "disabled_title": "Email feature disabled",
-      "disabled_message": "Email feature has been disabled",
-      "disable_error_title": "Error disabling email",
-      "disable_error_message": "Failed to disable email feature. Please try again.",
-      "saved": "Email settings updated successfully",
+      "heading": "Email yang aman dari instansi Anda sendiri",
+      "subheading": "Konfigurasi yang keliru dapat menyebabkan email terpental dan gagal terkirim.",
+      "disabled_title": "Fitur email dinonaktifkan",
+      "disabled_message": "Fitur email telah dinonaktifkan",
+      "disable_error_title": "Kesalahan saat menonaktifkan email",
+      "disable_error_message": "Gagal menonaktifkan fitur email. Silakan coba lagi.",
+      "saved": "Pengaturan email berhasil diperbarui",
       "host": "Host",
       "port": "Port",
-      "sender": "Sender's email address",
-      "username": "Username",
-      "security": "Email security",
-      "authentication": "Authentication"
+      "sender": "Alamat email pengirim",
+      "username": "Nama pengguna",
+      "security": "Keamanan email",
+      "authentication": "Autentikasi"
     },
     "auth": {
-      "heading": "Manage authentication modes for your instance",
-      "available_modes": "Available authentication modes",
-      "allow_signup": "Allow anyone to sign up even without an invite",
-      "cannot_disable": "Cannot disable authentication",
-      "saving": "Saving configuration",
-      "saved": "Configuration saved successfully",
-      "save_failed": "Failed to save configuration",
+      "heading": "Kelola mode autentikasi untuk instansi Anda",
+      "available_modes": "Mode autentikasi yang tersedia",
+      "allow_signup": "Izinkan siapa pun mendaftar meski tanpa undangan",
+      "cannot_disable": "Tidak dapat menonaktifkan autentikasi",
+      "saving": "Menyimpan konfigurasi",
+      "saved": "Konfigurasi berhasil disimpan",
+      "save_failed": "Gagal menyimpan konfigurasi",
       "client_id": "Client ID",
-      "client_secret": "Client secret",
+      "client_secret": "Client Secret",
       "host": "Host",
-      "origin_url": "Origin URL",
-      "callback_uri": "Callback URI",
-      "callback_url": "Callback URL",
-      "redirect_uri": "Redirect URI",
-      "application_id": "Application ID",
-      "secret": "Secret",
-      "organization_id": "Organization ID",
-      "gitea_host": "Gitea Host",
-      "authorized_origins": "Authorized JavaScript origins",
-      "authorized_redirect": "Authorized Redirect URI",
-      "authorized_callback": "Authorized Callback URI",
-      "authorized_origin_url": "Authorized origin URL"
+      "origin_url": "URL asal",
+      "callback_uri": "URI callback",
+      "callback_url": "URL callback",
+      "redirect_uri": "URI pengalihan",
+      "application_id": "ID aplikasi",
+      "secret": "Kunci rahasia",
+      "organization_id": "ID organisasi",
+      "gitea_host": "Host Gitea",
+      "authorized_origins": "Asal JavaScript yang diizinkan",
+      "authorized_redirect": "URI pengalihan yang diizinkan",
+      "authorized_callback": "URI callback yang diizinkan",
+      "authorized_origin_url": "URL asal yang diizinkan"
     },
     "common": {
       "email": "Email",
-      "password": "Password",
-      "continue": "Continue",
-      "sign_in": "Sign in",
-      "show_password": "Show password",
-      "hide_password": "Hide password",
-      "see_more": "See More",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "company_name": "Company name",
+      "password": "Kata sandi",
+      "continue": "Lanjutkan",
+      "sign_in": "Masuk",
+      "show_password": "Tampilkan kata sandi",
+      "hide_password": "Sembunyikan kata sandi",
+      "see_more": "Lihat selengkapnya",
+      "first_name": "Nama depan",
+      "last_name": "Nama belakang",
+      "company_name": "Nama perusahaan",
       "email_placeholder": "name@company.com",
-      "password_enter": "Please enter your password",
-      "password_short": "Password is too short",
-      "password_weak": "Password is weak",
-      "password_strong": "Password is strong",
-      "keep_editing": "Keep editing",
-      "owned_by": "Owned by:",
-      "total_projects": "Total projects:",
-      "total_members": "Total members:",
-      "unique_codes": "Unique codes",
-      "passwords": "Passwords"
+      "password_enter": "Silakan masukkan kata sandi Anda",
+      "password_short": "Kata sandi terlalu pendek",
+      "password_weak": "Kata sandi lemah",
+      "password_strong": "Kata sandi kuat",
+      "keep_editing": "Lanjutkan mengedit",
+      "owned_by": "Dimiliki oleh:",
+      "total_projects": "Total proyek:",
+      "total_members": "Total anggota:",
+      "unique_codes": "Kode unik",
+      "passwords": "Kata sandi"
     },
     "setup": {
-      "heading": "Set up your Pace instance",
-      "set_password": "Set a password",
-      "new_password": "New password",
-      "confirm_password": "Confirm password",
-      "telemetry": "Allow Pace to anonymously collect usage events"
+      "heading": "Siapkan instansi Pace Anda",
+      "set_password": "Atur kata sandi",
+      "new_password": "Kata sandi baru",
+      "confirm_password": "Konfirmasi kata sandi",
+      "telemetry": "Izinkan Pace mengumpulkan peristiwa penggunaan secara anonim"
     },
     "signin": {
-      "heading": "Manage your Pace instance",
-      "password_placeholder": "Enter your password"
+      "heading": "Kelola instansi Pace Anda",
+      "password_placeholder": "Masukkan kata sandi Anda"
     },
     "workspace": {
-      "heading": "Workspaces",
-      "create": "Create workspace",
-      "prevent_creation": "Prevent anyone else from creating a workspace.",
-      "created": "Workspace created successfully.",
-      "create_failed": "Workspace could not be created. Please try again.",
-      "create_error": "Some error occurred while creating workspace. Please try again.",
-      "name_placeholder": "Something familiar and recognizable is always best.",
+      "heading": "Ruang kerja",
+      "create": "Buat ruang kerja",
+      "prevent_creation": "Cegah orang lain membuat ruang kerja.",
+      "created": "Ruang kerja berhasil dibuat.",
+      "create_failed": "Ruang kerja tidak dapat dibuat. Silakan coba lagi.",
+      "create_error": "Terjadi kesalahan saat membuat ruang kerja. Silakan coba lagi.",
+      "name_placeholder": "Sesuatu yang familier dan mudah dikenali selalu paling baik.",
       "slug_placeholder": "workspace-name",
-      "go_back": "Go back"
+      "go_back": "Kembali"
     }
   }
 }
