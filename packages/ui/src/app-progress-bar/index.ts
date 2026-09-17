@@ -4,4 +4,4 @@
  * See the LICENSE file for details.
  */
 
-export * from "./AppProgressBar";
+export * from "./app-progress-bar";

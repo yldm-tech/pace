@@ -7,7 +7,7 @@
 import { ThemeProvider } from "next-themes";
 // components
 import { TranslationProvider } from "@pace/i18n";
-import { AppProgressBar } from "@/lib/b-progress";
+import { AppProgressBar } from "@pace/ui";
 import { InstanceProvider } from "@/lib/instance-provider";
 import { StoreProvider } from "@/lib/store-provider";
 import { ToastProvider } from "@/lib/toast-provider";

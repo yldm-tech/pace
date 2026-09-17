@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+export * from "./app-progress-bar";
 export * from "./avatar";
 export * from "./breadcrumbs";
 export * from "./card";

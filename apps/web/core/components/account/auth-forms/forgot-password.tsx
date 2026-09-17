@@ -19,7 +19,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 
 import { cn, checkEmailValidity } from "@pace/utils";
 // hooks
-import useTimer from "@/hooks/use-timer";
+import { useTimer } from "@pace/hooks";
 // services
 import { AuthService } from "@pace/services";
 // local components

@@ -17,8 +17,10 @@ import { resolveGeneralTheme } from "@pace/utils";
 import { StoreProvider } from "@/lib/store-context";
 
 // lazy imports
-const AppProgressBar = lazy(function AppProgressBar() {
-  return import("@/lib/b-progress/AppProgressBar");
+const AppProgressBar = lazy(async function AppProgressBar() {
+  // lazy wants a module whose default is the component, and the shared package exports it by name.
+  const { AppProgressBar: Loaded } = await import("@pace/ui");
+  return { default: Loaded };
 });
 
 const StoreWrapper = lazy(function StoreWrapper() {
