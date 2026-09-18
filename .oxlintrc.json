@@ -49,5 +49,23 @@
         "ignoreRestSiblings": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/core/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/app/**"],
+                "message": "core/ is the reusable layer: it must not import from app/, the route tree. Move the shared file into core/ instead."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
