@@ -50,7 +50,7 @@ export const useCoreOAuthConfig = (oauthActionText: string): TOAuthConfigs => {
       text: `${oauthActionText} with GitHub`,
       icon: (
         <img
-          src={resolvedTheme === "dark" ? githubLightLogo : githubDarkLogo}
+          src={resolvedTheme === "dark" ? githubDarkLogo : githubLightLogo}
           height={18}
           width={18}
           alt="GitHub Logo"
