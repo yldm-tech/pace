@@ -27,7 +27,7 @@
     "no_access": {
       "title": "Görünüşe göre bu projeye erişiminiz yok",
       "restricted_description": "Erişim talep etmek için yöneticiyle iletişime geçin, sonra burada devam edebilirsiniz.",
-      "join_description": "Katılmak için aşağıdaki butona tıklayın.",
+      "join_description": "Katılmak için aşağıdaki düğmeye tıklayın.",
       "cta_primary": "Projeye katıl",
       "cta_loading": "Projeye katılınıyor"
     },
@@ -87,22 +87,22 @@
       "description": "Radarınızda olmayan sayfaları arşivleyin. Gerektiğinde buradan erişin."
     },
     "intake_sidebar": {
-      "title": "Giriş isteklerini kaydedin",
+      "title": "Talep isteklerini kaydedin",
       "description": "Projenizin iş akışı içinde incelenmek, önceliklendirilmek ve takip edilmek üzere yeni istekler gönderin.",
-      "cta_primary": "Giriş isteği oluştur"
+      "cta_primary": "Talep isteği oluştur"
     },
     "intake_main": {
-      "title": "Ayrıntılarını görmek için bir Giriş iş öğesi seçin"
+      "title": "Ayrıntılarını görmek için bir Talep iş öğesi seçin"
     },
     "epics": {
-      "title": "Karmaşık projeleri yapılandırılmış destanlara dönüştürün.",
-      "description": "Bir destan, büyük hedefleri daha küçük, takip edilebilir görevlere organize etmenize yardımcı olur.",
-      "cta_primary": "Destan Oluştur",
-      "cta_secondary": "Belgeler"
+      "title": "Karmaşık projeleri yapılandırılmış epiklere dönüştürün.",
+      "description": "Bir epik, büyük hedefleri daha küçük, takip edilebilir görevlere organize etmenize yardımcı olur.",
+      "cta_primary": "Epik Oluştur",
+      "cta_secondary": "Dokümanlar"
     },
     "epic_work_items": {
-      "title": "Bu destana henüz iş öğesi eklemediniz.",
-      "description": "Bu destana bazı iş öğeleri ekleyerek başlayın ve burada takip edin.",
+      "title": "Bu epiğe henüz iş öğesi eklemediniz.",
+      "description": "Bu epiğe bazı iş öğeleri ekleyerek başlayın ve burada takip edin.",
       "cta_secondary": "İş öğeleri ekle"
     }
   },
@@ -166,16 +166,16 @@
       "title": "Çalışmanızı organize etmek ve farklı aşamalarda ilerlemeyi takip etmek için modüller oluşturun."
     },
     "analytics_no_intake": {
-      "title": "Gelen istekleri yönetmek ve bunların nasıl kabul edildiğini ve reddedildiğini izlemek için giriş ayarlayın"
+      "title": "Gelen istekleri yönetmek ve bunların nasıl kabul edildiğini ve reddedildiğini izlemek için Talep'i ayarlayın"
     },
     "home_widget_stickies": {
-      "title": "Bir fikir yazın, bir aha anını yakalayın veya bir beyin dalgasını kaydedin. Başlamak için yapışkan not ekleyin."
+      "title": "Bir fikir yazın, bir aydınlanma anını yakalayın veya bir beyin fırtınasını kaydedin. Başlamak için bir yapışkan not ekleyin."
     },
     "stickies": {
       "title": "Fikirleri anında yakalayın",
       "description": "Hızlı notlar ve yapılacaklar için yapışkan notlar oluşturun ve onları nereye giderseniz gidin yanınızda taşıyın.",
       "cta_primary": "İlk yapışkan notu oluştur",
-      "cta_secondary": "Belgeler"
+      "cta_secondary": "Dokümanlar"
     },
     "active_cycles": {
       "title": "Aktif döngü yok",
@@ -193,7 +193,7 @@
     },
     "project_overview_state_sidebar": {
       "title": "Proje durumlarını etkinleştir",
-      "description": "Durum, öncelik, bitiş tarihleri ve daha fazlası gibi özellikleri görüntülemek ve yönetmek için Proje Durumlarını etkinleştirin."
+      "description": "Durum, öncelik, son tarihler ve daha fazlası gibi özellikleri görüntülemek ve yönetmek için Proje Durumlarını etkinleştirin."
     }
   },
   "settings_empty_state": {
@@ -214,7 +214,7 @@
     "tokens": {
       "title": "Henüz Kişisel token yok",
       "description": "Çalışma alanınızı harici sistemler ve uygulamalarla bağlamak için güvenli API token'ları oluşturun.",
-      "cta_primary": "API token'ı ekle"
+      "cta_primary": "Erişim token'ı ekle"
     },
     "workspace_tokens": {
       "title": "Henüz Erişim token'ı yok",
@@ -242,7 +242,7 @@
     },
     "recurring_work_items": {
       "title": "Henüz yinelenen iş öğesi yok",
-      "description": "Tekrarlanan görevleri otomatikleştirmek ve zahmetsizce programa sadık kalmak için yinelenen iş öğeleri ayarlayın.",
+      "description": "Yinelenen görevleri otomatikleştirmek ve zahmetsizce programa sadık kalmak için yinelenen iş öğeleri ayarlayın.",
       "cta_primary": "Yinelenen iş öğesi oluştur"
     },
     "worklogs": {

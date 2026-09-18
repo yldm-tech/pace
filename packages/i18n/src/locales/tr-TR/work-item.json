@@ -1,7 +1,7 @@
 {
   "issue": {
     "label": "{count, plural, one {İş öğesi} other {İş öğeleri}}",
-    "all": "Tüm İş Öğeleri",
+    "all": "Tüm iş öğeleri",
     "edit": "İş öğesini düzenle",
     "title": {
       "label": "İş öğesi başlığı",
@@ -23,7 +23,7 @@
       "dependency": "Bağımlılık ekle",
       "relation": "İlişki ekle",
       "link": "Bağlantı ekle",
-      "existing": "Varolan iş öğesi ekle"
+      "existing": "Mevcut iş öğesini ekle"
     },
     "remove": {
       "label": "İş öğesini kaldır",
@@ -41,7 +41,7 @@
         "label": "Üst iş öğesini kaldır"
       }
     },
-    "new": "Yeni İş Öğesi",
+    "new": "Yeni iş öğesi",
     "adding": "İş öğesi ekleniyor",
     "create": {
       "success": "İş öğesi başarıyla oluşturuldu"
@@ -56,7 +56,7 @@
       "properties": {
         "label": "Görünen Özellikler",
         "id": "ID",
-        "issue_type": "İş Öğesi Türü",
+        "issue_type": "İş öğesi türü",
         "sub_issue_count": "Alt iş öğesi sayısı",
         "attachment_count": "Ek sayısı",
         "created_on": "Oluşturulma tarihi",
@@ -91,7 +91,7 @@
       "placeholder": "Yorum ekle",
       "switch": {
         "private": "Özel yoruma geç",
-        "public": "Genel yoruma geç"
+        "public": "Herkese açık yoruma geç"
       },
       "create": {
         "success": "Yorum başarıyla oluşturuldu",
@@ -164,8 +164,8 @@
     },
     "archive": {
       "description": "Yalnızca tamamlanmış veya iptal edilmiş\niş öğeleri arşivlenebilir",
-      "label": "İş Öğesini Arşivle",
-      "confirm_message": "Bu iş öğesini arşivlemek istediğinizden emin misiniz? Arşivlenen tüm iş öğelerinizi daha sonra geri yükleyebilirsiniz.",
+      "label": "İş öğesini arşivle",
+      "confirm_message": "Bu iş öğesini arşivlemek istediğinizden emin misiniz? Arşivlenmiş tüm iş öğelerinizi daha sonra geri yükleyebilirsiniz.",
       "success": {
         "label": "Arşivleme başarılı",
         "message": "Arşivleriniz proje arşivlerinde bulunabilir."
@@ -190,12 +190,12 @@
       "duplicate": "Kopyası",
       "blocked_by": "Engellendi",
       "blocking": "Engelliyor",
-      "start_before": "Starts Bifor",
-      "start_after": "Starts Aftır",
-      "finish_before": "Finishes Bifor",
-      "finish_after": "Finishes Aftır",
-      "implements": "Implemente",
-      "implemented_by": "Implemente edilen"
+      "start_before": "Önce başlar",
+      "start_after": "Sonra başlar",
+      "finish_before": "Önce biter",
+      "finish_after": "Sonra biter",
+      "implements": "Uygular",
+      "implemented_by": "Uygulandı"
     },
     "copy_link": "İş öğesi bağlantısını kopyala",
     "delete": {
@@ -213,7 +213,7 @@
       "empty": "Hiç iş öğesi seçilmedi",
       "add_selected": "Seçilen iş öğelerini ekle",
       "select_all": "Tümünü seç",
-      "deselect_all": "Tümünü seçme"
+      "deselect_all": "Tümünün seçimini kaldır"
     },
     "open_in_full_screen": "İş öğesini tam ekranda aç",
     "duplicate": {
@@ -237,7 +237,7 @@
     "pages": {
       "link_pages": "Sayfaları bağla",
       "show_wiki_pages": "Wiki sayfalarını göster",
-      "link_pages_to": "Sayfaları bağla:",
+      "link_pages_to": "Sayfaları şuna bağla:",
       "linked_pages": "Bağlı sayfalar",
       "no_description": "Bu boş bir sayfa. Neden içine bir şeyler yazmıyorsunuz ve bu yer tutucu gibi burada görünmesini sağlamıyorsunuz",
       "toasts": {
@@ -318,11 +318,11 @@
       },
       "invalid_issue_start_date": {
         "title": "İş öğeleri güncellenemiyor",
-        "message": "Seçilen başlangıç tarihi bazı iş öğeleri için bitiş tarihinden sonra geliyor. Başlangıç tarihinin bitiş tarihinden önce olduğundan emin olun."
+        "message": "Seçilen başlangıç tarihi bazı iş öğeleri için son tarihten sonra geliyor. Başlangıç tarihinin son tarihten önce olduğundan emin olun."
       },
       "invalid_issue_target_date": {
         "title": "İş öğeleri güncellenemiyor",
-        "message": "Seçilen bitiş tarihi bazı iş öğeleri için başlangıç tarihinden önce geliyor. Bitiş tarihinin başlangıç tarihinden sonra olduğundan emin olun."
+        "message": "Seçilen son tarih bazı iş öğeleri için başlangıç tarihinden önce geliyor. Son tarihin başlangıç tarihinden sonra olduğundan emin olun."
       },
       "invalid_state_transition": {
         "title": "İş öğeleri güncellenemiyor",
@@ -337,7 +337,7 @@
   "recurring_work_items": {
     "settings": {
       "heading": "Yinelenen iş öğeleri",
-      "description": "Yinelenen iş öğelerini bir kere ayarlayın, ve biz onları yöneteceğiz. Zamanı geldiğinde burada göreceksin.",
+      "description": "Yinelenen iş öğelerini bir kere ayarlayın, tekrarlarıyla biz ilgilenelim. Zamanı geldiğinde her şeyi tam burada göreceksiniz.",
       "new_recurring_work_item": "Yeni yinelenen iş öğesi",
       "update_recurring_work_item": "Yinelenen iş öğesini güncelle",
       "form": {
@@ -367,7 +367,7 @@
     "empty_state": {
       "upgrade": {
         "title": "İşiniz, otomatik pilotta",
-        "description": "Bir kez ayarlayın. Zamanı geldiğinde geri getireceğiz. Yinelenen işleri zahmetsiz hale getirmek için Business'a yükseltin."
+        "description": "Bir kez ayarlayın. Zamanı geldiğinde geri getireceğiz. Yinelenen işleri zahmetsiz hale getirmek için Business'e yükseltin."
       },
       "no_templates": {
         "button": "İlk yinelenen iş öğenizi oluşturun"

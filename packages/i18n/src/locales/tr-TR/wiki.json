@@ -22,7 +22,7 @@
     },
     "delete_modal": {
       "title": "Koleksiyonu sil",
-      "page_count": "Bu koleksiyonda {pageCount} sayfa var. Onlara ne olacağını seçin.",
+      "page_count": "Bu koleksiyonda {pageCount} {pageCount, plural, one {sayfa} other {sayfa}} var. Onlara ne olacağını seçin.",
       "transfer_title": "Sayfaları taşı ve koleksiyonu sil",
       "transfer_description": "Silmeden önce tüm sayfaları başka bir koleksiyona taşıyın. Sayfalar ve izinleri korunur.",
       "transfer_warning": "Taşınan sayfalar seçilen koleksiyonun izinlerini devralır.",
@@ -43,7 +43,7 @@
     },
     "add_existing_page_modal": {
       "search_placeholder": "Sayfa ara",
-      "success_message": "{count} sayfa koleksiyona eklendi.",
+      "success_message": "{count} {count, plural, one {sayfa} other {sayfa}} koleksiyona eklendi.",
       "error_message": "Sayfalar taşınamadı. Lütfen tekrar deneyin.",
       "no_pages_found": "Aramanızla eşleşen sayfa bulunamadı",
       "no_pages_available": "Taşınabilecek sayfa yok",

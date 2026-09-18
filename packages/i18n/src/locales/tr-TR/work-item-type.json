@@ -1,10 +1,10 @@
 {
   "work_item_types": {
-    "label": "İş Öğesi Tipleri",
-    "label_lowercase": "iş öğesi tipleri",
+    "label": "İş Öğesi Türleri",
+    "label_lowercase": "iş öğesi türleri",
     "settings": {
       "description": "Ekibinizin ihtiyaçlarına göre özelleştirin ve kendi özelliklerinizi ekleyin.",
-      "cant_delete_default_message": "Bu iş öğesi türü mevcut iş öğeleriyle bağlantılı olduğundan silinemez.",
+      "cant_delete_default_message": "Bu iş öğesi türü, bu proje için varsayılan olarak ayarlandığından silinemez",
       "set_as_default": "Varsayılan olarak ayarla",
       "cant_set_default_inactive_message": "Varsayılan olarak ayarlamadan önce bu türü etkinleştirin",
       "set_default_confirmation": {
@@ -13,9 +13,9 @@
         "confirm_button": "Varsayılan olarak ayarla"
       },
       "properties": {
-        "title": "Özel özellikler",
+        "title": "Özellikler",
         "description": "Özellikler oluşturun ve özelleştirin.",
-        "tooltip": "Her iş öğesi tipi, Başlık, Açıklama, Atanan Kişi, Durum, Öncelik, Başlangıç tarihi, Bitiş tarihi, Modül, Döngü vb. gibi varsayılan bir özellik seti ile gelir. Ayrıca ekibinizin ihtiyaçlarına göre kendi özelliklerinizi özelleştirebilir ve ekleyebilirsiniz.",
+        "tooltip": "Her iş öğesi türü, Başlık, Açıklama, Atanan, Durum, Öncelik, Başlangıç tarihi, Bitiş tarihi, Modül, Döngü vb. gibi varsayılan bir özellik seti ile gelir. Ayrıca ekibinizin ihtiyaçlarına göre kendi özelliklerinizi özelleştirebilir ve ekleyebilirsiniz.",
         "add_button": "Yeni özellik ekle",
         "project": {
           "add_button": {
@@ -23,8 +23,8 @@
           }
         },
         "dropdown": {
-          "label": "Özellik tipi",
-          "placeholder": "Tip seçin"
+          "label": "Özellik türü",
+          "placeholder": "Tür seçin"
         },
         "property_type": {
           "text": {
@@ -37,7 +37,7 @@
             "label": "Açılır Liste"
           },
           "boolean": {
-            "label": "Boolean"
+            "label": "Boole"
           },
           "date": {
             "label": "Tarih"
@@ -50,7 +50,7 @@
           }
         },
         "attributes": {
-          "label": "Özellikler",
+          "label": "Öznitelikler",
           "text": {
             "single_line": {
               "label": "Tek satır"
@@ -103,7 +103,7 @@
               "placeholder": {
                 "single": "Seçenek seçin",
                 "multi": {
-                  "default": "Seçenekler seçin",
+                  "default": "Seçenekleri seçin",
                   "variable": "{count} seçenek seçildi"
                 }
               }
@@ -172,7 +172,7 @@
               "max_length": "Özellik adı 255 karakteri geçmemelidir."
             },
             "property_type": {
-              "required": "Bir özellik tipi seçmelisiniz."
+              "required": "Bir özellik türü seçmelisiniz."
             },
             "options": {
               "required": "En az bir seçenek eklemelisiniz."
@@ -189,7 +189,7 @@
           "field_label": "Formül alanı",
           "tooltip": "'{'Alan Adı'}' sözdizimini kullanarak bir formül girin. +, -, *, / ve & operatörlerini destekler.",
           "placeholder": "Formülü yazın",
-          "test_button": "Test",
+          "test_button": "Test et",
           "validating": "Doğrulanıyor",
           "validation_success": "Formül geçerli! {resultType} döndürür",
           "validation_success_with_refs": "Formül geçerli! {resultType} döndürür ({count} alan referans verildi)",
@@ -228,7 +228,7 @@
         },
         "empty_state": {
           "title": "Özel özellikler ekle",
-          "description": "Bu iş öğesi tipi için eklediğiniz yeni özellikler burada gösterilecektir."
+          "description": "Bu iş öğesi türü için eklediğiniz yeni özellikler burada gösterilecektir."
         }
       },
       "types": {
@@ -293,34 +293,34 @@
       }
     },
     "create": {
-      "title": "İş öğesi tipi oluştur",
-      "button": "İş öğesi tipi ekle",
+      "title": "İş öğesi türü oluştur",
+      "button": "İş öğesi türü ekle",
       "toast": {
         "success": {
           "title": "Başarılı!",
-          "message": "İş öğesi tipi başarıyla oluşturuldu."
+          "message": "İş öğesi türü başarıyla oluşturuldu."
         },
         "error": {
           "title": "Hata!",
           "message": {
-            "default": "İş öğesi tipi oluşturulamadı. Lütfen tekrar deneyin!",
+            "default": "İş öğesi türü oluşturulamadı. Lütfen tekrar deneyin!",
             "conflict": "{name} türü zaten mevcut. Farklı bir ad seçin."
           }
         }
       }
     },
     "update": {
-      "title": "İş öğesi tipini güncelle",
-      "button": "İş öğesi tipini güncelle",
+      "title": "İş öğesi türünü güncelle",
+      "button": "İş öğesi türünü güncelle",
       "toast": {
         "success": {
           "title": "Başarılı!",
-          "message": "İş öğesi tipi {name} başarıyla güncellendi."
+          "message": "İş öğesi türü {name} başarıyla güncellendi."
         },
         "error": {
           "title": "Hata!",
           "message": {
-            "default": "İş öğesi tipi güncellenemedi. Lütfen tekrar deneyin!",
+            "default": "İş öğesi türü güncellenemedi. Lütfen tekrar deneyin!",
             "conflict": "{name} türü zaten mevcut. Farklı bir ad seçin."
           }
         }
@@ -329,45 +329,45 @@
     "create_update": {
       "form": {
         "name": {
-          "placeholder": "Bu iş öğesi tipine benzersiz bir isim verin"
+          "placeholder": "Bu iş öğesi türüne benzersiz bir isim verin"
         },
         "description": {
-          "placeholder": "Bu iş öğesi tipinin ne için olduğunu ve ne zaman kullanılacağını açıklayın."
+          "placeholder": "Bu iş öğesi türünün ne için olduğunu ve ne zaman kullanılacağını açıklayın."
         }
       }
     },
     "enable_disable": {
       "toast": {
-        "loading": "{name} iş öğesi tipi {action}",
+        "loading": "{name} iş öğesi türü {action}",
         "success": {
           "title": "Başarılı!",
-          "message": "İş öğesi tipi {name} başarıyla {action}."
+          "message": "İş öğesi türü {name} başarıyla {action}."
         },
         "error": {
           "title": "Hata!",
-          "message": "İş öğesi tipi {action} başarısız oldu. Lütfen tekrar deneyin!"
+          "message": "İş öğesi türü {action} başarısız oldu. Lütfen tekrar deneyin!"
         }
       },
       "tooltip": "{action} için tıklayın"
     },
     "change_confirmation": {
-      "title": "İş öğesi tipini değiştir?",
-      "description": "İş öğesi tipini değiştirmek, mevcut tipe özgü özel özellik değerlerinin kaybına neden olabilir. Bu işlem geri alınamaz.",
+      "title": "İş öğesi türünü değiştir?",
+      "description": "İş öğesi türünü değiştirmek, mevcut türe özgü özel özellik değerlerinin kaybına neden olabilir. Bu işlem geri alınamaz.",
       "button": {
         "loading": "Değiştiriliyor",
-        "default": "Tipi değiştir"
+        "default": "Türü değiştir"
       }
     },
     "empty_state": {
       "enable": {
-        "title": "İş Öğesi Tiplerini Etkinleştir",
-        "description": "İş öğelerinizi İş öğesi tipleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
+        "title": "İş Öğesi Türlerini Etkinleştir",
+        "description": "İş öğelerinizi İş öğesi türleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
         "primary_button": {
           "text": "Etkinleştir"
         },
         "confirmation": {
-          "title": "Bir kez etkinleştirildikten sonra, İş Öğesi Tipleri devre dışı bırakılamaz.",
-          "description": "Pace'in İş Öğesi, bu proje için varsayılan iş öğesi tipi haline gelecek ve bu projede simgesi ve arka planıyla görünecektir.",
+          "title": "Bir kez etkinleştirildikten sonra, İş Öğesi Türleri devre dışı bırakılamaz.",
+          "description": "Pace'in İş Öğesi, bu proje için varsayılan iş öğesi türü haline gelecek ve bu projede simgesi ve arka planıyla görünecektir.",
           "button": {
             "default": "Etkinleştir",
             "loading": "Ayarlanıyor"
@@ -375,15 +375,15 @@
         }
       },
       "get_pro": {
-        "title": "İş öğesi tiplerini etkinleştirmek için Pro'ya geçin.",
-        "description": "İş öğelerinizi İş öğesi tipleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
+        "title": "İş öğesi türlerini etkinleştirmek için Pro'ya geçin.",
+        "description": "İş öğelerinizi İş öğesi türleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
         "primary_button": {
           "text": "Pro'ya Geç"
         }
       },
       "upgrade": {
-        "title": "İş öğesi tiplerini etkinleştirmek için yükseltin.",
-        "description": "İş öğelerinizi İş öğesi tipleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
+        "title": "İş öğesi türlerini etkinleştirmek için yükseltin.",
+        "description": "İş öğelerinizi İş öğesi türleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
         "primary_button": {
           "text": "Yükselt"
         }
@@ -440,7 +440,7 @@
         "intro": "{workItemTypeName} iş öğesi türünde şunlar var:",
         "parent_items": "{count, plural, one {# üst bağlantı kaldırılacak} other {# üst bağlantı kaldırılacak}}.",
         "child_items": "{count, plural, one {alt iş öğesi} other {alt iş öğeleri}}",
-        "parent_line_suffix_when_also_children": ", ve ",
+        "parent_line_suffix_when_also_children": " ve ",
         "footer": "Bu değişiklik, {workItemTypeName} iş öğesi türündeki mevcut iş öğelerinden üst-alt ilişkilerini kaldıracaktır."
       },
       "confirm_input": {
@@ -470,7 +470,7 @@
       "level": "Hiyerarşi seviyesi",
       "invalid_level_toast": {
         "title": "Hata!",
-        "message": "Çalışma öğesi türü, hiyerarşi kurallarını ihlal ettiğinden güncellenemiyor."
+        "message": "İş öğesi türü, hiyerarşi kurallarını ihlal ettiğinden güncellenemiyor."
       }
     }
   }

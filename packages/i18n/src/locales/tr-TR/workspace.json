@@ -97,7 +97,7 @@
     },
     "total": "Toplam {entity}",
     "started_work_items": "Başlatılan {entity}",
-    "backlog_work_items": "Backlog {entity}",
+    "backlog_work_items": "Bekleme listesindeki {entity}",
     "un_started_work_items": "Başlanmamış {entity}",
     "completed_work_items": "Tamamlanmış {entity}",
     "project_insights": "Proje İçgörüleri",
@@ -106,7 +106,7 @@
     "trend_on_charts": "Grafiklerdeki eğilim",
     "active_projects": "Aktif Projeler",
     "customized_insights": "Özelleştirilmiş İçgörüler",
-    "created_vs_resolved": "Oluşturulan vs Çözülen",
+    "created_vs_resolved": "Oluşturulan / Çözülen",
     "empty_state": {
       "project_insights": {
         "title": "Henüz veri yok",
@@ -127,7 +127,7 @@
           "text": "İlk projenizi başlatın",
           "comic": {
             "title": "Analitik en iyi Döngüler + Modüller ile çalışır",
-            "description": "İlk olarak, sorunlarınızı Döngülere sınırlandırın ve eğer mümkünse, bir döngüden fazla süren sorunları Modüllere gruplandırın. Sol navigasyonda ikisini de kontrol edin."
+            "description": "İlk olarak, iş öğelerinizi Döngülere sınırlandırın ve eğer mümkünse, bir döngüden fazla süren iş öğelerini Modüllere gruplandırın. Sol navigasyonda ikisini de kontrol edin."
           }
         }
       },
@@ -141,11 +141,11 @@
       },
       "intake_trends": {
         "title": "Henüz veri yok",
-        "description": "Intake eğilim analizleri burada görünecek. Eğilimleri izlemeye başlamak için intake'e iş öğeleri ekleyin."
+        "description": "Alım eğilimi analizleri burada görünecek. Eğilimleri izlemeye başlamak için alıma iş öğeleri ekleyin."
       }
     },
     "upgrade_to_plan": "{tab} sekmesini açmak için {plan} planına geçin",
-    "workitem_resolved_vs_pending": "Çözülen vs bekleyen iş öğeleri",
+    "workitem_resolved_vs_pending": "Çözülen / bekleyen iş öğeleri",
     "projects_by_status": "Durumuna göre projeler",
     "active_users": "Aktif kullanıcılar",
     "intake_trends": "Alım Eğilimleri"

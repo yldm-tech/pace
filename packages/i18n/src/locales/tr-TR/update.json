@@ -14,22 +14,22 @@
     "reaction": {
       "create": {
         "success": {
-          "title": "Reaksiyon oluşturuldu",
-          "message": "Reaksiyon başarıyla oluşturuldu."
+          "title": "Tepki oluşturuldu",
+          "message": "Tepki başarıyla oluşturuldu."
         },
         "error": {
-          "title": "Reaksiyon oluşturulamadı",
-          "message": "Reaksiyon oluşturulamadı. Lütfen tekrar deneyin."
+          "title": "Tepki oluşturulamadı",
+          "message": "Tepki oluşturulamadı. Lütfen tekrar deneyin."
         }
       },
       "remove": {
         "success": {
-          "title": "Reaksiyon silindi",
-          "message": "Reaksiyon başarıyla silindi."
+          "title": "Tepki silindi",
+          "message": "Tepki başarıyla silindi."
         },
         "error": {
-          "title": "Reaksiyon silinemedi",
-          "message": "Reaksiyon silinemedi. Lütfen tekrar deneyin."
+          "title": "Tepki silinemedi",
+          "message": "Tepki silinemedi. Lütfen tekrar deneyin."
         }
       }
     },

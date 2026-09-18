@@ -42,15 +42,15 @@
     },
     "ai": {
       "heading": "Dil modeli",
-      "subheading": "Asistan tek bir protokol konuşur; bu nedenle OpenAI-shaped bir sohbet tamamlama yanıtı veren her uç nokta ona hizmet edebilir.",
+      "subheading": "Asistan tek bir protokol konuşur; bu nedenle OpenAI biçiminde bir sohbet tamamlama yanıtı veren her uç nokta ona hizmet edebilir.",
       "provider": {
         "label": "Sağlayıcı",
         "custom": "Özel",
-        "description": "Bir sağlayıcı seçmek onun uç noktasını doldurur ve modele bir varsayılan verir. Özel seçeneği her ikisini de sizden ister ve OpenAI-shaped bir sohbet tamamlama yanıtı veren her şeyle çalışır."
+        "description": "Bir sağlayıcı seçmek onun uç noktasını doldurur ve modele bir varsayılan verir. Özel seçeneği her ikisini de sizden ister ve OpenAI biçiminde bir sohbet tamamlama yanıtı veren her şeyle çalışır."
       },
       "base_url": {
-        "label": "Base URL",
-        "description": "Tamamlamaların istendiği adres. OpenAI-shaped bir POST /chat/completions isteğine yanıt veren her şey burada çalışır — bir ağ geçidi, kendi barındırdığınız bir sunucu ya da sağlayıcının kendi uç noktası. OpenAI için boş bırakın.",
+        "label": "Temel URL",
+        "description": "Tamamlamaların istendiği adres. OpenAI biçiminde bir POST /chat/completions isteğine yanıt veren her şey burada çalışır — bir ağ geçidi, kendi barındırdığınız bir sunucu ya da sağlayıcının kendi uç noktası. OpenAI için boş bırakın.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
@@ -68,10 +68,10 @@
       },
       "api_key": {
         "label": "API anahtarı",
-        "description": "Yukarıdaki Base URL adresine bearer token olarak gönderilir.",
+        "description": "Yukarıdaki temel URL adresine bearer token olarak gönderilir.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Yukarıda yok mu? Özel'i seçin ve Base URL bilgisini girin — OpenAI-shaped olan her şey iş görür.",
+      "not_listed": "Yukarıda yok mu? Özel'i seçin ve temel URL bilgisini girin — OpenAI biçiminde olan her şey iş görür.",
       "saved": "Yapay zeka ayarları başarıyla güncellendi"
     },
     "general": {
@@ -84,7 +84,7 @@
         "label": "E-posta",
         "placeholder": "Yönetici e-postası"
       },
-      "instance_id": "Örnek kimliği",
+      "instance_id": "Örnek ID'si",
       "telemetry": {
         "label": "Telemetri",
         "description": "Pace'in anonim kullanım verisi toplamasına izin verin"
@@ -125,16 +125,16 @@
       "saving": "Yapılandırma kaydediliyor",
       "saved": "Yapılandırma başarıyla kaydedildi",
       "save_failed": "Yapılandırma kaydedilemedi",
-      "client_id": "Client ID",
-      "client_secret": "Client Secret",
+      "client_id": "İstemci ID'si",
+      "client_secret": "İstemci gizli anahtarı",
       "host": "Sunucu",
       "origin_url": "Kaynak URL'si",
       "callback_uri": "Geri çağırma URI'si",
       "callback_url": "Geri çağırma URL'si",
       "redirect_uri": "Yönlendirme URI'si",
-      "application_id": "Uygulama kimliği",
+      "application_id": "Uygulama ID'si",
       "secret": "Gizli anahtar",
-      "organization_id": "Kuruluş kimliği",
+      "organization_id": "Kuruluş ID'si",
       "gitea_host": "Gitea Sunucusu",
       "authorized_origins": "Yetkilendirilmiş JavaScript kaynakları",
       "authorized_redirect": "Yetkilendirilmiş Yönlendirme URI'si",
@@ -166,30 +166,30 @@
         "configured": "{provider} kimlik doğrulamanız yapılandırıldı. Şimdi test etmelisiniz."
       },
       "google": {
-        "client_id_description": "Client ID bilginiz Google API Console'da yer alır. {link}",
-        "client_id_doc_label": "Google OAuth Client ID belgeleri",
-        "client_secret_description": "Client Secret bilginiz de Google API Console'da yer alır. {link}",
-        "client_secret_doc_label": "Google OAuth Client Secret belgeleri",
+        "client_id_description": "İstemci ID'niz Google API Console'da yer alır. {link}",
+        "client_id_doc_label": "Google OAuth istemci ID'si dokümanları",
+        "client_secret_description": "İstemci gizli anahtarınız da Google API Console'da yer alır. {link}",
+        "client_secret_doc_label": "Google OAuth istemci gizli anahtarı dokümanları",
         "console_label": "Google Cloud Console OAuth istemci kimlik bilgileri"
       },
       "github": {
         "client_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
-        "client_secret_description": "Client Secret bilginiz de {link} bölümünde yer alır.",
-        "organization_id_description": "GitHub kuruluş kimliği.",
+        "client_secret_description": "İstemci gizli anahtarınız da {link} bölümünde yer alır.",
+        "organization_id_description": "GitHub kuruluş ID'si.",
         "app_settings_link": "GitHub OAuth uygulama ayarları",
         "app_settings_label": "GitHub OAuth uygulama ayarları"
       },
       "gitlab": {
         "host_description": "Bu ya https://gitlab.com ya da GitLab'ı barındırdığınız {domain} adresidir.",
         "application_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
-        "secret_description": "Client Secret de {link} bölümünde yer alır.",
+        "secret_description": "İstemci gizli anahtarı da {link} bölümünde yer alır.",
         "app_settings_link": "GitLab OAuth uygulama ayarları",
         "app_settings_label": "GitLab OAuth uygulama ayarları"
       },
       "gitea": {
         "host_description": "Gitea örneğinizin URL'sini kullanın. Resmi Gitea örneği için \"https://gitea.com\" adresini kullanın.",
         "client_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
-        "client_secret_description": "Client Secret bilginiz de {link} bölümünde yer alır.",
+        "client_secret_description": "İstemci gizli anahtarınız da {link} bölümünde yer alır.",
         "app_settings_link": "Gitea OAuth uygulama ayarları",
         "app_settings_label": "Gitea OAuth uygulama ayarları"
       }
@@ -244,7 +244,7 @@
         "unsplash_key_label": "Unsplash hesabınızdan erişim anahtarı",
         "unsplash_key_help": "Erişim anahtarınızı Unsplash geliştirici konsolunuzda bulabilirsiniz.",
         "unsplash_docs_link": "Daha fazla bilgi edinin.",
-        "unsplash_docs_aria": "Unsplash geliştirici hesabı belgeleri",
+        "unsplash_docs_aria": "Unsplash geliştirici hesabı dokümanları",
         "saved": "Görsel yapılandırması başarıyla güncellendi"
       },
       "workspace": {
@@ -311,7 +311,7 @@
         },
         "sign_in_link": "Şimdi giriş yapın",
         "administrator": "yönetici",
-        "dismiss_banner": "Banner'ı kapat"
+        "dismiss_banner": "Bildirim çubuğunu kapat"
       }
     },
     "page": {
@@ -365,7 +365,7 @@
       },
       "workspace_create": {
         "title": "Bu örnekte yeni bir çalışma alanı oluşturun.",
-        "description": "Bu çalışma alanını oluşturduktan sonra kullanıcıları Çalışma Alanı Ayarları'ndan davet etmeniz gerekecek."
+        "description": "Bu çalışma alanını oluşturduktan sonra kullanıcıları çalışma alanı ayarlarından davet etmeniz gerekecek."
       },
       "breadcrumb": {
         "aria_label": "Gezinti yolu",
@@ -375,12 +375,12 @@
         "email": "E-posta",
         "authentication": "Kimlik Doğrulama",
         "image": "Görsel",
-        "workspace": "Çalışma Alanı",
+        "workspace": "Çalışma alanı",
         "create": "Oluştur"
       }
     },
     "misc": {
-      "something_wrong": "Hay aksi! Bir şeyler yanlış gitti.",
+      "something_wrong": "Hay aksi! Bir şeyler ters gitti.",
       "go_to_general": "Genel ayarlara git",
       "instance_unavailable": "Örnek ayrıntıları alınamıyor.",
       "instance_fetch_failed": "Örnek bilgileri alınamadı",
@@ -390,7 +390,7 @@
       "unsaved_changes_body": "Geri dönerseniz yaptığınız değişiklikler kaybolacak. Geri dönmek istiyor musunuz?",
       "setup_after": "Kurulumdan sonra bu Pace örneğini yönetebileceksiniz.",
       "signin_subheading": "Örneğinizi güvence altına almak için örnek genelindeki ayarları yapılandırın",
-      "root_error": "Bir şeyler yanlış gitti.",
+      "root_error": "Bir şeyler ters gitti.",
       "create_workspace": "Çalışma alanı oluştur"
     }
   }

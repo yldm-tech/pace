@@ -3,23 +3,23 @@
     "workitems": {
       "step_zero": {
         "title": "Çalışma alanınıza hoş geldiniz",
-        "description": "Başlamanıza yardımcı olmak için sizin için bir Demo Proje oluşturduk. İlk çalışma öğenizi ekleyelim."
+        "description": "Başlamanıza yardımcı olmak için sizin için bir Demo Projesi oluşturduk. İlk iş öğenizi ekleyelim."
       },
       "step_one": {
-        "title": "\"+ Çalışma öğesi ekle\"ye tıklayın",
-        "description": "\"+ Yeni Çalışma Öğesi\" düğmesine tıklayarak başlayın. İhtiyaçlarınıza uygun görevler, hatalar veya özel bir tür oluşturabilirsiniz."
+        "title": "\"+ İş öğesi ekle\"ye tıklayın",
+        "description": "\"+ Yeni İş Öğesi\" düğmesine tıklayarak başlayın. İhtiyaçlarınıza uygun görevler, hatalar veya özel bir tür oluşturabilirsiniz."
       },
       "step_two": {
-        "title": "Çalışma öğelerinizi filtreleyin",
+        "title": "İş öğelerinizi filtreleyin",
         "description": "Listenizi hızlıca daraltmak için filtreleri kullanın. Durum, öncelik veya ekip üyelerine göre filtreleyebilirsiniz. "
       },
       "step_three": {
-        "title": "Çalışma öğelerini gerektiği gibi görüntüleyin, gruplandırın ve sıralayın.",
-        "description": "Gerekli özellikleri görün ve çalışma öğelerini ihtiyaçlarınıza göre gruplandırın veya sıralayın."
+        "title": "İş öğelerini gerektiği gibi görüntüleyin, gruplandırın ve sıralayın.",
+        "description": "Gerekli özellikleri görün ve iş öğelerini ihtiyaçlarınıza göre gruplandırın veya sıralayın."
       },
       "step_four": {
         "title": "İstediğiniz gibi görselleştirin",
-        "description": "Listede görmek istediğiniz özellikleri seçin. Çalışma öğelerini kendi yönteminizle de gruplayabilir ve sıralayabilirsiniz."
+        "description": "Listede görmek istediğiniz özellikleri seçin. İş öğelerini kendi yönteminizle de gruplayabilir ve sıralayabilirsiniz."
       }
     },
     "cycle": {
@@ -33,29 +33,29 @@
       },
       "step_two": {
         "title": "\"+\" tuşuna tıklayın",
-        "description": "\"+\" düğmesine tıklayarak başlayın. Döngü sayfasından doğrudan yeni veya mevcut çalışma öğeleri ekleyin."
+        "description": "\"+\" düğmesine tıklayarak başlayın. Döngü sayfasından doğrudan yeni veya mevcut iş öğeleri ekleyin."
       },
       "step_three": {
         "title": "Döngü özeti",
         "description": "Döngü ilerlemesini, ekip üretkenliğini ve öncelikleri izleyin—ve bir şeyler geride kalıyorsa araştırın."
       },
       "step_four": {
-        "title": "Çalışma öğelerini aktarın",
+        "title": "İş öğelerini aktarın",
         "description": "Son tarihten sonra bir döngü otomatik olarak tamamlanır. Bitmemiş işi başka bir döngüye taşıyın."
       }
     },
     "module": {
       "step_zero": {
         "title": "Projenizi Modüllere ayırın",
-        "description": "Modüller, kullanıcıların belirli zaman dilimlerinde çalışma öğelerini gruplandırmasına ve düzenlemesine yardımcı olan daha küçük, odaklı projelerdir."
+        "description": "Modüller, kullanıcıların belirli zaman dilimlerinde iş öğelerini gruplandırmasına ve düzenlemesine yardımcı olan daha küçük, odaklı projelerdir."
       },
       "step_one": {
         "title": "Modül oluşturun",
-        "description": "Modüller, kullanıcıların belirli zaman dilimlerinde çalışma öğelerini gruplandırmasına ve düzenlemesine yardımcı olan daha küçük, odaklı projelerdir."
+        "description": "Modüller, kullanıcıların belirli zaman dilimlerinde iş öğelerini gruplandırmasına ve düzenlemesine yardımcı olan daha küçük, odaklı projelerdir."
       },
       "step_two": {
         "title": "\"+\" tuşuna tıklayın",
-        "description": "\"+\" düğmesine tıklayarak başlayın. Modül sayfasından doğrudan yeni veya mevcut çalışma öğeleri ekleyin."
+        "description": "\"+\" düğmesine tıklayarak başlayın. Modül sayfasından doğrudan yeni veya mevcut iş öğeleri ekleyin."
       },
       "step_three": {
         "title": "Modül durumları",
@@ -94,20 +94,20 @@
     },
     "intake": {
       "step_zero": {
-        "title": "Alımla istekleri kolaylaştırın",
-        "description": "Konukların hatalar, istekler veya biletler için çalışma öğeleri oluşturmasına olanak tanıyan Pace'e özel bir özellik."
+        "title": "Talep ile istekleri kolaylaştırın",
+        "description": "Konukların hatalar, istekler veya biletler için iş öğeleri oluşturmasına olanak tanıyan Pace'e özel bir özellik."
       },
       "step_one": {
-        "title": "Açık/kapalı alım istekleri",
+        "title": "Açık/kapalı talepler",
         "description": "Bekleyen istekler Açık sekmesinde kalır ve bir yönetici veya üye tarafından ele alındıktan sonra Kapalı'ya taşınır."
       },
       "step_two": {
         "title": "Bekleyen bir isteği kabul edin/reddedin",
-        "description": "Çalışma öğesini düzenlemek ve projenize taşımak için kabul edin veya İptal Edildi olarak işaretlemek için reddedin."
+        "description": "İş öğesini düzenlemek ve projenize taşımak için kabul edin veya İptal Edildi olarak işaretlemek için reddedin."
       },
       "step_three": {
         "title": "Şimdilik erteleyin",
-        "description": "Bir çalışma öğesi daha sonra incelemek üzere ertelenebilir. Açık istek listenizin alt kısmına taşınacaktır."
+        "description": "Bir iş öğesi daha sonra incelemek üzere ertelenebilir. Açık istek listenizin alt kısmına taşınacaktır."
       }
     },
     "mcp_connectors": {
@@ -118,8 +118,8 @@
     },
     "navigation": {
       "modal": {
-        "title": "Navigasyon, yeniden hayal edildi",
-        "sub_title": "Çalışma alanınız artık daha akıllı, basitleştirilmiş bir navigasyonla keşfetmek daha kolay.",
+        "title": "Gezinme, yeniden hayal edildi",
+        "sub_title": "Çalışma alanınız artık daha akıllı, basitleştirilmiş bir gezinmeyle keşfetmek daha kolay.",
         "highlight_1": "Daha hızlı keşif için düzenlenmiş sol panel yapısı",
         "highlight_2": "Anında herhangi bir şeye atlamak için geliştirilmiş global arama",
         "highlight_3": "Netlik ve odaklanma için daha akıllı kategori gruplama",
@@ -134,7 +134,7 @@
         "description": "Gelen kutunuz tüm bahsetmeleri, onayları ve etkinliği tek bir yerde tutar, böylece asla önemli bir işi kaçırmazsınız."
       },
       "step_two": {
-        "title": "Navigasyonunuzu Kişiselleştirin",
+        "title": "Gezinmenizi Kişiselleştirin",
         "description": "Tercihlerde neyi gördüğünüzü ve nasıl gezindiğinizi özelleştirin."
       }
     },
@@ -163,7 +163,7 @@
           "title": "Bir proje oluşturun"
         },
         "item_2": {
-          "title": "Bir çalışma öğesi oluşturun"
+          "title": "Bir iş öğesi oluşturun"
         },
         "item_3": {
           "title": "Ekip üyelerini davet edin"
@@ -181,7 +181,7 @@
     },
     "team_section": {
       "title": "Ekibinizi davet edin",
-      "description": "Takım arkadaşlarını davet edin ve birlikte inşa etmeye başlayın."
+      "description": "Ekip arkadaşlarınızı davet edin ve birlikte inşa etmeye başlayın."
     },
     "integrations_section": {
       "title": "Çalışma alanınızı güçlendirin",

@@ -72,8 +72,8 @@
         "message": "Yapışkan not kaldırılamadı"
       }
     },
-    "open_button": "Navigasyon panelini aç",
-    "close_button": "Navigasyon panelini kapat",
+    "open_button": "Gezinme panelini aç",
+    "close_button": "Gezinme panelini kapat",
     "outline_floating_button": "Ana hatları aç"
   },
   "page_actions": {
@@ -102,7 +102,7 @@
         },
         "collection_error": {
           "title": "Wiki'ye taşındı",
-          "message": "Sayfa wiki'ye taşındı, ancak seçilen koleksiyona eklenemedi. General içinde kalır."
+          "message": "Sayfa wiki'ye taşındı, ancak seçilen koleksiyona eklenemedi. Genel içinde kalır."
         }
       }
     },
