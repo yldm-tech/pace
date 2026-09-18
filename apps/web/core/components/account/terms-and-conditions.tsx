@@ -6,7 +6,7 @@
 
 import React from "react";
 import Link from "@/app/hooks/link";
-import { EAuthModes } from "@pace/constants";
+import { EAuthModes, PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "@pace/constants";
 
 interface TermsAndConditionsProps {
   authType?: EAuthModes;
@@ -14,8 +14,8 @@ interface TermsAndConditionsProps {
 
 // Constants for better maintainability
 const LEGAL_LINKS = {
-  termsOfService: "https://pace.yldm.ai/legals/terms-and-conditions",
-  privacyPolicy: "https://pace.yldm.ai/legals/privacy-policy",
+  termsOfService: TERMS_OF_SERVICE_URL,
+  privacyPolicy: PRIVACY_POLICY_URL,
 } as const;
 
 const MESSAGES = {
@@ -33,6 +33,9 @@ function LegalLink({ href, children }: { href: string; children: React.ReactNode
 }
 
 export function TermsAndConditions({ authType = EAuthModes.SIGN_IN }: TermsAndConditionsProps) {
+  // Nothing is claimed when this installation publishes neither document. Telling someone they agreed to terms that are not reachable is worse than saying nothing, and the previous links pointed at paths this deployment does not serve.
+  if (!LEGAL_LINKS.termsOfService || !LEGAL_LINKS.privacyPolicy) return null;
+
   return (
     <div className="flex items-center justify-center">
       <p className="text-center text-13 whitespace-pre-line text-tertiary">

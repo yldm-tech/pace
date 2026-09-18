@@ -8,6 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
 // pace imports
+import { DOCS_URL, externalLink } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // components
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";
@@ -22,6 +23,8 @@ import { DeleteEstimateModal } from "./delete/modal";
 import { EstimateDisableSwitch } from "./estimate-disable-switch";
 import { EstimateList } from "./estimate-list";
 import { EstimateLoaderScreen } from "./loader-screen";
+
+const archivedEstimatesDocsLink = externalLink(DOCS_URL, "/core-concepts/projects/run-project#estimate");
 
 type TEstimateRoot = {
   workspaceSlug: string;
@@ -108,15 +111,22 @@ export const EstimateRoot = observer(function EstimateRoot(props: TEstimateRoot)
                 description={
                   <>
                     Estimates have gone through a change, these are the estimates you had in your older versions which
-                    were not in use. Read more about them&nbsp;
-                    <a
-                      href={"https://pace.yldm.ai/docs/core-concepts/projects/run-project#estimate"}
-                      target="_blank"
-                      className="text-accent-primary/80 hover:text-accent-primary"
-                      rel="noreferrer"
-                    >
-                      here.
-                    </a>
+                    were not in use.
+                    {/* The sentence above already says what the archived list is, so the pointer at the documentation is the only part that goes when there is no documentation site configured. The path is the one upstream used on docs.plane.so, relative to whichever docs site this installation sets. */}
+                    {archivedEstimatesDocsLink && (
+                      <>
+                        {" "}
+                        Read more about them&nbsp;
+                        <a
+                          href={archivedEstimatesDocsLink}
+                          target="_blank"
+                          className="text-accent-primary/80 hover:text-accent-primary"
+                          rel="noreferrer"
+                        >
+                          here.
+                        </a>
+                      </>
+                    )}
                   </>
                 }
                 variant="h6"

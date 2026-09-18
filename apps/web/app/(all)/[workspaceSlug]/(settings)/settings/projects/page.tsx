@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useTheme } from "next-themes";
 // pace imports
+import { MARKETING_SITE_URL } from "@pace/constants";
 import { Button, getButtonStyling } from "@pace/propel/button";
 import { cn } from "@pace/utils";
 // assets
@@ -31,9 +32,12 @@ function ProjectSettingsPage() {
         need to get things done.
       </div>
       <div className="flex gap-2">
-        <Link href="https://pace.yldm.ai/" target="_blank" className={cn(getButtonStyling("secondary", "base"))}>
-          Learn more about projects
-        </Link>
+        {/* This was the marketing site's front page upstream, and the domain rename turned it into a link from the app back to the app's own root. It is dropped when there is no marketing site configured; the primary action next to it is the one that actually does something here. */}
+        {MARKETING_SITE_URL && (
+          <Link href={MARKETING_SITE_URL} target="_blank" className={cn(getButtonStyling("secondary", "base"))}>
+            Learn more about projects
+          </Link>
+        )}
         <Button onClick={() => toggleCreateProjectModal(true)}>Start your first project</Button>
       </div>
     </div>

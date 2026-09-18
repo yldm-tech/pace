@@ -8,7 +8,7 @@ import { useState, useRef } from "react";
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { Transition } from "@headlessui/react";
-import { WEB_BASE_URL } from "@pace/constants";
+import { DOCS_URL, FORUM_URL, WEB_BASE_URL } from "@pace/constants";
 // pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { LanguageSwitcher } from "@/components/common/language-switcher";
@@ -27,15 +27,16 @@ import { useInstance, useTheme } from "@/hooks/store";
 // assets
 
 // `name` holds a translation key, not text: this list lives outside the component and so cannot call the translation hook. The keys are resolved where the options are rendered, below.
+// Entries whose href is empty are dropped: the documentation and forum sites are per-installation configuration and this fork ships without either, so the alternative is a menu entry that navigates nowhere.
 const helpOptions = [
   {
     name: "admin.nav.documentation",
-    href: "https://pace.yldm.ai/docs/",
+    href: DOCS_URL,
     Icon: PagesOutline,
   },
   {
     name: "admin.nav.forum",
-    href: "https://pace.yldm.ai/forum",
+    href: FORUM_URL,
     Icon: ChatOutline,
   },
   {
@@ -43,7 +44,7 @@ const helpOptions = [
     href: "https://github.com/makeplane/plane/issues/new/choose",
     Icon: Github,
   },
-];
+].filter((option) => !!option.href);
 
 export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection() {
   // i18n
