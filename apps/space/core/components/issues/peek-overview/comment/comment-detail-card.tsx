@@ -12,12 +12,10 @@ import { Menu, Transition } from "@headlessui/react";
 // pace imports
 import type { EditorRefApi } from "@pace/editor";
 import type { TIssuePublicComment } from "@pace/types";
-import { getFileURL } from "@pace/utils";
+import { calculateTimeAgo, getFileURL } from "@pace/utils";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text-editor";
 import { CommentReactions } from "@/components/issues/peek-overview/comment/comment-reactions";
-// helpers
-import { timeAgo } from "@/helpers/date-time.helper";
 // hooks
 import { usePublish } from "@/hooks/store/publish";
 import { useIssueDetails } from "@/hooks/store/use-issue-details";
@@ -97,7 +95,7 @@ export const CommentCard = observer(function CommentCard(props: Props) {
             {comment.actor_detail.is_bot ? comment.actor_detail.first_name + " Bot" : comment.actor_detail.display_name}
           </div>
           <p className="mt-0.5 text-11 text-secondary">
-            <>commented {timeAgo(comment.created_at)}</>
+            <>commented {calculateTimeAgo(comment.created_at)}</>
           </p>
         </div>
         <div className="issue-comments-section p-0">
