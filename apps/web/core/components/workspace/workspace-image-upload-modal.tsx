@@ -76,7 +76,7 @@ export const WorkspaceImageUploadModal = observer(function WorkspaceImageUploadM
       updateWorkspaceLogo(workspaceSlug.toString(), asset_url);
       onSuccess(asset_url);
     } catch (error: any) {
-      console.log("error", error);
+      console.error("error", error);
       setToast({
         type: TOAST_TYPE.ERROR,
         title: "Error",
@@ -100,7 +100,7 @@ export const WorkspaceImageUploadModal = observer(function WorkspaceImageUploadM
       await handleRemove();
       handleClose();
     } catch (error) {
-      console.log("Error in removing workspace asset:", error);
+      console.error("Error in removing workspace asset:", error);
     } finally {
       setIsRemoving(false);
     }

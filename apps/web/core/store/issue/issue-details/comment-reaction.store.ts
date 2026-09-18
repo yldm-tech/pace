@@ -123,7 +123,7 @@ export class IssueCommentReactionStore implements IIssueCommentReactionStore {
 
       return response;
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
       throw error;
     }
   };
@@ -163,7 +163,7 @@ export class IssueCommentReactionStore implements IIssueCommentReactionStore {
 
       return response;
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
       throw error;
     }
   };

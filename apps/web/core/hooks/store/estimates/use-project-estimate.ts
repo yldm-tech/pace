@@ -12,7 +12,7 @@ import type { IProjectEstimateStore } from "@/store/estimates/project-estimate.s
 
 export const useProjectEstimates = (): IProjectEstimateStore => {
   const context = useContext(StoreContext);
-  if (context === undefined) throw new Error("useProjectPage must be used within StoreProvider");
+  if (context === undefined) throw new Error("useProjectEstimates must be used within StoreProvider");
 
   return context.projectEstimate;
 };

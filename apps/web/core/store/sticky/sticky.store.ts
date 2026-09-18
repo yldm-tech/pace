@@ -221,7 +221,7 @@ export class StickyStore implements IStickyStore {
       this.recentStickyId = this.workspaceStickies[workspaceSlug][0];
       await this.stickyService.deleteSticky(workspaceSlug, id);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       this.stickies[id] = sticky;
     }
   };

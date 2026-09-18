@@ -60,7 +60,7 @@ export function StateForm(props: TStateForm) {
     try {
       await onSubmit(formData);
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
     }
   };
 

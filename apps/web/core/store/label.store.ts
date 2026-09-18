@@ -220,7 +220,7 @@ export class LabelStore implements ILabelStore {
       const response = await this.issueLabelService.patchIssueLabel(workspaceSlug, projectId, labelId, data);
       return response;
     } catch (error) {
-      console.log("Failed to update label from project store");
+      console.error("Failed to update label from project store");
       runInAction(() => {
         set(this.labelMap, [labelId], originalLabel);
       });

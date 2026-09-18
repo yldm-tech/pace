@@ -186,7 +186,7 @@ export class ProjectIssuesFilter extends IssueFilterHelperStore implements IProj
         rich_filters: filters,
       });
     } catch (error) {
-      console.log("error while updating rich filters", error);
+      console.error("error while updating rich filters", error);
       throw error;
     }
   };

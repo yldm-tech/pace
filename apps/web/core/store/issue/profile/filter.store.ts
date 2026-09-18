@@ -179,7 +179,7 @@ export class ProfileIssuesFilter extends IssueFilterHelperStore implements IProf
         }
       );
     } catch (error) {
-      console.log("error while updating rich filters", error);
+      console.error("error while updating rich filters", error);
       throw error;
     }
   };

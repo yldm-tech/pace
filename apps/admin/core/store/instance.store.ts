@@ -108,7 +108,6 @@ export class InstanceStore implements IInstanceStore {
       if (this.instance === undefined && !instanceInfo?.instance?.workspaces_exist)
         this.store.theme.toggleNewUserPopup();
       runInAction(() => {
-        // console.log("instanceInfo: ", instanceInfo);
         this.isLoading = false;
         this.instance = instanceInfo.instance;
         this.config = instanceInfo.config;

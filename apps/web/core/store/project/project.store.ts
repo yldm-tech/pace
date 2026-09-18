@@ -320,7 +320,7 @@ export class ProjectStore implements IProjectStore {
       });
       return projectsResponse;
     } catch (error) {
-      console.log("Failed to fetch project from workspace store");
+      console.error("Failed to fetch project from workspace store");
       this.loader = "loaded";
       throw error;
     }
@@ -349,7 +349,7 @@ export class ProjectStore implements IProjectStore {
       });
       return projectsResponse;
     } catch (error) {
-      console.log("Failed to fetch project from workspace store");
+      console.error("Failed to fetch project from workspace store");
       this.loader = "loaded";
       throw error;
     }
@@ -369,7 +369,7 @@ export class ProjectStore implements IProjectStore {
       });
       return response;
     } catch (error) {
-      console.log("Error while fetching project details", error);
+      console.error("Error while fetching project details", error);
       throw error;
     }
   };
@@ -393,7 +393,7 @@ export class ProjectStore implements IProjectStore {
       });
       return response;
     } catch (error) {
-      console.log("Failed to fetch project analytics count", error);
+      console.error("Failed to fetch project analytics count", error);
       throw error;
     }
   };
@@ -469,7 +469,7 @@ export class ProjectStore implements IProjectStore {
       });
       return response;
     } catch (error) {
-      console.log("Failed to add project to favorite");
+      console.error("Failed to add project to favorite");
       runInAction(() => {
         set(this.projectMap, [projectId, "is_favorite"], false);
       });
@@ -494,7 +494,7 @@ export class ProjectStore implements IProjectStore {
 
       return response;
     } catch (error) {
-      console.log("Failed to add project to favorite");
+      console.error("Failed to remove project from favorites");
       runInAction(() => {
         set(this.projectMap, [projectId, "is_favorite"], true);
       });
@@ -521,7 +521,7 @@ export class ProjectStore implements IProjectStore {
       runInAction(() => {
         set(this.projectMap, [projectId, "sort_order"], currentProjectSortOrder);
       });
-      console.log("Failed to update sort order of the projects");
+      console.error("Failed to update sort order of the projects");
       throw error;
     }
   };
@@ -538,7 +538,7 @@ export class ProjectStore implements IProjectStore {
       this.processProjectAfterCreation(workspaceSlug, response);
       return response;
     } catch (error) {
-      console.log("Failed to create project from project store");
+      console.error("Failed to create project from project store");
       throw error;
     }
   };
@@ -563,7 +563,7 @@ export class ProjectStore implements IProjectStore {
       });
       return response;
     } catch (error) {
-      console.log("Failed to create project from project store");
+      console.error("Failed to update project from project store");
       runInAction(() => {
         set(this.projectMap, [projectId], projectDetails);
         this.isUpdatingProject = false;
@@ -588,7 +588,7 @@ export class ProjectStore implements IProjectStore {
         delete this.rootStore.user.permission.workspaceProjectsPermissions[workspaceSlug][projectId];
       });
     } catch (error) {
-      console.log("Failed to delete project from project store");
+      console.error("Failed to delete project from project store");
       throw error;
     }
   };
@@ -609,7 +609,7 @@ export class ProjectStore implements IProjectStore {
         });
       })
       .catch((error) => {
-        console.log("Failed to archive project from project store");
+        console.error("Failed to archive project from project store");
         throw error;
       });
   };
@@ -629,7 +629,7 @@ export class ProjectStore implements IProjectStore {
         });
       })
       .catch((error) => {
-        console.log("Failed to restore project from project store");
+        console.error("Failed to restore project from project store");
         throw error;
       });
   };

@@ -178,7 +178,7 @@ export class ProjectViewIssuesFilter extends IssueFilterHelperStore implements I
       const viewDetails = await this.issueFilterService.getViewDetails(workspaceSlug, projectId, viewId);
       this.mutateFilters(workspaceSlug, viewId, viewDetails);
     } catch (error) {
-      console.log("error while fetching project view filters", error);
+      console.error("error while fetching project view filters", error);
       throw error;
     }
   };
@@ -206,7 +206,7 @@ export class ProjectViewIssuesFilter extends IssueFilterHelperStore implements I
         "mutation"
       );
     } catch (error) {
-      console.log("error while updating rich filters", error);
+      console.error("error while updating rich filters", error);
       throw error;
     }
   };
