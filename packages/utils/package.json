@@ -1,6 +1,6 @@
 {
   "name": "@pace/utils",
-  "version": "1.4.37",
+  "version": "1.4.38",
   "private": true,
   "description": "Helper functions shared across multiple apps internally",
   "license": "AGPL-3.0",
