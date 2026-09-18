@@ -22,6 +22,8 @@ import (
 const WorkspaceSeedTask = "plane.bgtasks.workspace_seed_task.workspace_seed"
 
 // The seed data itself, copied from plane/seeds/data and diffed against it by CI.
+//
+// issues.json deviates from upstream on purpose: the documentation links its prose carried pointed at docs.plane.so, which this fork does not run, and nothing here interpolates configuration -- the files are embedded and unmarshalled as they stand -- so the sentences that existed only to carry those links were dropped instead of a templating pass being invented for four of them. Everything the prose actually teaches is still there.
 var (
 	//go:embed seeds/projects.json
 	projectSeedJSON []byte
