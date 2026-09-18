@@ -12,6 +12,13 @@ import { SUPPORTED_LANGUAGES, FALLBACK_LANGUAGE, LANGUAGE_STORAGE_KEY } from "..
 import { NAMESPACES, DEFAULT_NAMESPACE } from "../constants/namespaces";
 
 import type { i18n as I18nInstance } from "i18next";
+import type { TNamespace } from "../constants/namespaces";
+
+declare const __PACE_I18N_EAGER_NAMESPACES__: readonly TNamespace[] | undefined;
+
+// Which namespaces to fetch before the first render. An app narrows this through a Vite `define` (see apps/admin/vite.config.ts); anything that does not set it -- web, space, the test runner, the sync-check script -- gets every namespace, which is the behaviour this had before the define existed.
+const EAGER_NAMESPACES: readonly TNamespace[] =
+  typeof __PACE_I18N_EAGER_NAMESPACES__ !== "undefined" ? __PACE_I18N_EAGER_NAMESPACES__ : NAMESPACES;
 
 export const i18nInstance: I18nInstance = i18n.createInstance();
 
@@ -28,11 +35,10 @@ export const initPromise = i18nInstance
     lng: initialLng,
     fallbackLng: FALLBACK_LANGUAGE,
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.value),
-    ns: NAMESPACES,
+    ns: [...EAGER_NAMESPACES],
     defaultNS: DEFAULT_NAMESPACE,
-    // fallbackNS ensures all namespaces are searched for any key, so components
-    // don't need to pass NAMESPACES to useTranslation (which triggers re-render cascades).
-    fallbackNS: NAMESPACES.filter((ns) => ns !== DEFAULT_NAMESPACE),
+    // fallbackNS ensures all namespaces are searched for any key, so components don't need to pass NAMESPACES to useTranslation (which triggers re-render cascades). It searches loaded bundles only, so it is scoped to what is actually fetched.
+    fallbackNS: EAGER_NAMESPACES.filter((ns) => ns !== DEFAULT_NAMESPACE),
     partialBundledLanguages: true,
     keySeparator: ".",
     nsSeparator: false,
@@ -46,7 +52,5 @@ export const initPromise = i18nInstance
     returnObjects: false,
     react: { useSuspense: false },
   })
-  // Eagerly pre-load all namespaces for the initial language so they're cached
-  // before any component renders. This prevents the re-render cascade that occurs
-  // when react-i18next triggers concurrent async loads for unloaded namespaces.
-  .then(() => i18nInstance.loadNamespaces(NAMESPACES));
+  // Eagerly pre-load the app's namespaces for the initial language so they're cached before any component renders. This prevents the re-render cascade that occurs when react-i18next triggers concurrent async loads for unloaded namespaces.
+  .then(() => i18nInstance.loadNamespaces([...EAGER_NAMESPACES]));

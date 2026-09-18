@@ -39,3 +39,8 @@ export const NAMESPACES = [
 export type TNamespace = (typeof NAMESPACES)[number];
 
 export const DEFAULT_NAMESPACE: TNamespace = "common";
+
+// The namespaces an app downloads before it renders. Every key the admin console looks up lives in `admin`, and no shared package it depends on calls `t()` at all, so loading the other twenty-seven -- work items, cycles, wikis, stickies, screens the console does not have -- only delays its first paint. `common` stays because it is DEFAULT_NAMESPACE and the fallback chain roots there.
+//
+// `pnpm --filter @pace/i18n check:sync` resolves every `t("...")` in each app against the set it declares here, so a key added outside that set fails CI rather than rendering as its own name in production.
+export const ADMIN_NAMESPACES: readonly TNamespace[] = ["admin", "common"];

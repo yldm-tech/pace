@@ -87,8 +87,15 @@ func issueOrderClause(orderBy string) string {
 	return column + " " + direction(descending) + ", i.created_at DESC"
 }
 
-// caseOrder builds the annotation Django orders by. Django declares the Case as a CharField, so the positions compare as text, but every position is a single digit and text and numeric order agree.
+// caseOrder is caseOrderExpression sorted ascending, which is the direction the flat list always uses.
 func caseOrder(expression string, values []string, fallback string) string {
+	return caseOrderExpression(expression, values, fallback) + " ASC"
+}
+
+// caseOrderExpression builds the annotation Django orders by, with no direction of its own. Django declares the Case as a CharField, so the positions compare as text, but every position is a single digit and text and numeric order agree.
+//
+// The direction is separate because the grouped list supplies its own -- it orders by the string order_issue_queryset hands back rather than the one the caller sent, which for priority is the opposite direction. Folding ASC into the expression, as this did, produced `END ASC DESC NULLS LAST` there and a Postgres syntax error.
+func caseOrderExpression(expression string, values []string, fallback string) string {
 	var builder strings.Builder
 	builder.WriteString("CASE ")
 	for index, value := range values {
@@ -102,7 +109,7 @@ func caseOrder(expression string, values []string, fallback string) string {
 	}
 	builder.WriteString("ELSE ")
 	builder.WriteString(fallback)
-	builder.WriteString(" END ASC")
+	builder.WriteString(" END")
 	return builder.String()
 }
 

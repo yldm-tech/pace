@@ -45,13 +45,13 @@ func issueWindowOrderClause(orderBy string) string {
 	switch bare {
 	case "priority":
 		// order_issue_queryset returns "priority_order" for a descending request and "-priority_order" for an ascending one, so the direction flips here.
-		return caseOrder("i.priority", priorityOrder, "NULL") + nullsLastSuffix(!descending)
+		return caseOrderExpression("i.priority", priorityOrder, "NULL") + nullsLastSuffix(!descending)
 	case "state__group":
 		values := stateOrder
 		if descending {
 			values = reversed(stateOrder)
 		}
-		return caseOrder("(SELECT s.group FROM states s WHERE s.id = i.state_id)", values, "5") + nullsLastSuffix(descending)
+		return caseOrderExpression("(SELECT s.group FROM states s WHERE s.id = i.state_id)", values, "5") + nullsLastSuffix(descending)
 	}
 	if expression, related := issueOrderRelatedMin[bare]; related {
 		return expression + nullsLastSuffix(descending)

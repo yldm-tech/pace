@@ -8,8 +8,11 @@
 //   tsx packages/i18n/scripts/sync-check.ts          # Report only
 //   tsx packages/i18n/scripts/sync-check.ts --ci     # Exit 1 if issues found
 
+import fs from "node:fs";
+import path from "node:path";
 import type { LocaleData } from "./lib/locale-io.js";
 import { LOCALES_DIR, listLocales, loadLocale } from "./lib/locale-io.js";
+import { ADMIN_NAMESPACES } from "../src/constants/namespaces.js";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -121,6 +124,74 @@ function compareToEnglish(enKeys: Set<string>, other: LocaleData): LocaleCompari
 }
 
 // ---------------------------------------------------------------------------
+// Eager-namespace reachability
+// ---------------------------------------------------------------------------
+
+interface EagerNamespaceScope {
+  app: string;
+  dir: string;
+  namespaces: readonly string[];
+}
+
+// Apps that download fewer than all namespaces before their first render. Anything absent here loads every namespace and cannot go out of range.
+const EAGER_NAMESPACE_SCOPES: EagerNamespaceScope[] = [
+  { app: "admin", dir: path.resolve(LOCALES_DIR, "../../../../apps/admin"), namespaces: ADMIN_NAMESPACES },
+];
+
+interface OutOfScopeKey {
+  key: string;
+  namespaces: string[];
+  file: string;
+}
+
+const SOURCE_EXTENSIONS = new Set([".ts", ".tsx"]);
+const SKIPPED_DIRECTORIES = new Set(["node_modules", "build", "dist", ".react-router", ".turbo"]);
+
+function collectSourceFiles(dir: string, out: string[] = []): string[] {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (SKIPPED_DIRECTORIES.has(entry.name)) continue;
+      collectSourceFiles(path.join(dir, entry.name), out);
+    } else if (SOURCE_EXTENSIONS.has(path.extname(entry.name))) {
+      out.push(path.join(dir, entry.name));
+    }
+  }
+  return out;
+}
+
+/**
+ * Finds translation keys an app references but will not have loaded.
+ *
+ * Narrowing the eager namespace set is what keeps the admin console from downloading twenty-seven namespaces it has no screens for, but it removes the safety net that made any key resolve from anywhere: i18next answers an unloaded lookup with the key itself, silently, so the failure would be a raw `admin.page.titles.general` painted into the UI rather than an error. This turns that into a build failure.
+ *
+ * Every double-quoted string literal in the app is considered, not just the arguments of `t(...)`. Keys reach `t` indirectly often enough -- through a label map, a strength-message table, a `labelKey` prop -- that matching on the call site would miss exactly the cases hardest to spot by eye.
+ */
+function findOutOfScopeKeys(enData: LocaleData, scope: EagerNamespaceScope): OutOfScopeKey[] {
+  const eager = new Set(scope.namespaces);
+  const keyOwners = new Map<string, string[]>();
+  for (const ns of enData.namespaces) {
+    for (const key of ns.keys) {
+      const owners = keyOwners.get(key);
+      if (owners) owners.push(ns.name);
+      else keyOwners.set(key, [ns.name]);
+    }
+  }
+
+  const found = new Map<string, OutOfScopeKey>();
+  for (const file of collectSourceFiles(scope.dir)) {
+    const source = fs.readFileSync(file, "utf-8");
+    for (const [, literal] of source.matchAll(/"([^"\\\n]+)"/g)) {
+      const owners = keyOwners.get(literal);
+      if (!owners || owners.some((ns) => eager.has(ns))) continue;
+      if (!found.has(literal)) {
+        found.set(literal, { key: literal, namespaces: owners, file: path.relative(scope.dir, file) });
+      }
+    }
+  }
+  return [...found.values()].toSorted((a, b) => a.key.localeCompare(b.key));
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -181,6 +252,20 @@ function main() {
     for (const c of collisions) {
       console.log(`  ✗ "${c.key}" exists in: ${c.files.join(", ")}`);
     }
+  }
+
+  // Keys an app references but does not eagerly load
+  for (const scope of EAGER_NAMESPACE_SCOPES) {
+    const outOfScope = findOutOfScopeKeys(enData, scope);
+    if (outOfScope.length === 0) continue;
+    hasFailure = true;
+    console.log(`\nKEYS OUTSIDE ${scope.app.toUpperCase()}'S EAGER NAMESPACES (${scope.namespaces.join(", ")}):`);
+    for (const entry of outOfScope) {
+      console.log(`  ✗ "${entry.key}" lives in ${entry.namespaces.join(", ")} — referenced by ${entry.file}`);
+    }
+    console.log(
+      `  Either move the key into one of ${scope.app}'s namespaces, or add its namespace to the ${scope.app.toUpperCase()}_NAMESPACES list in src/constants/namespaces.ts.`
+    );
   }
 
   // Path conflicts
