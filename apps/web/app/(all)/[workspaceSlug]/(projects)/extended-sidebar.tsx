@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo, useRef } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@pace/constants";
 import type { EUserWorkspaceRoles } from "@pace/types";

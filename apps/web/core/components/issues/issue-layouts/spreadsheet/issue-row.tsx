@@ -7,7 +7,7 @@
 import type { Dispatch, MouseEvent, MutableRefObject, SetStateAction } from "react";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { ChevronRightOutline, MoreHorizontalOutline } from "@pace/propel/icons";
 import { SPREADSHEET_SELECT_GROUP } from "@pace/constants";
 // pace helpers

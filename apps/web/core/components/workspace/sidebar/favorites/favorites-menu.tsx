@@ -14,7 +14,7 @@ import type {
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { orderBy } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { ChevronRightOutline, CreateFolderOutline } from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 import { IS_FAVORITE_MENU_OPEN } from "@pace/constants";

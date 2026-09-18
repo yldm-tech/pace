@@ -6,8 +6,8 @@
 
 // ui
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { useRouter } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { useRouter } from "@/lib/navigation";
 import { ChevronDownOutline, RightSidePaneOutline, YourWorkOutline } from "@pace/propel/icons";
 import { PROFILE_VIEWER_TAB, PROFILE_ADMINS_TAB, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

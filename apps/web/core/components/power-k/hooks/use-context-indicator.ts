@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { getPageName } from "@pace/utils";
 // hooks

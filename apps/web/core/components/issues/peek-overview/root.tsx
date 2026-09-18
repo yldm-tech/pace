@@ -6,7 +6,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { observer } from "mobx-react";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 // Plane imports
 import useSWR from "swr";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";

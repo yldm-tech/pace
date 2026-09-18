@@ -6,7 +6,7 @@
 
 // pace package imports
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 import type { IInsightField } from "@pace/constants";
 import { ANALYTICS_INSIGHTS_FIELDS } from "@pace/constants";

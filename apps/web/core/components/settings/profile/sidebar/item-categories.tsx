@@ -8,7 +8,7 @@ import type React from "react";
 import type { LucideIcon } from "lucide-react";
 import { KeyOutline, LockOutline, SettingsOutline, SubscribeOutline, UserOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import {
   GROUPED_PROFILE_SETTINGS,

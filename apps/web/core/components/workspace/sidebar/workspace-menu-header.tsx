@@ -6,8 +6,8 @@
 
 import { useState, useRef } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { useRouter } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { useRouter } from "@/lib/navigation";
 import { ArchiveOutline, ChevronRightOutline, MoreHorizontalOutline, SettingsOutline } from "@makeplane/propel/icons";
 import { Disclosure } from "@headlessui/react";
 // pace imports

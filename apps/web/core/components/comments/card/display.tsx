@@ -7,7 +7,7 @@
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

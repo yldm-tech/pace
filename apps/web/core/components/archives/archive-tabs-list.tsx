@@ -5,9 +5,9 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
-import { usePathname } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
+import { usePathname } from "@/lib/navigation";
 // types
 import type { IProject } from "@pace/types";
 // hooks

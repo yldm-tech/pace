@@ -6,8 +6,8 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { mutate } from "swr";
 // constants
 import { EXPORT_SERVICES_LIST } from "@pace/constants";

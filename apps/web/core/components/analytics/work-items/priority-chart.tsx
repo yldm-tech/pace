@@ -7,7 +7,7 @@
 import { lazy, Suspense, useMemo } from "react";
 import type { ColumnDef, Row, RowData, Table } from "@tanstack/react-table";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
 // pace package imports

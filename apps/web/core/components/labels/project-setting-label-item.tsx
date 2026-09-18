@@ -6,7 +6,7 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { CloseOutline, EditOutline } from "@pace/propel/icons";
 // types
 import type { IIssueLabel } from "@pace/types";

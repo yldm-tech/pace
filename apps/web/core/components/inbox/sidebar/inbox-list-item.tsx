@@ -6,8 +6,8 @@
 
 import type { MouseEvent } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useSearchParams } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useSearchParams } from "@/lib/navigation";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { PriorityIcon } from "@pace/propel/icons";

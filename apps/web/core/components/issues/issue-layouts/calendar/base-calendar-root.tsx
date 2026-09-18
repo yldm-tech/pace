@@ -7,7 +7,7 @@
 import type { FC } from "react";
 import { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { EIssueGroupByToServerOptions, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 // pace imports
 import { EUserPermissionsLevel } from "@pace/constants";

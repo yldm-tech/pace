@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { useSearchParams } from "@/lib/navigation";
 // components
 import { EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

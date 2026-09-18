@@ -7,7 +7,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { useLocation, Link, useNavigate } from "react-router";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { EUserPermissionsLevel, EUserPermissions } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { TabNavigationList, TabNavigationItem } from "@pace/propel/tab-navigation";

@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 import { Combobox } from "@headlessui/react";
 // pace imports

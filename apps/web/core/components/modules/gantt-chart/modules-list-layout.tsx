@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // PLane
 import { GANTT_TIMELINE_TYPE } from "@pace/types";
 import type { IBlockUpdateData, IBlockUpdateDependencyData, IModule } from "@pace/types";

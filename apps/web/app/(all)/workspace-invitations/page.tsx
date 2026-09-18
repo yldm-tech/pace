@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import useSWR from "swr";
 import { BoxesOutline, CloseOutline, ShareAltOutline, StarOutline, TickOutline, UserOutline } from "@pace/propel/icons";
 // components

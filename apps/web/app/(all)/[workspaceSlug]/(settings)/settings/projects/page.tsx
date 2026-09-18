@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme } from "next-themes";
 // pace imports
 import { MARKETING_SITE_URL } from "@pace/constants";

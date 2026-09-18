@@ -6,7 +6,7 @@
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react";
-import { usePathname, useSearchParams } from "@/app/hooks/navigation";
+import { usePathname, useSearchParams } from "@/lib/navigation";
 // hooks
 import { generateQueryParams } from "@pace/utils";
 import { useCycle } from "@/hooks/store/use-cycle";
