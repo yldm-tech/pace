@@ -20,8 +20,6 @@ import icon512 from "@/app/assets/icons/icon-512x512.png?url";
 import ogImage from "@/app/assets/og-image.png?url";
 import globalStyles from "@/styles/globals.css?url";
 import type { Route } from "./+types/root";
-// components
-import { LogoSpinner } from "@/components/common/logo-spinner";
 // lib
 import { isStaleAssetError, recoverFromStaleAsset } from "@/lib/stale-asset-error";
 // local
@@ -29,7 +27,8 @@ import { CustomErrorComponent } from "./error";
 // fonts
 import "@fontsource-variable/inter";
 import interVariableWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
-import "@fontsource/material-symbols-rounded";
+// Weight 400 only: the `.material-symbols-rounded` rule pins font-weight 400, so the package's index.css would add three more unusable @font-face blocks (100/200/300) to a render-blocking stylesheet.
+import "@fontsource/material-symbols-rounded/400.css";
 import "@fontsource/ibm-plex-mono";
 
 const APP_TITLE = "Pace | Simple, extensible, open-source project management tool.";
@@ -121,7 +120,20 @@ export function HydrateFallback() {
 
   return (
     <div className="relative flex h-screen w-full items-center justify-center bg-canvas">
-      <LogoSpinner />
+      {/* The pre-hydration spinner is the brand mark (packages/brand/mark.svg) drawn inline rather than the themed GIF pair LogoSpinner uses: root is the first chunk the browser runs, so anything it imports is fetched before a single route module, and the dark GIF alone is 953 KB. Inline costs no request, and currentColor tracks the theme the way the two files did. */}
+      <svg
+        viewBox="0 0 46 64"
+        fill="currentColor"
+        role="img"
+        aria-label="Loading"
+        className="h-6 w-auto animate-pulse text-primary sm:h-11"
+      >
+        <path
+          fillRule="evenodd"
+          transform="translate(2 0) skewX(-8)"
+          d="M8 0H24A20 20 0 0 1 24 40V64H8Z M24 12A8 8 0 0 1 24 28Z"
+        />
+      </svg>
     </div>
   );
 }
