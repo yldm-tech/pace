@@ -4,6 +4,7 @@
   "private": true,
   "license": "AGPL-3.0",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     "./accordion": "./dist/accordion/index.js",
     "./animated-counter": "./dist/animated-counter/index.js",
@@ -36,6 +37,7 @@
     "./popover": "./dist/popover/index.js",
     "./portal": "./dist/portal/index.js",
     "./scrollarea": "./dist/scrollarea/index.js",
+    "./separator": "./dist/separator/index.js",
     "./skeleton": "./dist/skeleton/index.js",
     "./spinners": "./dist/spinners/index.js",
     "./switch": "./dist/switch/index.js",
