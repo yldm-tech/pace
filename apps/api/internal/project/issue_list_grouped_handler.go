@@ -11,10 +11,11 @@ import (
 	"gorm.io/gorm"
 )
 
-// groupedIssueRow is the windowed projection: an issue row plus the group it arrived under.
+// groupedIssueRow is the windowed projection: an issue row plus the group it arrived under and its rank within that group.
 type groupedIssueRow struct {
 	issueListRow
 	GroupValue *string `gorm:"column:group_value"`
+	RowNumber  int64   `gorm:"column:row_number"`
 }
 
 // issueListGrouped is the group_by half of the list route. The rows come out of a window partitioned by the group, so one query returns a page of every group at once rather than a page of the whole set.
@@ -40,14 +41,8 @@ func (handler *Handler) issueListGrouped(c *gin.Context, _ *auth.User, request i
 	}
 
 	window := pagination.PlanGroupWindow(request.cursor.Offset, request.cursor.Value, request.perPage)
-	rows, err := handler.groupedIssueRows(c, request, groupBy, window)
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-
-	// Whether a page follows is answered by asking for one row past the window rather than by counting.
-	more, err := handler.groupedIssueHasMore(c, request, groupBy, window)
+	// Whether a page follows is answered by the row read past the window rather than by counting.
+	rows, more, err := handler.groupedIssueRows(c, request, groupBy, window)
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -90,32 +85,42 @@ func (handler *Handler) issueListGrouped(c *gin.Context, _ *auth.User, request i
 	drf.Respond(c, http.StatusOK, body)
 }
 
-// groupedIssueRows runs the window and keeps the slice of row numbers the cursor asked for.
-func (handler *Handler) groupedIssueRows(c *gin.Context, request issueListRequest, groupBy string, window pagination.GroupWindow) ([]groupedIssueRow, error) {
+// groupedIssueRows runs the window and keeps the slice of row numbers the cursor asked for, then reads the issue behind each of those rows.
+//
+// The annotations are joined onto the page rather than selected inside the window on purpose. They are eight correlated subqueries, and the window has to rank the whole filtered set to know which rows the cursor lands on -- so selecting them inside means evaluating them for every issue in the project and discarding all but a page of them. Joining afterwards evaluates them the page-size number of times.
+//
+// It reads one row past the window as well. A row numbered exactly `window.Stop` is a sentinel: its presence is what `groupedIssueHasMore` used to run a second copy of the whole window to find out, and it is dropped before the caller sees it.
+func (handler *Handler) groupedIssueRows(c *gin.Context, request issueListRequest, groupBy string, window pagination.GroupWindow) ([]groupedIssueRow, bool, error) {
 	inner := handler.groupedIssueWindow(c, request, groupBy)
 	var rows []groupedIssueRow
 	err := handler.db.WithContext(c.Request.Context()).
 		Table("(?) AS windowed", inner).
-		Where("windowed.row_number > ? AND windowed.row_number < ?", window.Offset, window.Stop).
+		Joins("JOIN issues i ON i.id = windowed.id").
+		Select("windowed.group_value, windowed.row_number, "+issueListAnnotations()).
+		Where("windowed.row_number > ? AND windowed.row_number <= ?", window.Offset, window.Stop).
+		Order("windowed.row_number").
 		Scan(&rows).Error
-	return rows, err
-}
-
-// groupedIssueHasMore asks whether any row sits at or past the end of the window, which is how the paginator decides there is a next page.
-func (handler *Handler) groupedIssueHasMore(c *gin.Context, request issueListRequest, groupBy string, window pagination.GroupWindow) (bool, error) {
-	inner := handler.groupedIssueWindow(c, request, groupBy)
-	var count int64
-	err := handler.db.WithContext(c.Request.Context()).
-		Table("(?) AS windowed", inner).
-		Where("windowed.row_number >= ?", window.Stop).
-		Limit(1).Count(&count).Error
-	return count > 0, err
+	if err != nil {
+		return nil, false, err
+	}
+	page := make([]groupedIssueRow, 0, len(rows))
+	more := false
+	for _, row := range rows {
+		if row.RowNumber >= int64(window.Stop) {
+			more = true
+			continue
+		}
+		page = append(page, row)
+	}
+	return page, more, nil
 }
 
 // groupedIssueWindow builds the partitioned query. The many-to-many group-bys join with a left outer, so an issue with no rows on the far side still lands in the null partition.
+//
+// It selects the issue id and nothing else off the issue: the window's only job is to rank, and every column the ordering and the partition need is reachable from `i` without projecting it.
 func (handler *Handler) groupedIssueWindow(c *gin.Context, request issueListRequest, groupBy string) *gorm.DB {
 	partition := issueGroupPartition[groupBy]
-	selection := issueListAnnotations() +
+	selection := "i.id" +
 		",\n\t\t" + partition + " AS group_value" +
 		",\n\t\tROW_NUMBER() OVER (PARTITION BY " + partition + " ORDER BY " + issueWindowOrderClause(c.Query("order_by")) + ") AS row_number"
 
@@ -206,12 +211,7 @@ func (handler *Handler) issueGroupValueList(ctx context.Context, request issueLi
 // issueListSubGrouped is the doubly-nested path. The window partitions by both axes at once, so one query still returns a page of every group and sub-group.
 func (handler *Handler) issueListSubGrouped(c *gin.Context, request issueListRequest, groupBy, subGroupBy string) {
 	window := pagination.PlanGroupWindow(request.cursor.Offset, request.cursor.Value, request.perPage)
-	rows, err := handler.subGroupedIssueRows(c, request, groupBy, subGroupBy, window)
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	more, err := handler.subGroupedIssueHasMore(c, request, groupBy, subGroupBy, window)
+	rows, more, err := handler.subGroupedIssueRows(c, request, groupBy, subGroupBy, window)
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -268,30 +268,38 @@ type subGroupedIssueRow struct {
 	issueListRow
 	GroupValue    *string `gorm:"column:group_value"`
 	SubGroupValue *string `gorm:"column:sub_group_value"`
+	RowNumber     int64   `gorm:"column:row_number"`
 }
 
-func (handler *Handler) subGroupedIssueRows(c *gin.Context, request issueListRequest, groupBy, subGroupBy string, window pagination.GroupWindow) ([]subGroupedIssueRow, error) {
+// subGroupedIssueRows is groupedIssueRows on two axes: the same lean window, the same annotations joined onto the page it survives, and the same row past the end standing in for a second query.
+func (handler *Handler) subGroupedIssueRows(c *gin.Context, request issueListRequest, groupBy, subGroupBy string, window pagination.GroupWindow) ([]subGroupedIssueRow, bool, error) {
 	var rows []subGroupedIssueRow
 	err := handler.db.WithContext(c.Request.Context()).
 		Table("(?) AS windowed", handler.subGroupedIssueWindow(c, request, groupBy, subGroupBy)).
-		Where("windowed.row_number > ? AND windowed.row_number < ?", window.Offset, window.Stop).
+		Joins("JOIN issues i ON i.id = windowed.id").
+		Select("windowed.group_value, windowed.sub_group_value, windowed.row_number, "+issueListAnnotations()).
+		Where("windowed.row_number > ? AND windowed.row_number <= ?", window.Offset, window.Stop).
+		Order("windowed.row_number").
 		Scan(&rows).Error
-	return rows, err
-}
-
-func (handler *Handler) subGroupedIssueHasMore(c *gin.Context, request issueListRequest, groupBy, subGroupBy string, window pagination.GroupWindow) (bool, error) {
-	var count int64
-	err := handler.db.WithContext(c.Request.Context()).
-		Table("(?) AS windowed", handler.subGroupedIssueWindow(c, request, groupBy, subGroupBy)).
-		Where("windowed.row_number >= ?", window.Stop).
-		Limit(1).Count(&count).Error
-	return count > 0, err
+	if err != nil {
+		return nil, false, err
+	}
+	page := make([]subGroupedIssueRow, 0, len(rows))
+	more := false
+	for _, row := range rows {
+		if row.RowNumber >= int64(window.Stop) {
+			more = true
+			continue
+		}
+		page = append(page, row)
+	}
+	return page, more, nil
 }
 
 // subGroupedIssueWindow partitions by both axes at once. Either axis may need its own join, and an issue can be fanned by both.
 func (handler *Handler) subGroupedIssueWindow(c *gin.Context, request issueListRequest, groupBy, subGroupBy string) *gorm.DB {
 	group, subGroup := issueGroupPartition[groupBy], issueGroupPartition[subGroupBy]
-	selection := issueListAnnotations() +
+	selection := "i.id" +
 		",\n\t\t" + group + " AS group_value" +
 		",\n\t\t" + subGroup + " AS sub_group_value" +
 		",\n\t\tROW_NUMBER() OVER (PARTITION BY " + group + ", " + subGroup +

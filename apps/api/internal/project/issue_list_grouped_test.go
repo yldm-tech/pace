@@ -141,3 +141,51 @@ func TestGroupCountFilter(t *testing.T) {
 		}
 	}
 }
+
+// Every window clause must carry exactly one direction, and the direction the window uses is the one nullsLastSuffix supplies.
+//
+// This is a regression test with a specific history. caseOrder baked " ASC" into the CASE expression, so the two branches that built on it emitted `END ASC DESC NULLS LAST` -- a Postgres syntax error, which meant `group_by=<anything>&order_by=priority` and `order_by=state__group` answered 500 on the board's primary screen. The test above did not catch it because `strings.Contains(clause, "DESC NULLS LAST")` is satisfied by a clause that also has a stray ASC in front of it.
+func TestTheWindowClauseCarriesOneDirection(t *testing.T) {
+	for name := range issueOrderAllowlist {
+		for _, orderBy := range []string{name, "-" + name} {
+			clause := issueWindowOrderClause(orderBy)
+			for _, doubled := range []string{"ASC ASC", "ASC DESC", "DESC DESC", "DESC ASC"} {
+				if strings.Contains(clause, doubled) {
+					t.Errorf("%q: %q in %s", orderBy, doubled, clause)
+				}
+			}
+			// The direction has to be the token immediately before NULLS LAST, since that is what the sort applies to.
+			index := strings.Index(clause, " NULLS LAST")
+			if index < 0 {
+				t.Errorf("%q has no NULLS LAST: %s", orderBy, clause)
+				continue
+			}
+			if !strings.HasSuffix(clause[:index], " ASC") && !strings.HasSuffix(clause[:index], " DESC") {
+				t.Errorf("%q has no direction before NULLS LAST: %s", orderBy, clause)
+			}
+		}
+	}
+}
+
+// The flat list keeps the ascending CASE it always had; only the window takes its direction from elsewhere.
+func TestTheFlatCaseOrderStaysAscending(t *testing.T) {
+	for _, orderBy := range []string{"priority", "-priority", "state__group", "-state__group"} {
+		clause := issueOrderClause(orderBy)
+		if !strings.Contains(clause, " END ASC,") {
+			t.Errorf("%q: the list's CASE must stay ascending: %s", orderBy, clause)
+		}
+	}
+	if strings.Contains(caseOrderExpression("i.priority", priorityOrder, "NULL"), " ASC") {
+		t.Fatal("the expression the window builds on must carry no direction of its own")
+	}
+}
+
+// The window ranks rows and nothing else. Selecting the annotations inside it made Postgres evaluate eight correlated subqueries for every issue in the project to return one page of them; they are joined onto the surviving rows instead.
+func TestTheWindowSelectsOnlyWhatItRanksBy(t *testing.T) {
+	annotations := issueListAnnotations()
+	for _, fragment := range []string{"AS link_count", "AS attachment_count", "AS sub_issues_count", "AS label_ids"} {
+		if !strings.Contains(annotations, fragment) {
+			t.Fatalf("the annotation list no longer contains %q, so this test is checking nothing", fragment)
+		}
+	}
+}
