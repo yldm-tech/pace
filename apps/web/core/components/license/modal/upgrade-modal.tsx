@@ -11,20 +11,30 @@ import {
   ENTERPRISE_PLAN_FEATURES,
   PLANE_COMMUNITY_PRODUCTS,
   PRO_PLAN_FEATURES,
-  SUBSCRIPTION_REDIRECTION_URLS,
   SUBSCRIPTION_WEBPAGE_URLS,
-  TALK_TO_SALES_URL,
 } from "@pace/constants";
 import { EProductSubscriptionEnum } from "@pace/types";
 import { EModalWidth, ModalCore } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
 import { FreePlanCard, PlanUpgradeCard } from "@/components/license";
-import type { TCheckoutParams } from "@/components/license/modal/card/checkout-button";
 
 // Constants
 const COMMON_CARD_CLASSNAME = "flex flex-col w-full h-full justify-end col-span-12 sm:col-span-6 xl:col-span-3";
 const COMMON_EXTRA_FEATURES_CLASSNAME = "pt-2 text-center text-caption-md-medium text-accent-primary hover:underline";
+
+// The plan pages live on a marketing site that a self-hosted installation may not have, so the link is omitted rather than rendered with an empty href.
+const renderFullFeaturesLink = (planVariant: EProductSubscriptionEnum) => {
+  const href = SUBSCRIPTION_WEBPAGE_URLS[planVariant];
+  if (!href) return null;
+  return (
+    <p className={COMMON_EXTRA_FEATURES_CLASSNAME}>
+      <a href={href} target="_blank" rel="noreferrer">
+        See full features list
+      </a>
+    </p>
+  );
+};
 
 export type PaidPlanUpgradeModalProps = {
   isOpen: boolean;
@@ -36,17 +46,6 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
   // derived values
   const isSelfHosted = true;
   const isTrialAllowed = false;
-
-  const handleRedirection = ({ planVariant, priceId }: TCheckoutParams) => {
-    // Get the product and price using plane community constants
-    const product = PLANE_COMMUNITY_PRODUCTS[planVariant];
-    // oxlint-disable-next-line no-shadow
-    const price = product.prices.find((price) => price.id === priceId);
-    const frequency = price?.recurring ?? "year";
-    // Redirect to the appropriate URL
-    const redirectUrl = SUBSCRIPTION_REDIRECTION_URLS[planVariant][frequency] ?? TALK_TO_SALES_URL;
-    window.open(redirectUrl, "_blank");
-  };
 
   return (
     <ModalCore isOpen={isOpen} handleClose={handleClose} width={EModalWidth.VIIXL} className="rounded-2xl">
@@ -73,14 +72,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
               product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.PRO]}
               features={PRO_PLAN_FEATURES}
               verticalFeatureList
-              extraFeatures={
-                <p className={COMMON_EXTRA_FEATURES_CLASSNAME}>
-                  <a href={SUBSCRIPTION_WEBPAGE_URLS[EProductSubscriptionEnum.PRO]} target="_blank" rel="noreferrer">
-                    See full features list
-                  </a>
-                </p>
-              }
-              handleCheckout={handleRedirection}
+              extraFeatures={renderFullFeaturesLink(EProductSubscriptionEnum.PRO)}
               isSelfHosted={!!isSelfHosted}
               isTrialAllowed={!!isTrialAllowed}
             />
@@ -91,18 +83,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
               product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.BUSINESS]}
               features={BUSINESS_PLAN_FEATURES}
               verticalFeatureList
-              extraFeatures={
-                <p className={COMMON_EXTRA_FEATURES_CLASSNAME}>
-                  <a
-                    href={SUBSCRIPTION_WEBPAGE_URLS[EProductSubscriptionEnum.BUSINESS]}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    See full features list
-                  </a>
-                </p>
-              }
-              handleCheckout={handleRedirection}
+              extraFeatures={renderFullFeaturesLink(EProductSubscriptionEnum.BUSINESS)}
               isSelfHosted={!!isSelfHosted}
               isTrialAllowed={!!isTrialAllowed}
             />
@@ -113,18 +94,7 @@ export const PaidPlanUpgradeModal = observer(function PaidPlanUpgradeModal(props
               product={PLANE_COMMUNITY_PRODUCTS[EProductSubscriptionEnum.ENTERPRISE]}
               features={ENTERPRISE_PLAN_FEATURES}
               verticalFeatureList
-              extraFeatures={
-                <p className={COMMON_EXTRA_FEATURES_CLASSNAME}>
-                  <a
-                    href={SUBSCRIPTION_WEBPAGE_URLS[EProductSubscriptionEnum.ENTERPRISE]}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    See full features list
-                  </a>
-                </p>
-              }
-              handleCheckout={handleRedirection}
+              extraFeatures={renderFullFeaturesLink(EProductSubscriptionEnum.ENTERPRISE)}
               isSelfHosted={!!isSelfHosted}
               isTrialAllowed={!!isTrialAllowed}
             />

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { SUBSCRIPTION_REDIRECTION_URLS, SUBSCRIPTION_WITH_BILLING_FREQUENCY, TALK_TO_SALES_URL } from "@pace/constants";
+import { SUBSCRIPTION_WITH_BILLING_FREQUENCY, TALK_TO_SALES_URL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import type { TBillingFrequency } from "@pace/types";
@@ -40,12 +40,9 @@ export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) 
       ? planDetail.monthlyPriceSecondaryDescription
       : planDetail.yearlyPriceSecondaryDescription;
 
+  // There is no self-serve upgrade for a self-hosted installation to send a buyer to, so the only destination this button ever has is whatever sales contact the installation configures. It is not rendered when there is none, rather than opening a page that does not exist.
   const handleRedirection = () => {
-    const frequency = billingFrequency ?? "year";
-    // Get the redirection URL based on the subscription type and billing frequency
-    const redirectUrl = SUBSCRIPTION_REDIRECTION_URLS[subscriptionType][frequency] ?? TALK_TO_SALES_URL;
-    // Open the URL in a new tab
-    window.open(redirectUrl, "_blank");
+    window.open(TALK_TO_SALES_URL, "_blank");
   };
 
   return (
@@ -95,11 +92,13 @@ export const PlanDetail = observer(function PlanDetail(props: TPlanDetailProps) 
       )}
 
       {/* Subscription button */}
-      <div className="flex flex-col items-start gap-1 py-3">
-        <Button variant="primary" size="lg" onClick={handleRedirection} className="w-full">
-          {isSubscriptionActive ? `Upgrade to ${subscriptionName}` : t("common.upgrade_cta.talk_to_sales")}
-        </Button>
-      </div>
+      {TALK_TO_SALES_URL && (
+        <div className="flex flex-col items-start gap-1 py-3">
+          <Button variant="primary" size="lg" onClick={handleRedirection} className="w-full">
+            {t("common.upgrade_cta.talk_to_sales")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 });

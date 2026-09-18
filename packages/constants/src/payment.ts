@@ -4,8 +4,10 @@
  * See the LICENSE file for details.
  */
 
-import type { IPaymentProduct, TBillingFrequency, TProductBillingFrequency } from "@pace/types";
+import type { IPaymentProduct, TProductBillingFrequency } from "@pace/types";
 import { EProductSubscriptionEnum } from "@pace/types";
+// local imports
+import { MARKETING_SITE_URL, externalLink } from "./endpoints";
 
 /**
  * Default billing frequency for each product subscription type
@@ -115,45 +117,22 @@ export const PLANE_COMMUNITY_PRODUCTS: Record<string, IPaymentProduct> = {
 };
 
 /**
- * URL for the "Talk to Sales" page where users can contact sales team
+ * URL for the "Talk to Sales" page where users can contact sales team.
+ *
+ * Empty unless VITE_MARKETING_SITE_URL is configured, and every caller must omit its link when it is — see the comment on MARKETING_SITE_URL in endpoints.ts.
  */
-export const TALK_TO_SALES_URL = "https://pace.yldm.ai/talk-to-sales";
-
-/**
- * Mapping of subscription types to their respective upgrade/redirection URLs based on billing frequency
- * Used for self-hosted installations to redirect users to appropriate upgrade pages
- */
-export const SUBSCRIPTION_REDIRECTION_URLS: Record<EProductSubscriptionEnum, Record<TBillingFrequency, string>> = {
-  [EProductSubscriptionEnum.FREE]: {
-    month: TALK_TO_SALES_URL,
-    year: TALK_TO_SALES_URL,
-  },
-  [EProductSubscriptionEnum.ONE]: {
-    month: TALK_TO_SALES_URL,
-    year: TALK_TO_SALES_URL,
-  },
-  [EProductSubscriptionEnum.PRO]: {
-    month: "https://pace.yldm.ai/upgrade/pro/self-hosted?plan=month",
-    year: "https://pace.yldm.ai/upgrade/pro/self-hosted?plan=year",
-  },
-  [EProductSubscriptionEnum.BUSINESS]: {
-    month: "https://pace.yldm.ai/upgrade/business/self-hosted?plan=month",
-    year: "https://pace.yldm.ai/upgrade/business/self-hosted?plan=year",
-  },
-  [EProductSubscriptionEnum.ENTERPRISE]: {
-    month: TALK_TO_SALES_URL,
-    year: TALK_TO_SALES_URL,
-  },
-};
+export const TALK_TO_SALES_URL = externalLink(MARKETING_SITE_URL, "/talk-to-sales");
 
 /**
  * Mapping of subscription types to their respective marketing webpage URLs
  * Used to direct users to learn more about each plan's features and pricing
+ *
+ * There is deliberately no counterpart for the paid upgrade flow. Upstream, a self-hosted installation sent buyers to the vendor's own cloud app (app.plane.so/upgrade/...) to buy a licence, and this fork has no such service -- so a checkout redirect here has nowhere to go and the CTA that used it is gone rather than pointing somewhere that 404s.
  */
 export const SUBSCRIPTION_WEBPAGE_URLS: Record<EProductSubscriptionEnum, string> = {
   [EProductSubscriptionEnum.FREE]: TALK_TO_SALES_URL,
   [EProductSubscriptionEnum.ONE]: TALK_TO_SALES_URL,
-  [EProductSubscriptionEnum.PRO]: "https://pace.yldm.ai/pro",
-  [EProductSubscriptionEnum.BUSINESS]: "https://pace.yldm.ai/business",
-  [EProductSubscriptionEnum.ENTERPRISE]: "https://pace.yldm.ai/business",
+  [EProductSubscriptionEnum.PRO]: externalLink(MARKETING_SITE_URL, "/pro"),
+  [EProductSubscriptionEnum.BUSINESS]: externalLink(MARKETING_SITE_URL, "/business"),
+  [EProductSubscriptionEnum.ENTERPRISE]: externalLink(MARKETING_SITE_URL, "/business"),
 };
