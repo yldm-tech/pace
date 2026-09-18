@@ -11,7 +11,8 @@ import type { EditorRefApi } from "@pace/editor";
 import { CloseOutline, TickOutline } from "@makeplane/propel/icons";
 // pace imports
 import type { TCommentsOperations, TIssueComment } from "@pace/types";
-import { cn, isCommentEmpty } from "@pace/utils";
+import { cn } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 

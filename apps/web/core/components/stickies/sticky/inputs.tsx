@@ -10,7 +10,8 @@ import { Controller, useForm } from "react-hook-form";
 // pace imports
 import type { EditorRefApi } from "@pace/editor";
 import type { TSticky } from "@pace/types";
-import { cn, isCommentEmpty } from "@pace/utils";
+import { cn } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 import { StickyEditor } from "@/components/editor/sticky-editor";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

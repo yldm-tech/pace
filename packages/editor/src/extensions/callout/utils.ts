@@ -6,7 +6,7 @@
 
 // pace imports
 import type { TLogoProps } from "@pace/types";
-import { sanitizeHTML } from "@pace/utils";
+import { sanitizeHTML } from "@pace/utils/html";
 // types
 import type { TCalloutBlockAttributes, TCalloutBlockEmojiAttributes, TCalloutBlockIconAttributes } from "./types";
 import { ECalloutAttributeNames } from "./types";

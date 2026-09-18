@@ -22,6 +22,7 @@ const EAGER_NAMESPACES: readonly TNamespace[] =
 
 export const i18nInstance: I18nInstance = i18n.createInstance();
 
+// The plugin registration and the `init` below run at import time, which is the whole contract of this module: importing @pace/i18n anywhere is what configures the instance. That is why packages/i18n deliberately has no `sideEffects: false` in its package.json, unlike the pure-data packages around it -- marking it pure would let a bundler drop this module when a consumer only reads a re-exported constant from the barrel, and the failure would be an unconfigured i18next at runtime rather than a build error.
 i18nInstance
   .use(ICU)
   .use(initReactI18next)
