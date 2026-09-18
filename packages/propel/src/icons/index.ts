@@ -4,6 +4,9 @@
  * See the LICENSE file for details.
  */
 
+// The 737 `*Outline`/`*Filled` icons ship from @makeplane/propel; re-exporting them here makes `@pace/propel/icons` the single icon import path for every app, so a call site never has to know which of the two sets an icon came from. The two name sets are disjoint — every local export below is suffixed `*Icon` — so no name is ambiguous and nothing is shadowed.
+export * from "@makeplane/propel/icons";
+
 export type { ISvgIcons } from "./type";
 export type { IconName } from "./registry";
 export { ICON_REGISTRY } from "./registry";
