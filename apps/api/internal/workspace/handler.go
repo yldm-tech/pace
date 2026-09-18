@@ -652,14 +652,24 @@ func (handler *Handler) memberList(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
+	identifiers := make([]string, 0, len(members))
+	for _, member := range members {
+		identifiers = append(identifiers, member.MemberID)
+	}
+	people, err := handler.liteUsersByID(c.Request.Context(), identifiers)
+	if err != nil {
+		handler.internalError(c, err)
+		return
+	}
 	result := make([]gin.H, 0, len(members))
 	for _, member := range members {
-		data, err := handler.memberJSON(c.Request.Context(), member, requesterRole > roleGuest)
-		if err != nil {
-			handler.internalError(c, err)
+		person, found := people[member.MemberID]
+		if !found {
+			// The per-member lookup this replaced answered a member whose user row has gone with a 500, so a dangling member_id still fails the whole list rather than serializing a blank member.
+			handler.internalError(c, gorm.ErrRecordNotFound)
 			return
 		}
-		result = append(result, data)
+		result = append(result, memberRowJSON(member, person, requesterRole > roleGuest))
 	}
 	drf.Respond(c, http.StatusOK, result)
 }
@@ -916,10 +926,33 @@ func (handler *Handler) memberJSON(ctx context.Context, member WorkspaceMember, 
 	if err := handler.db.WithContext(ctx).Where("id = ?", member.MemberID).Take(&user).Error; err != nil {
 		return nil, err
 	}
-	data := gin.H{
+	return memberRowJSON(member, user, admin), nil
+}
+
+// memberRowJSON is the row memberJSON returns once the user is in hand, which the list builds from one batched read instead of a query per member.
+func memberRowJSON(member WorkspaceMember, user auth.User, admin bool) gin.H {
+	return gin.H{
 		"id": member.ID, "member": liteUserJSON(user, admin), "role": member.Role,
 	}
-	return data, nil
+}
+
+// liteUsersByID reads the members' users in one query per batch, and only the columns liteUserJSON emits — the whole row carries the password hash and the auth token, neither of which the response needs. The member list is unpaginated, so the identifiers are chunked rather than handed to the driver as one parameter list.
+func (handler *Handler) liteUsersByID(ctx context.Context, identifiers []string) (map[string]auth.User, error) {
+	const batchSize = 1000
+	people := make(map[string]auth.User, len(identifiers))
+	for start := 0; start < len(identifiers); start += batchSize {
+		var rows []auth.User
+		err := handler.db.WithContext(ctx).Model(&auth.User{}).
+			Select("id, first_name, last_name, avatar, avatar_asset_id, is_bot, display_name, email, last_login_medium").
+			Where("id IN ?", identifiers[start:min(start+batchSize, len(identifiers))]).Find(&rows).Error
+		if err != nil {
+			return nil, err
+		}
+		for _, row := range rows {
+			people[row.ID] = row
+		}
+	}
+	return people, nil
 }
 
 func (handler *Handler) fullMemberJSON(ctx context.Context, member WorkspaceMember, admin bool) (gin.H, error) {

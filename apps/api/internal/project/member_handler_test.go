@@ -123,3 +123,34 @@ func TestProjectMemberRouteRejectsMalformedMemberIdentifier(t *testing.T) {
 		t.Fatalf("status = %d, want %d", response.Code, http.StatusNotFound)
 	}
 }
+
+func TestActiveProjectMemberAnswersFromTheRequestScopedCache(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	// The handler has no database, so an answer at all proves the row came from the request's context rather than from a second query.
+	handler := NewHandler(nil, nil, Settings{})
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodGet, "/api/workspaces/pace/projects/project-id/issues/", nil)
+	cached := ProjectMember{ID: "member-row", ProjectID: "project-id", MemberID: "user-id", Role: roleGuest}
+	cacheProjectMember(c, projectMemberLookup{slug: "pace", projectID: "project-id", memberID: "user-id", member: cached, found: true})
+
+	member, found, err := handler.activeProjectMember(c.Request.Context(), "pace", "project-id", "user-id")
+	if err != nil || !found || member.ID != cached.ID || member.Role != cached.Role {
+		t.Fatalf("activeProjectMember = %+v, %t, %v", member, found, err)
+	}
+}
+
+func TestProjectMemberCacheOnlyAnswersItsOwnQuestion(t *testing.T) {
+	lookup := projectMemberLookup{slug: "pace", projectID: "project-id", memberID: "user-id"}
+	if !lookup.matches("pace", "project-id", "user-id") {
+		t.Fatal("the cached lookup does not match the arguments that produced it")
+	}
+	for _, question := range [][3]string{
+		{"other", "project-id", "user-id"},
+		{"pace", "other-project", "user-id"},
+		{"pace", "project-id", "other-user"},
+	} {
+		if lookup.matches(question[0], question[1], question[2]) {
+			t.Fatalf("the cached lookup answered for %v", question)
+		}
+	}
+}
