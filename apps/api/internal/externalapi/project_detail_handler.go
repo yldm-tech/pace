@@ -324,11 +324,14 @@ func (handler *Handler) requireProjectBase(c *gin.Context, user *auth.User, meth
 	return false
 }
 
+// workspaceRole reads the caller's role in the workspace, and reports whether they are a member of it at all.
+//
+// The predicate is internal/workspace's, which is the strictest of the copies in the tree, and this one used to be the loosest: it filtered neither the workspace's own soft delete nor the membership's. A soft-deleted workspace is renamed to `<slug>__<epoch>` in the same transaction that stamps its deleted_at, so reaching one takes knowing the mangled slug — but it was reachable, and this lookup is the whole of ProjectBasePermission, which gates the project list, create, update and delete. The workspace filter is the one that matters: deleted_at on the workspace is written synchronously, while the membership's arrives later with the worker's cascade.
 func (handler *Handler) workspaceRole(c *gin.Context, user *auth.User, slug string) (int, bool, error) {
 	var roles []int
 	err := handler.db.WithContext(c.Request.Context()).Table("workspace_members wm").
 		Joins("JOIN workspaces w ON w.id = wm.workspace_id").
-		Where("w.slug = ? AND wm.member_id = ? AND wm.is_active = TRUE", slug, user.ID).
+		Where("w.slug = ? AND w.deleted_at IS NULL AND wm.member_id = ? AND wm.is_active = TRUE AND wm.deleted_at IS NULL", slug, user.ID).
 		Limit(1).Pluck("wm.role", &roles).Error
 	if err != nil || len(roles) == 0 {
 		return 0, false, err
