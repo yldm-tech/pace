@@ -490,11 +490,12 @@ func (handler *Handler) requireProjectLite(c *gin.Context, user *auth.User) bool
 	return true
 }
 
+// projectRole reads the caller's role in the project named in the url, and reports whether they are a member of it at all. It is what requireProjectBase asks when a write is neither a create nor a safe method, so like the other gates over project_members it filters the membership's own soft delete: nothing else in the query says the project still exists.
 func (handler *Handler) projectRole(c *gin.Context, user *auth.User) (int, bool, error) {
 	var roles []int
 	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
 		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE",
+		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), user.ID).
 		Limit(1).Pluck("pm.role", &roles).Error
 	if err != nil || len(roles) == 0 {

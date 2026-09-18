@@ -20,11 +20,13 @@ const (
 )
 
 // requireProjectMember is ProjectEntityPermission: a safe method wants any active member, and a write wants an admin or a member.
+//
+// The membership's own soft delete is filtered here, where a join traversed through another model's queryset would leave it out, because this query reads project_members through its own manager and nothing else in it is about the project still existing. Without it the gate answers for a member of a soft-deleted project forever.
 func (handler *Handler) requireProjectMember(c *gin.Context, user *auth.User, method string) bool {
 	var roles []int
 	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
 		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE",
+		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), user.ID).
 		Limit(1).Pluck("pm.role", &roles).Error
 	if err != nil {

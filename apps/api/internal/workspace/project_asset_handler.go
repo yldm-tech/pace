@@ -436,11 +436,13 @@ func (handler *Handler) projectAsset(c *gin.Context, user *auth.User, uploadedOn
 }
 
 // requireProjectMember is the project branch of allow_permission: an active membership of the project named in the url, at any role.
+//
+// The membership's own soft delete is filtered because this query is the whole gate: it reads project_members through its own manager and carries no other check that the project or the workspace still exists.
 func (handler *Handler) requireProjectMember(c *gin.Context, user *auth.User) bool {
 	var count int64
 	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
 		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE",
+		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL",
 			c.Param("slug"), c.Param("id"), user.ID).Count(&count).Error
 	if err != nil {
 		handler.internalError(c, err)

@@ -352,11 +352,13 @@ func validMemberRole(role int) bool {
 }
 
 // requireProjectAdmin is ProjectAdminPermission, which the three write routes swap in for the read one.
+//
+// Like requireProjectMember it filters the membership's own soft delete, because the project's liveness is not tested anywhere else in the query.
 func (handler *Handler) requireProjectAdmin(c *gin.Context, user *auth.User) bool {
 	var admins int64
 	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
 		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.role = ? AND pm.is_active = TRUE",
+		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.role = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), user.ID, roleAdmin).
 		Count(&admins).Error
 	if err != nil {

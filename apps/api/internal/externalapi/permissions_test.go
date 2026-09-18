@@ -106,3 +106,42 @@ func TestTheProjectBaseGateWillNotReadASoftDeletedWorkspace(t *testing.T) {
 		}
 	}
 }
+
+// The three gates over project_members are the only queries in this app whose whole subject is the membership: they read it through its own manager and carry no other liveness check, so the membership's own soft delete is the one thing standing between a soft-deleted project and a caller who used to be in it. Every other project-scoped query here traverses the membership as a join from a base row it already filters, and leaves the filter out to match Django.
+//
+// This takes effect when the worker drains the cascade that stamps the membership, not when the project is deleted. The gates do not test the project row itself, so the window between the two stays open; closing it takes a join onto projects, which is a departure from the predicate Django writes for these permissions and is deliberately not made here.
+func TestTheProjectGatesRefuseACascadedMembership(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		method string
+		gate   func(*Handler, *gin.Context) bool
+	}{
+		{"requireProjectMember", http.MethodGet, func(handler *Handler, context *gin.Context) bool {
+			return handler.requireProjectMember(context, gateUser(), http.MethodGet)
+		}},
+		{"requireProjectAdmin", http.MethodPost, func(handler *Handler, context *gin.Context) bool {
+			return handler.requireProjectAdmin(context, gateUser())
+		}},
+		{"projectRole", http.MethodPatch, func(handler *Handler, context *gin.Context) bool {
+			_, found, err := handler.projectRole(context, gateUser())
+			if err != nil {
+				t.Fatalf("the role lookup failed: %v", err)
+			}
+			return found
+		}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			handler, recorded := recordingHandler(t)
+			context, _ := gateRequest(t, test.method)
+
+			if test.gate(handler, context) {
+				t.Error("the gate admitted a caller whose membership lookup matched nothing")
+			}
+			for _, fragment := range []string{"pm.is_active = TRUE", "pm.deleted_at IS NULL"} {
+				if !recorded.contains(fragment) {
+					t.Errorf("the gate does not filter %s:\n  %s", fragment, recorded)
+				}
+			}
+		})
+	}
+}
