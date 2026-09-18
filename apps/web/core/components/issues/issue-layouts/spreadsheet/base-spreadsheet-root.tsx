@@ -18,7 +18,7 @@ import { useUserPermissions } from "@/hooks/store/user";
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";
 import { useIssuesActions } from "@/hooks/use-issues-actions";
 // local imports
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import type { IQuickActionProps, TRenderQuickActions } from "../list/list-view-types";
 import { SpreadsheetView } from "./spreadsheet-view";
 

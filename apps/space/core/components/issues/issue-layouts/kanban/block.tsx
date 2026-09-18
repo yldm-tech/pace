@@ -15,7 +15,7 @@ import type { IIssueDisplayProperties } from "@pace/types";
 // pace utils
 import { cn } from "@pace/utils";
 // components
-import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-hoc";
 // helpers
 import { queryParamGenerator } from "@/helpers/query-param-generator";
 // hooks

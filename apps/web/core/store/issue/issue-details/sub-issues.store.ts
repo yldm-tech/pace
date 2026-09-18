@@ -21,8 +21,8 @@ import type {
 import { IssueService } from "@pace/services";
 // store
 import type { IIssueDetail } from "./root.store";
-import type { IWorkItemSubIssueFiltersStore } from "./sub_issues_filter.store";
-import { WorkItemSubIssueFiltersStore } from "./sub_issues_filter.store";
+import type { IWorkItemSubIssueFiltersStore } from "./sub-issues-filter.store";
+import { WorkItemSubIssueFiltersStore } from "./sub-issues-filter.store";
 
 export interface IIssueSubIssuesStoreActions {
   fetchSubIssues: (workspaceSlug: string, projectId: string, parentIssueId: string) => Promise<TIssueSubIssues>;

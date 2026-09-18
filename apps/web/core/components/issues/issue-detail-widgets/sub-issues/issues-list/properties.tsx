@@ -19,7 +19,7 @@ import { MemberDropdown } from "@/components/dropdowns/member/dropdown";
 import { PriorityDropdown } from "@/components/dropdowns/priority";
 import { StateDropdown } from "@/components/dropdowns/state/dropdown";
 // hooks
-import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/properties/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/properties/with-display-properties-hoc";
 import { useProjectState } from "@/hooks/store/use-project-state";
 
 type Props = {

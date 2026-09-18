@@ -14,7 +14,7 @@ import { cn } from "@pace/utils";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";
 // components
-import { ContentOverflowWrapper } from "../../core/content-overflow-HOC";
+import { ContentOverflowWrapper } from "../../core/content-overflow-hoc";
 import { StickiesLayout } from "./stickies-list";
 
 type StickiesTruncatedProps = {

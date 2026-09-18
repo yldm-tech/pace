@@ -28,7 +28,7 @@ import { useAppRouter } from "@/hooks/use-app-router";
 import { ProjectAuthWrapper } from "@/layouts/auth-layout/project-wrapper";
 // pace web imports
 import { useWorkItemProperties } from "@/hooks/use-issue-properties";
-import { WorkItemDetailRoot } from "@/components/browse/workItem-detail";
+import { WorkItemDetailRoot } from "@/components/browse/work-item-detail";
 
 import type { Route } from "./+types/page";
 

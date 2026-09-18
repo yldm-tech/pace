@@ -17,7 +17,7 @@ import type { TLabelOperationsCallbacks } from "./create-update-label-inline";
 import { CreateUpdateLabelInline } from "./create-update-label-inline";
 import type { ICustomMenuItem } from "./label-block/label-item-block";
 import { LabelItemBlock } from "./label-block/label-item-block";
-import { LabelDndHOC } from "./label-drag-n-drop-HOC";
+import { LabelDndHOC } from "./label-drag-n-drop-hoc";
 
 type Props = {
   label: IIssueLabel;

@@ -4,5 +4,5 @@
  * See the LICENSE file for details.
  */
 
-export * from "./module_filters";
+export * from "./module-filters";
 export * from "./modules";

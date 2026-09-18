@@ -8,7 +8,7 @@ import { useContext } from "react";
 // lib
 import { StoreContext } from "@/lib/store-provider";
 // store
-import type { IPublishListStore } from "@/store/publish/publish_list.store";
+import type { IPublishListStore } from "@/store/publish/publish-list.store";
 
 export const usePublishList = (): IPublishListStore => {
   const context = useContext(StoreContext);

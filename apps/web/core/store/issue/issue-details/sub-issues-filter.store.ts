@@ -17,7 +17,7 @@ import type {
   TIssue,
 } from "@pace/types";
 import { getFilteredWorkItems, getGroupedWorkItemIds, updateSubWorkItemFilters } from "../helpers/base-issues-utils";
-import type { IssueSubIssuesStore } from "./sub_issues.store";
+import type { IssueSubIssuesStore } from "./sub-issues.store";
 
 export const DEFAULT_DISPLAY_PROPERTIES = {
   key: true,

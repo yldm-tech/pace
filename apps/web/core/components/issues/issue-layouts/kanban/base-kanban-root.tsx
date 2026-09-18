@@ -26,7 +26,7 @@ import { useIssuesActions } from "@/hooks/use-issues-actions";
 // ui
 // types
 import { DeleteIssueModal } from "../../delete-issue-modal";
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import type { IQuickActionProps, TRenderQuickActions } from "../list/list-view-types";
 //components
 import { getSourceFromDropPayload } from "../utils";

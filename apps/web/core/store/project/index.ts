@@ -9,8 +9,8 @@ import type { IProjectPublishStore } from "./project-publish.store";
 import { ProjectPublishStore } from "./project-publish.store";
 import type { IProjectStore } from "./project.store";
 import { ProjectStore } from "./project.store";
-import type { IProjectFilterStore } from "./project_filter.store";
-import { ProjectFilterStore } from "./project_filter.store";
+import type { IProjectFilterStore } from "./project-filter.store";
+import { ProjectFilterStore } from "./project-filter.store";
 
 export interface IProjectRootStore {
   project: IProjectStore;

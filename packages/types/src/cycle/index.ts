@@ -4,5 +4,5 @@
  * See the LICENSE file for details.
  */
 
-export * from "./cycle_filters";
+export * from "./cycle-filters";
 export * from "./cycle";
