@@ -6,11 +6,11 @@
 
 import type { TIssuePriorities } from "../issues";
 import type { TStateGroups } from "../state";
-import type { TIssuePublicComment } from "./activity/issue_comment";
-import type { TIssueAttachment } from "./issue_attachment";
-import type { TIssueLink } from "./issue_link";
-import type { TIssueReaction, IIssuePublicReaction, IPublicVote } from "./issue_reaction";
-import type { TIssueRelationTypes } from "./issue_relation";
+import type { TIssuePublicComment } from "./activity/issue-comment";
+import type { TIssueAttachment } from "./issue-attachment";
+import type { TIssueLink } from "./issue-link";
+import type { TIssueReaction, IIssuePublicReaction, IPublicVote } from "./issue-reaction";
+import type { TIssueRelationTypes } from "./issue-relation";
 
 export enum EIssueLayoutTypes {
   LIST = "list",

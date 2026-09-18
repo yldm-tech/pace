@@ -15,7 +15,7 @@ import { ControlLink, CustomMenu } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // helpers
 import { useSubIssueOperations } from "@/components/issues/issue-detail-widgets/sub-issues/helper";
-import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/properties/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/properties/with-display-properties-hoc";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useProject } from "@/hooks/store/use-project";

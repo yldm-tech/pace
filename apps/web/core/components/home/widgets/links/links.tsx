@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // computed
-import { ContentOverflowWrapper } from "@/components/core/content-overflow-HOC";
+import { ContentOverflowWrapper } from "@/components/core/content-overflow-hoc";
 import { useHome } from "@/hooks/store/use-home";
 import { LinksEmptyState } from "../empty-states/links";
 import { EWidgetKeys, WidgetLoader } from "../loaders";

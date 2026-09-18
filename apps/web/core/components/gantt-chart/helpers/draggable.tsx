@@ -12,8 +12,8 @@ import type { IGanttBlock } from "@pace/types";
 // helpers
 import { cn } from "@pace/utils";
 // components
-import { LeftResizable } from "./blockResizables/left-resizable";
-import { RightResizable } from "./blockResizables/right-resizable";
+import { LeftResizable } from "./block-resizables/left-resizable";
+import { RightResizable } from "./block-resizables/right-resizable";
 
 type Props = {
   block: IGanttBlock;

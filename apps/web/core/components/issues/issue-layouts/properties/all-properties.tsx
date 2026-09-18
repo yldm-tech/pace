@@ -43,7 +43,7 @@ import { useIssueStoreType } from "@/hooks/use-issue-layout-store";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // local components
 import { IssuePropertyLabels } from "./labels";
-import { WithDisplayPropertiesHOC } from "./with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "./with-display-properties-hoc";
 
 export interface IIssueProperties {
   issue: TIssue;

@@ -12,7 +12,7 @@ import { Loader } from "@pace/ui";
 // components
 // hooks
 import { useTimeLineChart } from "@/hooks/use-timeline-chart";
-import { GanttDnDHOC } from "../gantt-dnd-HOC";
+import { GanttDnDHOC } from "../gantt-dnd-hoc";
 import { handleOrderChange } from "../utils";
 import { ModulesSidebarBlock } from "./block";
 // types

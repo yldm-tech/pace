@@ -14,8 +14,8 @@ import { CORE_EXTENSIONS } from "@/constants/extension";
 import { isValidHttpUrl } from "@/helpers/common";
 // local imports
 import { autolink } from "./helpers/autolink";
-import { clickHandler } from "./helpers/clickHandler";
-import { pasteHandler } from "./helpers/pasteHandler";
+import { clickHandler } from "./helpers/click-handler";
+import { pasteHandler } from "./helpers/paste-handler";
 
 type LinkProtocolOptions = {
   scheme: string;

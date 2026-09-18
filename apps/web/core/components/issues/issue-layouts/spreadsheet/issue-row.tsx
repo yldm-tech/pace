@@ -21,7 +21,7 @@ import { ControlLink, Row } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
 import { MultipleSelectEntityAction } from "@/components/core/multiple-select";
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

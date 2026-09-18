@@ -5,6 +5,6 @@
  */
 
 export * from "./activity";
-export * from "./project_filters";
+export * from "./project-filters";
 export * from "./projects";
-export * from "./project_link";
+export * from "./project-link";

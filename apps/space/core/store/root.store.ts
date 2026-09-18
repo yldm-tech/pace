@@ -24,8 +24,8 @@ import type { IIssueMemberStore } from "./members.store";
 import { MemberStore } from "./members.store";
 import type { IIssueModuleStore } from "./module.store";
 import { ModuleStore } from "./module.store";
-import type { IPublishListStore } from "./publish/publish_list.store";
-import { PublishListStore } from "./publish/publish_list.store";
+import type { IPublishListStore } from "./publish/publish-list.store";
+import { PublishListStore } from "./publish/publish-list.store";
 import type { IStateStore } from "./state.store";
 import { StateStore } from "./state.store";
 

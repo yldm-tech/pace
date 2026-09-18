@@ -12,7 +12,7 @@ import type { IIssueDisplayProperties, TIssue } from "@pace/types";
 import { SPREADSHEET_COLUMNS } from "../utils";
 // components
 import { shouldRenderColumn } from "@/helpers/issue-filter.helper";
-import { WithDisplayPropertiesHOC } from "../properties/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "../properties/with-display-properties-hoc";
 
 type Props = {
   displayProperties: IIssueDisplayProperties;

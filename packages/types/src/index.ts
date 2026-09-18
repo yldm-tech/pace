@@ -7,7 +7,7 @@
 export * from "./activity";
 export * from "./ai";
 export * from "./analytics";
-export * from "./api_token";
+export * from "./api-token";
 export * from "./auth";
 export * from "./calendar";
 export * from "./charts";
@@ -16,7 +16,7 @@ export * from "./common";
 export * from "./cycle";
 export * from "./dashboard";
 export * from "./de-dupe";
-export * from "./description_version";
+export * from "./description-version";
 export * from "./editor";
 export * from "./enums";
 export * from "./epics";

@@ -22,7 +22,7 @@ import { EIssueServiceType } from "@pace/types";
 import { ControlLink, DropIndicator } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 import { HIGHLIGHT_CLASS, getIssueBlockId } from "@/components/issues/issue-layouts/utils";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 // hooks

@@ -2,7 +2,7 @@ import type { InputRule } from "@tiptap/core";
 import { Extension } from "@tiptap/core";
 // constants
 import { CORE_EXTENSIONS } from "@/constants/extension";
-import type { TypographyOptions } from "./inputRules";
+import type { TypographyOptions } from "./input-rules";
 import {
   emDash,
   ellipsis,
@@ -23,7 +23,7 @@ import {
   oneQuarter,
   threeQuarters,
   impliesArrowRight,
-} from "./inputRules";
+} from "./input-rules";
 
 export const CustomTypographyExtension = Extension.create<TypographyOptions>({
   name: CORE_EXTENSIONS.TYPOGRAPHY,

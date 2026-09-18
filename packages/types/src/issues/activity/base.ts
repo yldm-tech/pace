@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
-export * from "./issue_activity";
-export * from "./issue_comment";
-export * from "./issue_comment_reaction";
+export * from "./issue-activity";
+export * from "./issue-comment";
+export * from "./issue-comment-reaction";
 
 import type { TIssuePriorities } from "../../issues";
 

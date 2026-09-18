@@ -13,7 +13,7 @@ import { PagesOutline, ProjectsOutline, WorkItemsOutline } from "@makeplane/prop
 import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@pace/types";
 // pace ui
 // components
-import { ContentOverflowWrapper } from "@/components/core/content-overflow-HOC";
+import { ContentOverflowWrapper } from "@/components/core/content-overflow-hoc";
 // pace web services
 import { WorkspaceService } from "@pace/services";
 import { RecentsEmptyState } from "../empty-states";

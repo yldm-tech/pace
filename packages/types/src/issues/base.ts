@@ -6,11 +6,11 @@
 
 // issues
 export * from "./issue";
-export * from "./issue_reaction";
-export * from "./issue_link";
-export * from "./issue_attachment";
-export * from "./issue_relation";
-export * from "./issue_sub_issues";
+export * from "./issue-reaction";
+export * from "./issue-link";
+export * from "./issue-attachment";
+export * from "./issue-relation";
+export * from "./issue-sub-issues";
 export * from "./activity/base";
 
 export type TLoader = "init-loader" | "mutation" | "pagination" | "loaded" | undefined;
