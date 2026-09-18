@@ -242,10 +242,3 @@ func issueCreateJSON(row issueListRow, location *time.Location) gin.H {
 	data["updated_at"] = row.UpdatedAt.In(location)
 	return data
 }
-
-func stringOrEmpty(value any) string {
-	if text, ok := value.(string); ok {
-		return text
-	}
-	return ""
-}
