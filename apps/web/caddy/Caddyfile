@@ -33,6 +33,9 @@
 		X-XSS-Protection "1; mode=block"
 	}
 
+	# file_server does not compress unless this is here, and without it the whole Vite build shipped raw: the chunks the sign-in page preloads are 2,032,884 bytes uncompressed and 481,872 gzipped. zstd is listed first so a browser advertising both gets the cheaper-to-decode encoding; gzip covers everything else. Caddy's encode has a default content-type allow list (text/*, application/json, application/javascript, font/*, svg, wasm, ...) and a 512-byte floor, so already-compressed formats -- the webp/png/gif/ttf assets and any binary body -- pass through untouched, and it sets Vary: Accept-Encoding for the caches in front of it.
+	encode zstd gzip
+
 	# SPA fallback
 	try_files {path} /index.html
 	file_server
