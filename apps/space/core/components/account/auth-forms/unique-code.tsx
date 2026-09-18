@@ -11,7 +11,7 @@ import { API_BASE_URL } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
 import { Spinner } from "@pace/propel/spinners";
-import { Input } from "@pace/ui";
+import { Input } from "@pace/propel/input";
 // hooks
 import { useTimer } from "@pace/hooks";
 // types

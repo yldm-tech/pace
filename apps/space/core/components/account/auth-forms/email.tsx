@@ -14,7 +14,7 @@ import { Button } from "@pace/propel/button";
 import type { IEmailCheckData } from "@pace/types";
 // ui
 import { Spinner } from "@pace/propel/spinners";
-import { Input } from "@pace/ui";
+import { Input } from "@pace/propel/input";
 // helpers
 import { cn } from "@pace/utils";
 import { checkEmailValidity } from "@/helpers/string.helper";

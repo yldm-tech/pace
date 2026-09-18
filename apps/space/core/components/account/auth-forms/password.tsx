@@ -12,7 +12,8 @@ import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
 import { Spinner } from "@pace/propel/spinners";
-import { Input, PasswordStrengthIndicator } from "@pace/ui";
+import { Input } from "@pace/propel/input";
+import { PasswordStrengthIndicator } from "@pace/ui";
 import { getPasswordStrength } from "@pace/utils";
 // types
 import { EAuthModes, EAuthSteps } from "@/types/auth";
