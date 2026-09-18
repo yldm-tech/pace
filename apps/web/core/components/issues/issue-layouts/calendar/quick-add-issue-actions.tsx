@@ -18,7 +18,7 @@ import { EIssueLayoutTypes } from "@pace/types";
 import { CustomMenu } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { QuickAddIssueRoot } from "../quick-add";

@@ -19,7 +19,7 @@ import type { IWorkspace } from "@pace/types";
 import { CustomSelect } from "@pace/ui";
 import { cn, copyUrlToClipboard, getFileURL, validateWorkspaceName } from "@pace/utils";
 // components
-import { WorkspaceImageUploadModal } from "@/components/core/modals/workspace-image-upload-modal";
+import { WorkspaceImageUploadModal } from "@/components/workspace/workspace-image-upload-modal";
 import { TimezoneSelect } from "@/components/global/timezone-select";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

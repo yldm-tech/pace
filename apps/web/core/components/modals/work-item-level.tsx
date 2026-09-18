@@ -10,7 +10,7 @@ import { useParams } from "@/lib/navigation";
 import type { TIssue } from "@pace/types";
 import { EIssueServiceType, EIssuesStoreType } from "@pace/types";
 // components
-import { BulkDeleteIssuesModal } from "@/components/core/modals/bulk-delete-issues-modal";
+import { BulkDeleteIssuesModal } from "@/components/issues/bulk-delete-issues-modal";
 import { DeleteIssueModal } from "@/components/issues/delete-issue-modal";
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";
 // hooks

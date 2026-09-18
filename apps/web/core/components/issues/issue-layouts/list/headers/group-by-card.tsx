@@ -16,7 +16,7 @@ import type { TIssue, ISearchIssueResponse, TIssueGroupByOptions } from "@pace/t
 import { CustomMenu } from "@pace/ui";
 // components
 import { cn } from "@pace/utils";
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 import { MultipleSelectGroupAction } from "@/components/core/multiple-select";
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";
 import { CreateUpdateEpicModal } from "@/components/epic-modal";
