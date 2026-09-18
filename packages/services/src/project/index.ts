@@ -14,5 +14,4 @@ export * from "./project-publish.service";
 export * from "./project-state.service";
 export * from "./project.service";
 export * from "./sites-publish.service";
-export * from "./view.service";
 export * from "./workspace-view.service";

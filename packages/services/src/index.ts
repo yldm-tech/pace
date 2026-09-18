@@ -9,7 +9,6 @@ export * from "./ai";
 export * from "./analytics";
 export * from "./auth";
 export * from "./cycle";
-export * from "./dashboard";
 export * from "./developer";
 export * from "./file";
 export * from "./instance";

@@ -8,8 +8,7 @@ import { set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 // pace imports
 import { SitesModuleService } from "@pace/services";
-// types
-import type { TPublicModule } from "@/types/modules";
+import type { TPublicModule } from "@pace/types";
 // root store
 import type { RootStore } from "./root.store";
 

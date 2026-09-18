@@ -11,10 +11,10 @@ import { MembersOutline } from "@pace/propel/icons";
 import { Avatar, AvatarGroup } from "@pace/propel/avatar";
 // pace utils
 import { cn } from "@pace/utils";
+// pace types
+import type { TPublicMember } from "@pace/types";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
-//
-import type { TPublicMember } from "@/types/member";
 
 type Props = {
   memberIds: string[];

@@ -4,6 +4,5 @@
  * See the LICENSE file for details.
  */
 
-export * from "./app-config.service";
 export * from "./instance.service";
 export * from "./timezone.service";
