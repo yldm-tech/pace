@@ -668,7 +668,20 @@ func (handler *Handler) issueCommentJSON(ctx context.Context, comment IssueComme
 // issueFlatJSON is IssueFlatSerializer, the narrow issue shape the comment
 // serializer nests.
 func (handler *Handler) issueFlatJSON(ctx context.Context, issueID string) (gin.H, error) {
-	var row struct {
+	flat, err := handler.issueFlatJSONByID(ctx, []string{issueID})
+	if err != nil {
+		return nil, err
+	}
+	row, found := flat[issueID]
+	if !found {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return row, nil
+}
+
+// issueFlatJSONByID is IssueFlatSerializer over a set of work items, read in one query. A caller that requires every identifier to resolve checks the map for the ones it asked for, the way issueFlatJSON does.
+func (handler *Handler) issueFlatJSONByID(ctx context.Context, issueIDs []string) (map[string]gin.H, error) {
+	var rows []struct {
 		ID              string  `gorm:"column:id"`
 		Name            string  `gorm:"column:name"`
 		DescriptionJSON []byte  `gorm:"column:description_json"`
@@ -680,16 +693,20 @@ func (handler *Handler) issueFlatJSON(ctx context.Context, issueID string) (gin.
 		SortOrder       float64 `gorm:"column:sort_order"`
 		IsDraft         bool    `gorm:"column:is_draft"`
 	}
-	err := handler.db.WithContext(ctx).Table("issues").Where("id = ?", issueID).
+	err := handler.db.WithContext(ctx).Table("issues").Where("id IN ?", issueIDs).
 		Select("id, name, description_json, description_html, priority, start_date, target_date, sequence_id, sort_order, is_draft").
-		Take(&row).Error
+		Find(&rows).Error
 	if err != nil {
 		return nil, err
 	}
-	return gin.H{
-		"id": row.ID, "name": row.Name, "description_json": decodeJSON(row.DescriptionJSON),
-		"description_html": row.DescriptionHTML, "priority": row.Priority,
-		"start_date": row.StartDate, "target_date": row.TargetDate,
-		"sequence_id": row.SequenceID, "sort_order": row.SortOrder, "is_draft": row.IsDraft,
-	}, nil
+	flat := make(map[string]gin.H, len(rows))
+	for _, row := range rows {
+		flat[row.ID] = gin.H{
+			"id": row.ID, "name": row.Name, "description_json": decodeJSON(row.DescriptionJSON),
+			"description_html": row.DescriptionHTML, "priority": row.Priority,
+			"start_date": row.StartDate, "target_date": row.TargetDate,
+			"sequence_id": row.SequenceID, "sort_order": row.SortOrder, "is_draft": row.IsDraft,
+		}
+	}
+	return flat, nil
 }

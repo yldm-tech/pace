@@ -79,10 +79,11 @@ func (handler *Handler) issueV2List(c *gin.Context, user *auth.User) {
 		return
 	}
 
+	withDescription := strings.EqualFold(c.DefaultQuery("description", "false"), "true")
 	var rows []issueListRow
 	if page.End > page.Start {
 		err := handler.issueListScope(c.Request.Context(), request).
-			Select(issueV2Annotations()).
+			Select(issueV2Annotations(withDescription)).
 			// Ascending, which is what lets a client resume from where it stopped.
 			Order("i.updated_at ASC").
 			Offset(page.Start).Limit(page.End - page.Start).
@@ -98,7 +99,6 @@ func (handler *Handler) issueV2List(c *gin.Context, user *auth.User) {
 		handler.internalError(c, err)
 		return
 	}
-	withDescription := strings.EqualFold(c.DefaultQuery("description", "false"), "true")
 	results := make([]gin.H, 0, len(rows))
 	for _, row := range rows {
 		results = append(results, issueV2JSON(row, location, withDescription))
@@ -107,8 +107,14 @@ func (handler *Handler) issueV2List(c *gin.Context, user *auth.User) {
 }
 
 // issueV2Annotations is this route's own select. Its three id arrays carry no soft-delete filter on the through table, which every other issue list does — so a soft-deleted label link still contributes its id here.
-func issueV2Annotations() string {
-	return `i.*,
+//
+// It is the one issue list whose response can carry a description, and it reads description_html only when the caller asked for it, because this is the endpoint a client walks the whole project through.
+func issueV2Annotations(withDescription bool) string {
+	columns := issueListColumns
+	if withDescription {
+		columns += ", i.description_html"
+	}
+	return columns + `,
 		(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 		(SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL) AS link_count,
 		(SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL) AS attachment_count,

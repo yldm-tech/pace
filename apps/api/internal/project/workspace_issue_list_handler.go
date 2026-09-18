@@ -111,7 +111,7 @@ func (handler *Handler) workspaceIssueList(c *gin.Context, user *auth.User) {
 
 // workspaceIssueAnnotations is this list's own set, which differs from the project list's in one way: the module ids come from the prefetched links rather than an aggregate, so a module that has since been archived is still reported.
 func workspaceIssueAnnotations() string {
-	return `i.*,
+	return issueListColumns + `,
 		(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 		(SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL) AS link_count,
 		(SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL) AS attachment_count,

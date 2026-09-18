@@ -10,6 +10,7 @@ import (
 	"github.com/lib/pq"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
+	"gorm.io/gorm"
 )
 
 func (handler *Handler) registerIssueActivityRoutes(router gin.IRouter) {
@@ -206,14 +207,21 @@ func (handler *Handler) activityIssues(ctx context.Context, activities []IssueAc
 			identifiers[*activity.IssueID] = true
 		}
 	}
-	issues := map[string]gin.H{}
+	if len(identifiers) == 0 {
+		return map[string]gin.H{}, nil
+	}
+	// The per-work-item history points every activity at the same issue, but the workspace activity feeds serialize a page that spans issues, so the whole set is read at once.
+	list := make([]string, 0, len(identifiers))
 	for identifier := range identifiers {
-		// The activities of one issue all point at it, so this is a single row in practice.
-		flat, err := handler.issueFlatJSON(ctx, identifier)
-		if err != nil {
-			return nil, err
-		}
-		issues[identifier] = flat
+		list = append(list, identifier)
+	}
+	issues, err := handler.issueFlatJSONByID(ctx, list)
+	if err != nil {
+		return nil, err
+	}
+	if len(issues) < len(identifiers) {
+		// The lookup this replaced read one issue at a time and failed the whole response on a missing row, rather than serializing that activity with a null issue_detail.
+		return nil, gorm.ErrRecordNotFound
 	}
 	return issues, nil
 }
