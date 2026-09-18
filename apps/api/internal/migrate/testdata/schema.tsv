@@ -2620,6 +2620,7 @@ index	public.notif_receiver_entity_idx CREATE INDEX notif_receiver_entity_idx ON
 index	public.notif_receiver_sender_idx CREATE INDEX notif_receiver_sender_idx ON public.notifications USING btree (receiver_id, workspace_id, sender)
 index	public.notif_receiver_state_idx CREATE INDEX notif_receiver_state_idx ON public.notifications USING btree (receiver_id, workspace_id, snoozed_till, archived_at)
 index	public.notif_receiver_status_idx CREATE INDEX notif_receiver_status_idx ON public.notifications USING btree (receiver_id, workspace_id, read_at, created_at)
+index	public.notif_receiver_unread_idx CREATE INDEX notif_receiver_unread_idx ON public.notifications USING btree (receiver_id, workspace_id) WHERE ((deleted_at IS NULL) AND (read_at IS NULL) AND (archived_at IS NULL) AND (snoozed_till IS NULL))
 index	public.notifications_created_by_id_b9c3f81b CREATE INDEX notifications_created_by_id_b9c3f81b ON public.notifications USING btree (created_by_id)
 index	public.notifications_pkey CREATE UNIQUE INDEX notifications_pkey ON public.notifications USING btree (id)
 index	public.notifications_project_id_e4d4f192 CREATE INDEX notifications_project_id_e4d4f192 ON public.notifications USING btree (project_id)

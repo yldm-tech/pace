@@ -3,6 +3,7 @@ package project
 import (
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
@@ -18,9 +19,16 @@ func (handler *Handler) registerGlobalSearchRoutes(router gin.IRouter) {
 // globalSearchEntities is the mapper the endpoint iterates, and the order matters: with no entities parameter every one of them runs, in this order.
 var globalSearchEntities = []string{"workspace", "project", "issue", "cycle", "module", "issue_view", "page", "intake"}
 
-// globalSearch runs up to eight searches side by side and returns them under one key each.
+const (
+	// globalSearchLimit is how many of each kind of thing one search answers with. The two issue searches have always been capped at a hundred and the other six were not, so an empty search over a large workspace answered with every cycle, module, view and page the caller could see. A hundred is what the palette can put in front of somebody either way: it draws every row it is given, in one scrollable list, with nothing that asks for more.
+	globalSearchLimit = 100
+	// searchConcurrency is how many of the eight searches are in flight at once. The pool is twenty-five connections wide, so eight at a time would let three palettes fill it; four cuts the round trips the caller waits through without any one request holding more than four of it.
+	searchConcurrency = 4
+)
+
+// globalSearch runs up to eight searches, several at a time, and returns them under one key each.
 //
-// An **empty** search is not a search for nothing. The query is passed as `query or None`, so an empty one reaches each filter as nothing at all, every `if query` is skipped, and the endpoint returns everything the caller can see rather than nothing.
+// An **empty** search is not a search for nothing. The query is passed as `query or None`, so an empty one reaches each filter as nothing at all, every `if query` is skipped, and the endpoint returns what the caller can see rather than nothing — up to globalSearchLimit of each kind of thing.
 func (handler *Handler) globalSearch(c *gin.Context, user *auth.User) {
 	if !handler.requireWorkspaceRole(c, user, roleAdmin, roleMember, roleGuest) {
 		return
@@ -47,14 +55,31 @@ func (handler *Handler) globalSearch(c *gin.Context, user *auth.User) {
 		}
 	}
 
+	// None of the searches reads anything from the request beyond its context, and every one of them is finished before this returns, so they share the one gin.Context rather than a copy of it.
+	found := make([][]gin.H, len(wanted))
+	failures := make([]error, len(wanted))
+	var wait sync.WaitGroup
+	tokens := make(chan struct{}, searchConcurrency)
+	for index, entity := range wanted {
+		wait.Add(1)
+		go func(index int, entity string) {
+			defer wait.Done()
+			tokens <- struct{}{}
+			defer func() { <-tokens }()
+
+			found[index], failures[index] = handler.searchEntity(c, user, entity, search, slug, projectID, scoped)
+		}(index, entity)
+	}
+	wait.Wait()
+
 	results := gin.H{}
-	for _, entity := range wanted {
-		rows, err := handler.searchEntity(c, user, entity, search, slug, projectID, scoped)
-		if err != nil {
-			handler.internalError(c, err)
+	for index, entity := range wanted {
+		// The failure reported is the first in the mapper's order rather than the first to happen, so which one a caller is told about does not depend on which search lost the race.
+		if failures[index] != nil {
+			handler.internalError(c, failures[index])
 			return
 		}
-		results[entity] = rows
+		results[entity] = found[index]
 	}
 	drf.Respond(c, http.StatusOK, gin.H{"results": results})
 }
@@ -95,7 +120,7 @@ func (handler *Handler) searchWorkspaces(c *gin.Context, user *auth.User, search
 		Slug string `gorm:"column:slug"`
 	}
 	err := query.Distinct().Select("w.name, w.id, w.slug, w.created_at").
-		Order("w.created_at DESC").Scan(&rows).Error
+		Order("w.created_at DESC").Limit(globalSearchLimit).Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +147,7 @@ func (handler *Handler) searchProjects(c *gin.Context, user *auth.User, search, 
 		Slug       string `gorm:"column:workspace_slug"`
 	}
 	err := query.Distinct().Select("p.name, p.id, p.identifier, w.slug AS workspace_slug, p.created_at").
-		Order("p.created_at DESC").Scan(&rows).Error
+		Order("p.created_at DESC").Limit(globalSearchLimit).Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +169,7 @@ func (handler *Handler) searchIssues(c *gin.Context, user *auth.User, search, sl
 	if scoped {
 		query = query.Where("i.project_id = ?", projectID)
 	}
-	return issueSearchResults(query.Distinct().Limit(100))
+	return issueSearchResults(query.Distinct().Limit(globalSearchLimit))
 }
 
 // searchIntakes is the twin of the issue search with two differences: it looks through the **plain** manager, so an archived, draft or triage issue is eligible, and it keeps only what is still waiting in or snoozed inside an intake.
@@ -157,7 +182,7 @@ func (handler *Handler) searchIntakes(c *gin.Context, user *auth.User, search, s
 	if scoped {
 		query = query.Where("i.project_id = ?", projectID)
 	}
-	return issueSearchResults(query.Distinct().Order("i.created_at DESC").Limit(100))
+	return issueSearchResults(query.Distinct().Order("i.created_at DESC").Limit(globalSearchLimit))
 }
 
 // memberIssueScope is the join both issue searches start from: issues in projects the caller is an active member of.
@@ -216,7 +241,7 @@ func (handler *Handler) searchNamed(c *gin.Context, user *auth.User, search, slu
 		WorkspaceSlug     string `gorm:"column:workspace_slug"`
 	}
 	err := query.Distinct().Select(`t.name, t.id, t.project_id, p.identifier AS project_identifier,
-		w.slug AS workspace_slug, t.created_at`).Order("t.created_at DESC").Scan(&rows).Error
+		w.slug AS workspace_slug, t.created_at`).Order("t.created_at DESC").Limit(globalSearchLimit).Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +280,7 @@ func (handler *Handler) searchPages(c *gin.Context, user *auth.User, search, slu
 		COALESCE((SELECT ARRAY_AGG(DISTINCT lp.project_id) FROM project_pages lp WHERE lp.page_id = pg.id), '{}') AS project_ids,
 		COALESCE((SELECT ARRAY_AGG(DISTINCT lpr.identifier) FROM project_pages lp2
 			JOIN projects lpr ON lpr.id = lp2.project_id WHERE lp2.page_id = pg.id), '{}') AS project_identifiers`).
-		Order("pg.created_at DESC").Scan(&rows).Error
+		Order("pg.created_at DESC").Limit(globalSearchLimit).Scan(&rows).Error
 	if err != nil {
 		return nil, err
 	}

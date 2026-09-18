@@ -62,23 +62,27 @@ func (handler *Handler) analyticsOverview(c *gin.Context, filters analyticsFilte
 			Where("mw.slug = ? AND m.is_active = TRUE AND m.deleted_at IS NULL AND mu.is_bot = FALSE", filters.slug)
 	}
 
-	counts := gin.H{}
-	for _, entry := range []struct {
-		name string
-		role int
-	}{
-		{name: "total_users"}, {name: "total_admins", role: roleAdmin},
-		{name: "total_members", role: roleMember}, {name: "total_guests", role: roleGuest},
-	} {
-		query := members()
-		if entry.role != 0 {
-			query = query.Where("m.role = ?", entry.role)
-		}
-		total, err := handler.windowedCount(query, filters, "m")
-		if err != nil {
-			return nil, err
-		}
-		counts[entry.name] = gin.H{"count": total}
+	// The four member numbers are one set counted four ways — everybody, and then the three roles — so they are FILTERs over a single pass rather than four passes over the same join.
+	var people struct {
+		Users   int64 `gorm:"column:total_users"`
+		Admins  int64 `gorm:"column:total_admins"`
+		Members int64 `gorm:"column:total_members"`
+		Guests  int64 `gorm:"column:total_guests"`
+	}
+	err := windowedScope(members(), filters, "m").
+		Select(`COUNT(*) AS total_users,
+			COUNT(*) FILTER (WHERE m.role = ?) AS total_admins,
+			COUNT(*) FILTER (WHERE m.role = ?) AS total_members,
+			COUNT(*) FILTER (WHERE m.role = ?) AS total_guests`, roleAdmin, roleMember, roleGuest).
+		Take(&people).Error
+	if err != nil {
+		return nil, err
+	}
+	counts := gin.H{
+		"total_users":   gin.H{"count": people.Users},
+		"total_admins":  gin.H{"count": people.Admins},
+		"total_members": gin.H{"count": people.Members},
+		"total_guests":  gin.H{"count": people.Guests},
 	}
 
 	projectCondition, projectArguments := filters.projectScope("p")
@@ -112,27 +116,33 @@ func (handler *Handler) analyticsOverview(c *gin.Context, filters analyticsFilte
 }
 
 // analyticsWorkItemTotals is the work-items tab: the same total split by the four state groups that are not cancelled.
+//
+// One pass rather than five, the way advanceAnalyticsStats already counts the same groups. The total is over the rows rather than over the state, so a work item whose state the left join did not find is counted in it and in none of the four groups — which is what counting it five times did.
 func (handler *Handler) analyticsWorkItemTotals(c *gin.Context, filters analyticsFilters) (gin.H, error) {
-	counts := gin.H{}
-	for _, entry := range []struct {
-		name  string
-		group string
-	}{
-		{name: "total_work_items"}, {name: "started_work_items", group: "started"},
-		{name: "backlog_work_items", group: "backlog"}, {name: "un_started_work_items", group: "unstarted"},
-		{name: "completed_work_items", group: "completed"},
-	} {
-		query := handler.workItemScope(c, filters)
-		if entry.group != "" {
-			query = query.Where(`s."group" = ?`, entry.group)
-		}
-		total, err := handler.windowedCount(query, filters, "i")
-		if err != nil {
-			return nil, err
-		}
-		counts[entry.name] = gin.H{"count": total}
+	var totals struct {
+		Total     int64 `gorm:"column:total_work_items"`
+		Started   int64 `gorm:"column:started_work_items"`
+		Backlog   int64 `gorm:"column:backlog_work_items"`
+		UnStarted int64 `gorm:"column:un_started_work_items"`
+		Completed int64 `gorm:"column:completed_work_items"`
 	}
-	return counts, nil
+	err := windowedScope(handler.workItemScope(c, filters), filters, "i").
+		Select(`COUNT(*) AS total_work_items,
+			COUNT(*) FILTER (WHERE s."group" = 'started') AS started_work_items,
+			COUNT(*) FILTER (WHERE s."group" = 'backlog') AS backlog_work_items,
+			COUNT(*) FILTER (WHERE s."group" = 'unstarted') AS un_started_work_items,
+			COUNT(*) FILTER (WHERE s."group" = 'completed') AS completed_work_items`).
+		Take(&totals).Error
+	if err != nil {
+		return nil, err
+	}
+	return gin.H{
+		"total_work_items":      gin.H{"count": totals.Total},
+		"started_work_items":    gin.H{"count": totals.Started},
+		"backlog_work_items":    gin.H{"count": totals.Backlog},
+		"un_started_work_items": gin.H{"count": totals.UnStarted},
+		"completed_work_items":  gin.H{"count": totals.Completed},
+	}, nil
 }
 
 // advanceAnalyticsStats is one row per project with its work items split by state group.
@@ -358,10 +368,15 @@ func (handler *Handler) intakeWorkItemScope(c *gin.Context, filters analyticsFil
 
 // windowedCount is get_filtered_counts: the count, narrowed to the analytics period when the caller named one.
 func (handler *Handler) windowedCount(query *gorm.DB, filters analyticsFilters, alias string) (int64, error) {
-	if condition, arguments := filters.windowScope(alias); condition != "" {
-		query = query.Where(condition, arguments...)
-	}
 	var total int64
-	err := query.Count(&total).Error
+	err := windowedScope(query, filters, alias).Count(&total).Error
 	return total, err
+}
+
+// windowedScope is the narrowing on its own, for the two places that ask one pass for several numbers and so apply it once to the scope they share rather than once per count.
+func windowedScope(query *gorm.DB, filters analyticsFilters, alias string) *gorm.DB {
+	if condition, arguments := filters.windowScope(alias); condition != "" {
+		return query.Where(condition, arguments...)
+	}
+	return query
 }
