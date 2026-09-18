@@ -91,7 +91,15 @@ func main() {
 			InstanceMailer: instanceMailer(connection.GORM, cfg),
 			LLMBaseURL:     os.Getenv("LLM_BASE_URL"),
 		}),
+		// None of these four is a load-shedding budget. A request slow enough to reach one of them is cut off mid-flight, so each is set above the slowest legitimate request of its class rather than at it; what they buy is that a client which stopped talking can no longer hold a connection, and its goroutine, open for as long as the process lives.
+		//
+		// ReadTimeout and WriteTimeout are the same five minutes because Go arms the write deadline when the request headers finish rather than when the handler writes, so both have to cover the same upload. The v1 asset routes still take the bytes through the API (internal/project/legacy_asset_handler.go), capped at FILE_SIZE_LIMIT -- five megabytes by default, and the proxy enforces the same cap -- and five minutes is five megabytes at about a hundred and forty kilobits a second, slower than a link that could finish the upload at all. Five minutes also sits far above the slowest handler that is not an upload: the assistant routes and the console's model listing each wait on one outbound call, capped at thirty seconds by the client that makes it. The collaboration websockets are not served by this process at all -- internal/live has its own server on its own port -- so no deadline here can cut one off.
+		//
+		// IdleTimeout only ever closes a keep-alive connection between requests, and three minutes is above the window the proxy in front of this reuses one for, so the proxy is the side that closes and no request is dispatched onto a connection this process is shutting.
 		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       5 * time.Minute,
+		WriteTimeout:      5 * time.Minute,
+		IdleTimeout:       3 * time.Minute,
 	}
 
 	serverErrors := make(chan error, 1)

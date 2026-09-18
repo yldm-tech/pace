@@ -5,6 +5,7 @@ package instances
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"net/netip"
 	"strings"
@@ -184,7 +185,8 @@ func (handler *Handler) respond(c *gin.Context, status int, payload any) {
 	drf.Respond(c, status, payload)
 }
 
+// internalError is what every unrecognised failure on the console's API answers with. The error itself is only ever logged: the console is told nothing about it, because the operator reading the console is not the one reading the logs.
 func (handler *Handler) internalError(c *gin.Context, err error) {
-	_ = err
+	slog.Error("instances request failed", "path", c.Request.URL.Path, "error", err)
 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Something went wrong please try again later"})
 }
