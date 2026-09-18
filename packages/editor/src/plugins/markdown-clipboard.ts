@@ -7,7 +7,7 @@
 import type { Editor } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 // pace imports
-import { convertHTMLToMarkdown } from "@pace/utils";
+import { convertHTMLToMarkdown } from "@pace/utils/markdown";
 import type { TCustomComponentsMetaData } from "@pace/utils";
 
 type TArgs = {

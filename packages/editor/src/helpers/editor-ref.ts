@@ -9,7 +9,7 @@ import type { Editor } from "@tiptap/core";
 import { DOMSerializer } from "@tiptap/pm/model";
 import * as Y from "yjs";
 // pace imports
-import { convertHTMLToMarkdown } from "@pace/utils";
+import { convertHTMLToMarkdown } from "@pace/utils/markdown";
 // components
 import { getEditorMenuItems } from "@/components/menus";
 // constants
