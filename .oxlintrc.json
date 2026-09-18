@@ -1,6 +1,14 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "jsx-a11y", "import", "promise", "unicorn", "oxc"],
+  "plugins": [
+    "react",
+    "typescript",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "unicorn",
+    "oxc"
+  ],
   "categories": {
     "correctness": "warn",
     "suspicious": "warn",
@@ -49,5 +57,25 @@
         "ignoreRestSiblings": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/space/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "@makeplane/propel/icons",
+                "message": "Import icons from @pace/propel/icons, which re-exports this set alongside the in-repo icons, so a call site never has to know which set an icon came from. apps/web joins this rule once the pull request that deletes its last 15 users of the old path has landed; apps/admin cannot, because it declares no @pace/propel dependency."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
