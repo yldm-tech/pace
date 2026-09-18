@@ -11,6 +11,8 @@ import { PageWrapper } from "@/components/common/page-wrapper";
 import { useInstance } from "@/hooks/store";
 // local imports
 import { GeneralConfigurationForm } from "./form";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 import { useTranslation } from "@pace/i18n";
@@ -31,6 +33,6 @@ function GeneralPage() {
   );
 }
 
-export const meta: Route.MetaFunction = () => [{ title: "General Settings - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("general") }];
 
 export default observer(GeneralPage);

@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Amministrazione Pace",
+        "app": "Pace | Strumento di gestione progetti semplice, estensibile e open source.",
+        "home": "Amministrazione – Configurazione dell'istanza e accesso",
+        "general": "Impostazioni generali",
+        "email": "Impostazioni email",
+        "images": "Impostazioni immagini",
+        "ai": "Impostazioni intelligenza artificiale",
+        "authentication": "Impostazioni di autenticazione",
+        "workspace": "Gestione degli spazi di lavoro",
+        "workspace_create": "Crea spazio di lavoro",
+        "google": "Autenticazione Google",
+        "github": "Autenticazione GitHub",
+        "gitlab": "Autenticazione GitLab",
+        "gitea": "Autenticazione Gitea"
+      },
+      "descriptions": {
+        "app": "Strumento di gestione progetti open source per gestire elementi di lavoro, sprint e roadmap di prodotto in tutta tranquillità.",
+        "home": "Configura la tua istanza Pace o accedi al portale di amministrazione."
+      },
       "general": {
         "title": "Impostazioni generali",
         "description": "Cambia il nome della tua istanza e gli indirizzi email degli amministratori dell'istanza. Attiva o disattiva la telemetria nella tua istanza."

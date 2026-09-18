@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace 관리",
+        "app": "Pace | 간단하고 확장 가능한 오픈 소스 프로젝트 관리 도구.",
+        "home": "관리 – 인스턴스 설정 및 로그인",
+        "general": "일반 설정",
+        "email": "이메일 설정",
+        "images": "이미지 설정",
+        "ai": "인공지능 설정",
+        "authentication": "인증 설정",
+        "workspace": "작업 공간 관리",
+        "workspace_create": "작업 공간 생성",
+        "google": "Google 인증",
+        "github": "GitHub 인증",
+        "gitlab": "GitLab 인증",
+        "gitea": "Gitea 인증"
+      },
+      "descriptions": {
+        "app": "작업 항목, 스프린트, 제품 로드맵을 편안하게 관리할 수 있는 오픈 소스 프로젝트 관리 도구입니다.",
+        "home": "Pace 인스턴스를 설정하거나 관리 포털에 로그인합니다."
+      },
       "general": {
         "title": "일반 설정",
         "description": "인스턴스 이름과 인스턴스 관리자 이메일 주소를 변경합니다. 인스턴스의 텔레메트리를 활성화하거나 비활성화합니다."

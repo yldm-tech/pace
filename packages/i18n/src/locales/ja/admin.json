@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace管理",
+        "app": "Pace | シンプルで拡張可能なオープンソースのプロジェクト管理ツール。",
+        "home": "管理 – インスタンスのセットアップとサインイン",
+        "general": "一般設定",
+        "email": "メール設定",
+        "images": "画像設定",
+        "ai": "人工知能の設定",
+        "authentication": "認証設定",
+        "workspace": "ワークスペース管理",
+        "workspace_create": "ワークスペースの作成",
+        "google": "Google認証",
+        "github": "GitHub認証",
+        "gitlab": "GitLab認証",
+        "gitea": "Gitea認証"
+      },
+      "descriptions": {
+        "app": "作業項目、スプリント、製品ロードマップを安心して管理できるオープンソースのプロジェクト管理ツールです。",
+        "home": "Paceインスタンスをセットアップするか、管理ポータルにサインインしてください。"
+      },
       "general": {
         "title": "一般設定",
         "description": "インスタンスの名前とインスタンス管理者のメールアドレスを変更できます。インスタンスのテレメトリーの有効・無効も切り替えられます。"

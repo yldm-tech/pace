@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/common/skeleton";
 import { setPromiseToast, setToast, TOAST_TYPE } from "@/providers/toast";
 // helpers
 import { canDisableAuthMethod } from "@/helpers/authentication";
+import { getAdminPageTitle } from "@/helpers/page-title";
 // hooks
 import { useAuthenticationModes } from "@/hooks/oauth";
 import { useInstance } from "@/hooks/store";
@@ -173,6 +174,6 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Authentication Settings - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("authentication") }];
 
 export default InstanceAuthenticationPage;

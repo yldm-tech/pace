@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Administração do Pace",
+        "app": "Pace | Ferramenta de gerenciamento de projetos simples, extensível e de código aberto.",
+        "home": "Administração – Configuração da instância e login",
+        "general": "Configurações gerais",
+        "email": "Configurações de e-mail",
+        "images": "Configurações de imagens",
+        "ai": "Configurações de inteligência artificial",
+        "authentication": "Configurações de autenticação",
+        "workspace": "Gerenciamento de espaços de trabalho",
+        "workspace_create": "Criar espaço de trabalho",
+        "google": "Autenticação do Google",
+        "github": "Autenticação do GitHub",
+        "gitlab": "Autenticação do GitLab",
+        "gitea": "Autenticação do Gitea"
+      },
+      "descriptions": {
+        "app": "Ferramenta de gerenciamento de projetos de código aberto para gerenciar itens de trabalho, sprints e roadmaps de produto com tranquilidade.",
+        "home": "Configure sua instância do Pace ou faça login no portal de administração."
+      },
       "general": {
         "title": "Configurações gerais",
         "description": "Altere o nome da sua instância e os endereços de e-mail do administrador da instância. Ative ou desative a telemetria na sua instância."

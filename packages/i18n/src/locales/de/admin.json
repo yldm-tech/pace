@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace Administration",
+        "app": "Pace | Einfaches, erweiterbares Open-Source-Projektmanagement-Tool.",
+        "home": "Administration – Instanz einrichten und anmelden",
+        "general": "Allgemeine Einstellungen",
+        "email": "E-Mail-Einstellungen",
+        "images": "Bildeinstellungen",
+        "ai": "Einstellungen für künstliche Intelligenz",
+        "authentication": "Authentifizierungseinstellungen",
+        "workspace": "Arbeitsbereichsverwaltung",
+        "workspace_create": "Arbeitsbereich erstellen",
+        "google": "Google-Authentifizierung",
+        "github": "GitHub-Authentifizierung",
+        "gitlab": "GitLab-Authentifizierung",
+        "gitea": "Gitea-Authentifizierung"
+      },
+      "descriptions": {
+        "app": "Open-Source-Projektmanagement-Tool, mit dem sich Arbeitselemente, Sprints und Produkt-Roadmaps entspannt verwalten lassen.",
+        "home": "Richten Sie Ihre Pace-Instanz ein oder melden Sie sich im Administrationsportal an."
+      },
       "general": {
         "title": "Allgemeine Einstellungen",
         "description": "Ändern Sie den Namen Ihrer Instanz und die E-Mail-Adressen der Instanz-Administratoren. Aktivieren oder deaktivieren Sie die Telemetrie in Ihrer Instanz."

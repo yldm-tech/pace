@@ -11,6 +11,8 @@ import { PageWrapper } from "@/components/common/page-wrapper";
 import { Skeleton } from "@/components/common/skeleton";
 // hooks
 import { useInstance } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -47,6 +49,6 @@ const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentP
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Artificial Intelligence Settings - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("ai") }];
 
 export default InstanceAIPage;

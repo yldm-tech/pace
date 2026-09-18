@@ -22,6 +22,8 @@ import { Skeleton } from "@/components/common/skeleton";
 import { setPromiseToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -121,6 +123,6 @@ const InstanceGithubAuthenticationPage = observer(function InstanceGithubAuthent
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "GitHub Authentication - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("github") }];
 
 export default InstanceGithubAuthenticationPage;

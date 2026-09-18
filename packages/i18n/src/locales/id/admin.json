@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Admin Pace",
+        "app": "Pace | Alat manajemen proyek yang sederhana, dapat diperluas, dan sumber terbuka.",
+        "home": "Admin – Penyiapan instansi dan masuk",
+        "general": "Pengaturan umum",
+        "email": "Pengaturan email",
+        "images": "Pengaturan gambar",
+        "ai": "Pengaturan kecerdasan buatan",
+        "authentication": "Pengaturan autentikasi",
+        "workspace": "Manajemen ruang kerja",
+        "workspace_create": "Buat ruang kerja",
+        "google": "Autentikasi Google",
+        "github": "Autentikasi GitHub",
+        "gitlab": "Autentikasi GitLab",
+        "gitea": "Autentikasi Gitea"
+      },
+      "descriptions": {
+        "app": "Alat manajemen proyek sumber terbuka untuk mengelola item kerja, sprint, dan peta jalan produk dengan tenang.",
+        "home": "Konfigurasikan instansi Pace Anda atau masuk ke portal admin."
+      },
       "general": {
         "title": "Pengaturan umum",
         "description": "Ubah nama instansi Anda dan alamat email admin instansi. Aktifkan atau nonaktifkan telemetri di instansi Anda."

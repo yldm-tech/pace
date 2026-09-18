@@ -7,6 +7,8 @@
 import { observer } from "mobx-react";
 // components
 import { PageWrapper } from "@/components/common/page-wrapper";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -28,6 +30,6 @@ const WorkspaceCreatePage = observer(function WorkspaceCreatePage(_props: Route.
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Create Workspace - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("workspace_create") }];
 
 export default WorkspaceCreatePage;

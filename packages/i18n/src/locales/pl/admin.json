@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Administracja Pace",
+        "app": "Pace | Proste, rozszerzalne narzędzie open source do zarządzania projektami.",
+        "home": "Administracja – konfiguracja instancji i logowanie",
+        "general": "Ustawienia ogólne",
+        "email": "Ustawienia e-mail",
+        "images": "Ustawienia obrazów",
+        "ai": "Ustawienia sztucznej inteligencji",
+        "authentication": "Ustawienia uwierzytelniania",
+        "workspace": "Zarządzanie przestrzeniami roboczymi",
+        "workspace_create": "Utwórz przestrzeń roboczą",
+        "google": "Uwierzytelnianie Google",
+        "github": "Uwierzytelnianie GitHub",
+        "gitlab": "Uwierzytelnianie GitLab",
+        "gitea": "Uwierzytelnianie Gitea"
+      },
+      "descriptions": {
+        "app": "Narzędzie open source do zarządzania projektami, które pozwala spokojnie zarządzać elementami pracy, sprintami i mapami drogowymi produktu.",
+        "home": "Skonfiguruj instancję Pace lub zaloguj się do portalu administracyjnego."
+      },
       "general": {
         "title": "Ustawienia ogólne",
         "description": "Zmień nazwę swojej instancji i adresy e-mail administratorów instancji. Włącz lub wyłącz telemetrię w swojej instancji."

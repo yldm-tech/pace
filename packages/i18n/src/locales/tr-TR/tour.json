@@ -69,7 +69,7 @@
     "page": {
       "step_zero": {
         "title": "AI destekli Sayfalarla belgeleyin",
-        "description": "Pace deki Sayfalar, proje bilgilerini yakalamanıza, düzenlemenize ve işbirliği yapmanıza olanak tanır—harici araçlara gerek yoktur."
+        "description": "Pace'teki Sayfalar, proje bilgilerini yakalamanıza, düzenlemenize ve işbirliği yapmanıza olanak tanır—harici araçlara gerek yoktur."
       },
       "step_one": {
         "title": "Sayfayı Genel veya Özel yapın",
@@ -95,11 +95,11 @@
     "intake": {
       "step_zero": {
         "title": "Alımla istekleri kolaylaştırın",
-        "description": "Konukların hatalar, istekler veya biletler için çalışma öğeleri oluşturmasına olanak tanıyan Pace a özel bir özellik."
+        "description": "Konukların hatalar, istekler veya biletler için çalışma öğeleri oluşturmasına olanak tanıyan Pace'e özel bir özellik."
       },
       "step_one": {
         "title": "Açık/kapalı alım istekleri",
-        "description": "Bekleyen istekler Açık sekmesinde kalır ve bir yönetici veya üye tarafından ele alındıktan sonra Kapalı a taşınır."
+        "description": "Bekleyen istekler Açık sekmesinde kalır ve bir yönetici veya üye tarafından ele alındıktan sonra Kapalı'ya taşınır."
       },
       "step_two": {
         "title": "Bekleyen bir isteği kabul edin/reddedin",
@@ -188,8 +188,8 @@
       "more_integrations": "Daha fazla entegrasyona göz atın"
     },
     "switch_to_plane_section": {
-      "title": "Ekiplerin neden Pace e geçtiğini keşfedin",
-      "description": "Bugün kullandığınız araçlarla Pace i karşılaştırın ve farkı görün."
+      "title": "Ekiplerin neden Pace'e geçtiğini keşfedin",
+      "description": "Bugün kullandığınız araçlarla Pace'i karşılaştırın ve farkı görün."
     }
   }
 }
