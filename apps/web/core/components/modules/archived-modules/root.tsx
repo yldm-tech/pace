@@ -15,7 +15,7 @@ import type { TModuleFilters } from "@pace/types";
 // components
 import { calculateTotalFilters } from "@pace/utils";
 import { ArchivedModulesView, ModuleAppliedFiltersList } from "@/components/modules";
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // helpers
 // hooks
 import { useModule } from "@/hooks/store/use-module";

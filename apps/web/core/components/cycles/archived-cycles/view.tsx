@@ -11,7 +11,7 @@ import NameFilterImage from "@/assets/empty-state/cycle/name-filter.svg?url";
 // components
 import { CyclesList } from "@/components/cycles/list";
 // ui
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";

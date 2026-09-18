@@ -15,7 +15,7 @@ import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IExportData } from "@pace/types";
 import { Table } from "@pace/ui";
 // components
-import { ImportExportSettingsLoader } from "@/components/ui/loader/settings/import-and-export";
+import { ImportExportSettingsLoader } from "@/components/skeletons/loader/settings/import-and-export";
 // constants
 import { EXPORT_SERVICES_LIST } from "@pace/constants";
 // services

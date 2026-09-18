@@ -25,7 +25,7 @@ import { CycleAppliedFiltersList } from "@/components/cycles/applied-filters";
 import { CyclesView } from "@/components/cycles/cycles-view";
 import { CycleCreateUpdateModal } from "@/components/cycles/modal";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";

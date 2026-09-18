@@ -35,7 +35,7 @@ import {
   getDestinationFromDropPayload,
   getIssueBlockId,
 } from "@/components/issues/issue-layouts/utils";
-import { KanbanIssueBlockLoader } from "@/components/ui/loader/layouts/kanban-layout-loader";
+import { KanbanIssueBlockLoader } from "@/components/skeletons/loader/layouts/kanban-layout-loader";
 import { useWorkFlowFDragNDrop } from "@/components/workflow";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";

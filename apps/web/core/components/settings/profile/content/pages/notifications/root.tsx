@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
 // components
 import { ProfileSettingsHeading } from "@/components/settings/profile/heading";
-import { EmailSettingsLoader } from "@/components/ui/loader/settings/email";
+import { EmailSettingsLoader } from "@/components/skeletons/loader/settings/email";
 // services
 import { UserService } from "@pace/services";
 // local imports

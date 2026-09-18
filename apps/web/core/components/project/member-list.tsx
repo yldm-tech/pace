@@ -12,7 +12,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { SearchOutline } from "@makeplane/propel/icons";
 // components
-import { MembersSettingsLoader } from "@/components/ui/loader/settings/members";
+import { MembersSettingsLoader } from "@/components/skeletons/loader/settings/members";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 import { useUserPermissions } from "@/hooks/store/user";

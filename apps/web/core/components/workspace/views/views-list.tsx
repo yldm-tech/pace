@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // components
-import { ViewListLoader } from "@/components/ui/loader/view-list-loader";
+import { ViewListLoader } from "@/components/skeletons/loader/view-list-loader";
 // hooks
 import { useGlobalView } from "@/hooks/store/use-global-view";
 // local imports

@@ -5,8 +5,8 @@
  */
 
 import type { TBaseLayoutType } from "@pace/types";
-import { KanbanLayoutLoader } from "@/components/ui/loader/layouts/kanban-layout-loader";
-import { ListLayoutLoader } from "@/components/ui/loader/layouts/list-layout-loader";
+import { KanbanLayoutLoader } from "@/components/skeletons/loader/layouts/kanban-layout-loader";
+import { ListLayoutLoader } from "@/components/skeletons/loader/layouts/list-layout-loader";
 
 interface GenericLayoutLoaderProps {
   layout: TBaseLayoutType;
