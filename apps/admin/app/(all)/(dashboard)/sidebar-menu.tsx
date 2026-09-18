@@ -9,6 +9,7 @@ import Link from "@/app/hooks/link";
 import { usePathname } from "@/app/hooks/navigation";
 // pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
+import { useTranslation } from "@pace/i18n";
 import { cn } from "@pace/utils";
 // hooks
 import { useTheme } from "@/hooks/store";
@@ -17,6 +18,8 @@ import { useSidebarMenu } from "@/hooks/use-sidebar-menu";
 export const AdminSidebarMenu = observer(function AdminSidebarMenu() {
   // router
   const pathName = usePathname();
+  // i18n
+  const { t } = useTranslation();
   // store hooks
   const { isSidebarCollapsed, toggleSidebar } = useTheme();
   // derived values
@@ -50,14 +53,14 @@ export const AdminSidebarMenu = observer(function AdminSidebarMenu() {
                     {<item.Icon className="h-4 w-4 flex-shrink-0" />}
                     {!isSidebarCollapsed && (
                       <div className="w-full">
-                        <div className={cn(`text-body-xs-medium transition-colors`)}>{item.name}</div>
-                        <div className={cn(`text-caption-sm-regular transition-colors`)}>{item.description}</div>
+                        <div className={cn(`text-body-xs-medium transition-colors`)}>{t(item.name)}</div>
+                        <div className={cn(`text-caption-sm-regular transition-colors`)}>{t(item.description)}</div>
                       </div>
                     )}
                   </div>
                 </>
               ) : (
-                <Tooltip label={item.name} side="right">
+                <Tooltip label={t(item.name)} side="right">
                   <div
                     className={cn(
                       "group flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors outline-none",
@@ -71,8 +74,8 @@ export const AdminSidebarMenu = observer(function AdminSidebarMenu() {
                     {<item.Icon className="h-4 w-4 flex-shrink-0" />}
                     {!isSidebarCollapsed && (
                       <div className="w-full">
-                        <div className={cn(`text-body-xs-medium transition-colors`)}>{item.name}</div>
-                        <div className={cn(`text-caption-sm-regular transition-colors`)}>{item.description}</div>
+                        <div className={cn(`text-body-xs-medium transition-colors`)}>{t(item.name)}</div>
+                        <div className={cn(`text-caption-sm-regular transition-colors`)}>{t(item.description)}</div>
                       </div>
                     )}
                   </div>

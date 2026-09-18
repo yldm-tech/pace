@@ -23,6 +23,7 @@ import { ControllerSwitch } from "@/components/common/controller-switch";
 import { ControllerInput } from "@/components/common/controller-input";
 import type { TCopyField } from "@/components/common/copy-field";
 import { CopyField } from "@/components/common/copy-field";
+import { translateWithNodes } from "@/components/common/translate-with-nodes";
 // hooks
 import { useInstance } from "@/hooks/store";
 import { useTranslation } from "@pace/i18n";
@@ -35,7 +36,7 @@ type GithubConfigFormValues = Record<TInstanceGithubAuthenticationConfigurationK
 
 const GITHUB_FORM_SWITCH_FIELD: TControllerSwitchFormField<GithubConfigFormValues> = {
   name: "ENABLE_GITHUB_SYNC",
-  label: "GitHub",
+  provider: "GitHub",
 };
 
 export function InstanceGithubConfigForm(props: Props) {
@@ -67,19 +68,18 @@ export function InstanceGithubConfigForm(props: Props) {
       key: "GITHUB_CLIENT_ID",
       type: "text",
       label: t("admin.auth.client_id"),
-      description: (
-        <>
-          You will get this from your{" "}
+      description: translateWithNodes(t, "admin.oauth.github.client_id_description", {
+        link: (
           <a
             href="https://github.com/settings/applications/new"
             target="_blank"
             className="text-accent-primary hover:underline"
             rel="noreferrer"
           >
-            GitHub OAuth application settings.
+            {t("admin.oauth.github.app_settings_link")}
           </a>
-        </>
-      ),
+        ),
+      }),
       placeholder: "70a44354520df8bd9bcd",
       error: Boolean(errors.GITHUB_CLIENT_ID),
       required: true,
@@ -88,19 +88,18 @@ export function InstanceGithubConfigForm(props: Props) {
       key: "GITHUB_CLIENT_SECRET",
       type: "password",
       label: t("admin.auth.client_secret"),
-      description: (
-        <>
-          Your client secret is also found in your{" "}
+      description: translateWithNodes(t, "admin.oauth.github.client_secret_description", {
+        link: (
           <a
             href="https://github.com/settings/applications/new"
             target="_blank"
             className="text-accent-primary hover:underline"
             rel="noreferrer"
           >
-            GitHub OAuth application settings.
+            {t("admin.oauth.github.app_settings_link")}
           </a>
-        </>
-      ),
+        ),
+      }),
       placeholder: "9b0050f94ec1b744e32ce79ea4ffacd40d4119cb",
       error: Boolean(errors.GITHUB_CLIENT_SECRET),
       required: true,
@@ -109,7 +108,7 @@ export function InstanceGithubConfigForm(props: Props) {
       key: "GITHUB_ORGANIZATION_ID",
       type: "text",
       label: t("admin.auth.organization_id"),
-      description: <>The organization github ID.</>,
+      description: t("admin.oauth.github.organization_id_description"),
       placeholder: "123456789",
       error: Boolean(errors.GITHUB_ORGANIZATION_ID),
       required: false,
@@ -121,20 +120,24 @@ export function InstanceGithubConfigForm(props: Props) {
       key: "Origin_URL",
       label: t("admin.auth.origin_url"),
       url: originURL,
-      description: (
-        <>
-          We will auto-generate this. Paste this into the{" "}
-          <CodeBlock darkerShade>{t("admin.auth.authorized_origin_url")}</CodeBlock> field{" "}
-          <a
-            href="https://github.com/settings/applications/new"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="GitHub OAuth application settings"
-          >
-            here.
-          </a>
-        </>
+      description: translateWithNodes(
+        t,
+        "admin.oauth.paste_into_field",
+        {
+          field: <CodeBlock darkerShade>{t("admin.auth.authorized_origin_url")}</CodeBlock>,
+          link: (
+            <a
+              href="https://github.com/settings/applications/new"
+              target="_blank"
+              className="text-accent-primary hover:underline"
+              rel="noreferrer"
+              aria-label={t("admin.oauth.github.app_settings_label")}
+            >
+              {t("admin.oauth.here")}
+            </a>
+          ),
+        },
+        { provider: "GitHub" }
       ),
     },
   ];
@@ -144,20 +147,24 @@ export function InstanceGithubConfigForm(props: Props) {
       key: "Callback_URI",
       label: t("admin.auth.callback_uri"),
       url: `${originURL}/auth/github/callback/`,
-      description: (
-        <>
-          We will auto-generate this. Paste this into your{" "}
-          <CodeBlock darkerShade>{t("admin.auth.authorized_callback")}</CodeBlock> field{" "}
-          <a
-            href="https://github.com/settings/applications/new"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="GitHub OAuth application settings"
-          >
-            here.
-          </a>
-        </>
+      description: translateWithNodes(
+        t,
+        "admin.oauth.paste_into_field",
+        {
+          field: <CodeBlock darkerShade>{t("admin.auth.authorized_callback")}</CodeBlock>,
+          link: (
+            <a
+              href="https://github.com/settings/applications/new"
+              target="_blank"
+              className="text-accent-primary hover:underline"
+              rel="noreferrer"
+              aria-label={t("admin.oauth.github.app_settings_label")}
+            >
+              {t("admin.oauth.here")}
+            </a>
+          ),
+        },
+        { provider: "GitHub" }
       ),
     },
   ];
@@ -169,8 +176,8 @@ export function InstanceGithubConfigForm(props: Props) {
       const response = await updateInstanceConfigurations(payload);
       setToast({
         type: TOAST_TYPE.SUCCESS,
-        title: "Done!",
-        message: "Your GitHub authentication is configured. You should test it now.",
+        title: t("admin.oauth.toast.done"),
+        message: t("admin.oauth.toast.configured", { provider: "GitHub" }),
       });
       reset({
         GITHUB_CLIENT_ID: response.find((item) => item.key === "GITHUB_CLIENT_ID")?.value,
@@ -200,7 +207,9 @@ export function InstanceGithubConfigForm(props: Props) {
       <div className="flex flex-col gap-8">
         <div className="grid w-full grid-cols-2 gap-x-12 gap-y-8">
           <div className="col-span-2 flex flex-col gap-y-4 pt-1 md:col-span-1">
-            <div className="pt-2.5 text-18 font-medium">GitHub-provided details for Pace</div>
+            <div className="pt-2.5 text-18 font-medium">
+              {t("admin.oauth.provider_details", { provider: "GitHub" })}
+            </div>
             {GITHUB_FORM_FIELDS.map((field) => (
               <ControllerInput
                 key={field.key}
@@ -232,13 +241,13 @@ export function InstanceGithubConfigForm(props: Props) {
                   stretch="auto"
                   nativeButton={false}
                   render={<Link href="/authentication" onClick={handleGoBack} />}
-                  label="Go back"
+                  label={t("admin.oauth.go_back")}
                 />
               </div>
             </div>
           </div>
           <div className="col-span-2 flex flex-col gap-y-6 md:col-span-1">
-            <div className="pt-2 text-18 font-medium">Pace-provided details for GitHub</div>
+            <div className="pt-2 text-18 font-medium">{t("admin.oauth.pace_details", { provider: "GitHub" })}</div>
 
             <div className="flex flex-col gap-y-4">
               {/* common service details */}
@@ -252,7 +261,7 @@ export function InstanceGithubConfigForm(props: Props) {
               <div className="flex flex-col overflow-hidden rounded-lg">
                 <div className="flex items-center gap-x-3 bg-layer-3 px-6 py-3 text-11 font-medium text-secondary uppercase">
                   <MonitorOutline className="h-3 w-3" />
-                  Web
+                  {t("admin.oauth.web")}
                 </div>
                 <div className="flex flex-col gap-y-4 bg-layer-1 px-6 py-4">
                   {GITHUB_SERVICE_DETAILS.map((field) => (

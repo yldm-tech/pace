@@ -10,6 +10,7 @@ import { useTheme } from "next-themes";
 import useSWR from "swr";
 // pace internal packages
 import { Switch } from "@makeplane/propel/components/switch";
+import { useTranslation } from "@pace/i18n";
 import { resolveGeneralTheme } from "@pace/utils";
 // assets
 import githubLightModeImage from "@/app/assets/logos/github-black.png?url";
@@ -29,6 +30,8 @@ import { InstanceGithubConfigForm } from "./form";
 const InstanceGithubAuthenticationPage = observer(function InstanceGithubAuthenticationPage(
   _props: Route.ComponentProps
 ) {
+  // i18n
+  const { t } = useTranslation();
   // store
   const { fetchInstanceConfigurations, formattedConfig, updateInstanceConfigurations } = useInstance();
   // state
@@ -50,14 +53,15 @@ const InstanceGithubAuthenticationPage = observer(function InstanceGithubAuthent
     const updateConfigPromise = updateInstanceConfigurations(payload);
 
     setPromiseToast(updateConfigPromise, {
-      loading: "Saving Configuration",
+      loading: t("admin.auth.saving"),
       success: {
-        title: "Configuration saved",
-        message: () => `GitHub authentication is now ${value === "1" ? "active" : "disabled"}.`,
+        title: t("admin.auth.saved"),
+        message: () =>
+          t(value === "1" ? "admin.oauth.toast.enabled" : "admin.oauth.toast.disabled", { provider: "GitHub" }),
       },
       error: {
-        title: "Error",
-        message: () => "Failed to save configuration",
+        title: t("admin.toast.error"),
+        message: () => t("admin.auth.save_failed"),
       },
     });
 
@@ -78,7 +82,7 @@ const InstanceGithubAuthenticationPage = observer(function InstanceGithubAuthent
       customHeader={
         <AuthenticationMethodCard
           name="GitHub"
-          description="Allow members to log in or sign up to Pace with their GitHub accounts."
+          description={t("admin.oauth.description", { provider: "GitHub" })}
           icon={
             <img
               src={resolveGeneralTheme(resolvedTheme) === "dark" ? githubDarkModeImage : githubLightModeImage}

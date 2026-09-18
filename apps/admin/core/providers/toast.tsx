@@ -9,6 +9,7 @@ import type { ToastData, ToastVariant } from "@makeplane/propel/components/toast
 import { IconButton } from "@makeplane/propel/components/icon-button";
 import { Icon } from "@makeplane/propel/components/icon";
 import { CloseOutline } from "@makeplane/propel/icons";
+import { useTranslation } from "@pace/i18n";
 
 // Keep the call-site API the workspace @pace/propel toast exposed, backed by
 // @makeplane/propel's toast manager, so consumers only change their import path.
@@ -72,11 +73,17 @@ export const setPromiseToast = <TValue,>(promise: Promise<TValue>, options: Prom
 };
 
 export function ToastWithTheme() {
+  const { t } = useTranslation();
   return (
     <ToastProvider
       toastManager={toastManager}
       close={
-        <IconButton variant="ghost" size="sm" aria-label="Close notification" icon={<Icon icon={CloseOutline} />} />
+        <IconButton
+          variant="ghost"
+          size="sm"
+          aria-label={t("admin.misc.close_notification")}
+          icon={<Icon icon={CloseOutline} />}
+        />
       }
     />
   );

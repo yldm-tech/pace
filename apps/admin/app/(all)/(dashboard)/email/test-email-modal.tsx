@@ -10,6 +10,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "@makeplane/propel/components/button";
 import { Input } from "@makeplane/propel/components/input";
 import { InstanceService } from "@pace/services";
+import { useTranslation } from "@pace/i18n";
 
 type Props = {
   isOpen: boolean;
@@ -25,6 +26,7 @@ enum ESendEmailSteps {
 const instanceService = new InstanceService();
 
 export function SendTestEmailModal(props: Props) {
+  const { t } = useTranslation();
   const { isOpen, handleClose } = props;
 
   // state
@@ -57,7 +59,7 @@ export function SendTestEmailModal(props: Props) {
         setSendEmailStep(ESendEmailSteps.SUCCESS);
       })
       .catch((error) => {
-        setError(error?.error || "Failed to send email");
+        setError(error?.error || t("admin.email.send_failed"));
         setSendEmailStep(ESendEmailSteps.FAILED);
       })
       .finally(() => {
@@ -93,7 +95,7 @@ export function SendTestEmailModal(props: Props) {
               <Dialog.Panel className="relative w-full transform rounded-lg bg-surface-1 p-5 px-4 text-left shadow-raised-200 transition-all sm:max-w-xl">
                 <h3 className="text-16 leading-6 font-medium text-primary">
                   {sendEmailStep === ESendEmailSteps.SEND_EMAIL
-                    ? "Send test email"
+                    ? t("admin.email.send_test")
                     : sendEmailStep === ESendEmailSteps.SUCCESS
                       ? "Email send"
                       : "Failed"}{" "}
@@ -107,7 +109,7 @@ export function SendTestEmailModal(props: Props) {
                         size="lg"
                         value={receiverEmail}
                         onChange={(e) => setReceiverEmail(e.target.value)}
-                        placeholder="Receiver email"
+                        placeholder={t("admin.email.receiver")}
                         tabIndex={0}
                       />
                     </div>

@@ -5,12 +5,12 @@
  */
 
 import type { TInstanceAuthenticationModes } from "@pace/types";
-import { getCoreAuthenticationModesMap } from "./core";
+import { useCoreAuthenticationModesMap } from "./core";
 import type { TGetAuthenticationModeProps } from "./types";
 
 export const useAuthenticationModes = (props: TGetAuthenticationModeProps): TInstanceAuthenticationModes[] => {
   // derived values
-  const authenticationModes = getCoreAuthenticationModesMap(props);
+  const authenticationModes = useCoreAuthenticationModesMap(props);
 
   const availableAuthenticationModes: TInstanceAuthenticationModes[] = [
     authenticationModes["unique-codes"],

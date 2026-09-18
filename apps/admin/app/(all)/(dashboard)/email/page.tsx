@@ -66,9 +66,9 @@ const InstanceEmailPage = observer(function InstanceEmailPage(_props: Route.Comp
         title: t("admin.email.heading"),
         description: (
           <>
-            Plane can send useful emails to you and your users from your own instance without talking to the Internet.
+            {t("admin.page.email.description")}
             <div className="text-13 font-regular text-tertiary">
-              Set it up below and please test your settings before you save them.&nbsp;
+              {t("admin.page.email.test_hint")}&nbsp;
               <span className="text-danger-primary">{t("admin.email.subheading")}</span>
             </div>
           </>

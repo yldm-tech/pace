@@ -5,12 +5,30 @@
       "description": "管理台自身的显示语言。仅记录在此浏览器中，不会改变其他人看到的内容。"
     },
     "nav": {
-      "general": "通用",
+      "general": "常规",
       "email": "邮件",
-      "authentication": "身份认证",
+      "authentication": "身份验证",
       "ai": "人工智能",
       "images": "图片",
-      "workspace": "工作区"
+      "workspace": "工作区",
+      "general_description": "标识您的实例并查看关键信息。",
+      "email_description": "配置您的 SMTP 选项。",
+      "workspace_description": "管理此实例上的所有工作区。",
+      "authentication_description": "配置登录方式。",
+      "ai_description": "配置您的 OpenAI 凭据。",
+      "images_description": "启用第三方图片库。",
+      "instance_admin": "实例管理员",
+      "admin_user": "管理员用户",
+      "switch_to_light_mode": "切换到浅色模式",
+      "switch_to_dark_mode": "切换到深色模式",
+      "sign_out": "退出登录",
+      "redirect_to_pace": "跳转到 Pace",
+      "help": "帮助",
+      "toggle_sidebar": "切换侧边栏",
+      "documentation": "文档",
+      "forum": "加入我们的论坛",
+      "report_bug": "报告问题",
+      "version_label": "版本："
     },
     "actions": {
       "save": "保存更改",
@@ -53,7 +71,7 @@
         "description": "以 bearer token 形式发送至上方接口地址。",
         "placeholder": "sk-..."
       },
-      "not_listed": "没有列出你用的服务？选择「自定义」并填写接口地址——只要是 OpenAI 形式的都可以。",
+      "not_listed": "没有列出您使用的服务？选择“自定义”并填写接口地址——只要是 OpenAI 形式的都可以。",
       "saved": "AI 设置已更新"
     },
     "general": {
@@ -79,7 +97,7 @@
       "saved": "图片设置已更新"
     },
     "email": {
-      "heading": "使用你自己实例的安全邮件",
+      "heading": "使用您自己实例的安全邮件",
       "subheading": "配置有误会导致邮件退回或发送失败。",
       "disabled_title": "邮件功能已禁用",
       "disabled_message": "邮件功能已被禁用",
@@ -91,7 +109,13 @@
       "sender": "发件人邮箱地址",
       "username": "用户名",
       "security": "邮件安全",
-      "authentication": "身份认证"
+      "authentication": "身份验证",
+      "send_test": "发送测试邮件",
+      "receiver": "收件人邮箱",
+      "send_failed": "邮件发送失败",
+      "security_none": "不启用邮件安全",
+      "security_select": "选择邮件安全",
+      "test_hint": "如果仍然找不到，请重新检查您的 SMTP 配置，并重新发送一封测试邮件。"
     },
     "auth": {
       "heading": "管理此实例的登录方式",
@@ -117,6 +141,59 @@
       "authorized_callback": "已授权的回调地址",
       "authorized_origin_url": "已授权的来源地址"
     },
+    "oauth": {
+      "description": "允许成员使用其 {provider} 账号登录或注册 Pace。",
+      "unique_codes_description": "使用通过邮件发送的验证码登录或注册 Pace。使用此方式需要先配置 SMTP。",
+      "passwords_description": "允许成员使用密码创建账号，并通过邮箱地址登录。",
+      "provider_details": "由 {provider} 提供给 Pace 的信息",
+      "pace_details": "由 Pace 提供给 {provider} 的信息",
+      "web": "网页",
+      "go_back": "返回",
+      "edit": "编辑",
+      "configure": "配置",
+      "learn_more": "了解更多",
+      "here": "此处",
+      "refresh_attributes": "登录时从 {provider} 刷新用户属性",
+      "paste_into_field": "我们会自动生成该值。请将其粘贴到您 {provider} OAuth 应用的 {field} 字段中，该应用可在{link}配置。",
+      "copy": {
+        "title": "已复制到剪贴板",
+        "message": "{label} 已复制到您的剪贴板。"
+      },
+      "toast": {
+        "done": "完成！",
+        "enabled": "{provider} 身份验证已启用。",
+        "disabled": "{provider} 身份验证已禁用。",
+        "configured": "您的 {provider} 身份验证已配置完成，建议立即测试。"
+      },
+      "google": {
+        "client_id_description": "您的 Client ID 位于 Google API Console 中。{link}",
+        "client_id_doc_label": "Google OAuth Client ID 文档",
+        "client_secret_description": "您的 Client Secret 同样位于 Google API Console 中。{link}",
+        "client_secret_doc_label": "Google OAuth Client Secret 文档",
+        "console_label": "Google Cloud Console 中的 OAuth 客户端凭据"
+      },
+      "github": {
+        "client_id_description": "您可以在{link}中获取该值。",
+        "client_secret_description": "您的 Client Secret 同样位于{link}中。",
+        "organization_id_description": "GitHub 组织 ID。",
+        "app_settings_link": "GitHub OAuth 应用设置",
+        "app_settings_label": "GitHub OAuth 应用设置"
+      },
+      "gitlab": {
+        "host_description": "此处填写 https://gitlab.com，或您自托管 GitLab 的 {domain}。",
+        "application_id_description": "您可以在{link}中获取该值。",
+        "secret_description": "Client Secret 同样位于{link}中。",
+        "app_settings_link": "GitLab OAuth 应用设置",
+        "app_settings_label": "GitLab OAuth 应用设置"
+      },
+      "gitea": {
+        "host_description": "请使用您 Gitea 实例的 URL。若使用官方 Gitea 实例，请填写“https://gitea.com”。",
+        "client_id_description": "您可以在{link}中获取该值。",
+        "client_secret_description": "您的 Client Secret 同样位于{link}中。",
+        "app_settings_link": "Gitea OAuth 应用设置",
+        "app_settings_label": "Gitea OAuth 应用设置"
+      }
+    },
     "common": {
       "email": "邮箱",
       "password": "密码",
@@ -137,18 +214,18 @@
       "owned_by": "所有者：",
       "total_projects": "项目总数：",
       "total_members": "成员总数：",
-      "unique_codes": "一次性验证码",
+      "unique_codes": "验证码",
       "passwords": "密码"
     },
     "setup": {
-      "heading": "初始化你的 Pace 实例",
+      "heading": "初始化您的 Pace 实例",
       "set_password": "设置密码",
       "new_password": "新密码",
       "confirm_password": "确认密码",
       "telemetry": "允许 Pace 匿名收集使用数据"
     },
     "signin": {
-      "heading": "管理你的 Pace 实例",
+      "heading": "管理您的 Pace 实例",
       "password_placeholder": "请输入密码"
     },
     "workspace": {
@@ -161,6 +238,139 @@
       "name_placeholder": "取一个熟悉且好认的名字。",
       "slug_placeholder": "workspace-name",
       "go_back": "返回"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "您的 Unsplash 账户的访问密钥",
+        "unsplash_key_help": "您可以在 Unsplash 开发者控制台中找到访问密钥。",
+        "unsplash_docs_link": "了解更多。",
+        "unsplash_docs_aria": "Unsplash 开发者账户文档",
+        "saved": "图片配置已更新"
+      },
+      "workspace": {
+        "name_label": "为您的工作区命名",
+        "url_label": "设置您的工作区 URL",
+        "slug_taken": "该 URL 已被占用，请尝试其他 URL。",
+        "slug_invalid": "URL 只能包含 ( - )、( _ ) 和字母数字字符。",
+        "size_label": "有多少人会使用这个工作区？",
+        "size_placeholder": "选择范围",
+        "required_field": "此字段为必填项。",
+        "create_submit": "创建工作区",
+        "creating": "正在创建工作区",
+        "logo_alt": "工作区标志",
+        "slug_tooltip": "您的工作区的唯一 URL",
+        "size_options": {
+          "just_myself": "仅我自己",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "错误",
+          "message": "出现错误。请重试。"
+        },
+        "admin_already_exist": {
+          "title": "管理员已存在",
+          "message": "管理员已存在，请重试。"
+        },
+        "required_admin_email_password_first_name": {
+          "title": "需要填写邮箱、密码和名字",
+          "message": "需要填写邮箱、密码和名字，请重试。"
+        },
+        "invalid_admin_email": {
+          "title": "管理员邮箱无效",
+          "message": "管理员邮箱无效，请重试。"
+        },
+        "invalid_admin_password": {
+          "title": "管理员密码无效",
+          "message": "管理员密码无效，请重试。"
+        },
+        "required_admin_email_password": {
+          "title": "需要填写邮箱和密码",
+          "message": "需要填写邮箱和密码，请重试。"
+        },
+        "admin_authentication_failed": {
+          "title": "身份验证失败",
+          "message": "身份验证失败，请重试。"
+        },
+        "admin_user_already_exist": {
+          "title": "管理员用户已存在",
+          "message": "管理员用户已存在。{link}。"
+        },
+        "admin_user_does_not_exist": {
+          "title": "管理员用户不存在",
+          "message": "管理员用户不存在。{link}。"
+        },
+        "admin_user_deactivated": {
+          "title": "用户账户已停用",
+          "message": "用户账户已停用，请联系{contact}。"
+        },
+        "sign_in_link": "立即登录",
+        "administrator": "管理员",
+        "dismiss_banner": "关闭横幅"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "常规设置",
+        "description": "修改实例名称和实例管理员邮箱地址，启用或关闭实例的遥测。"
+      },
+      "email": {
+        "description": "Pace 可以从您自己的实例向您和您的用户发送有用的邮件，无需与外部网络通信。",
+        "test_hint": "在下方完成配置，并请在保存前测试您的设置。"
+      },
+      "ai": {
+        "title": "面向所有工作区的 AI 功能",
+        "description": "配置您的 AI API 凭据，为所有工作区启用 Pace 的 AI 功能。"
+      },
+      "authentication": {
+        "description": "为您的团队配置登录方式，并将注册限制为仅限邀请。",
+        "allow_signup_description": "关闭后，用户只有在收到邀请时才能注册。",
+        "cannot_disable_message": "至少需要保留一种启用的登录方式。请先启用另一种方式，再禁用当前这种。"
+      },
+      "workspace": {
+        "title": "此实例上的工作区",
+        "description": "查看所有工作区，并控制谁可以创建工作区。",
+        "prevent_creation_description": "开启后，只有您可以创建工作区。您需要自行邀请用户加入新的工作区。",
+        "list_heading": "此实例上的所有工作区",
+        "list_description": "目前还不能删除工作区；只有当您是该工作区的管理员或成员时，才能进入它。",
+        "config_saving": "正在保存配置",
+        "config_saved": "配置已保存",
+        "config_save_failed": "保存配置失败"
+      },
+      "workspace_create": {
+        "title": "在此实例上创建新的工作区。",
+        "description": "创建该工作区后，您需要在工作区设置中邀请用户。"
+      },
+      "breadcrumb": {
+        "aria_label": "面包屑导航",
+        "settings": "设置",
+        "general": "常规",
+        "ai": "人工智能",
+        "email": "邮件",
+        "authentication": "身份验证",
+        "image": "图片",
+        "workspace": "工作区",
+        "create": "创建"
+      }
+    },
+    "misc": {
+      "something_wrong": "糟糕！出现错误。",
+      "go_to_general": "前往常规设置",
+      "instance_unavailable": "无法获取实例信息。",
+      "instance_fetch_failed": "获取实例信息失败",
+      "loading": "加载中…",
+      "close_notification": "关闭通知",
+      "unsaved_changes": "您有未保存的更改",
+      "unsaved_changes_body": "返回后所做的更改将会丢失。确定要返回吗？",
+      "setup_after": "初始化完成后，你就可以管理这个 Pace 实例了。",
+      "signin_subheading": "配置实例级设置以保障实例安全",
+      "root_error": "出错了。",
+      "create_workspace": "创建工作区"
     }
   }
 }

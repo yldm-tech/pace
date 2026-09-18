@@ -4,4 +4,5 @@
  * See the LICENSE file for details.
  */
 
-export const EXTENDED_HEADER_SEGMENT_LABELS: Record<string, string> = {};
+// Same contract as CORE_HEADER_SEGMENT_LABEL_KEYS: values are i18n keys, resolved by the header component.
+export const EXTENDED_HEADER_SEGMENT_LABEL_KEYS: Record<string, string> = {};

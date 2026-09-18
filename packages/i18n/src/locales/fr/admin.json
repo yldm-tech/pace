@@ -10,7 +10,25 @@
       "authentication": "Authentification",
       "ai": "Intelligence artificielle",
       "images": "Images",
-      "workspace": "Espaces de travail"
+      "workspace": "Espaces de travail",
+      "general_description": "Identifiez vos instances et obtenez les informations clés.",
+      "email_description": "Configurez vos paramètres SMTP.",
+      "workspace_description": "Gérez tous les espaces de travail de cette instance.",
+      "authentication_description": "Configurez les modes d’authentification.",
+      "ai_description": "Configurez vos identifiants OpenAI.",
+      "images_description": "Autorisez les bibliothèques d’images tierces.",
+      "instance_admin": "Administration de l’instance",
+      "admin_user": "Utilisateur administrateur",
+      "switch_to_light_mode": "Passer au thème clair",
+      "switch_to_dark_mode": "Passer au thème sombre",
+      "sign_out": "Se déconnecter",
+      "redirect_to_pace": "Rediriger vers Pace",
+      "help": "Aide",
+      "toggle_sidebar": "Afficher ou masquer la barre latérale",
+      "documentation": "Documentation",
+      "forum": "Rejoindre notre forum",
+      "report_bug": "Signaler un bug",
+      "version_label": "Version :"
     },
     "actions": {
       "save": "Enregistrer les modifications",
@@ -31,7 +49,7 @@
         "description": "En choisir un renseigne son point de terminaison et attribue un modèle par défaut. Personnalisé demande les deux et fonctionne avec tout ce qui répond à une complétion de chat au format OpenAI."
       },
       "base_url": {
-        "label": "Base URL",
+        "label": "URL de base",
         "description": "Là où les complétions sont demandées. Tout ce qui répond à un POST /chat/completions au format OpenAI convient ici : une passerelle, un serveur auto-hébergé ou le point de terminaison d’un fournisseur. Laissez vide pour OpenAI.",
         "placeholder": "https://api.openai.com/v1"
       },
@@ -50,10 +68,10 @@
       },
       "api_key": {
         "label": "Clé API",
-        "description": "Envoyée comme bearer token à la Base URL ci-dessus.",
+        "description": "Envoyée comme jeton Bearer à l’URL de base ci-dessus.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Absent de la liste ci-dessus ? Choisissez Personnalisé et indiquez sa Base URL — tout ce qui est au format OpenAI fera l’affaire.",
+      "not_listed": "Absent de la liste ci-dessus ? Choisissez Personnalisé et indiquez son URL de base — tout ce qui est au format OpenAI fera l’affaire.",
       "saved": "Paramètres d’IA mis à jour avec succès"
     },
     "general": {
@@ -91,7 +109,13 @@
       "sender": "Adresse e-mail de l’expéditeur",
       "username": "Nom d’utilisateur",
       "security": "Sécurité des e-mails",
-      "authentication": "Authentification"
+      "authentication": "Authentification",
+      "send_test": "Envoyer un e-mail de test",
+      "receiver": "E-mail du destinataire",
+      "send_failed": "Échec de l’envoi de l’e-mail",
+      "security_none": "Aucune sécurité des e-mails",
+      "security_select": "Sélectionnez la sécurité des e-mails",
+      "test_hint": "Si vous ne le trouvez toujours pas, vérifiez à nouveau votre configuration SMTP et déclenchez un nouvel e-mail de test."
     },
     "auth": {
       "heading": "Gérez les modes d’authentification de votre instance",
@@ -116,6 +140,59 @@
       "authorized_redirect": "URI de redirection autorisée",
       "authorized_callback": "URI de rappel autorisée",
       "authorized_origin_url": "URL d’origine autorisée"
+    },
+    "oauth": {
+      "description": "Autorisez les membres à se connecter ou à s’inscrire à Pace avec leur compte {provider}.",
+      "unique_codes_description": "Connectez-vous ou inscrivez-vous à Pace à l’aide de codes envoyés par e-mail. Vous devez avoir configuré SMTP pour utiliser cette méthode.",
+      "passwords_description": "Autorisez les membres à créer des comptes avec un mot de passe et à se connecter avec leur adresse e-mail.",
+      "provider_details": "Informations fournies par {provider} pour Pace",
+      "pace_details": "Informations fournies par Pace pour {provider}",
+      "web": "Web",
+      "go_back": "Retour",
+      "edit": "Modifier",
+      "configure": "Configurer",
+      "learn_more": "En savoir plus",
+      "here": "ici",
+      "refresh_attributes": "Actualiser les attributs de l’utilisateur depuis {provider} lors de la connexion",
+      "paste_into_field": "Nous le générons automatiquement. Collez-le dans le champ {field} de votre application OAuth {provider}, que vous pouvez configurer {link}.",
+      "copy": {
+        "title": "Copié dans le presse-papiers",
+        "message": "{label} a été copié dans votre presse-papiers."
+      },
+      "toast": {
+        "done": "Terminé !",
+        "enabled": "L’authentification {provider} est maintenant active.",
+        "disabled": "L’authentification {provider} est maintenant désactivée.",
+        "configured": "Votre authentification {provider} est configurée. Vous devriez la tester dès maintenant."
+      },
+      "google": {
+        "client_id_description": "Votre Client ID se trouve dans votre Google API Console. {link}",
+        "client_id_doc_label": "Documentation sur le Client ID OAuth de Google",
+        "client_secret_description": "Votre Client Secret se trouve également dans votre Google API Console. {link}",
+        "client_secret_doc_label": "Documentation sur le Client Secret OAuth de Google",
+        "console_label": "Identifiants du client OAuth dans la Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Vous l’obtiendrez dans vos {link}.",
+        "client_secret_description": "Votre Client Secret se trouve également dans vos {link}.",
+        "organization_id_description": "L’ID de l’organisation GitHub.",
+        "app_settings_link": "Paramètres de l’application OAuth GitHub",
+        "app_settings_label": "Paramètres de l’application OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Il s’agit soit de https://gitlab.com, soit du {domain} sur lequel vous hébergez GitLab.",
+        "application_id_description": "Vous l’obtiendrez dans vos {link}.",
+        "secret_description": "Le Client Secret se trouve également dans vos {link}.",
+        "app_settings_link": "Paramètres de l’application OAuth GitLab",
+        "app_settings_label": "Paramètres de l’application OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Utilisez l’URL de votre instance Gitea. Pour l’instance Gitea officielle, utilisez « https://gitea.com ».",
+        "client_id_description": "Vous l’obtiendrez dans vos {link}.",
+        "client_secret_description": "Votre Client Secret se trouve également dans vos {link}.",
+        "app_settings_link": "Paramètres de l’application OAuth Gitea",
+        "app_settings_label": "Paramètres de l’application OAuth Gitea"
+      }
     },
     "common": {
       "email": "E-mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Quelque chose de familier et de reconnaissable est toujours préférable.",
       "slug_placeholder": "workspace-name",
       "go_back": "Retour"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Clé d’accès de votre compte Unsplash",
+        "unsplash_key_help": "Vous trouverez votre clé d’accès dans votre console développeur Unsplash.",
+        "unsplash_docs_link": "En savoir plus.",
+        "unsplash_docs_aria": "Documentation du compte développeur Unsplash",
+        "saved": "Configuration des images mise à jour avec succès"
+      },
+      "workspace": {
+        "name_label": "Nommez votre espace de travail",
+        "url_label": "Définissez l’URL de votre espace de travail",
+        "slug_taken": "Cette URL est déjà prise. Essayez-en une autre.",
+        "slug_invalid": "Les URL ne peuvent contenir que ( - ), ( _ ) et des caractères alphanumériques.",
+        "size_label": "Combien de personnes utiliseront cet espace de travail ?",
+        "size_placeholder": "Sélectionnez une plage",
+        "required_field": "Ce champ est obligatoire.",
+        "create_submit": "Créer un espace de travail",
+        "creating": "Création de l’espace de travail",
+        "logo_alt": "Logo de l’espace de travail",
+        "slug_tooltip": "L’URL unique de votre espace de travail",
+        "size_options": {
+          "just_myself": "Uniquement moi",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Erreur",
+          "message": "Une erreur s’est produite. Veuillez réessayer."
+        },
+        "admin_already_exist": {
+          "title": "L’administrateur existe déjà",
+          "message": "L’administrateur existe déjà. Veuillez réessayer."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "E-mail, mot de passe et prénom requis",
+          "message": "L’e-mail, le mot de passe et le prénom sont requis. Veuillez réessayer."
+        },
+        "invalid_admin_email": {
+          "title": "E-mail d’administrateur invalide",
+          "message": "L’e-mail d’administrateur est invalide. Veuillez réessayer."
+        },
+        "invalid_admin_password": {
+          "title": "Mot de passe d’administrateur invalide",
+          "message": "Le mot de passe d’administrateur est invalide. Veuillez réessayer."
+        },
+        "required_admin_email_password": {
+          "title": "E-mail et mot de passe requis",
+          "message": "L’e-mail et le mot de passe sont requis. Veuillez réessayer."
+        },
+        "admin_authentication_failed": {
+          "title": "Échec de l’authentification",
+          "message": "L’authentification a échoué. Veuillez réessayer."
+        },
+        "admin_user_already_exist": {
+          "title": "L’utilisateur administrateur existe déjà",
+          "message": "L’utilisateur administrateur existe déjà. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "L’utilisateur administrateur n’existe pas",
+          "message": "L’utilisateur administrateur n’existe pas. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Compte utilisateur désactivé",
+          "message": "Le compte utilisateur est désactivé. Veuillez contacter {contact}."
+        },
+        "sign_in_link": "Connectez-vous maintenant",
+        "administrator": "l’administrateur",
+        "dismiss_banner": "Fermer la bannière"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Paramètres généraux",
+        "description": "Modifiez le nom de votre instance et les adresses e-mail des administrateurs de l’instance. Activez ou désactivez la télémétrie dans votre instance."
+      },
+      "email": {
+        "description": "Pace peut vous envoyer, à vous et à vos utilisateurs, des e-mails utiles depuis votre propre instance, sans passer par Internet.",
+        "test_hint": "Effectuez la configuration ci-dessous et testez vos paramètres avant de les enregistrer."
+      },
+      "ai": {
+        "title": "Fonctionnalités d’IA pour tous vos espaces de travail",
+        "description": "Configurez vos identifiants d’API d’IA afin que les fonctionnalités d’IA de Pace soient activées dans tous vos espaces de travail."
+      },
+      "authentication": {
+        "description": "Configurez les modes d’authentification de votre équipe et limitez les inscriptions aux seules personnes invitées.",
+        "allow_signup_description": "Désactiver cette option n’autorisera les utilisateurs à s’inscrire que s’ils sont invités.",
+        "cannot_disable_message": "Au moins une méthode d’authentification doit rester activée. Veuillez en activer une autre avant de désactiver celle-ci."
+      },
+      "workspace": {
+        "title": "Espaces de travail de cette instance",
+        "description": "Consultez tous les espaces de travail et déterminez qui peut en créer.",
+        "prevent_creation_description": "Activer cette option fera de vous la seule personne à pouvoir créer des espaces de travail. Vous devrez inviter les utilisateurs dans les nouveaux espaces de travail.",
+        "list_heading": "Tous les espaces de travail de cette instance",
+        "list_description": "Vous ne pouvez pas encore supprimer d’espaces de travail et vous ne pouvez accéder à un espace de travail que si vous en êtes administrateur ou membre.",
+        "config_saving": "Enregistrement de la configuration",
+        "config_saved": "Configuration enregistrée avec succès",
+        "config_save_failed": "Échec de l’enregistrement de la configuration"
+      },
+      "workspace_create": {
+        "title": "Créez un nouvel espace de travail sur cette instance.",
+        "description": "Vous devrez inviter des utilisateurs depuis les paramètres de l’espace de travail après avoir créé cet espace de travail."
+      },
+      "breadcrumb": {
+        "aria_label": "Fil d’Ariane",
+        "settings": "Paramètres",
+        "general": "Général",
+        "ai": "Intelligence artificielle",
+        "email": "E-mail",
+        "authentication": "Authentification",
+        "image": "Image",
+        "workspace": "Espace de travail",
+        "create": "Créer"
+      }
+    },
+    "misc": {
+      "something_wrong": "Oups ! Une erreur s’est produite.",
+      "go_to_general": "Aller aux paramètres généraux",
+      "instance_unavailable": "Impossible de récupérer les détails de l’instance.",
+      "instance_fetch_failed": "Échec de la récupération des informations de l’instance",
+      "loading": "Chargement...",
+      "close_notification": "Fermer la notification",
+      "unsaved_changes": "Vous avez des modifications non enregistrées",
+      "unsaved_changes_body": "Les modifications que vous avez apportées seront perdues si vous revenez en arrière. Voulez-vous vraiment revenir en arrière ?",
+      "setup_after": "Une fois la configuration terminée, vous pourrez gérer cette instance Pace.",
+      "signin_subheading": "Configurez les paramètres applicables à toute l’instance pour la sécuriser",
+      "root_error": "Une erreur s’est produite.",
+      "create_workspace": "Créer un espace de travail"
     }
   }
 }

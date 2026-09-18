@@ -13,6 +13,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { API_BASE_URL } from "@pace/constants";
 import { WorkspaceAvatar } from "@makeplane/propel/components/workspace-avatar";
 import { AuthService } from "@pace/services";
+import { useTranslation } from "@pace/i18n";
 import { getFileURL, cn } from "@pace/utils";
 // hooks
 import { useTheme, useUser } from "@/hooks/store";
@@ -21,6 +22,8 @@ import { useTheme, useUser } from "@/hooks/store";
 const authService = new AuthService();
 
 export const AdminSidebarDropdown = observer(function AdminSidebarDropdown() {
+  // i18n
+  const { t } = useTranslation();
   // store hooks
   const { isSidebarCollapsed } = useTheme();
   const { currentUser, signOut } = useUser();
@@ -56,7 +59,8 @@ export const AdminSidebarDropdown = observer(function AdminSidebarDropdown() {
           onClick={handleThemeSwitch}
         >
           <PaletteOutline className="h-4 w-4 stroke-[1.5]" />
-          Switch to {resolvedTheme === "dark" ? "light" : "dark"} mode
+          {/* One whole sentence per target theme rather than a sentence with the mode name spliced in: word order around it is not the same in every language. */}
+          {resolvedTheme === "dark" ? t("admin.nav.switch_to_light_mode") : t("admin.nav.switch_to_dark_mode")}
         </Menu.Item>
       </div>
       <div className="py-2">
@@ -68,7 +72,7 @@ export const AdminSidebarDropdown = observer(function AdminSidebarDropdown() {
             className="flex w-full items-center gap-2 rounded-sm px-2 py-1 hover:bg-layer-1-hover"
           >
             <LogOutOutline className="h-4 w-4 stroke-[1.5]" />
-            Sign out
+            {t("admin.nav.sign_out")}
           </Menu.Item>
         </form>
       </div>
@@ -115,7 +119,7 @@ export const AdminSidebarDropdown = observer(function AdminSidebarDropdown() {
 
           {!isSidebarCollapsed && (
             <div className="flex w-full gap-2">
-              <h4 className="grow truncate text-body-md-medium text-primary">Instance admin</h4>
+              <h4 className="grow truncate text-body-md-medium text-primary">{t("admin.nav.instance_admin")}</h4>
             </div>
           )}
         </div>
@@ -125,7 +129,7 @@ export const AdminSidebarDropdown = observer(function AdminSidebarDropdown() {
         <Menu as="div" className="relative flex-shrink-0">
           <Menu.Button className="grid place-items-center outline-none">
             <WorkspaceAvatar
-              alt={currentUser.display_name ?? "Admin user"}
+              alt={currentUser.display_name ?? t("admin.nav.admin_user")}
               fallback={currentUser.display_name?.[0]?.toUpperCase()}
               src={getFileURL(currentUser.avatar_url)}
               size="sm"

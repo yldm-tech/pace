@@ -10,7 +10,25 @@
       "authentication": "驗證",
       "ai": "人工智慧",
       "images": "圖片",
-      "workspace": "工作區"
+      "workspace": "工作區",
+      "general_description": "識別您的執行個體並取得重要資訊。",
+      "email_description": "設定您的 SMTP 控制項。",
+      "workspace_description": "管理此執行個體上的所有工作區。",
+      "authentication_description": "設定驗證方式。",
+      "ai_description": "設定您的 OpenAI 憑證。",
+      "images_description": "允許使用第三方圖片庫。",
+      "instance_admin": "執行個體管理員",
+      "admin_user": "管理員使用者",
+      "switch_to_light_mode": "切換至淺色模式",
+      "switch_to_dark_mode": "切換至深色模式",
+      "sign_out": "登出",
+      "redirect_to_pace": "前往 Pace",
+      "help": "說明",
+      "toggle_sidebar": "切換側邊欄",
+      "documentation": "文件",
+      "forum": "加入我們的 Forum",
+      "report_bug": "回報錯誤",
+      "version_label": "版本："
     },
     "actions": {
       "save": "儲存變更",
@@ -91,7 +109,13 @@
       "sender": "寄件者電子郵件地址",
       "username": "使用者名稱",
       "security": "電子郵件安全性",
-      "authentication": "驗證"
+      "authentication": "驗證",
+      "send_test": "寄送測試郵件",
+      "receiver": "收件者電子郵件",
+      "send_failed": "寄送電子郵件失敗",
+      "security_none": "不使用電子郵件安全性",
+      "security_select": "選擇電子郵件安全性",
+      "test_hint": "如果仍然找不到，請重新檢查您的 SMTP 設定，並重新寄送一封測試郵件。"
     },
     "auth": {
       "heading": "管理您執行個體的驗證方式",
@@ -116,6 +140,59 @@
       "authorized_redirect": "已授權的重新導向 URI",
       "authorized_callback": "已授權的回呼 URI",
       "authorized_origin_url": "已授權的來源 URL"
+    },
+    "oauth": {
+      "description": "允許成員使用其 {provider} 帳號登入或註冊 Pace。",
+      "unique_codes_description": "使用透過電子郵件寄送的唯一代碼登入或註冊 Pace。使用此方式需要先設定 SMTP。",
+      "passwords_description": "允許成員使用密碼建立帳號，並透過電子郵件地址登入。",
+      "provider_details": "由 {provider} 提供給 Pace 的資訊",
+      "pace_details": "由 Pace 提供給 {provider} 的資訊",
+      "web": "Web",
+      "go_back": "返回",
+      "edit": "編輯",
+      "configure": "設定",
+      "learn_more": "了解更多",
+      "here": "此處",
+      "refresh_attributes": "登入時從 {provider} 更新使用者屬性",
+      "paste_into_field": "我們會自動產生此值。請將其貼到您 {provider} OAuth 應用程式的 {field} 欄位中，該應用程式可在{link}設定。",
+      "copy": {
+        "title": "已複製到剪貼簿",
+        "message": "{label} 已複製到您的剪貼簿。"
+      },
+      "toast": {
+        "done": "完成",
+        "enabled": "{provider} 驗證已啟用。",
+        "disabled": "{provider} 驗證已停用。",
+        "configured": "您的 {provider} 驗證已設定完成，建議立即測試。"
+      },
+      "google": {
+        "client_id_description": "您的 Client ID 位於 Google API Console 中。{link}",
+        "client_id_doc_label": "Google OAuth Client ID 文件",
+        "client_secret_description": "您的 Client Secret 同樣位於 Google API Console 中。{link}",
+        "client_secret_doc_label": "Google OAuth Client Secret 文件",
+        "console_label": "Google Cloud Console 中的 OAuth 用戶端憑證"
+      },
+      "github": {
+        "client_id_description": "您可以在{link}中取得此值。",
+        "client_secret_description": "您的 Client Secret 同樣位於{link}中。",
+        "organization_id_description": "GitHub 組織 ID。",
+        "app_settings_link": "GitHub OAuth 應用程式設定",
+        "app_settings_label": "GitHub OAuth 應用程式設定"
+      },
+      "gitlab": {
+        "host_description": "此處填寫 https://gitlab.com，或您自行託管 GitLab 的 {domain}。",
+        "application_id_description": "您可以在{link}中取得此值。",
+        "secret_description": "Client Secret 同樣位於{link}中。",
+        "app_settings_link": "GitLab OAuth 應用程式設定",
+        "app_settings_label": "GitLab OAuth 應用程式設定"
+      },
+      "gitea": {
+        "host_description": "請使用您 Gitea 執行個體的 URL。若使用官方 Gitea 執行個體，請填寫「https://gitea.com」。",
+        "client_id_description": "您可以在{link}中取得此值。",
+        "client_secret_description": "您的 Client Secret 同樣位於{link}中。",
+        "app_settings_link": "Gitea OAuth 應用程式設定",
+        "app_settings_label": "Gitea OAuth 應用程式設定"
+      }
     },
     "common": {
       "email": "電子郵件",
@@ -161,6 +238,139 @@
       "name_placeholder": "取一個熟悉好記的名稱總是最好的。",
       "slug_placeholder": "workspace-name",
       "go_back": "返回"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "您的 Unsplash 帳號的存取金鑰",
+        "unsplash_key_help": "您可以在 Unsplash 開發者主控台中找到存取金鑰。",
+        "unsplash_docs_link": "了解更多。",
+        "unsplash_docs_aria": "Unsplash 開發者帳號說明文件",
+        "saved": "圖片設定更新成功"
+      },
+      "workspace": {
+        "name_label": "為您的工作區命名",
+        "url_label": "設定您的工作區 URL",
+        "slug_taken": "此 URL 已被使用，請嘗試其他 URL。",
+        "slug_invalid": "URL 只能包含 ( - )、( _ ) 和英數字元。",
+        "size_label": "有多少人會使用這個工作區？",
+        "size_placeholder": "選擇範圍",
+        "required_field": "此欄位為必填。",
+        "create_submit": "建立工作區",
+        "creating": "正在建立工作區",
+        "logo_alt": "工作區標誌",
+        "slug_tooltip": "您的工作區的唯一 URL",
+        "size_options": {
+          "just_myself": "僅我自己",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "錯誤",
+          "message": "發生錯誤。請再試一次。"
+        },
+        "admin_already_exist": {
+          "title": "管理員已存在",
+          "message": "管理員已存在。請再試一次。"
+        },
+        "required_admin_email_password_first_name": {
+          "title": "需要填寫電子郵件、密碼和名字",
+          "message": "需要填寫電子郵件、密碼和名字。請再試一次。"
+        },
+        "invalid_admin_email": {
+          "title": "管理員電子郵件無效",
+          "message": "管理員電子郵件無效。請再試一次。"
+        },
+        "invalid_admin_password": {
+          "title": "管理員密碼無效",
+          "message": "管理員密碼無效。請再試一次。"
+        },
+        "required_admin_email_password": {
+          "title": "需要填寫電子郵件和密碼",
+          "message": "需要填寫電子郵件和密碼。請再試一次。"
+        },
+        "admin_authentication_failed": {
+          "title": "驗證失敗",
+          "message": "驗證失敗。請再試一次。"
+        },
+        "admin_user_already_exist": {
+          "title": "管理員使用者已存在",
+          "message": "管理員使用者已存在。{link}。"
+        },
+        "admin_user_does_not_exist": {
+          "title": "管理員使用者不存在",
+          "message": "管理員使用者不存在。{link}。"
+        },
+        "admin_user_deactivated": {
+          "title": "使用者帳號已停用",
+          "message": "使用者帳號已停用。請聯絡{contact}。"
+        },
+        "sign_in_link": "立即登入",
+        "administrator": "管理員",
+        "dismiss_banner": "關閉橫幅"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "一般設定",
+        "description": "變更您執行個體的名稱以及執行個體管理員的電子郵件地址。啟用或停用您執行個體中的遙測。"
+      },
+      "email": {
+        "description": "Pace 可以從您自己的執行個體，將實用的電子郵件寄給您和您的使用者，無須連上網際網路。",
+        "test_hint": "請在下方完成設定，並在儲存前先測試您的設定。"
+      },
+      "ai": {
+        "title": "適用於您所有工作區的 AI 功能",
+        "description": "設定您的 AI API 憑證，讓 Pace AI 功能在您所有的工作區中啟用。"
+      },
+      "authentication": {
+        "description": "為您的團隊設定驗證方式，並將註冊限制為僅限受邀者。",
+        "allow_signup_description": "關閉此選項後，只有受邀的使用者才能註冊。",
+        "cannot_disable_message": "至少必須保留一種啟用中的驗證方式。請先啟用另一種方式，再停用這一項。"
+      },
+      "workspace": {
+        "title": "此執行個體上的工作區",
+        "description": "查看所有工作區，並控制誰可以建立工作區。",
+        "prevent_creation_description": "開啟此選項後，只有您可以建立工作區。您必須邀請使用者加入新的工作區。",
+        "list_heading": "此執行個體上的所有工作區",
+        "list_description": "您目前還無法刪除工作區，而且只有在您是管理員或成員時才能前往該工作區。",
+        "config_saving": "儲存設定中",
+        "config_saved": "設定儲存成功",
+        "config_save_failed": "儲存設定失敗"
+      },
+      "workspace_create": {
+        "title": "在此執行個體上建立新的工作區。",
+        "description": "建立此工作區後，您需要從工作區設定中邀請使用者。"
+      },
+      "breadcrumb": {
+        "aria_label": "階層導覽",
+        "settings": "設定",
+        "general": "一般",
+        "ai": "人工智慧",
+        "email": "電子郵件",
+        "authentication": "驗證",
+        "image": "圖片",
+        "workspace": "工作區",
+        "create": "建立"
+      }
+    },
+    "misc": {
+      "something_wrong": "糟糕！發生錯誤。",
+      "go_to_general": "前往一般設定",
+      "instance_unavailable": "無法取得執行個體詳細資料。",
+      "instance_fetch_failed": "取得執行個體資訊失敗",
+      "loading": "載入中…",
+      "close_notification": "關閉通知",
+      "unsaved_changes": "您有未儲存的變更",
+      "unsaved_changes_body": "如果您返回，所做的變更將會遺失。確定要返回嗎？",
+      "setup_after": "完成設定後，您將可以管理此 Pace 執行個體。",
+      "signin_subheading": "進行全執行個體範圍的設定，以保護您的執行個體",
+      "root_error": "發生錯誤。",
+      "create_workspace": "建立工作區"
     }
   }
 }

@@ -8,6 +8,8 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import useSWR from "swr";
 import { Switch } from "@makeplane/propel/components/switch";
+// pace internal packages
+import { useTranslation } from "@pace/i18n";
 // assets
 import GoogleLogo from "@/app/assets/logos/google-logo.svg?url";
 // components
@@ -25,6 +27,8 @@ import { InstanceGoogleConfigForm } from "./form";
 const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthenticationPage(
   _props: Route.ComponentProps
 ) {
+  // i18n
+  const { t } = useTranslation();
   // store
   const { fetchInstanceConfigurations, formattedConfig, updateInstanceConfigurations } = useInstance();
   // state
@@ -44,14 +48,15 @@ const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthent
     const updateConfigPromise = updateInstanceConfigurations(payload);
 
     setPromiseToast(updateConfigPromise, {
-      loading: "Saving Configuration",
+      loading: t("admin.auth.saving"),
       success: {
-        title: "Configuration saved",
-        message: () => `Google authentication is now ${value === "1" ? "active" : "disabled"}.`,
+        title: t("admin.auth.saved"),
+        message: () =>
+          t(value === "1" ? "admin.oauth.toast.enabled" : "admin.oauth.toast.disabled", { provider: "Google" }),
       },
       error: {
-        title: "Error",
-        message: () => "Failed to save configuration",
+        title: t("admin.toast.error"),
+        message: () => t("admin.auth.save_failed"),
       },
     });
 
@@ -69,8 +74,7 @@ const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthent
       customHeader={
         <AuthenticationMethodCard
           name="Google"
-          description="Allow members to login or sign up to plane with their Google
-            accounts."
+          description={t("admin.oauth.description", { provider: "Google" })}
           icon={<img src={GoogleLogo} height={24} width={24} alt="Google Logo" />}
           config={
             <Switch

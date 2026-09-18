@@ -10,7 +10,25 @@
       "authentication": "Autentificare",
       "ai": "Inteligență artificială",
       "images": "Imagini",
-      "workspace": "Spații de lucru"
+      "workspace": "Spații de lucru",
+      "general_description": "Identifică-ți instanțele și află detaliile esențiale.",
+      "email_description": "Configurează-ți setările SMTP.",
+      "workspace_description": "Gestionează toate spațiile de lucru de pe această instanță.",
+      "authentication_description": "Configurează modurile de autentificare.",
+      "ai_description": "Configurează-ți credențialele OpenAI.",
+      "images_description": "Permite biblioteci de imagini terțe.",
+      "instance_admin": "Administrator de instanță",
+      "admin_user": "Utilizator administrator",
+      "switch_to_light_mode": "Comută la modul luminos",
+      "switch_to_dark_mode": "Comută la modul întunecat",
+      "sign_out": "Deconectează-te",
+      "redirect_to_pace": "Redirecționează către Pace",
+      "help": "Ajutor",
+      "toggle_sidebar": "Comută bara laterală",
+      "documentation": "Documentație",
+      "forum": "Intră pe forumul nostru",
+      "report_bug": "Raportează o eroare",
+      "version_label": "Versiune:"
     },
     "actions": {
       "save": "Salvează modificările",
@@ -38,7 +56,7 @@
       "model": {
         "label": "Model",
         "fetch": "Preia modelele",
-        "refresh": "Reîmprospătează",
+        "refresh": "Reîncarcă",
         "fetching": "Se interoghează…",
         "placeholder": "gpt-4o-mini",
         "hint_empty": "Preia lista de la endpointul de mai sus sau scrie un nume. Dacă rămâne gol, se folosește modelul implicit al furnizorului.",
@@ -91,7 +109,13 @@
       "sender": "Adresa de email a expeditorului",
       "username": "Nume de utilizator",
       "security": "Securitate email",
-      "authentication": "Autentificare"
+      "authentication": "Autentificare",
+      "send_test": "Trimite un email de test",
+      "receiver": "Email destinatar",
+      "send_failed": "Trimiterea emailului a eșuat",
+      "security_none": "Fără securitate email",
+      "security_select": "Selectează securitatea emailului",
+      "test_hint": "Dacă tot nu îl găsești, verifică din nou configurația SMTP și trimite un nou email de test."
     },
     "auth": {
       "heading": "Gestionează modurile de autentificare pentru instanța ta",
@@ -116,6 +140,59 @@
       "authorized_redirect": "URI de redirecționare autorizat",
       "authorized_callback": "URI de callback autorizat",
       "authorized_origin_url": "URL de origine autorizat"
+    },
+    "oauth": {
+      "description": "Permite membrilor să se conecteze sau să se înregistreze în Pace cu conturile lor {provider}.",
+      "unique_codes_description": "Conectează-te sau înregistrează-te în Pace folosind coduri trimise prin email. Pentru a folosi această metodă, trebuie să ai SMTP configurat.",
+      "passwords_description": "Permite membrilor să creeze conturi cu parolă și să o folosească împreună cu adresa de email pentru conectare.",
+      "provider_details": "Detalii furnizate de {provider} pentru Pace",
+      "pace_details": "Detalii furnizate de Pace pentru {provider}",
+      "web": "Web",
+      "go_back": "Înapoi",
+      "edit": "Editează",
+      "configure": "Configurare",
+      "learn_more": "Află mai multe",
+      "here": "aici",
+      "refresh_attributes": "Actualizează atributele utilizatorului din {provider} la conectare",
+      "paste_into_field": "Generăm automat această valoare. Lipește-o în câmpul {field} al aplicației OAuth {provider}, pe care o poți configura {link}.",
+      "copy": {
+        "title": "Copiat în clipboard",
+        "message": "{label} a fost copiat în clipboard."
+      },
+      "toast": {
+        "done": "Gata!",
+        "enabled": "Autentificarea {provider} este acum activă.",
+        "disabled": "Autentificarea {provider} este acum dezactivată.",
+        "configured": "Autentificarea {provider} este configurată. Testeaz-o acum."
+      },
+      "google": {
+        "client_id_description": "Client ID se află în Google API Console. {link}",
+        "client_id_doc_label": "Documentația Client ID OAuth Google",
+        "client_secret_description": "Client Secret se află tot în Google API Console. {link}",
+        "client_secret_doc_label": "Documentația Client Secret OAuth Google",
+        "console_label": "Credențiale client OAuth în Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Obține această valoare din {link}.",
+        "client_secret_description": "Client Secret se află tot în {link}.",
+        "organization_id_description": "ID-ul organizației GitHub.",
+        "app_settings_link": "Setările aplicației OAuth GitHub",
+        "app_settings_label": "Setările aplicației OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Acesta este fie https://gitlab.com, fie {domain} unde găzduiești GitLab.",
+        "application_id_description": "Obține această valoare din {link}.",
+        "secret_description": "Client Secret se află tot în {link}.",
+        "app_settings_link": "Setările aplicației OAuth GitLab",
+        "app_settings_label": "Setările aplicației OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Folosește URL-ul instanței tale Gitea. Pentru instanța oficială Gitea, folosește „https://gitea.com”.",
+        "client_id_description": "Obține această valoare din {link}.",
+        "client_secret_description": "Client Secret se află tot în {link}.",
+        "app_settings_link": "Setările aplicației OAuth Gitea",
+        "app_settings_label": "Setările aplicației OAuth Gitea"
+      }
     },
     "common": {
       "email": "Email",
@@ -161,6 +238,139 @@
       "name_placeholder": "Ceva familiar și ușor de recunoscut este întotdeauna cea mai bună alegere.",
       "slug_placeholder": "workspace-name",
       "go_back": "Înapoi"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Cheia de acces din contul tău Unsplash",
+        "unsplash_key_help": "Vei găsi cheia de acces în consola pentru dezvoltatori Unsplash.",
+        "unsplash_docs_link": "Află mai multe.",
+        "unsplash_docs_aria": "Documentația contului de dezvoltator Unsplash",
+        "saved": "Configurația imaginilor a fost actualizată cu succes"
+      },
+      "workspace": {
+        "name_label": "Denumește spațiul de lucru",
+        "url_label": "Setează URL-ul spațiului de lucru",
+        "slug_taken": "Acest URL este deja folosit. Încearcă altul.",
+        "slug_invalid": "URL-urile pot conține doar ( - ), ( _ ) și caractere alfanumerice.",
+        "size_label": "Câte persoane vor folosi acest spațiu de lucru?",
+        "size_placeholder": "Selectează un interval",
+        "required_field": "Acest câmp este obligatoriu.",
+        "create_submit": "Creează spațiu de lucru",
+        "creating": "Se creează spațiul de lucru",
+        "logo_alt": "Sigla spațiului de lucru",
+        "slug_tooltip": "URL-ul unic al spațiului de lucru",
+        "size_options": {
+          "just_myself": "Doar eu",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Eroare",
+          "message": "A apărut o eroare. Încearcă din nou."
+        },
+        "admin_already_exist": {
+          "title": "Administratorul există deja",
+          "message": "Administratorul există deja. Încearcă din nou."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Sunt necesare email, parolă și prenume",
+          "message": "Sunt necesare email, parolă și prenume. Încearcă din nou."
+        },
+        "invalid_admin_email": {
+          "title": "Email de administrator invalid",
+          "message": "Emailul de administrator este invalid. Încearcă din nou."
+        },
+        "invalid_admin_password": {
+          "title": "Parolă de administrator invalidă",
+          "message": "Parola de administrator este invalidă. Încearcă din nou."
+        },
+        "required_admin_email_password": {
+          "title": "Sunt necesare email și parolă",
+          "message": "Sunt necesare email și parolă. Încearcă din nou."
+        },
+        "admin_authentication_failed": {
+          "title": "Autentificare eșuată",
+          "message": "Autentificarea a eșuat. Încearcă din nou."
+        },
+        "admin_user_already_exist": {
+          "title": "Utilizatorul administrator există deja",
+          "message": "Utilizatorul administrator există deja. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Utilizatorul administrator nu există",
+          "message": "Utilizatorul administrator nu există. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Cont de utilizator dezactivat",
+          "message": "Contul de utilizator a fost dezactivat. Contactează {contact}."
+        },
+        "sign_in_link": "Autentifică-te acum",
+        "administrator": "administratorul",
+        "dismiss_banner": "Închide bannerul"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Setări generale",
+        "description": "Schimbă numele instanței și adresele de email ale administratorilor de instanță. Activează sau dezactivează telemetria în instanța ta."
+      },
+      "email": {
+        "description": "Pace poate trimite emailuri utile ție și utilizatorilor tăi din propria ta instanță, fără a comunica cu internetul.",
+        "test_hint": "Configurează-le mai jos și te rugăm să testezi setările înainte de a le salva."
+      },
+      "ai": {
+        "title": "Funcții de inteligență artificială pentru toate spațiile tale de lucru",
+        "description": "Configurează-ți credențialele API pentru inteligența artificială, astfel încât funcțiile de inteligență artificială din Pace să fie active în toate spațiile tale de lucru."
+      },
+      "authentication": {
+        "description": "Configurează modurile de autentificare pentru echipa ta și limitează înregistrările doar la cele pe bază de invitație.",
+        "allow_signup_description": "Dezactivarea acestei opțiuni le permite utilizatorilor să se înregistreze doar dacă sunt invitați.",
+        "cannot_disable_message": "Cel puțin o metodă de autentificare trebuie să rămână activă. Te rugăm să activezi o altă metodă înainte de a o dezactiva pe aceasta."
+      },
+      "workspace": {
+        "title": "Spații de lucru de pe această instanță",
+        "description": "Vezi toate spațiile de lucru și controlează cine le poate crea.",
+        "prevent_creation_description": "Activarea acestei opțiuni face ca doar tu să poți crea spații de lucru. Va trebui să inviți utilizatorii în noile spații de lucru.",
+        "list_heading": "Toate spațiile de lucru de pe această instanță",
+        "list_description": "Încă nu poți șterge spații de lucru și poți intra într-un spațiu de lucru doar dacă ești administrator sau membru.",
+        "config_saving": "Se salvează configurația",
+        "config_saved": "Configurația a fost salvată cu succes",
+        "config_save_failed": "Salvarea configurației a eșuat"
+      },
+      "workspace_create": {
+        "title": "Creează un spațiu de lucru nou pe această instanță.",
+        "description": "Va trebui să inviți utilizatorii din Setările spațiului de lucru după ce creezi acest spațiu de lucru."
+      },
+      "breadcrumb": {
+        "aria_label": "Fir de navigare",
+        "settings": "Setări",
+        "general": "General",
+        "ai": "Inteligență artificială",
+        "email": "Email",
+        "authentication": "Autentificare",
+        "image": "Imagine",
+        "workspace": "Spațiu de lucru",
+        "create": "Creează"
+      }
+    },
+    "misc": {
+      "something_wrong": "Hopa! Ceva nu a mers bine.",
+      "go_to_general": "Mergi la setările generale",
+      "instance_unavailable": "Detaliile instanței nu au putut fi preluate.",
+      "instance_fetch_failed": "Preluarea informațiilor despre instanță a eșuat",
+      "loading": "Se încarcă...",
+      "close_notification": "Închide notificarea",
+      "unsaved_changes": "Ai modificări nesalvate",
+      "unsaved_changes_body": "Modificările făcute se vor pierde dacă te întorci. Vrei să te întorci?",
+      "setup_after": "După configurare, vei putea gestiona această instanță Pace.",
+      "signin_subheading": "Configurează setările la nivel de instanță pentru a-ți securiza instanța",
+      "root_error": "Ceva nu a mers bine.",
+      "create_workspace": "Creează spațiu de lucru"
     }
   }
 }

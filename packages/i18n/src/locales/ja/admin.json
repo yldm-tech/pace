@@ -10,7 +10,25 @@
       "authentication": "認証",
       "ai": "人工知能",
       "images": "画像",
-      "workspace": "ワークスペース"
+      "workspace": "ワークスペース",
+      "general_description": "インスタンスを識別し、主要な情報を確認します。",
+      "email_description": "SMTPの設定を行います。",
+      "workspace_description": "このインスタンス上のすべてのワークスペースを管理します。",
+      "authentication_description": "認証方法を設定します。",
+      "ai_description": "OpenAIの認証情報を設定します。",
+      "images_description": "サードパーティの画像ライブラリを許可します。",
+      "instance_admin": "インスタンス管理",
+      "admin_user": "管理者ユーザー",
+      "switch_to_light_mode": "ライトモードに切り替える",
+      "switch_to_dark_mode": "ダークモードに切り替える",
+      "sign_out": "サインアウト",
+      "redirect_to_pace": "Paceに移動",
+      "help": "ヘルプ",
+      "toggle_sidebar": "サイドバーの表示を切り替える",
+      "documentation": "ドキュメント",
+      "forum": "フォーラムに参加",
+      "report_bug": "バグを報告",
+      "version_label": "バージョン："
     },
     "actions": {
       "save": "変更を保存",
@@ -91,7 +109,13 @@
       "sender": "送信元のメールアドレス",
       "username": "ユーザー名",
       "security": "メールのセキュリティ",
-      "authentication": "認証"
+      "authentication": "認証",
+      "send_test": "テストメールを送信",
+      "receiver": "受信者のメールアドレス",
+      "send_failed": "メールの送信に失敗しました",
+      "security_none": "メールのセキュリティなし",
+      "security_select": "メールのセキュリティを選択",
+      "test_hint": "それでも見つからない場合は、SMTPの設定を再確認してから、テストメールをもう一度送信してください。"
     },
     "auth": {
       "heading": "インスタンスの認証方法を管理",
@@ -116,6 +140,59 @@
       "authorized_redirect": "許可されたリダイレクトURI",
       "authorized_callback": "許可されたコールバックURI",
       "authorized_origin_url": "許可されたオリジンURL"
+    },
+    "oauth": {
+      "description": "メンバーが{provider}アカウントでPaceにログインまたはサインアップできるようにします。",
+      "unique_codes_description": "メールで送信されるコードを使用してPaceにログインまたはサインアップします。この方法を使用するにはSMTPの設定が必要です。",
+      "passwords_description": "メンバーがパスワードでアカウントを作成し、メールアドレスと組み合わせてサインインできるようにします。",
+      "provider_details": "{provider}から提供されるPace用の情報",
+      "pace_details": "Paceから提供される{provider}用の情報",
+      "web": "ウェブ",
+      "go_back": "戻る",
+      "edit": "編集",
+      "configure": "設定",
+      "learn_more": "詳細を見る",
+      "here": "こちら",
+      "refresh_attributes": "サインイン時に{provider}からユーザー属性を更新する",
+      "paste_into_field": "この値は自動生成されます。{link}で設定できる{provider}のOAuthアプリケーションの{field}フィールドに貼り付けてください。",
+      "copy": {
+        "title": "クリップボードにコピーしました",
+        "message": "{label}をクリップボードにコピーしました。"
+      },
+      "toast": {
+        "done": "完了しました",
+        "enabled": "{provider}認証が有効になりました。",
+        "disabled": "{provider}認証が無効になりました。",
+        "configured": "{provider}認証の設定が完了しました。今すぐテストしてください。"
+      },
+      "google": {
+        "client_id_description": "Client IDはGoogle API Consoleで確認できます。{link}",
+        "client_id_doc_label": "Google OAuth Client IDのドキュメント",
+        "client_secret_description": "Client SecretもGoogle API Consoleで確認できます。{link}",
+        "client_secret_doc_label": "Google OAuth Client Secretのドキュメント",
+        "console_label": "Google Cloud ConsoleのOAuthクライアント認証情報"
+      },
+      "github": {
+        "client_id_description": "この値は{link}で取得できます。",
+        "client_secret_description": "Client Secretも{link}で確認できます。",
+        "organization_id_description": "GitHubの組織IDです。",
+        "app_settings_link": "GitHub OAuthアプリケーションの設定",
+        "app_settings_label": "GitHub OAuthアプリケーションの設定"
+      },
+      "gitlab": {
+        "host_description": "https://gitlab.com、またはGitLabをホストしている{domain}を指定します。",
+        "application_id_description": "この値は{link}で取得できます。",
+        "secret_description": "Client Secretも{link}で確認できます。",
+        "app_settings_link": "GitLab OAuthアプリケーションの設定",
+        "app_settings_label": "GitLab OAuthアプリケーションの設定"
+      },
+      "gitea": {
+        "host_description": "GiteaインスタンスのURLを入力してください。公式のGiteaインスタンスの場合は「https://gitea.com」を使用します。",
+        "client_id_description": "この値は{link}で取得できます。",
+        "client_secret_description": "Client Secretも{link}で確認できます。",
+        "app_settings_link": "Gitea OAuthアプリケーションの設定",
+        "app_settings_label": "Gitea OAuthアプリケーションの設定"
+      }
     },
     "common": {
       "email": "メールアドレス",
@@ -161,6 +238,139 @@
       "name_placeholder": "親しみやすく、すぐに分かる名前が一番です。",
       "slug_placeholder": "workspace-name",
       "go_back": "戻る"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Unsplash アカウントのアクセスキー",
+        "unsplash_key_help": "アクセスキーは Unsplash のデベロッパーコンソールで確認できます。",
+        "unsplash_docs_link": "詳細はこちら。",
+        "unsplash_docs_aria": "Unsplash デベロッパーアカウントのドキュメント",
+        "saved": "画像の設定が正常に更新されました"
+      },
+      "workspace": {
+        "name_label": "ワークスペースの名前を入力してください",
+        "url_label": "ワークスペースの URL を設定してください",
+        "slug_taken": "この URL は既に使用されています。別の URL をお試しください。",
+        "slug_invalid": "URL に使用できるのは ( - )、( _ )、および英数字のみです。",
+        "size_label": "このワークスペースは何人で利用しますか？",
+        "size_placeholder": "範囲を選択",
+        "required_field": "この項目は必須です。",
+        "create_submit": "ワークスペースを作成",
+        "creating": "ワークスペースを作成しています",
+        "logo_alt": "ワークスペースのロゴ",
+        "slug_tooltip": "ワークスペース固有の URL",
+        "size_options": {
+          "just_myself": "自分のみ",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "エラー",
+          "message": "問題が発生しました。もう一度お試しください。"
+        },
+        "admin_already_exist": {
+          "title": "管理者は既に存在します",
+          "message": "管理者は既に存在します。もう一度お試しください。"
+        },
+        "required_admin_email_password_first_name": {
+          "title": "メールアドレス、パスワード、名が必要です",
+          "message": "メールアドレス、パスワード、名が必要です。もう一度お試しください。"
+        },
+        "invalid_admin_email": {
+          "title": "管理者のメールアドレスが無効です",
+          "message": "管理者のメールアドレスが無効です。もう一度お試しください。"
+        },
+        "invalid_admin_password": {
+          "title": "管理者のパスワードが無効です",
+          "message": "管理者のパスワードが無効です。もう一度お試しください。"
+        },
+        "required_admin_email_password": {
+          "title": "メールアドレスとパスワードが必要です",
+          "message": "メールアドレスとパスワードが必要です。もう一度お試しください。"
+        },
+        "admin_authentication_failed": {
+          "title": "認証に失敗しました",
+          "message": "認証に失敗しました。もう一度お試しください。"
+        },
+        "admin_user_already_exist": {
+          "title": "管理者ユーザーは既に存在します",
+          "message": "管理者ユーザーは既に存在します。{link}。"
+        },
+        "admin_user_does_not_exist": {
+          "title": "管理者ユーザーが存在しません",
+          "message": "管理者ユーザーが存在しません。{link}。"
+        },
+        "admin_user_deactivated": {
+          "title": "ユーザーアカウントが無効化されています",
+          "message": "ユーザーアカウントが無効化されています。{contact}までお問い合わせください。"
+        },
+        "sign_in_link": "今すぐサインイン",
+        "administrator": "管理者",
+        "dismiss_banner": "バナーを閉じる"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "一般設定",
+        "description": "インスタンスの名前とインスタンス管理者のメールアドレスを変更できます。インスタンスのテレメトリーの有効・無効も切り替えられます。"
+      },
+      "email": {
+        "description": "Paceはインターネットに接続することなく、自分のインスタンスからあなたとユーザーに必要なメールを送信できます。",
+        "test_hint": "下で設定を行い、保存する前に必ず設定をテストしてください。"
+      },
+      "ai": {
+        "title": "すべてのワークスペースで使えるAI機能",
+        "description": "AIのAPI認証情報を設定すると、すべてのワークスペースでPaceのAI機能が有効になります。"
+      },
+      "authentication": {
+        "description": "チームの認証方法を設定し、サインアップを招待制に制限します。",
+        "allow_signup_description": "これをオフにすると、招待されたユーザーのみがサインアップできるようになります。",
+        "cannot_disable_message": "少なくとも1つの認証方法を有効にしておく必要があります。この方法を無効にする前に、別の方法を有効にしてください。"
+      },
+      "workspace": {
+        "title": "このインスタンス上のワークスペース",
+        "description": "すべてのワークスペースを確認し、誰が作成できるかを制御します。",
+        "prevent_creation_description": "これをオンにすると、ワークスペースを作成できるのはあなただけになります。新しいワークスペースにはユーザーを招待する必要があります。",
+        "list_heading": "このインスタンス上のすべてのワークスペース",
+        "list_description": "ワークスペースはまだ削除できません。また、ワークスペースに移動できるのは管理者またはメンバーの場合のみです。",
+        "config_saving": "設定を保存中",
+        "config_saved": "設定が正常に保存されました",
+        "config_save_failed": "設定の保存に失敗しました"
+      },
+      "workspace_create": {
+        "title": "このインスタンスに新しいワークスペースを作成します。",
+        "description": "このワークスペースを作成した後、ワークスペース設定からユーザーを招待する必要があります。"
+      },
+      "breadcrumb": {
+        "aria_label": "パンくずリスト",
+        "settings": "設定",
+        "general": "一般",
+        "ai": "人工知能",
+        "email": "メール",
+        "authentication": "認証",
+        "image": "画像",
+        "workspace": "ワークスペース",
+        "create": "作成"
+      }
+    },
+    "misc": {
+      "something_wrong": "問題が発生しました。",
+      "go_to_general": "一般設定へ移動",
+      "instance_unavailable": "インスタンスの詳細を取得できません。",
+      "instance_fetch_failed": "インスタンス情報の取得に失敗しました",
+      "loading": "読み込み中...",
+      "close_notification": "通知を閉じる",
+      "unsaved_changes": "保存されていない変更があります",
+      "unsaved_changes_body": "戻ると、行った変更は失われます。戻りますか？",
+      "setup_after": "セットアップが完了すると、このPaceインスタンスを管理できるようになります。",
+      "signin_subheading": "インスタンスを保護するために、インスタンス全体の設定を行います",
+      "root_error": "問題が発生しました。",
+      "create_workspace": "ワークスペースを作成"
     }
   }
 }

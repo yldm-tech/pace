@@ -10,7 +10,25 @@
       "authentication": "Authentication",
       "ai": "Artificial intelligence",
       "images": "Images",
-      "workspace": "Workspaces"
+      "workspace": "Workspaces",
+      "general_description": "Identify your instances and get key details.",
+      "email_description": "Configure your SMTP controls.",
+      "workspace_description": "Manage all workspaces on this instance.",
+      "authentication_description": "Configure authentication modes.",
+      "ai_description": "Configure your OpenAI credentials.",
+      "images_description": "Allow third-party image libraries.",
+      "instance_admin": "Instance admin",
+      "admin_user": "Admin user",
+      "switch_to_light_mode": "Switch to light mode",
+      "switch_to_dark_mode": "Switch to dark mode",
+      "sign_out": "Sign out",
+      "redirect_to_pace": "Redirect to Pace",
+      "help": "Help",
+      "toggle_sidebar": "Toggle sidebar",
+      "documentation": "Documentation",
+      "forum": "Join our forum",
+      "report_bug": "Report a bug",
+      "version_label": "Version:"
     },
     "actions": {
       "save": "Save changes",
@@ -91,7 +109,13 @@
       "sender": "Sender's email address",
       "username": "Username",
       "security": "Email security",
-      "authentication": "Authentication"
+      "authentication": "Authentication",
+      "send_test": "Send test email",
+      "receiver": "Receiver email",
+      "send_failed": "Failed to send email",
+      "security_none": "No email security",
+      "security_select": "Select email security",
+      "test_hint": "If you still cannot find it, recheck your SMTP configuration and trigger a new test email."
     },
     "auth": {
       "heading": "Manage authentication modes for your instance",
@@ -116,6 +140,59 @@
       "authorized_redirect": "Authorized Redirect URI",
       "authorized_callback": "Authorized Callback URI",
       "authorized_origin_url": "Authorized origin URL"
+    },
+    "oauth": {
+      "description": "Allow members to log in or sign up to Pace with their {provider} accounts.",
+      "unique_codes_description": "Log in or sign up for Pace using codes sent via email. You need to have set up SMTP to use this method.",
+      "passwords_description": "Allow members to create accounts with passwords and use it with their email addresses to sign in.",
+      "provider_details": "{provider}-provided details for Pace",
+      "pace_details": "Pace-provided details for {provider}",
+      "web": "Web",
+      "go_back": "Go back",
+      "edit": "Edit",
+      "configure": "Configure",
+      "learn_more": "Learn more",
+      "here": "here",
+      "refresh_attributes": "Refresh user attributes from {provider} during sign in",
+      "paste_into_field": "We will auto-generate this. Paste it into the {field} field of your {provider} OAuth application, which you can set up {link}.",
+      "copy": {
+        "title": "Copied to clipboard",
+        "message": "The {label} has been copied to your clipboard."
+      },
+      "toast": {
+        "done": "Done!",
+        "enabled": "{provider} authentication is now active.",
+        "disabled": "{provider} authentication is now disabled.",
+        "configured": "Your {provider} authentication is configured. You should test it now."
+      },
+      "google": {
+        "client_id_description": "Your client ID lives in your Google API Console. {link}",
+        "client_id_doc_label": "Google OAuth client ID documentation",
+        "client_secret_description": "Your client secret should also be in your Google API Console. {link}",
+        "client_secret_doc_label": "Google OAuth client secret documentation",
+        "console_label": "Google Cloud Console OAuth client credentials"
+      },
+      "github": {
+        "client_id_description": "You will get this from your {link}.",
+        "client_secret_description": "Your client secret is also found in your {link}.",
+        "organization_id_description": "The GitHub organization ID.",
+        "app_settings_link": "GitHub OAuth application settings",
+        "app_settings_label": "GitHub OAuth application settings"
+      },
+      "gitlab": {
+        "host_description": "This is either https://gitlab.com or the {domain} where you host GitLab.",
+        "application_id_description": "Get this from your {link}.",
+        "secret_description": "The client secret is also found in your {link}.",
+        "app_settings_link": "GitLab OAuth application settings",
+        "app_settings_label": "GitLab OAuth application settings"
+      },
+      "gitea": {
+        "host_description": "Use the URL of your Gitea instance. For the official Gitea instance, use \"https://gitea.com\".",
+        "client_id_description": "You will get this from your {link}.",
+        "client_secret_description": "Your client secret is also found in your {link}.",
+        "app_settings_link": "Gitea OAuth application settings",
+        "app_settings_label": "Gitea OAuth application settings"
+      }
     },
     "common": {
       "email": "Email",
@@ -161,6 +238,139 @@
       "name_placeholder": "Something familiar and recognizable is always best.",
       "slug_placeholder": "workspace-name",
       "go_back": "Go back"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Access key from your Unsplash account",
+        "unsplash_key_help": "You will find your access key in your Unsplash developer console.",
+        "unsplash_docs_link": "Learn more.",
+        "unsplash_docs_aria": "Unsplash developer account documentation",
+        "saved": "Image Configuration Settings updated successfully"
+      },
+      "workspace": {
+        "name_label": "Name your workspace",
+        "url_label": "Set your workspace's URL",
+        "slug_taken": "This URL is taken. Try something else.",
+        "slug_invalid": "URLs can contain only ( - ), ( _ ) and alphanumeric characters.",
+        "size_label": "How many people will use this workspace?",
+        "size_placeholder": "Select a range",
+        "required_field": "This is a required field.",
+        "create_submit": "Create workspace",
+        "creating": "Creating workspace",
+        "logo_alt": "Workspace Logo",
+        "slug_tooltip": "The unique URL of your workspace",
+        "size_options": {
+          "just_myself": "Just myself",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Error",
+          "message": "Something went wrong. Please try again."
+        },
+        "admin_already_exist": {
+          "title": "Admin already exists",
+          "message": "Admin already exists. Please try again."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Email, password and first name required",
+          "message": "Email, password and first name required. Please try again."
+        },
+        "invalid_admin_email": {
+          "title": "Invalid admin email",
+          "message": "Invalid admin email. Please try again."
+        },
+        "invalid_admin_password": {
+          "title": "Invalid admin password",
+          "message": "Invalid admin password. Please try again."
+        },
+        "required_admin_email_password": {
+          "title": "Email and password required",
+          "message": "Email and password required. Please try again."
+        },
+        "admin_authentication_failed": {
+          "title": "Authentication failed",
+          "message": "Authentication failed. Please try again."
+        },
+        "admin_user_already_exist": {
+          "title": "Admin user already exists",
+          "message": "Admin user already exists. {link} now."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Admin user does not exist",
+          "message": "Admin user does not exist. {link} now."
+        },
+        "admin_user_deactivated": {
+          "title": "User account deactivated",
+          "message": "User account deactivated. Please contact {contact}."
+        },
+        "sign_in_link": "Sign In",
+        "administrator": "administrator",
+        "dismiss_banner": "Dismiss banner"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "General settings",
+        "description": "Change the name of your instance and instance admin e-mail addresses. Enable or disable telemetry in your instance."
+      },
+      "email": {
+        "description": "Pace can send useful emails to you and your users from your own instance without talking to the Internet.",
+        "test_hint": "Set it up below and please test your settings before you save them."
+      },
+      "ai": {
+        "title": "AI features for all your workspaces",
+        "description": "Configure your AI API credentials so Pace AI features are turned on for all your workspaces."
+      },
+      "authentication": {
+        "description": "Configure authentication modes for your team and restrict sign-ups to be invite only.",
+        "allow_signup_description": "Toggling this off will only let users sign up when they are invited.",
+        "cannot_disable_message": "At least one authentication method must remain enabled. Please enable another method before disabling this one."
+      },
+      "workspace": {
+        "title": "Workspaces on this instance",
+        "description": "See all workspaces and control who can create them.",
+        "prevent_creation_description": "Toggling this on will let only you create workspaces. You will have to invite users to new workspaces.",
+        "list_heading": "All workspaces on this instance",
+        "list_description": "You can't yet delete workspaces and you can only go to the workspace if you are an Admin or a Member.",
+        "config_saving": "Saving configuration",
+        "config_saved": "Configuration saved successfully",
+        "config_save_failed": "Failed to save configuration"
+      },
+      "workspace_create": {
+        "title": "Create a new workspace on this instance.",
+        "description": "You will need to invite users from Workspace Settings after you create this workspace."
+      },
+      "breadcrumb": {
+        "aria_label": "Breadcrumb",
+        "settings": "Settings",
+        "general": "General",
+        "ai": "Artificial Intelligence",
+        "email": "Email",
+        "authentication": "Authentication",
+        "image": "Image",
+        "workspace": "Workspace",
+        "create": "Create"
+      }
+    },
+    "misc": {
+      "something_wrong": "Oops! Something went wrong.",
+      "go_to_general": "Go to general settings",
+      "instance_unavailable": "Unable to fetch instance details.",
+      "instance_fetch_failed": "Failed to fetch the instance info",
+      "loading": "Loading...",
+      "close_notification": "Close notification",
+      "unsaved_changes": "You have unsaved changes",
+      "unsaved_changes_body": "Changes you made will be lost if you go back. Do you wish to go back?",
+      "setup_after": "After setup, you will be able to manage this Pace instance.",
+      "signin_subheading": "Configure instance-wide settings to secure your instance",
+      "root_error": "Something went wrong.",
+      "create_workspace": "Create workspace"
     }
   }
 }

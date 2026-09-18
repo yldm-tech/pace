@@ -23,6 +23,7 @@ import { ControllerSwitch } from "@/components/common/controller-switch";
 import { ControllerInput } from "@/components/common/controller-input";
 import type { TCopyField } from "@/components/common/copy-field";
 import { CopyField } from "@/components/common/copy-field";
+import { translateWithNodes } from "@/components/common/translate-with-nodes";
 // hooks
 import { useInstance } from "@/hooks/store";
 import { useTranslation } from "@pace/i18n";
@@ -35,7 +36,7 @@ type GoogleConfigFormValues = Record<TInstanceGoogleAuthenticationConfigurationK
 
 const GOOGLE_FORM_SWITCH_FIELD: TControllerSwitchFormField<GoogleConfigFormValues> = {
   name: "ENABLE_GOOGLE_SYNC",
-  label: "Google",
+  provider: "Google",
 };
 
 export function InstanceGoogleConfigForm(props: Props) {
@@ -66,20 +67,19 @@ export function InstanceGoogleConfigForm(props: Props) {
       key: "GOOGLE_CLIENT_ID",
       type: "text",
       label: t("admin.auth.client_id"),
-      description: (
-        <>
-          Your client ID lives in your Google API Console.{" "}
+      description: translateWithNodes(t, "admin.oauth.google.client_id_description", {
+        link: (
           <a
             href="https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#creatingcred"
             target="_blank"
             className="text-accent-primary hover:underline"
             rel="noreferrer"
-            aria-label="Google OAuth client ID documentation"
+            aria-label={t("admin.oauth.google.client_id_doc_label")}
           >
-            Learn more
+            {t("admin.oauth.learn_more")}
           </a>
-        </>
-      ),
+        ),
+      }),
       placeholder: "840195096245-0p2tstej9j5nc4l8o1ah2dqondscqc1g.apps.googleusercontent.com",
       error: Boolean(errors.GOOGLE_CLIENT_ID),
       required: true,
@@ -88,20 +88,19 @@ export function InstanceGoogleConfigForm(props: Props) {
       key: "GOOGLE_CLIENT_SECRET",
       type: "password",
       label: t("admin.auth.client_secret"),
-      description: (
-        <>
-          Your client secret should also be in your Google API Console.{" "}
+      description: translateWithNodes(t, "admin.oauth.google.client_secret_description", {
+        link: (
           <a
             href="https://developers.google.com/identity/oauth2/web/guides/get-google-api-clientid"
             target="_blank"
             className="text-accent-primary hover:underline"
             rel="noreferrer"
-            aria-label="Google OAuth client secret documentation"
+            aria-label={t("admin.oauth.google.client_secret_doc_label")}
           >
-            Learn more
+            {t("admin.oauth.learn_more")}
           </a>
-        </>
-      ),
+        ),
+      }),
       placeholder: "GOCShX-ADp4cI0kPqav1gGCBg5bE02E",
       error: Boolean(errors.GOOGLE_CLIENT_SECRET),
       required: true,
@@ -113,20 +112,24 @@ export function InstanceGoogleConfigForm(props: Props) {
       key: "Origin_URL",
       label: t("admin.auth.origin_url"),
       url: originURL,
-      description: (
-        <p>
-          We will auto-generate this. Paste this into your{" "}
-          <CodeBlock darkerShade>{t("admin.auth.authorized_origins")}</CodeBlock> field. For this OAuth client{" "}
-          <a
-            href="https://console.cloud.google.com/apis/credentials/oauthclient"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="Google Cloud Console OAuth client credentials"
-          >
-            here.
-          </a>
-        </p>
+      description: translateWithNodes(
+        t,
+        "admin.oauth.paste_into_field",
+        {
+          field: <CodeBlock darkerShade>{t("admin.auth.authorized_origins")}</CodeBlock>,
+          link: (
+            <a
+              href="https://console.cloud.google.com/apis/credentials/oauthclient"
+              target="_blank"
+              className="text-accent-primary hover:underline"
+              rel="noreferrer"
+              aria-label={t("admin.oauth.google.console_label")}
+            >
+              {t("admin.oauth.here")}
+            </a>
+          ),
+        },
+        { provider: "Google" }
       ),
     },
   ];
@@ -136,20 +139,24 @@ export function InstanceGoogleConfigForm(props: Props) {
       key: "Callback_URI",
       label: t("admin.auth.callback_uri"),
       url: `${originURL}/auth/google/callback/`,
-      description: (
-        <p>
-          We will auto-generate this. Paste this into your{" "}
-          <CodeBlock darkerShade>{t("admin.auth.authorized_redirect")}</CodeBlock> field. For this OAuth client{" "}
-          <a
-            href="https://console.cloud.google.com/apis/credentials/oauthclient"
-            target="_blank"
-            className="text-accent-primary hover:underline"
-            rel="noreferrer"
-            aria-label="Google Cloud Console OAuth client credentials"
-          >
-            here.
-          </a>
-        </p>
+      description: translateWithNodes(
+        t,
+        "admin.oauth.paste_into_field",
+        {
+          field: <CodeBlock darkerShade>{t("admin.auth.authorized_redirect")}</CodeBlock>,
+          link: (
+            <a
+              href="https://console.cloud.google.com/apis/credentials/oauthclient"
+              target="_blank"
+              className="text-accent-primary hover:underline"
+              rel="noreferrer"
+              aria-label={t("admin.oauth.google.console_label")}
+            >
+              {t("admin.oauth.here")}
+            </a>
+          ),
+        },
+        { provider: "Google" }
       ),
     },
   ];
@@ -161,8 +168,8 @@ export function InstanceGoogleConfigForm(props: Props) {
       const response = await updateInstanceConfigurations(payload);
       setToast({
         type: TOAST_TYPE.SUCCESS,
-        title: "Done!",
-        message: "Your Google authentication is configured. You should test it now.",
+        title: t("admin.oauth.toast.done"),
+        message: t("admin.oauth.toast.configured", { provider: "Google" }),
       });
       reset({
         GOOGLE_CLIENT_ID: response.find((item) => item.key === "GOOGLE_CLIENT_ID")?.value,
@@ -191,7 +198,9 @@ export function InstanceGoogleConfigForm(props: Props) {
       <div className="flex flex-col gap-8">
         <div className="grid w-full grid-cols-2 gap-x-12 gap-y-8">
           <div className="col-span-2 flex flex-col gap-y-4 pt-1 md:col-span-1">
-            <div className="pt-2.5 text-18 font-medium">Google-provided details for Pace</div>
+            <div className="pt-2.5 text-18 font-medium">
+              {t("admin.oauth.provider_details", { provider: "Google" })}
+            </div>
             {GOOGLE_FORM_FIELDS.map((field) => (
               <ControllerInput
                 key={field.key}
@@ -223,13 +232,13 @@ export function InstanceGoogleConfigForm(props: Props) {
                   stretch="auto"
                   nativeButton={false}
                   render={<Link href="/authentication" onClick={handleGoBack} />}
-                  label="Go back"
+                  label={t("admin.oauth.go_back")}
                 />
               </div>
             </div>
           </div>
           <div className="col-span-2 flex flex-col gap-y-6 md:col-span-1">
-            <div className="pt-2 text-18 font-medium">Pace-provided details for Google</div>
+            <div className="pt-2 text-18 font-medium">{t("admin.oauth.pace_details", { provider: "Google" })}</div>
 
             <div className="flex flex-col gap-y-4">
               {/* common service details */}
@@ -243,7 +252,7 @@ export function InstanceGoogleConfigForm(props: Props) {
               <div className="flex flex-col overflow-hidden rounded-lg">
                 <div className="flex items-center gap-x-3 bg-layer-3 px-6 py-3 text-11 font-medium text-secondary uppercase">
                   <MonitorOutline className="h-3 w-3" />
-                  Web
+                  {t("admin.oauth.web")}
                 </div>
                 <div className="flex flex-col gap-y-4 bg-layer-1 px-6 py-4">
                   {GOOGLE_SERVICE_DETAILS.map((field) => (

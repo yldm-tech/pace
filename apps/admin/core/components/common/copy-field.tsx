@@ -8,6 +8,8 @@ import React from "react";
 // ui
 import { Button } from "@makeplane/propel/components/button";
 import { CopyOutline } from "@makeplane/propel/icons";
+// pace internal packages
+import { useTranslation } from "@pace/i18n";
 // components
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 
@@ -26,6 +28,8 @@ export type TCopyField = {
 
 export function CopyField(props: Props) {
   const { label, url, description } = props;
+  // i18n
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-1">
@@ -41,8 +45,8 @@ export function CopyField(props: Props) {
           navigator.clipboard.writeText(url);
           setToast({
             type: TOAST_TYPE.INFO,
-            title: "Copied to clipboard",
-            message: `The ${label} has been successfully copied to your clipboard`,
+            title: t("admin.oauth.copy.title"),
+            message: t("admin.oauth.copy.message", { label }),
           });
         }}
       />

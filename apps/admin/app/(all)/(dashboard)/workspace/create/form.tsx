@@ -24,6 +24,16 @@ import { useTranslation } from "@pace/i18n";
 
 const instanceWorkspaceService = new InstanceWorkspaceService();
 
+// ORGANIZATION_SIZE entries are persisted verbatim as the `organization_size` field, so the stored value stays in English and only the visible label is translated. Any value without a mapping falls back to the raw constant rather than rendering a missing-key string.
+const ORGANIZATION_SIZE_LABEL_KEYS: Record<string, string> = {
+  "Just myself": "admin.forms.workspace.size_options.just_myself",
+  "2-10": "admin.forms.workspace.size_options.range_2_10",
+  "11-50": "admin.forms.workspace.size_options.range_11_50",
+  "51-200": "admin.forms.workspace.size_options.range_51_200",
+  "201-500": "admin.forms.workspace.size_options.range_201_500",
+  "500+": "admin.forms.workspace.size_options.range_500_plus",
+};
+
 export function WorkspaceCreateForm() {
   const { t } = useTranslation();
   // router
@@ -100,7 +110,7 @@ export function WorkspaceCreateForm() {
     <div className="space-y-8">
       <div className="grid-col grid w-full max-w-4xl grid-cols-1 items-start justify-between gap-x-10 gap-y-6 lg:grid-cols-2">
         <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">Name your workspace</h4>
+          <h4 className="text-13 text-tertiary">{t("admin.forms.workspace.name_label")}</h4>
           <div className="flex flex-col gap-1">
             <Controller
               control={control}
@@ -133,7 +143,7 @@ export function WorkspaceCreateForm() {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">Set your workspace&apos;s URL</h4>
+          <h4 className="text-13 text-tertiary">{t("admin.forms.workspace.url_label")}</h4>
           <div className="flex w-full items-center gap-0.5 rounded-md border-[0.5px] border-subtle px-3">
             <span className="text-13 whitespace-nowrap text-secondary">{workspaceBaseURL}</span>
             <Controller
@@ -160,27 +170,31 @@ export function WorkspaceCreateForm() {
               )}
             />
           </div>
-          {slugError && <p className="text-13 text-danger-primary">This URL is taken. Try something else.</p>}
-          {invalidSlug && (
-            <p className="text-13 text-danger-primary">{`URLs can contain only ( - ), ( _ ) and alphanumeric characters.`}</p>
-          )}
+          {slugError && <p className="text-13 text-danger-primary">{t("admin.forms.workspace.slug_taken")}</p>}
+          {invalidSlug && <p className="text-13 text-danger-primary">{t("admin.forms.workspace.slug_invalid")}</p>}
           {errors.slug && <span className="text-11 text-danger-primary">{errors.slug.message}</span>}
         </div>
         <div className="flex flex-col gap-1">
-          <h4 className="text-13 text-tertiary">How many people will use this workspace?</h4>
+          <h4 className="text-13 text-tertiary">{t("admin.forms.workspace.size_label")}</h4>
           <div className="w-full">
             <Controller
               name="organization_size"
               control={control}
-              rules={{ required: "This is a required field." }}
+              rules={{ required: t("admin.forms.workspace.required_field") }}
               render={({ field: { value, onChange } }) => (
                 <Select value={value} onValueChange={onChange}>
-                  <SelectTrigger size="lg" placeholder={<span className="text-placeholder">Select a range</span>} />
+                  <SelectTrigger
+                    size="lg"
+                    placeholder={
+                      <span className="text-placeholder">{t("admin.forms.workspace.size_placeholder")}</span>
+                    }
+                  />
                   <SelectContent>
                     <SelectList>
-                      {ORGANIZATION_SIZE.map((item) => (
-                        <SelectItem key={item} value={item} label={item} size="lg" />
-                      ))}
+                      {ORGANIZATION_SIZE.map((item) => {
+                        const labelKey = ORGANIZATION_SIZE_LABEL_KEYS[item];
+                        return <SelectItem key={item} value={item} label={labelKey ? t(labelKey) : item} size="lg" />;
+                      })}
                     </SelectList>
                   </SelectContent>
                 </Select>
@@ -200,7 +214,7 @@ export function WorkspaceCreateForm() {
           onClick={handleSubmit(handleCreateWorkspace)}
           disabled={!isValid}
           loading={isSubmitting}
-          label={isSubmitting ? "Creating workspace" : "Create workspace"}
+          label={isSubmitting ? t("admin.forms.workspace.creating") : t("admin.forms.workspace.create_submit")}
         />
         <Button
           variant="secondary"

@@ -10,7 +10,25 @@
       "authentication": "Uwierzytelnianie",
       "ai": "Sztuczna inteligencja",
       "images": "Obrazy",
-      "workspace": "Przestrzenie robocze"
+      "workspace": "Przestrzenie robocze",
+      "general_description": "Zidentyfikuj swoje instancje i poznaj kluczowe szczegóły.",
+      "email_description": "Skonfiguruj ustawienia SMTP.",
+      "workspace_description": "Zarządzaj wszystkimi przestrzeniami roboczymi w tej instancji.",
+      "authentication_description": "Skonfiguruj tryby uwierzytelniania.",
+      "ai_description": "Skonfiguruj swoje poświadczenia OpenAI.",
+      "images_description": "Zezwól na zewnętrzne biblioteki obrazów.",
+      "instance_admin": "Administrator instancji",
+      "admin_user": "Użytkownik administrator",
+      "switch_to_light_mode": "Przełącz na tryb jasny",
+      "switch_to_dark_mode": "Przełącz na tryb ciemny",
+      "sign_out": "Wyloguj się",
+      "redirect_to_pace": "Przekieruj do Pace",
+      "help": "Pomoc",
+      "toggle_sidebar": "Przełącz pasek boczny",
+      "documentation": "Dokumentacja",
+      "forum": "Dołącz do naszego forum",
+      "report_bug": "Zgłoś błąd",
+      "version_label": "Wersja:"
     },
     "actions": {
       "save": "Zapisz zmiany",
@@ -91,7 +109,13 @@
       "sender": "Adres e-mail nadawcy",
       "username": "Nazwa użytkownika",
       "security": "Zabezpieczenia e-mail",
-      "authentication": "Uwierzytelnianie"
+      "authentication": "Uwierzytelnianie",
+      "send_test": "Wyślij testowy e-mail",
+      "receiver": "E-mail odbiorcy",
+      "send_failed": "Nie udało się wysłać wiadomości e-mail",
+      "security_none": "Brak zabezpieczeń e-mail",
+      "security_select": "Wybierz zabezpieczenia e-mail",
+      "test_hint": "Jeśli nadal nie możesz jej znaleźć, sprawdź ponownie konfigurację SMTP i wyślij kolejną testową wiadomość."
     },
     "auth": {
       "heading": "Zarządzaj trybami uwierzytelniania w swojej instancji",
@@ -116,6 +140,59 @@
       "authorized_redirect": "Autoryzowany URI przekierowania",
       "authorized_callback": "Autoryzowany URI wywołania zwrotnego",
       "authorized_origin_url": "Autoryzowany URL źródła"
+    },
+    "oauth": {
+      "description": "Umożliwia członkom logowanie się i rejestrację w Pace przy użyciu kont {provider}.",
+      "unique_codes_description": "Logowanie i rejestracja w Pace za pomocą kodów wysyłanych e-mailem. Aby użyć tej metody, musisz mieć skonfigurowany SMTP.",
+      "passwords_description": "Umożliwia członkom tworzenie kont z hasłem i logowanie się przy użyciu adresu e-mail.",
+      "provider_details": "Dane udostępniane przez {provider} dla Pace",
+      "pace_details": "Dane udostępniane przez Pace dla {provider}",
+      "web": "Web",
+      "go_back": "Wróć",
+      "edit": "Edytuj",
+      "configure": "Konfiguruj",
+      "learn_more": "Dowiedz się więcej",
+      "here": "tutaj",
+      "refresh_attributes": "Odświeżaj atrybuty użytkownika z {provider} podczas logowania",
+      "paste_into_field": "Wygenerujemy to automatycznie. Wklej tę wartość w pole {field} aplikacji OAuth {provider}, którą skonfigurujesz {link}.",
+      "copy": {
+        "title": "Skopiowano do schowka",
+        "message": "{label} został skopiowany do schowka."
+      },
+      "toast": {
+        "done": "Gotowe!",
+        "enabled": "Uwierzytelnianie {provider} jest teraz aktywne.",
+        "disabled": "Uwierzytelnianie {provider} jest teraz wyłączone.",
+        "configured": "Uwierzytelnianie {provider} zostało skonfigurowane. Warto je teraz przetestować."
+      },
+      "google": {
+        "client_id_description": "Client ID znajduje się w Google API Console. {link}",
+        "client_id_doc_label": "Dokumentacja Client ID OAuth Google",
+        "client_secret_description": "Client Secret również znajduje się w Google API Console. {link}",
+        "client_secret_doc_label": "Dokumentacja Client Secret OAuth Google",
+        "console_label": "Poświadczenia klienta OAuth w Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Tę wartość uzyskasz w sekcji {link}.",
+        "client_secret_description": "Client Secret również znajduje się w sekcji {link}.",
+        "organization_id_description": "Identyfikator organizacji GitHub.",
+        "app_settings_link": "Ustawienia aplikacji OAuth GitHub",
+        "app_settings_label": "Ustawienia aplikacji OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Jest to https://gitlab.com lub domena {domain}, w której hostowany jest GitLab.",
+        "application_id_description": "Tę wartość uzyskasz w sekcji {link}.",
+        "secret_description": "Client Secret również znajduje się w sekcji {link}.",
+        "app_settings_link": "Ustawienia aplikacji OAuth GitLab",
+        "app_settings_label": "Ustawienia aplikacji OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Użyj adresu URL swojej instancji Gitea. W przypadku oficjalnej instancji Gitea użyj „https://gitea.com”.",
+        "client_id_description": "Tę wartość uzyskasz w sekcji {link}.",
+        "client_secret_description": "Client Secret również znajduje się w sekcji {link}.",
+        "app_settings_link": "Ustawienia aplikacji OAuth Gitea",
+        "app_settings_label": "Ustawienia aplikacji OAuth Gitea"
+      }
     },
     "common": {
       "email": "E-mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Coś znajomego i rozpoznawalnego sprawdza się najlepiej.",
       "slug_placeholder": "workspace-name",
       "go_back": "Wróć"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Klucz dostępu z Twojego konta Unsplash",
+        "unsplash_key_help": "Klucz dostępu znajdziesz w konsoli deweloperskiej Unsplash.",
+        "unsplash_docs_link": "Dowiedz się więcej.",
+        "unsplash_docs_aria": "Dokumentacja konta deweloperskiego Unsplash",
+        "saved": "Konfiguracja obrazów została zaktualizowana pomyślnie"
+      },
+      "workspace": {
+        "name_label": "Nazwij swoją przestrzeń roboczą",
+        "url_label": "Ustaw URL swojej przestrzeni roboczej",
+        "slug_taken": "Ten URL jest już zajęty. Spróbuj innego.",
+        "slug_invalid": "URL może zawierać tylko ( - ), ( _ ) i znaki alfanumeryczne.",
+        "size_label": "Ile osób będzie korzystać z tej przestrzeni roboczej?",
+        "size_placeholder": "Wybierz zakres",
+        "required_field": "To pole jest wymagane.",
+        "create_submit": "Utwórz przestrzeń roboczą",
+        "creating": "Tworzenie przestrzeni roboczej",
+        "logo_alt": "Logo przestrzeni roboczej",
+        "slug_tooltip": "Unikalny URL Twojej przestrzeni roboczej",
+        "size_options": {
+          "just_myself": "Tylko ja",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Błąd",
+          "message": "Coś poszło nie tak. Spróbuj ponownie."
+        },
+        "admin_already_exist": {
+          "title": "Administrator już istnieje",
+          "message": "Administrator już istnieje. Spróbuj ponownie."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Wymagane są e-mail, hasło i imię",
+          "message": "Wymagane są e-mail, hasło i imię. Spróbuj ponownie."
+        },
+        "invalid_admin_email": {
+          "title": "Nieprawidłowy e-mail administratora",
+          "message": "Nieprawidłowy e-mail administratora. Spróbuj ponownie."
+        },
+        "invalid_admin_password": {
+          "title": "Nieprawidłowe hasło administratora",
+          "message": "Nieprawidłowe hasło administratora. Spróbuj ponownie."
+        },
+        "required_admin_email_password": {
+          "title": "Wymagane są e-mail i hasło",
+          "message": "Wymagane są e-mail i hasło. Spróbuj ponownie."
+        },
+        "admin_authentication_failed": {
+          "title": "Uwierzytelnianie nie powiodło się",
+          "message": "Uwierzytelnianie nie powiodło się. Spróbuj ponownie."
+        },
+        "admin_user_already_exist": {
+          "title": "Użytkownik administrator już istnieje",
+          "message": "Użytkownik administrator już istnieje. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Użytkownik administrator nie istnieje",
+          "message": "Użytkownik administrator nie istnieje. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Konto użytkownika zostało dezaktywowane",
+          "message": "Konto użytkownika zostało dezaktywowane. Skontaktuj się z {contact}."
+        },
+        "sign_in_link": "Zaloguj się teraz",
+        "administrator": "administratorem",
+        "dismiss_banner": "Zamknij baner"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Ustawienia ogólne",
+        "description": "Zmień nazwę swojej instancji i adresy e-mail administratorów instancji. Włącz lub wyłącz telemetrię w swojej instancji."
+      },
+      "email": {
+        "description": "Pace może wysyłać przydatne wiadomości e-mail do Ciebie i Twoich użytkowników z Twojej własnej instancji, bez łączenia się z internetem.",
+        "test_hint": "Skonfiguruj to poniżej i przetestuj swoje ustawienia, zanim je zapiszesz."
+      },
+      "ai": {
+        "title": "Funkcje AI dla wszystkich Twoich przestrzeni roboczych",
+        "description": "Skonfiguruj poświadczenia API dla AI, aby funkcje AI w Pace były włączone we wszystkich Twoich przestrzeniach roboczych."
+      },
+      "authentication": {
+        "description": "Skonfiguruj tryby uwierzytelniania dla swojego zespołu i ogranicz rejestrację wyłącznie do osób zaproszonych.",
+        "allow_signup_description": "Wyłączenie tej opcji pozwoli użytkownikom rejestrować się tylko wtedy, gdy otrzymają zaproszenie.",
+        "cannot_disable_message": "Co najmniej jedna metoda uwierzytelniania musi pozostać włączona. Włącz inną metodę, zanim wyłączysz tę."
+      },
+      "workspace": {
+        "title": "Przestrzenie robocze w tej instancji",
+        "description": "Zobacz wszystkie przestrzenie robocze i decyduj, kto może je tworzyć.",
+        "prevent_creation_description": "Włączenie tej opcji sprawi, że tylko Ty będziesz mógł tworzyć przestrzenie robocze. Do nowych przestrzeni roboczych trzeba będzie zapraszać użytkowników.",
+        "list_heading": "Wszystkie przestrzenie robocze w tej instancji",
+        "list_description": "Nie można jeszcze usuwać przestrzeni roboczych, a przejść do przestrzeni roboczej można tylko wtedy, gdy jest się jej administratorem lub członkiem.",
+        "config_saving": "Zapisywanie konfiguracji",
+        "config_saved": "Konfigurację zapisano pomyślnie",
+        "config_save_failed": "Nie udało się zapisać konfiguracji"
+      },
+      "workspace_create": {
+        "title": "Utwórz nową przestrzeń roboczą w tej instancji.",
+        "description": "Po utworzeniu tej przestrzeni roboczej trzeba będzie zaprosić użytkowników z poziomu ustawień przestrzeni roboczej."
+      },
+      "breadcrumb": {
+        "aria_label": "Ścieżka nawigacji",
+        "settings": "Ustawienia",
+        "general": "Ogólne",
+        "ai": "Sztuczna inteligencja",
+        "email": "E-mail",
+        "authentication": "Uwierzytelnianie",
+        "image": "Obraz",
+        "workspace": "Przestrzeń robocza",
+        "create": "Utwórz"
+      }
+    },
+    "misc": {
+      "something_wrong": "Ups! Coś poszło nie tak.",
+      "go_to_general": "Przejdź do ustawień ogólnych",
+      "instance_unavailable": "Nie udało się pobrać szczegółów instancji.",
+      "instance_fetch_failed": "Nie udało się pobrać informacji o instancji",
+      "loading": "Ładowanie...",
+      "close_notification": "Zamknij powiadomienie",
+      "unsaved_changes": "Masz niezapisane zmiany",
+      "unsaved_changes_body": "Wprowadzone zmiany zostaną utracone, jeśli wrócisz. Czy chcesz wrócić?",
+      "setup_after": "Po konfiguracji będzie można zarządzać tą instancją Pace.",
+      "signin_subheading": "Skonfiguruj ustawienia obejmujące całą instancję, aby ją zabezpieczyć",
+      "root_error": "Coś poszło nie tak.",
+      "create_workspace": "Utwórz przestrzeń roboczą"
     }
   }
 }
