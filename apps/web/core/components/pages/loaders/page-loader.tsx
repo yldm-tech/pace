@@ -5,31 +5,31 @@
  */
 
 import { range } from "lodash-es";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export function PageLoader() {
   return (
     <div className="relative flex h-full w-full flex-col">
       <div className="border-b border-subtle px-3 py-3">
-        <Loader className="relative flex items-center gap-2">
-          <Loader.Item width="200px" height="30px" />
+        <Skeleton className="relative flex items-center gap-2">
+          <Skeleton.Item width="200px" height="30px" />
           <div className="relative ml-auto flex items-center gap-2">
-            <Loader.Item width="100px" height="30px" />
-            <Loader.Item width="100px" height="30px" />
+            <Skeleton.Item width="100px" height="30px" />
+            <Skeleton.Item width="100px" height="30px" />
           </div>
-        </Loader>
+        </Skeleton>
       </div>
       <div>
         {range(10).map((i) => (
-          <Loader key={i} className="relative flex items-center gap-2 border-b border-subtle p-3 py-4">
-            <Loader.Item width={`${250 + 10 * Math.floor(Math.random() * 10)}px`} height="22px" />
+          <Skeleton key={i} className="relative flex items-center gap-2 border-b border-subtle p-3 py-4">
+            <Skeleton.Item width={`${250 + 10 * Math.floor(Math.random() * 10)}px`} height="22px" />
             <div className="relative ml-auto flex items-center gap-2">
-              <Loader.Item width="60px" height="22px" />
-              <Loader.Item width="22px" height="22px" />
-              <Loader.Item width="22px" height="22px" />
-              <Loader.Item width="22px" height="22px" />
+              <Skeleton.Item width="60px" height="22px" />
+              <Skeleton.Item width="22px" height="22px" />
+              <Skeleton.Item width="22px" height="22px" />
+              <Skeleton.Item width="22px" height="22px" />
             </div>
-          </Loader>
+          </Skeleton>
         ))}
       </div>
     </div>

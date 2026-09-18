@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export function FilterItemLoader() {
   return (
-    <Loader>
-      <Loader.Item height="28px" width="180px" />
-    </Loader>
+    <Skeleton>
+      <Skeleton.Item height="28px" width="180px" />
+    </Skeleton>
   );
 }

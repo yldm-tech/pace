@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import type { TInboxIssueFilterMemberKeys } from "@pace/types";
 // pace ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // components
 import { getFileURL } from "@pace/utils";
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
@@ -111,11 +111,11 @@ export const FilterMember = observer(function FilterMember(props: Props) {
               <p className="text-11 text-placeholder italic">No matches found</p>
             )
           ) : (
-            <Loader className="space-y-2">
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-            </Loader>
+            <Skeleton className="space-y-2">
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+            </Skeleton>
           )}
         </div>
       )}

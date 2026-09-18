@@ -14,7 +14,8 @@ import { useTranslation } from "@pace/i18n";
 import { StateGroupIcon } from "@pace/propel/icons";
 import type { IProject } from "@pace/types";
 import { Switch } from "@makeplane/propel/components/switch";
-import { CustomSelect, CustomSearchSelect, Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { CustomSelect, CustomSearchSelect } from "@pace/ui";
 import { SelectMonthModal } from "@/components/automation";
 import { SettingsControlItem } from "@/components/settings/control-item";
 // hooks
@@ -188,9 +189,9 @@ export const AutoCloseAutomation = observer(function AutoCloseAutomation(props: 
             </div>
           )
         ) : (
-          <Loader className="ml-13">
-            <Loader.Item height="50px" />
-          </Loader>
+          <Skeleton className="ml-13">
+            <Skeleton.Item height="50px" />
+          </Skeleton>
         )}
       </div>
     </>

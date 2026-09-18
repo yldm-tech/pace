@@ -18,7 +18,7 @@ import { useTranslation } from "@pace/i18n";
 import { IconButton } from "@pace/propel/icon-button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { copyUrlToClipboard, cn, orderJoinedProjects } from "@pace/utils";
 // components
 import { CreateProjectModal } from "@/components/project/create-project-modal";
@@ -228,11 +228,11 @@ export const SidebarProjectsList = observer(function SidebarProjectsList() {
               leaveTo="transform scale-95 opacity-0"
             >
               {loader === "init-loader" && (
-                <Loader className="w-full space-y-1.5">
+                <Skeleton className="w-full space-y-1.5">
                   {Array.from({ length: 4 }).map((_, index) => (
-                    <Loader.Item key={index} height="28px" />
+                    <Skeleton.Item key={index} height="28px" />
                   ))}
-                </Loader>
+                </Skeleton>
               )}
               {isAllProjectsListOpen && (
                 <Disclosure.Panel as="div" className="flex flex-col gap-0.5" static>

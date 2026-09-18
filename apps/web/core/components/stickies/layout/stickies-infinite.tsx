@@ -9,7 +9,8 @@ import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 import { STICKIES_PER_PAGE } from "@pace/constants";
-import { ContentWrapper, Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { ContentWrapper } from "@pace/ui";
 import { cn } from "@pace/utils";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useSticky } from "@/hooks/use-stickies";
@@ -55,9 +56,9 @@ export const StickiesInfinite = observer(function StickiesInfinite() {
               id="intersection-element"
             >
               <div className="flex min-h-[300px] w-full rounded-sm">
-                <Loader className="h-full w-full">
-                  <Loader.Item height="100%" width="100%" />
-                </Loader>
+                <Skeleton className="h-full w-full">
+                  <Skeleton.Item height="100%" width="100%" />
+                </Skeleton>
               </div>
             </div>
           )

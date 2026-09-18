@@ -13,7 +13,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IIssueLabel } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import type { TLabelOperationsCallbacks } from "@/components/labels";
 import {
   CreateUpdateLabelInline,
@@ -160,12 +160,12 @@ export const ProjectSettingsLabelList = observer(function ProjectSettingsLabelLi
           )
         ) : (
           !showLabelForm && (
-            <Loader className="space-y-5">
-              <Loader.Item height="42px" />
-              <Loader.Item height="42px" />
-              <Loader.Item height="42px" />
-              <Loader.Item height="42px" />
-            </Loader>
+            <Skeleton className="space-y-5">
+              <Skeleton.Item height="42px" />
+              <Skeleton.Item height="42px" />
+              <Skeleton.Item height="42px" />
+              <Skeleton.Item height="42px" />
+            </Skeleton>
           )
         )}
       </div>

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import type { IIssueLabel } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // components
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 // hooks
@@ -81,11 +81,11 @@ export const FilterLabels = observer(function FilterLabels(props: Props) {
               <p className="text-11 text-placeholder italic">No matches found</p>
             )
           ) : (
-            <Loader className="space-y-2">
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-            </Loader>
+            <Skeleton className="space-y-2">
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+            </Skeleton>
           )}
         </div>
       )}

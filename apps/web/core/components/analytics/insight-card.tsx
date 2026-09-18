@@ -7,7 +7,7 @@
 // pace package imports
 import React from "react";
 import type { IAnalyticsResponseFields } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export type InsightCardProps = {
   data?: IAnalyticsResponseFields;
@@ -27,7 +27,7 @@ function InsightCard(props: InsightCardProps) {
           <div className="text-20 font-bold text-primary">{count}</div>
         </div>
       ) : (
-        <Loader.Item height="50px" width="100%" />
+        <Skeleton.Item height="50px" width="100%" />
       )}
     </div>
   );

@@ -12,7 +12,7 @@ import type { EditorRefApi } from "@pace/editor";
 import { useTranslation } from "@pace/i18n";
 import type { TIssue } from "@pace/types";
 import { EFileAssetType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { getDescriptionPlaceholderI18n, getTabIndex } from "@pace/utils";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text/editor";
@@ -61,9 +61,9 @@ export const InboxIssueDescription = observer(function InboxIssueDescription(pro
 
   if (loader === "issue-loading")
     return (
-      <Loader className="min-h-[6rem] rounded-md border border-subtle">
-        <Loader.Item width="100%" height="140px" />
-      </Loader>
+      <Skeleton className="min-h-[6rem] rounded-md border border-subtle">
+        <Skeleton.Item width="100%" height="140px" />
+      </Skeleton>
     );
 
   return (

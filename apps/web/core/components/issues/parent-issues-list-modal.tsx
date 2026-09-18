@@ -15,7 +15,8 @@ import { useTranslation } from "@pace/i18n";
 // types
 import type { ISearchIssueResponse } from "@pace/types";
 // ui
-import { Loader, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 // components
 import { IssueSearchModalEmptyState } from "@/components/core/modals/issue-search-modal-empty-state";
@@ -129,12 +130,12 @@ export function ParentIssuesListModal({
           )}
 
           {isSearching || isLoading ? (
-            <Loader className="space-y-3 p-3">
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-            </Loader>
+            <Skeleton className="space-y-3 p-3">
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+            </Skeleton>
           ) : (
             <>
               {issues.length === 0 ? (

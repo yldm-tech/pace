@@ -12,7 +12,7 @@ import { Banner } from "@makeplane/propel/components/banner";
 import { ArchiveOutline } from "@makeplane/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { IssueDetailRoot } from "@/components/issues/issue-detail";
@@ -53,20 +53,20 @@ function ArchivedIssueDetailsPage({ params }: Route.ComponentProps) {
     <>
       <PageHead title={pageTitle} />
       {issueLoader ? (
-        <Loader className="flex h-full gap-5 p-5">
+        <Skeleton className="flex h-full gap-5 p-5">
           <div className="basis-2/3 space-y-2">
-            <Loader.Item height="30px" width="40%" />
-            <Loader.Item height="15px" width="60%" />
-            <Loader.Item height="15px" width="60%" />
-            <Loader.Item height="15px" width="40%" />
+            <Skeleton.Item height="30px" width="40%" />
+            <Skeleton.Item height="15px" width="60%" />
+            <Skeleton.Item height="15px" width="60%" />
+            <Skeleton.Item height="15px" width="40%" />
           </div>
           <div className="basis-1/3 space-y-3">
-            <Loader.Item height="30px" />
-            <Loader.Item height="30px" />
-            <Loader.Item height="30px" />
-            <Loader.Item height="30px" />
+            <Skeleton.Item height="30px" />
+            <Skeleton.Item height="30px" />
+            <Skeleton.Item height="30px" />
+            <Skeleton.Item height="30px" />
           </div>
-        </Loader>
+        </Skeleton>
       ) : (
         <>
           <Banner

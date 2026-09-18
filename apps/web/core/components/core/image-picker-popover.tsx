@@ -20,7 +20,7 @@ import { useOutsideClickDetector } from "@pace/hooks";
 import { Button, getButtonStyling } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EFileAssetType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // helpers
 import { STATIC_COVER_IMAGES, getCoverImageDisplayURL } from "@/helpers/cover-image.helper";
 // hooks
@@ -277,16 +277,16 @@ function ImagePickerPopoverComponent<TFieldValues extends FieldValues = FieldVal
                                 <p className="pt-7 text-center text-11 text-secondary">No images found.</p>
                               )
                             ) : (
-                              <Loader className="grid grid-cols-4 gap-4">
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                                <Loader.Item height="80px" width="100%" />
-                              </Loader>
+                              <Skeleton className="grid grid-cols-4 gap-4">
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                                <Skeleton.Item height="80px" width="100%" />
+                              </Skeleton>
                             )}
                           </>
                         )}

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // store hooks
 import { usePublish } from "@/hooks/store/publish";
 // types
@@ -53,14 +53,14 @@ export const SidePeekView = observer(function SidePeekView(props: Props) {
           )}
         </div>
       ) : (
-        <Loader className="px-6">
-          <Loader.Item height="30px" />
+        <Skeleton className="px-6">
+          <Skeleton.Item height="30px" />
           <div className="mt-3 space-y-2">
-            <Loader.Item height="20px" width="70%" />
-            <Loader.Item height="20px" width="60%" />
-            <Loader.Item height="20px" width="60%" />
+            <Skeleton.Item height="20px" width="70%" />
+            <Skeleton.Item height="20px" width="60%" />
+            <Skeleton.Item height="20px" width="60%" />
           </div>
-        </Loader>
+        </Skeleton>
       )}
     </div>
   );

@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 // ui
 import { GANTT_TIMELINE_TYPE } from "@pace/types";
 import type { IBlockUpdateData } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // components
 import RenderIfVisible from "@/components/core/render-if-visible-HOC";
 import { GanttLayoutListItemLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
@@ -122,12 +122,12 @@ export const IssueGanttSidebar = observer(function IssueGanttSidebar(props: Prop
           )}
         </>
       ) : (
-        <Loader className="space-y-3 pr-2">
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-        </Loader>
+        <Skeleton className="space-y-3 pr-2">
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+        </Skeleton>
       )}
     </div>
   );

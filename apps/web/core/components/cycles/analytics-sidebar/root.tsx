@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // local imports
 import useCyclesDetails from "../active-cycle/use-cycles-details";
 import { CycleAnalyticsProgress } from "./issue-progress";
@@ -34,17 +34,17 @@ export const CycleDetailsSidebar = observer(function CycleDetailsSidebar(props: 
 
   if (!cycleDetails)
     return (
-      <Loader className="px-5">
+      <Skeleton className="px-5">
         <div className="space-y-2">
-          <Loader.Item height="15px" width="50%" />
-          <Loader.Item height="15px" width="30%" />
+          <Skeleton.Item height="15px" width="50%" />
+          <Skeleton.Item height="15px" width="30%" />
         </div>
         <div className="mt-8 space-y-3">
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
         </div>
-      </Loader>
+      </Skeleton>
     );
 
   return (

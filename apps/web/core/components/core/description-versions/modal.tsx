@@ -15,7 +15,8 @@ import { ChevronLeftOutline, ChevronRightOutline, CopyOutline } from "@makeplane
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TDescriptionVersion } from "@pace/types";
-import { EModalPosition, EModalWidth, Loader, ModalCore } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { calculateTimeAgo, cn, getFileURL } from "@pace/utils";
 // components
 import { RichTextEditor } from "@/components/editor/rich-text";
@@ -140,18 +141,18 @@ export const DescriptionVersionsModal = observer(function DescriptionVersionsMod
             />
           ) : (
             <div className="space-y-1">
-              <Loader.Item width="300px" height="15px" />
-              <Loader.Item width="400px" height="15px" />
+              <Skeleton.Item width="300px" height="15px" />
+              <Skeleton.Item width="400px" height="15px" />
               <div className="flex items-center gap-2">
-                <Loader.Item width="20px" height="15px" />
-                <Loader.Item width="500px" height="15px" />
+                <Skeleton.Item width="20px" height="15px" />
+                <Skeleton.Item width="500px" height="15px" />
               </div>
               <div className="flex items-center gap-2">
-                <Loader.Item width="20px" height="15px" />
-                <Loader.Item width="200px" height="15px" />
+                <Skeleton.Item width="20px" height="15px" />
+                <Skeleton.Item width="200px" height="15px" />
               </div>
-              <Loader.Item width="300px" height="15px" />
-              <Loader.Item width="200px" height="15px" />
+              <Skeleton.Item width="300px" height="15px" />
+              <Skeleton.Item width="200px" height="15px" />
             </div>
           )}
         </div>

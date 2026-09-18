@@ -12,7 +12,7 @@ import useSWR from "swr";
 import { useTranslation } from "@pace/i18n";
 import type { TIssue } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // assets
 import emptyIssueDark from "@/app/assets/empty-state/search/issues-dark.webp?url";
 import emptyIssueLight from "@/app/assets/empty-state/search/issues-light.webp?url";
@@ -107,20 +107,20 @@ export const IssueDetailsPage = observer(function IssueDetailsPage({ params }: R
 
   if (issueLoader) {
     return (
-      <Loader className="flex h-full gap-5 p-5">
+      <Skeleton className="flex h-full gap-5 p-5">
         <div className="basis-2/3 space-y-2">
-          <Loader.Item height="30px" width="40%" />
-          <Loader.Item height="15px" width="60%" />
-          <Loader.Item height="15px" width="60%" />
-          <Loader.Item height="15px" width="40%" />
+          <Skeleton.Item height="30px" width="40%" />
+          <Skeleton.Item height="15px" width="60%" />
+          <Skeleton.Item height="15px" width="60%" />
+          <Skeleton.Item height="15px" width="40%" />
         </div>
         <div className="basis-1/3 space-y-3">
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
         </div>
-      </Loader>
+      </Skeleton>
     );
   }
 

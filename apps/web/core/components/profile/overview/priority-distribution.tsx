@@ -10,7 +10,7 @@ import { Card } from "@pace/propel/card";
 import { BarChart } from "@pace/propel/charts/bar-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { capitalizeFirstLetter } from "@pace/utils";
 
 type Props = {
@@ -73,13 +73,13 @@ export function ProfilePriorityDistribution({ userProfile }: Props) {
         </Card>
       ) : (
         <div className="grid place-items-center p-7">
-          <Loader className="flex items-end gap-12">
-            <Loader.Item width="30px" height="200px" />
-            <Loader.Item width="30px" height="150px" />
-            <Loader.Item width="30px" height="250px" />
-            <Loader.Item width="30px" height="150px" />
-            <Loader.Item width="30px" height="100px" />
-          </Loader>
+          <Skeleton className="flex items-end gap-12">
+            <Skeleton.Item width="30px" height="200px" />
+            <Skeleton.Item width="30px" height="150px" />
+            <Skeleton.Item width="30px" height="250px" />
+            <Skeleton.Item width="30px" height="150px" />
+            <Skeleton.Item width="30px" height="100px" />
+          </Skeleton>
         </div>
       )}
     </div>
