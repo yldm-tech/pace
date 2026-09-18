@@ -66,9 +66,68 @@ export function DropdownButton(props: DropdownButtonProps) {
   );
 }
 
+type TTooltipMount = "deferred" | "pointer" | "focus";
+
+/**
+ * Implements `renderToolTipByDefault={false}` by keeping the Base UI tooltip out of the tree until the button is hovered or focused. A list or spreadsheet screen renders hundreds of these buttons, and `disabled` does not save the cost of a mounted `Tooltip.Root` + `Tooltip.Trigger` — only not rendering them does.
+ *
+ * Mounting the tooltip replaces the underlying `<button>` node, so the two entry paths need different care. The pointer path needs none: Base UI arms its open delay from `mousemove` over the trigger, and the pointer that just entered is still moving. The focus path loses focus along with the node it replaced, so focus is put back on the replacement, which is also what tells Base UI to open the tooltip.
+ */
+function useDeferredTooltip(renderByDefault: boolean) {
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const [mount, setMount] = React.useState<TTooltipMount>(renderByDefault ? "pointer" : "deferred");
+
+  React.useLayoutEffect(() => {
+    if (mount !== "focus") return;
+    const button = buttonRef.current;
+    if (!button) return;
+    // Discarding the focused node leaves the document focused on <body> (or on nothing); any other active element means focus has already moved on and must not be stolen back.
+    const activeElement = button.ownerDocument.activeElement;
+    if (activeElement === null || activeElement === button.ownerDocument.body) button.focus();
+  }, [mount]);
+
+  return {
+    buttonRef,
+    isTooltipMounted: mount !== "deferred",
+    deferredTriggerProps: {
+      onPointerEnter: () => setMount((current) => (current === "deferred" ? "pointer" : current)),
+      onFocus: () => setMount((current) => (current === "deferred" ? "focus" : current)),
+    },
+  };
+}
+
 function BorderButton(props: ButtonProps) {
-  const { children, className, isActive, tooltipContent, tooltipHeading, showTooltip } = props;
+  const {
+    children,
+    className,
+    isActive,
+    tooltipContent,
+    tooltipHeading,
+    showTooltip,
+    renderToolTipByDefault = true,
+  } = props;
   const { isMobile } = usePlatformOS();
+  const { buttonRef, isTooltipMounted, deferredTriggerProps } = useDeferredTooltip(renderToolTipByDefault);
+
+  const button = (
+    <Button
+      ref={buttonRef}
+      variant="ghost"
+      size="sm"
+      className={cn(
+        "flex h-full w-full items-center justify-start gap-1.5 border-[0.5px] border-strong",
+        {
+          "bg-layer-transparent-active": isActive,
+        },
+        className
+      )}
+      {...deferredTriggerProps}
+    >
+      {children}
+    </Button>
+  );
+
+  if (!isTooltipMounted) return button;
 
   return (
     <Tooltip
@@ -76,68 +135,84 @@ function BorderButton(props: ButtonProps) {
       layout="stacked"
       disabled={!showTooltip || isMobile}
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className={cn(
-          "flex h-full w-full items-center justify-start gap-1.5 border-[0.5px] border-strong",
-          {
-            "bg-layer-transparent-active": isActive,
-          },
-          className
-        )}
-      >
-        {children}
-      </Button>
+      {button}
     </Tooltip>
   );
 }
 
 function BackgroundButton(props: ButtonProps) {
-  const { children, className, tooltipContent, tooltipHeading, showTooltip } = props;
+  const { children, className, tooltipContent, tooltipHeading, showTooltip, renderToolTipByDefault = true } = props;
   const { isMobile } = usePlatformOS();
+  const { buttonRef, isTooltipMounted, deferredTriggerProps } = useDeferredTooltip(renderToolTipByDefault);
+
+  const button = (
+    <Button
+      ref={buttonRef}
+      variant="ghost"
+      size="sm"
+      className={cn(
+        "flex h-full w-full items-center justify-between gap-1.5 bg-layer-3 hover:bg-layer-1-hover",
+        className
+      )}
+      {...deferredTriggerProps}
+    >
+      {children}
+    </Button>
+  );
+
+  if (!isTooltipMounted) return button;
+
   return (
     <Tooltip
       label={tooltipContent ? `${tooltipHeading}: ${tooltipContent}` : tooltipHeading}
       layout="stacked"
       disabled={!showTooltip || isMobile}
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className={cn(
-          "flex h-full w-full items-center justify-between gap-1.5 bg-layer-3 hover:bg-layer-1-hover",
-          className
-        )}
-      >
-        {children}
-      </Button>
+      {button}
     </Tooltip>
   );
 }
 
 function TransparentButton(props: ButtonProps) {
-  const { children, className, isActive, tooltipContent, tooltipHeading, showTooltip } = props;
+  const {
+    children,
+    className,
+    isActive,
+    tooltipContent,
+    tooltipHeading,
+    showTooltip,
+    renderToolTipByDefault = true,
+  } = props;
   const { isMobile } = usePlatformOS();
+  const { buttonRef, isTooltipMounted, deferredTriggerProps } = useDeferredTooltip(renderToolTipByDefault);
+
+  const button = (
+    <Button
+      ref={buttonRef}
+      variant="ghost"
+      size="sm"
+      className={cn(
+        "flex h-full w-full items-center justify-between gap-1.5",
+        {
+          "bg-layer-transparent-active": isActive,
+        },
+        className
+      )}
+      {...deferredTriggerProps}
+    >
+      {children}
+    </Button>
+  );
+
+  if (!isTooltipMounted) return button;
+
   return (
     <Tooltip
       label={tooltipContent ? `${tooltipHeading}: ${tooltipContent}` : tooltipHeading}
       layout="stacked"
       disabled={!showTooltip || isMobile}
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className={cn(
-          "flex h-full w-full items-center justify-between gap-1.5",
-          {
-            "bg-layer-transparent-active": isActive,
-          },
-          className
-        )}
-      >
-        {children}
-      </Button>
+      {button}
     </Tooltip>
   );
 }

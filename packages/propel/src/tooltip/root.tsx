@@ -22,7 +22,6 @@ type ITooltipProps = {
   openDelay?: number;
   closeDelay?: number;
   isMobile?: boolean;
-  renderByDefault?: boolean;
   side?: TSide;
   align?: TAlign;
   sideOffset?: number;
@@ -51,39 +50,38 @@ export function Tooltip(props: ITooltipProps) {
     return { finalSide: side, finalAlign: align };
   }, [position, side, align]);
 
+  // No `BaseTooltip.Provider` here on purpose: it exists to share one delay group across many tooltips, so one provider per tooltip is a `FloatingDelayGroup` of one that can never hand off to a neighbour. Mount it once per app root to get the adjacent-instant-open behaviour; the open delay below is passed per tooltip and wins over a provider either way.
   return (
-    <BaseTooltip.Provider>
-      <BaseTooltip.Root delay={openDelay} closeDelay={closeDelay} disabled={disabled}>
-        <BaseTooltip.Trigger render={children} />
-        <BaseTooltip.Portal>
-          <BaseTooltip.Positioner
-            className={cn(
-              "z-50 max-w-xs gap-1 overflow-hidden rounded-lg border border-subtle-1 bg-layer-2 px-2 py-1.5 break-words shadow-overlay-200",
-              {
-                hidden: isMobile,
-              },
-              className
-            )}
-            side={finalSide}
-            sideOffset={sideOffset}
-            align={finalAlign}
-            render={
-              <BaseTooltip.Popup>
-                {tooltipHeading && <p className="text-caption-md-medium text-primary">{tooltipHeading}</p>}
-                {tooltipContent && (
-                  <p
-                    className={cn("text-caption-sm-regular text-secondary", {
-                      "mt-1": tooltipHeading && tooltipHeading !== "",
-                    })}
-                  >
-                    {tooltipContent}
-                  </p>
-                )}
-              </BaseTooltip.Popup>
-            }
-          />
-        </BaseTooltip.Portal>
-      </BaseTooltip.Root>
-    </BaseTooltip.Provider>
+    <BaseTooltip.Root delay={openDelay} closeDelay={closeDelay} disabled={disabled}>
+      <BaseTooltip.Trigger render={children} />
+      <BaseTooltip.Portal>
+        <BaseTooltip.Positioner
+          className={cn(
+            "z-50 max-w-xs gap-1 overflow-hidden rounded-lg border border-subtle-1 bg-layer-2 px-2 py-1.5 break-words shadow-overlay-200",
+            {
+              hidden: isMobile,
+            },
+            className
+          )}
+          side={finalSide}
+          sideOffset={sideOffset}
+          align={finalAlign}
+          render={
+            <BaseTooltip.Popup>
+              {tooltipHeading && <p className="text-caption-md-medium text-primary">{tooltipHeading}</p>}
+              {tooltipContent && (
+                <p
+                  className={cn("text-caption-sm-regular text-secondary", {
+                    "mt-1": tooltipHeading && tooltipHeading !== "",
+                  })}
+                >
+                  {tooltipContent}
+                </p>
+              )}
+            </BaseTooltip.Popup>
+          }
+        />
+      </BaseTooltip.Portal>
+    </BaseTooltip.Root>
   );
 }
