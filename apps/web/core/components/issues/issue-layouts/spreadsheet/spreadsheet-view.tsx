@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { observer } from "mobx-react";
 // pace constants
 import { SPREADSHEET_SELECT_GROUP, SPREADSHEET_PROPERTY_LIST } from "@pace/constants";
@@ -67,13 +67,18 @@ export const SpreadsheetView = observer(function SpreadsheetView(props: Props) {
 
   const isEstimateEnabled: boolean = currentProjectDetails?.estimate !== null;
 
-  const spreadsheetColumnsList = isWorkspaceLevel
-    ? SPREADSHEET_PROPERTY_LIST
-    : SPREADSHEET_PROPERTY_LIST.filter((property) => {
-        if (property === "cycle" && !currentProjectDetails?.cycle_view) return false;
-        if (property === "modules" && !currentProjectDetails?.module_view) return false;
-        return true;
-      });
+  // the identity of this list is a prop of every row, so keep it stable across renders that do not change the visible columns
+  const spreadsheetColumnsList = useMemo(
+    () =>
+      isWorkspaceLevel
+        ? SPREADSHEET_PROPERTY_LIST
+        : SPREADSHEET_PROPERTY_LIST.filter((property) => {
+            if (property === "cycle" && !currentProjectDetails?.cycle_view) return false;
+            if (property === "modules" && !currentProjectDetails?.module_view) return false;
+            return true;
+          }),
+    [isWorkspaceLevel, currentProjectDetails?.cycle_view, currentProjectDetails?.module_view]
+  );
 
   if (!issueIds || issueIds.length === 0) return <></>;
   return (

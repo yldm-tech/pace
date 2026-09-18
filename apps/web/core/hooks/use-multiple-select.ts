@@ -26,6 +26,10 @@ export type TSelectionSnapshot = {
   selectedEntityIds: string[];
 };
 
+// Stable empties for the disabled path, so every callback below keeps its identity instead of being rebuilt on each render.
+const NO_GROUPS: string[] = [];
+const NO_ENTITIES: TEntityDetails[] = [];
+
 export type TSelectionHelper = {
   handleClearSelection: () => void;
   handleEntityClick: (event: React.MouseEvent, entityID: string, groupId: string) => void;
@@ -67,19 +71,20 @@ export const useMultipleSelect = (props: Props) => {
     }
   );
 
-  const groups = useMemo(() => Object.keys(entities), [entities]);
+  // Every consumer of `groups`/`entitiesList` — the callbacks and the effects below — bails out when selection is disabled, so skip the one-object-per-entity allocation entirely in that case. Callers hand us a freshly built `entities` map on every render, so this would otherwise run on each board render for a feature that cannot activate.
+  const groups = useMemo(() => (disabled ? NO_GROUPS : Object.keys(entities)), [disabled, entities]);
 
   const entitiesList: TEntityDetails[] = useMemo(
     () =>
-      groups
-        ?.map((groupID) =>
-          entities?.[groupID]?.map((entityID) => ({
-            entityID,
-            groupID,
-          }))
-        )
-        .flat(1),
-    [entities, groups]
+      disabled
+        ? NO_ENTITIES
+        : groups?.flatMap((groupID) =>
+            entities?.[groupID]?.map((entityID) => ({
+              entityID,
+              groupID,
+            }))
+          ),
+    [disabled, entities, groups]
   );
 
   const getPreviousAndNextEntities = useCallback(

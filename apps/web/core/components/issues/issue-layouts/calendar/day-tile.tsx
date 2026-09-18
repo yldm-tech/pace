@@ -47,7 +47,8 @@ type Props = {
   ) => Promise<void>;
   addIssuesToView?: (issueIds: string[]) => Promise<any>;
   readOnly?: boolean;
-  selectedDate: Date;
+  selectedDateString: string;
+  todayDateString: string;
   setSelectedDate: (date: Date) => void;
   canEditProperties: (projectId: string | undefined) => boolean;
   isEpic?: boolean;
@@ -68,7 +69,8 @@ export const CalendarDayTile = observer(function CalendarDayTile(props: Props) {
     quickAddCallback,
     addIssuesToView,
     readOnly = false,
-    selectedDate,
+    selectedDateString,
+    todayDateString,
     handleDragAndDrop,
     setSelectedDate,
     canEditProperties,
@@ -129,13 +131,15 @@ export const CalendarDayTile = observer(function CalendarDayTile(props: Props) {
         },
       })
     );
-  }, [dayTileRef?.current, formattedDatePayload]);
+  }, [formattedDatePayload]);
 
   if (!formattedDatePayload) return null;
   const issueIds = groupedIssueIds?.[formattedDatePayload];
 
-  const isToday = date.date.toDateString() === new Date().toDateString();
-  const isSelectedDate = date.date.toDateString() == selectedDate.toDateString();
+  // Today's and the selected day's string forms are the same for every tile in the grid, so the parent formats them once and this only formats its own date.
+  const dateString = date.date.toDateString();
+  const isToday = dateString === todayDateString;
+  const isSelectedDate = dateString === selectedDateString;
 
   const isWeekend = [0, 6].includes(date.date.getDay());
   const isMonthLayout = calendarLayout === "month";

@@ -97,6 +97,9 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
   } = props;
   // i18n
   const { t } = useTranslation();
+  // `useTranslation` hands back a new `t` on every render, so the drop-target effect below reads it through a ref instead of listing it as a dependency — listing it would tear down and re-register the drop target on every render.
+  const translateRef = useRef(t);
+  translateRef.current = t;
   // hooks
   const projectState = useProjectState();
 
@@ -165,7 +168,7 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
           if ((isWorkflowDropDisabled || isDropDisabled) && dropErrorMessage) {
             setToast({
               type: TOAST_TYPE.WARNING,
-              title: t("common.warning"),
+              title: translateRef.current("common.warning"),
               message: dropErrorMessage,
             });
             return;
