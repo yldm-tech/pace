@@ -14,8 +14,8 @@ import type { TModuleFilters } from "@pace/types";
 import { EUserProjectRoles } from "@pace/types";
 import { calculateTotalFilters } from "@pace/utils";
 // assets
-import darkModulesAsset from "@/app/assets/empty-state/disabled-feature/modules-dark.webp?url";
-import lightModulesAsset from "@/app/assets/empty-state/disabled-feature/modules-light.webp?url";
+import darkModulesAsset from "@/assets/empty-state/disabled-feature/modules-dark.webp?url";
+import lightModulesAsset from "@/assets/empty-state/disabled-feature/modules-light.webp?url";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";

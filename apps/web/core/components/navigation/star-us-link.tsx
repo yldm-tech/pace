@@ -8,8 +8,8 @@ import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 // assets
-import githubBlackImage from "@/app/assets/logos/github-black.png?url";
-import githubWhiteImage from "@/app/assets/logos/github-white.png?url";
+import githubBlackImage from "@/assets/logos/github-black.png?url";
+import githubWhiteImage from "@/assets/logos/github-white.png?url";
 
 export function StarUsOnGitHubLink() {
   // pace hooks

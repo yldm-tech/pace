@@ -13,7 +13,7 @@ import { Button, getButtonStyling } from "@pace/propel/button";
 import { PaceLogo } from "@pace/propel/icons";
 import type { IWorkspace } from "@pace/types";
 // assets
-import WorkspaceCreationDisabled from "@/app/assets/workspace/workspace-creation-disabled.png?url";
+import WorkspaceCreationDisabled from "@/assets/workspace/workspace-creation-disabled.png?url";
 // components
 import { CreateWorkspaceForm } from "@/components/workspace/create-workspace-form";
 // hooks

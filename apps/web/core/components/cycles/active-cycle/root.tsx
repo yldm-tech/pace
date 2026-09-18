@@ -13,8 +13,8 @@ import { useTranslation } from "@pace/i18n";
 import type { ICycle } from "@pace/types";
 import { Row } from "@pace/ui";
 // assets
-import darkActiveCycleAsset from "@/app/assets/empty-state/cycle/active-dark.webp?url";
-import lightActiveCycleAsset from "@/app/assets/empty-state/cycle/active-light.webp?url";
+import darkActiveCycleAsset from "@/assets/empty-state/cycle/active-dark.webp?url";
+import lightActiveCycleAsset from "@/assets/empty-state/cycle/active-light.webp?url";
 // components
 import { ActiveCycleStats } from "@/components/cycles/active-cycle/cycle-stats";
 import { ActiveCycleProductivity } from "@/components/cycles/active-cycle/productivity";

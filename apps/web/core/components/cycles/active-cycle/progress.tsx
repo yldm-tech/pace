@@ -14,8 +14,8 @@ import { LinearProgress } from "@makeplane/propel/components/linear-progress";
 import type { ICycle } from "@pace/types";
 import { Loader } from "@pace/ui";
 // assets
-import darkProgressAsset from "@/app/assets/empty-state/active-cycle/progress-dark.webp?url";
-import lightProgressAsset from "@/app/assets/empty-state/active-cycle/progress-light.webp?url";
+import darkProgressAsset from "@/assets/empty-state/active-cycle/progress-dark.webp?url";
+import lightProgressAsset from "@/assets/empty-state/active-cycle/progress-light.webp?url";
 // components
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";
 

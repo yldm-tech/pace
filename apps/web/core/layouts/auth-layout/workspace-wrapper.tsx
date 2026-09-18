@@ -18,7 +18,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { cn } from "@pace/utils";
 // assets
-import WorkSpaceNotAvailable from "@/app/assets/workspace/workspace-not-available.png?url";
+import WorkSpaceNotAvailable from "@/assets/workspace/workspace-not-available.png?url";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 // constants

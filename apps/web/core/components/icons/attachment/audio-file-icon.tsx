@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import AudioFileIcon from "@/app/assets/attachment/audio-icon.png?url";
+import AudioFileIcon from "@/assets/attachment/audio-icon.png?url";
 
 export type AudioIconProps = {
   width?: number;

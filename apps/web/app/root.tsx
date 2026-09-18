@@ -12,12 +12,12 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { SITE_DESCRIPTION, SITE_NAME } from "@pace/constants";
 // types
 // assets
-import favicon16 from "@/app/assets/favicon/favicon-16x16.png?url";
-import favicon32 from "@/app/assets/favicon/favicon-32x32.png?url";
-import faviconIco from "@/app/assets/favicon/favicon.ico?url";
-import icon180 from "@/app/assets/icons/icon-180x180.png?url";
-import icon512 from "@/app/assets/icons/icon-512x512.png?url";
-import ogImage from "@/app/assets/og-image.png?url";
+import favicon16 from "@/assets/favicon/favicon-16x16.png?url";
+import favicon32 from "@/assets/favicon/favicon-32x32.png?url";
+import faviconIco from "@/assets/favicon/favicon.ico?url";
+import icon180 from "@/assets/icons/icon-180x180.png?url";
+import icon512 from "@/assets/icons/icon-512x512.png?url";
+import ogImage from "@/assets/og-image.png?url";
 import globalStyles from "@/styles/globals.css?url";
 import type { Route } from "./+types/root";
 // components

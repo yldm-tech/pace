@@ -20,10 +20,10 @@ import type { ISearchIssueResponse, IUser } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
 import { Loader, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // assets
-import darkIssuesAsset from "@/app/assets/empty-state/search/issues-dark.webp?url";
-import lightIssuesAsset from "@/app/assets/empty-state/search/issues-light.webp?url";
-import darkSearchAsset from "@/app/assets/empty-state/search/search-dark.webp?url";
-import lightSearchAsset from "@/app/assets/empty-state/search/search-light.webp?url";
+import darkIssuesAsset from "@/assets/empty-state/search/issues-dark.webp?url";
+import lightIssuesAsset from "@/assets/empty-state/search/issues-light.webp?url";
+import darkSearchAsset from "@/assets/empty-state/search/search-dark.webp?url";
+import lightSearchAsset from "@/assets/empty-state/search/search-light.webp?url";
 // components
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";
 // hooks

@@ -10,8 +10,8 @@ import type { TBillingFrequency } from "@pace/types";
 import { EProductSubscriptionEnum } from "@pace/types";
 import { cn } from "@pace/utils";
 
-import ScribbleBlack from "@/app/assets/scribble/scribble-black.svg?url";
-import ScribbleWhite from "@/app/assets/scribble/scribble-white.svg?url";
+import ScribbleBlack from "@/assets/scribble/scribble-black.svg?url";
+import ScribbleWhite from "@/assets/scribble/scribble-white.svg?url";
 
 type TDiscountInfoProps = {
   className?: string;

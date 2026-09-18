@@ -21,10 +21,10 @@ import { useTranslation } from "@pace/i18n";
 import { AddOutline } from "@makeplane/propel/icons";
 import { EUserWorkspaceRoles } from "@pace/types";
 // assets
-import darkStickiesAsset from "@/app/assets/empty-state/stickies/stickies-dark.webp?url";
-import lightStickiesAsset from "@/app/assets/empty-state/stickies/stickies-light.webp?url";
-import darkStickiesSearchAsset from "@/app/assets/empty-state/stickies/stickies-search-dark.webp?url";
-import lightStickiesSearchAsset from "@/app/assets/empty-state/stickies/stickies-search-light.webp?url";
+import darkStickiesAsset from "@/assets/empty-state/stickies/stickies-dark.webp?url";
+import lightStickiesAsset from "@/assets/empty-state/stickies/stickies-light.webp?url";
+import darkStickiesSearchAsset from "@/assets/empty-state/stickies/stickies-search-dark.webp?url";
+import lightStickiesSearchAsset from "@/assets/empty-state/stickies/stickies-search-light.webp?url";
 // components
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";

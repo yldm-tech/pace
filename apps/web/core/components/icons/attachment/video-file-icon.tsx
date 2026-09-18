@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import VideoFileIcon from "@/app/assets/attachment/video-icon.png?url";
+import VideoFileIcon from "@/assets/attachment/video-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

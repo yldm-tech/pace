@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import useSWR from "swr";
 // assets
-import emptyView from "@/app/assets/empty-state/view.svg?url";
+import emptyView from "@/assets/empty-state/view.svg?url";
 // components
 import { EmptyState } from "@/components/common/empty-state";
 import { PageHead } from "@/components/core/page-title";

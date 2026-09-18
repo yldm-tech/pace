@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import HtmlFileIcon from "@/app/assets/attachment/html-icon.png?url";
+import HtmlFileIcon from "@/assets/attachment/html-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

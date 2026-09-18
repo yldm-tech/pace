@@ -20,7 +20,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceMemberInvitation } from "@pace/types";
 import { truncateText } from "@pace/utils";
 // assets
-import emptyInvitation from "@/app/assets/empty-state/invitation.svg?url";
+import emptyInvitation from "@/assets/empty-state/invitation.svg?url";
 // components
 import { EmptyState } from "@/components/common/empty-state";
 import { WorkspaceLogo } from "@/components/workspace/logo";

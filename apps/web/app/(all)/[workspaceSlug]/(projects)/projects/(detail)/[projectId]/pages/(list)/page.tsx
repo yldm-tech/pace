@@ -13,8 +13,8 @@ import { useTranslation } from "@pace/i18n";
 import type { TPageNavigationTabs } from "@pace/types";
 import { EUserProjectRoles } from "@pace/types";
 // assets
-import darkPagesAsset from "@/app/assets/empty-state/disabled-feature/pages-dark.webp?url";
-import lightPagesAsset from "@/app/assets/empty-state/disabled-feature/pages-light.webp?url";
+import darkPagesAsset from "@/assets/empty-state/disabled-feature/pages-dark.webp?url";
+import lightPagesAsset from "@/assets/empty-state/disabled-feature/pages-light.webp?url";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";

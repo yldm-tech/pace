@@ -11,7 +11,7 @@ import { Switch } from "@makeplane/propel/components/switch";
 // pace internal packages
 import { useTranslation } from "@pace/i18n";
 // assets
-import GitlabLogo from "@/app/assets/logos/gitlab-logo.svg?url";
+import GitlabLogo from "@/assets/logos/gitlab-logo.svg?url";
 // components
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";
 import { PageWrapper } from "@/components/common/page-wrapper";

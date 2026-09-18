@@ -14,12 +14,12 @@ import { getButtonStyling } from "@pace/propel/button";
 import { ContentWrapper } from "@pace/ui";
 import { cn } from "@pace/utils";
 // assets
-import ctaL1Dark from "@/app/assets/workspace-active-cycles/cta-l-1-dark.webp?url";
-import ctaL1Light from "@/app/assets/workspace-active-cycles/cta-l-1-light.webp?url";
-import ctaR1Dark from "@/app/assets/workspace-active-cycles/cta-r-1-dark.webp?url";
-import ctaR1Light from "@/app/assets/workspace-active-cycles/cta-r-1-light.webp?url";
-import ctaR2Dark from "@/app/assets/workspace-active-cycles/cta-r-2-dark.webp?url";
-import ctaR2Light from "@/app/assets/workspace-active-cycles/cta-r-2-light.webp?url";
+import ctaL1Dark from "@/assets/workspace-active-cycles/cta-l-1-dark.webp?url";
+import ctaL1Light from "@/assets/workspace-active-cycles/cta-l-1-light.webp?url";
+import ctaR1Dark from "@/assets/workspace-active-cycles/cta-r-1-dark.webp?url";
+import ctaR1Light from "@/assets/workspace-active-cycles/cta-r-1-light.webp?url";
+import ctaR2Dark from "@/assets/workspace-active-cycles/cta-r-2-dark.webp?url";
+import ctaR2Light from "@/assets/workspace-active-cycles/cta-r-2-light.webp?url";
 // components
 import { ProIcon } from "@/components/common/pro-icon";
 // hooks

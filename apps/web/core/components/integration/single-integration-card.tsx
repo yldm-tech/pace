@@ -17,8 +17,8 @@ import type { IAppIntegration, IWorkspaceIntegration } from "@pace/types";
 // ui
 import { Loader } from "@pace/ui";
 // assets
-import GithubLogo from "@/app/assets/services/github.png?url";
-import SlackLogo from "@/app/assets/services/slack.png?url";
+import GithubLogo from "@/assets/services/github.png?url";
+import SlackLogo from "@/assets/services/slack.png?url";
 // constants
 import { WORKSPACE_INTEGRATIONS } from "@pace/constants";
 // hooks

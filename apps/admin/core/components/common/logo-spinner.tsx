@@ -5,8 +5,8 @@
  */
 
 import { useTheme } from "next-themes";
-import LogoSpinnerDark from "@/app/assets/images/logo-spinner-dark.gif?url";
-import LogoSpinnerLight from "@/app/assets/images/logo-spinner-light.gif?url";
+import LogoSpinnerDark from "@/assets/images/logo-spinner-dark.gif?url";
+import LogoSpinnerLight from "@/assets/images/logo-spinner-light.gif?url";
 
 export function LogoSpinner() {
   const { resolvedTheme } = useTheme();

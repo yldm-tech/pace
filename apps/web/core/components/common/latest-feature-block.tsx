@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 // icons
 import { ThoughtsOutline } from "@makeplane/propel/icons";
 // images
-import latestFeatures from "@/app/assets/onboarding/onboarding-pages.webp?url";
+import latestFeatures from "@/assets/onboarding/onboarding-pages.webp?url";
 
 export function LatestFeatureBlock() {
   const { resolvedTheme } = useTheme();

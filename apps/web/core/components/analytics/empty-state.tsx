@@ -8,8 +8,8 @@ import { useTheme } from "next-themes";
 // pace package imports
 import { cn } from "@pace/utils";
 // assets
-import darkBackgroundAsset from "@/app/assets/empty-state/analytics/empty-grid-background-dark.webp?url";
-import lightBackgroundAsset from "@/app/assets/empty-state/analytics/empty-grid-background-light.webp?url";
+import darkBackgroundAsset from "@/assets/empty-state/analytics/empty-grid-background-dark.webp?url";
+import lightBackgroundAsset from "@/assets/empty-state/analytics/empty-grid-background-light.webp?url";
 
 type Props = {
   title: string;
