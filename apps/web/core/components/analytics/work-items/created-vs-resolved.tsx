@@ -4,13 +4,12 @@
  * See the LICENSE file for details.
  */
 
-import { useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace package imports
 import { useTranslation } from "@pace/i18n";
-import { AreaChart } from "@pace/propel/charts/area-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IChartResponse, TChartData } from "@pace/types";
 import { renderFormattedDate } from "@pace/utils";
@@ -21,6 +20,12 @@ import { AnalyticsService } from "@pace/services";
 // pace web components
 import AnalyticsSectionWrapper from "../analytics-section-wrapper";
 import { ChartLoader } from "../loaders";
+
+const AreaChart = lazy(function AreaChart() {
+  return import("@pace/propel/charts/area-chart").then((mod) => ({
+    default: mod.AreaChart,
+  }));
+});
 
 const analyticsService = new AnalyticsService();
 const CreatedVsResolved = observer(function CreatedVsResolved() {
@@ -98,32 +103,34 @@ const CreatedVsResolved = observer(function CreatedVsResolved() {
       {isCreatedVsResolvedLoading ? (
         <ChartLoader />
       ) : parsedData && parsedData.length > 0 ? (
-        <AreaChart
-          className="h-[350px] w-full"
-          data={parsedData}
-          areas={areas}
-          xAxis={{
-            key: "name",
-            label: t("date"),
-          }}
-          yAxis={{
-            key: "count",
-            label: t("common.no_of", { entity: isEpic ? t("common.epics") : t("work_items") }),
-            offset: -60,
-            dx: -24,
-          }}
-          legend={{
-            align: "left",
-            verticalAlign: "bottom",
-            layout: "horizontal",
-            wrapperStyles: {
-              justifyContent: "start",
-              alignContent: "start",
-              paddingLeft: "40px",
-              paddingTop: "10px",
-            },
-          }}
-        />
+        <Suspense fallback={<ChartLoader />}>
+          <AreaChart
+            className="h-[350px] w-full"
+            data={parsedData}
+            areas={areas}
+            xAxis={{
+              key: "name",
+              label: t("date"),
+            }}
+            yAxis={{
+              key: "count",
+              label: t("common.no_of", { entity: isEpic ? t("common.epics") : t("work_items") }),
+              offset: -60,
+              dx: -24,
+            }}
+            legend={{
+              align: "left",
+              verticalAlign: "bottom",
+              layout: "horizontal",
+              wrapperStyles: {
+                justifyContent: "start",
+                alignContent: "start",
+                paddingLeft: "40px",
+                paddingTop: "10px",
+              },
+            }}
+          />
+        </Suspense>
       ) : (
         <EmptyStateCompact
           assetKey="unknown"

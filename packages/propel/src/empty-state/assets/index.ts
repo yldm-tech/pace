@@ -7,6 +7,4 @@
 export * from "./asset-registry";
 export * from "./asset-types";
 export * from "./helper";
-export * from "./horizontal-stack";
-export * from "./illustration";
-export * from "./vertical-stack";
+// The illustration modules are deliberately not re-exported here: a static path from this entry to any of them would let the bundler fold every illustration back into the empty-state chunk instead of splitting them out behind the registry's loaders. Reach them through HORIZONTAL_STACK_ASSETS / VERTICAL_STACK_ASSETS / ILLUSTRATION_ASSETS.

@@ -4,14 +4,20 @@
  * See the LICENSE file for details.
  */
 
+import { lazy, Suspense } from "react";
 // pace imports
 import { STATE_GROUPS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { PieChart } from "@pace/propel/charts/pie-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData, IUserStateDistribution } from "@pace/types";
-import { Card } from "@pace/ui";
+import { Loader, Card } from "@pace/ui";
 import { capitalizeFirstLetter } from "@pace/utils";
+
+const PieChart = lazy(function PieChart() {
+  return import("@pace/propel/charts/pie-chart").then((mod) => ({
+    default: mod.PieChart,
+  }));
+});
 
 type Props = {
   stateDistribution: IUserStateDistribution[];
@@ -28,35 +34,43 @@ export function ProfileStateDistribution({ stateDistribution, userProfile }: Pro
       <Card className="h-full">
         {userProfile.state_distribution.length > 0 ? (
           <div className="grid h-[300px] w-full grid-cols-1 gap-x-6 md:grid-cols-2">
-            <PieChart
-              className="size-full"
-              dataKey="value"
-              margin={{
-                top: 0,
-                right: -10,
-                bottom: 12,
-                left: -10,
-              }}
-              data={
-                userProfile.state_distribution.map((group) => ({
-                  id: group.state_group,
-                  key: group.state_group,
-                  value: group.state_count,
-                  name: capitalizeFirstLetter(group.state_group),
-                  color: STATE_GROUPS[group.state_group]?.color,
-                })) ?? []
+            <Suspense
+              fallback={
+                <Loader className="size-full">
+                  <Loader.Item width="100%" height="100%" />
+                </Loader>
               }
-              cells={userProfile.state_distribution.map((group) => ({
-                key: group.state_group,
-                fill: STATE_GROUPS[group.state_group]?.color,
-              }))}
-              showTooltip
-              tooltipLabel="Count"
-              paddingAngle={5}
-              cornerRadius={4}
-              innerRadius="50%"
-              showLabel={false}
-            />
+            >
+              <PieChart
+                className="size-full"
+                dataKey="value"
+                margin={{
+                  top: 0,
+                  right: -10,
+                  bottom: 12,
+                  left: -10,
+                }}
+                data={
+                  userProfile.state_distribution.map((group) => ({
+                    id: group.state_group,
+                    key: group.state_group,
+                    value: group.state_count,
+                    name: capitalizeFirstLetter(group.state_group),
+                    color: STATE_GROUPS[group.state_group]?.color,
+                  })) ?? []
+                }
+                cells={userProfile.state_distribution.map((group) => ({
+                  key: group.state_group,
+                  fill: STATE_GROUPS[group.state_group]?.color,
+                }))}
+                showTooltip
+                tooltipLabel="Count"
+                paddingAngle={5}
+                cornerRadius={4}
+                innerRadius="50%"
+                showLabel={false}
+              />
+            </Suspense>
             <div className="flex items-center">
               <div className="w-full space-y-4">
                 {stateDistribution.map((group) => (
