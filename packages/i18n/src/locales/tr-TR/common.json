@@ -506,7 +506,7 @@
       "public": "Herkese Açık",
       "private": "Özel"
     },
-    "done": "Tamamlandı",
+    "done": "Bitti",
     "sub_work_items": "Alt iş öğeleri",
     "comment": "Yorum",
     "workspace_level": "Çalışma alanı seviyesi",
@@ -841,7 +841,7 @@
     "upload_text": "Dosya yüklemek için buraya tıklayın",
     "drag_drop_text": "Sürükle ve Bırak",
     "processing": "İşleniyor",
-    "invalid_file_type": "Geçersiz dosya tipi",
+    "invalid_file_type": "Geçersiz dosya türü",
     "missing_fields": "Eksik alanlar",
     "success": "{fileName} Yüklendi!"
   },

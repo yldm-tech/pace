@@ -92,7 +92,7 @@
       "empty_state": "Ekip arkadaşlarınız ve onların kapattığı iş öğesi sayıları burada görünür."
     },
     "tabs": {
-      "scope_and_demand": "Kapsam ve Talep",
+      "scope_and_demand": "Kapsam ve talep hacmi",
       "custom": "Özel Analitik"
     },
     "total": "Toplam {entity}",
@@ -127,7 +127,7 @@
           "text": "İlk projenizi başlatın",
           "comic": {
             "title": "Analitik en iyi Döngüler + Modüller ile çalışır",
-            "description": "İlk olarak, iş öğelerinizi Döngülere sınırlandırın ve eğer mümkünse, bir döngüden fazla süren iş öğelerini Modüllere gruplandırın. Sol navigasyonda ikisini de kontrol edin."
+            "description": "İlk olarak, iş öğelerinizi Döngülere sınırlandırın ve eğer mümkünse, bir döngüden fazla süren iş öğelerini Modüllere gruplandırın. Sol gezinmede ikisini de kontrol edin."
           }
         }
       },
@@ -148,7 +148,7 @@
     "workitem_resolved_vs_pending": "Çözülen / bekleyen iş öğeleri",
     "projects_by_status": "Durumuna göre projeler",
     "active_users": "Aktif kullanıcılar",
-    "intake_trends": "Talep Eğilimleri"
+    "intake_trends": "Talep eğilimleri"
   },
   "workspace_projects": {
     "label": "{count, plural, one {Proje} other {Projeler}}",
@@ -341,7 +341,7 @@
         "import": "İçe Aktar",
         "try_again": "Tekrar Dene",
         "close": "Kapat",
-        "done": "Tamamlandı"
+        "done": "Bitti"
       },
       "progress": {
         "uploading": "Yükleniyor...",

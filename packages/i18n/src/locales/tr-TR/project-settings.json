@@ -5,7 +5,7 @@
       "please_select_a_timezone": "Lütfen bir saat dilimi seçin",
       "archive_project": {
         "title": "Projeyi arşivle",
-        "description": "Bir projeyi arşivlemek, projenizi yan gezintiden kaldırır ancak yine de projeler sayfasından erişebilirsiniz. Projeyi istediğiniz zaman geri yükleyebilir veya silebilirsiniz.",
+        "description": "Bir projeyi arşivlemek, projenizi yan gezinmeden kaldırır ancak yine de projeler sayfasından erişebilirsiniz. Projeyi istediğiniz zaman geri yükleyebilir veya silebilirsiniz.",
         "button": "Projeyi arşivle"
       },
       "delete_project": {
