@@ -5,7 +5,7 @@
  */
 
 // helpers
-import { EAuthModes } from "@/types/auth";
+import { EAuthModes } from "@pace/constants";
 
 type TAuthHeader = {
   authMode: EAuthModes;

@@ -10,7 +10,7 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import { SitesStateService } from "@pace/services";
 import type { IState } from "@pace/types";
 // helpers
-import { sortStates } from "@/helpers/state.helper";
+import { sortStates } from "@pace/utils";
 // store
 import type { RootStore } from "./root.store";
 

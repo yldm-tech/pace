@@ -9,11 +9,10 @@ import { AttachOutline, LinkOutline, ViewsOutline } from "@makeplane/propel/icon
 // pace imports
 import { Tooltip } from "@pace/propel/tooltip";
 import type { IIssueDisplayProperties } from "@pace/types";
-import { cn } from "@pace/utils";
+import { cn, getDate } from "@pace/utils";
 // components
 import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-HOC";
 // helpers
-import { getDate } from "@/helpers/date-time.helper";
 //// hooks
 import type { IIssue } from "@/types/issue";
 import { IssueBlockCycle } from "./cycle";

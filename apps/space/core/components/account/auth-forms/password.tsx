@@ -8,13 +8,12 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace imports
-import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
+import { API_BASE_URL, EAuthModes, EAuthSteps, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
 import { Input, Spinner, PasswordStrengthIndicator } from "@pace/ui";
 import { getPasswordStrength } from "@pace/utils";
 // types
-import { EAuthModes, EAuthSteps } from "@/types/auth";
 
 type Props = {
   email: string;

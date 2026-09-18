@@ -11,11 +11,15 @@ import { useTranslation } from "@pace/i18n";
 import { StateGroupIcon, PriorityIcon } from "@pace/propel/icons";
 import { DueDateOutline, LinkOutline, PriorityOutline, StateOutline } from "@makeplane/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
-import { cn, getIssuePriorityFilters } from "@pace/utils";
+import {
+  addSpaceIfCamelCase,
+  cn,
+  copyTextToClipboard,
+  getIssuePriorityFilters,
+  renderFormattedDate,
+  shouldHighlightIssueDueDate,
+} from "@pace/utils";
 // helpers
-import { renderFormattedDate } from "@/helpers/date-time.helper";
-import { shouldHighlightIssueDueDate } from "@/helpers/issue.helper";
-import { copyTextToClipboard, addSpaceIfCamelCase } from "@/helpers/string.helper";
 // hooks
 import { usePublish } from "@/hooks/store/publish";
 import { useStates } from "@/hooks/store/use-state";
