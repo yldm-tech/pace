@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
+import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { cn } from "../utils";
 import type { TPlacement, TSide, TAlign } from "../utils/placement";
 import { convertPlacementToSideAndAlign } from "../utils/placement";
@@ -53,8 +53,9 @@ export function Tooltip(props: ITooltipProps) {
 
   return (
     <BaseTooltip.Provider>
-      <BaseTooltip.Root delay={openDelay} closeDelay={closeDelay} disabled={disabled}>
-        <BaseTooltip.Trigger render={children} />
+      {/* Base UI 1.x owns the hover delays on the trigger, not the root, so that one root can serve several detached triggers with different delays. */}
+      <BaseTooltip.Root disabled={disabled}>
+        <BaseTooltip.Trigger render={children} delay={openDelay} closeDelay={closeDelay} />
         <BaseTooltip.Portal>
           <BaseTooltip.Positioner
             className={cn(
