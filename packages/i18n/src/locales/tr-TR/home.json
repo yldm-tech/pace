@@ -38,12 +38,12 @@
       "title_plural": "Hızlı Bağlantılar"
     },
     "recents": {
-      "title": "Sonlar",
+      "title": "Son Öğeler",
       "empty": {
         "project": "Bir projeyi ziyaret ettikten sonra son projeleriniz burada görünecek.",
         "page": "Bir sayfayı ziyaret ettikten sonra son sayfalarınız burada görünecek.",
         "issue": "Bir iş öğesini ziyaret ettikten sonra son iş öğeleriniz burada görünecek.",
-        "default": "Henüz hiç sonunuz yok."
+        "default": "Henüz hiç son öğeniz yok."
       },
       "filters": {
         "all": "Tüm öğeler",
@@ -69,7 +69,7 @@
       "title": "14 günlük Business planı denemeniz aktif!",
       "description": "Tüm Business özelliklerini keşfedin. Hazır olduğunuzda abone olmayı seçin. Otomatik olarak faturalandırılmayacaksınız.",
       "trial_ends_today": "Deneme bugün sona eriyor",
-      "trial_ends_in_days": "Deneme {days} gün içinde sona eriyor",
+      "trial_ends_in_days": "Deneme {days, plural, one {# gün} other {# gün}} içinde sona eriyor",
       "start_subscription": "Aboneliği başlat",
       "explore_business_features": "Business özelliklerini keşfet"
     }

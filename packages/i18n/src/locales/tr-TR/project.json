@@ -103,7 +103,7 @@
     "empty_state": {
       "general": {
         "title": "İşlerinizi Döngülerde gruplayın ve zamanlayın.",
-        "description": "İşleri zaman dilimlerine bölün, proje son teslim tarihinden geriye çalışarak tarihler belirleyin ve takım olarak somut ilerleme kaydedin.",
+        "description": "İşleri zaman dilimlerine bölün, proje son teslim tarihinden geriye çalışarak tarihler belirleyin ve ekip olarak somut ilerleme kaydedin.",
         "primary_button": {
           "text": "İlk döngünüzü ayarlayın",
           "comic": {
@@ -119,7 +119,7 @@
           "text": "Yeni iş öğesi oluştur"
         },
         "secondary_button": {
-          "text": "Varolan iş öğesi ekle"
+          "text": "Mevcut iş öğesini ekle"
         }
       },
       "completed_no_issues": {
@@ -144,7 +144,7 @@
         "primary_button": {
           "text": "İlk görünümünüzü oluşturun",
           "comic": {
-            "title": "Görünümler İş Öğesi özellikleri üzerinde çalışır.",
+            "title": "Görünümler iş öğesi özellikleri üzerinde çalışır.",
             "description": "Buradan istediğiniz kadar özellikle filtre içeren bir görünüm oluşturabilirsiniz."
           }
         },
@@ -167,7 +167,7 @@
         }
       },
       "public": {
-        "title": "Henüz genel sayfa yok",
+        "title": "Henüz herkese açık sayfa yok",
         "description": "Projenizdeki herkesle paylaşılan sayfaları burada görün.",
         "primary_button": {
           "text": "İlk sayfanızı oluşturun"
@@ -191,12 +191,12 @@
     "empty_state": {
       "no_issues": {
         "title": "Bir iş öğesi oluşturun ve birine, hatta kendinize atayın",
-        "description": "İş öğelerini işler, görevler, çalışma veya JTBD olarak düşünün. Bir iş öğesi ve alt iş öğeleri genellikle takım üyelerinize atanan zaman temelli eylemlerdir. Takımınız, projenizi hedefine doğru ilerletmek için iş öğeleri oluşturur, atar ve tamamlar.",
+        "description": "İş öğelerini işler, görevler, çalışma veya JTBD olarak düşünün. Bir iş öğesi ve alt iş öğeleri genellikle ekip üyelerinize atanan zaman temelli eylemlerdir. Ekibiniz, projenizi hedefine doğru ilerletmek için iş öğeleri oluşturur, atar ve tamamlar.",
         "primary_button": {
           "text": "İlk iş öğenizi oluşturun",
           "comic": {
             "title": "İş öğeleri Pace'te yapı taşlarıdır.",
-            "description": "Pace UI'yi yeniden tasarlamak, şirketi yeniden markalaştırmak veya yeni yakıt enjeksiyon sistemini başlatmak, muhtemelen alt iş öğeleri olan iş öğesi örnekleridir."
+            "description": "Pace arayüzünü yeniden tasarlamak, şirketi yeniden markalaştırmak veya yeni yakıt enjeksiyon sistemini başlatmak, muhtemelen alt iş öğeleri olan iş öğesi örnekleridir."
           }
         }
       },
@@ -241,7 +241,7 @@
           "text": "Yeni iş öğeleri oluştur"
         },
         "secondary_button": {
-          "text": "Varolan bir iş öğesi ekle"
+          "text": "Mevcut bir iş öğesi ekle"
         }
       },
       "archived": {
@@ -271,8 +271,8 @@
   "project_page": {
     "empty_state": {
       "general": {
-        "title": "Bir not, belge veya tam bir bilgi bankası yazın. Pace'in AI asistanı Galileo'nun başlamanıza yardımcı olmasını sağlayın",
-        "description": "Sayfalar Pace'te düşüncelerinizi döktüğünüz alanlardır. Toplantı notları alın, kolayca biçimlendirin, iş öğelerini yerleştirin, bir bileşen kitaplığı kullanarak düzenleyin ve hepsini proje bağlamınızda tutun. Herhangi bir belgeyi hızlıca tamamlamak için bir kısayol veya düğme ile Pace'in AI'sı Galileo'yu çağırın.",
+        "title": "Bir not, belge veya tam bir bilgi bankası yazın. Pace'in yapay zeka asistanı Galileo'nun başlamanıza yardımcı olmasını sağlayın",
+        "description": "Sayfalar Pace'te düşüncelerinizi döktüğünüz alanlardır. Toplantı notları alın, kolayca biçimlendirin, iş öğelerini yerleştirin, bir bileşen kitaplığı kullanarak düzenleyin ve hepsini proje bağlamınızda tutun. Herhangi bir belgeyi hızlıca tamamlamak için bir kısayol veya düğme ile Pace'in yapay zekası Galileo'yu çağırın.",
         "primary_button": {
           "text": "İlk sayfanızı oluşturun"
         }
@@ -285,7 +285,7 @@
         }
       },
       "public": {
-        "title": "Henüz genel sayfa yok",
+        "title": "Henüz herkese açık sayfa yok",
         "description": "Projenizdeki herkesle paylaşılan sayfaları burada görün.",
         "primary_button": {
           "text": "İlk sayfanızı oluşturun"
@@ -308,7 +308,7 @@
       },
       "cycle": {
         "title": "Döngüler bu proje için etkin değil.",
-        "description": "İşleri zaman dilimlerine bölün, proje son teslim tarihinden geriye çalışarak tarihler belirleyin ve takım olarak somut ilerleme kaydedin. Döngüleri kullanmaya başlamak için projenizde döngü özelliğini etkinleştirin.",
+        "description": "İşleri zaman dilimlerine bölün, proje son teslim tarihinden geriye çalışarak tarihler belirleyin ve ekip olarak somut ilerleme kaydedin. Döngüleri kullanmaya başlamak için projenizde döngü özelliğini etkinleştirin.",
         "primary_button": {
           "text": "Özellikleri yönet"
         }

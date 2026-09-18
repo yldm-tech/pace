@@ -78,7 +78,7 @@
     "navigation_actions": {
       "open_workspace": "Bir çalışma alanı aç",
       "nav_home": "Ana sayfaya git",
-      "nav_inbox": "Gelen kutusuna git",
+      "nav_inbox": "Gelen Kutusuna git",
       "nav_your_work": "Çalışmalarınıza git",
       "nav_account_settings": "Hesap ayarlarına git",
       "open_project": "Bir proje aç",
@@ -140,7 +140,7 @@
     },
     "help_actions": {
       "open_keyboard_shortcuts": "Klavye kısayollarını aç",
-      "open_plane_documentation": "Pace belgelerini aç",
+      "open_plane_documentation": "Pace dokümanlarını aç",
       "join_forum": "Forumumuza katılın",
       "report_bug": "Hata bildir",
       "chat_with_us": "Bizimle sohbet edin"

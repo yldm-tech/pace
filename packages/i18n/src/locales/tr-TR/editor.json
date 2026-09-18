@@ -45,7 +45,7 @@
   "ai_block": {
     "content": {
       "placeholder": "Bu bloğun içeriğini açıklayın",
-      "generated_here": "AI içeriğiniz burada oluşturulacak"
+      "generated_here": "Yapay zeka içeriğiniz burada oluşturulacak"
     },
     "block_types": {
       "placeholder": "Blok türü seçin",

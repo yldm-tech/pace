@@ -10,7 +10,7 @@
         "description": "Reddedildi"
       },
       "snoozed": {
-        "title": "Erteleme",
+        "title": "Ertelendi",
         "description": "{days, plural, one{# gün} other{# gün}} kaldı"
       },
       "accepted": {
@@ -47,7 +47,7 @@
       "delete": "Sil",
       "open": "İş öğesini aç",
       "mark_as_duplicate": "Kopya olarak işaretle",
-      "move": "{value} proje iş öğelerine taşı"
+      "move": "{value} öğesini proje iş öğelerine taşı"
     },
     "source": {
       "in-app": "uygulama içi"

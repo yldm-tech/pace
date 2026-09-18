@@ -72,8 +72,8 @@
         "message": "Yapışkan not kaldırılamadı"
       }
     },
-    "open_button": "Navigasyon panelini aç",
-    "close_button": "Navigasyon panelini kapat",
+    "open_button": "Gezinme panelini aç",
+    "close_button": "Gezinme panelini kapat",
     "outline_floating_button": "Ana hatları aç"
   },
   "page_actions": {
@@ -82,13 +82,13 @@
         "default": "Taşı",
         "loading": "Taşınıyor"
       },
-      "cannot_move_to_teamspace": "Özel ve paylaşılan sayfalar takım alanına taşınamaz.",
+      "cannot_move_to_teamspace": "Özel ve paylaşılan sayfalar ekip alanına taşınamaz.",
       "placeholders": {
-        "workspace_to_all": "Projeleri ve takım alanlarını ara",
+        "workspace_to_all": "Projeleri ve ekip alanlarını ara",
         "workspace_to_project": "Projeleri ara",
-        "project_to_all": "Projeleri ve takım alanlarını ara",
+        "project_to_all": "Projeleri ve ekip alanlarını ara",
         "project_to_project": "Projeleri ara",
-        "project_to_all_with_wiki": "Wiki koleksiyonlarını, projeleri ve takım alanlarını ara",
+        "project_to_all_with_wiki": "Wiki koleksiyonlarını, projeleri ve ekip alanlarını ara",
         "project_to_project_with_wiki": "Wiki koleksiyonlarını ve projeleri ara"
       },
       "toasts": {
@@ -102,7 +102,7 @@
         },
         "collection_error": {
           "title": "Wiki'ye taşındı",
-          "message": "Sayfa wiki'ye taşındı, ancak seçilen koleksiyona eklenemedi. General içinde kalır."
+          "message": "Sayfa wiki'ye taşındı, ancak seçilen koleksiyona eklenemedi. Genel içinde kalır."
         }
       }
     },

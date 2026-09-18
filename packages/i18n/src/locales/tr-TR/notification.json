@@ -1,20 +1,20 @@
 {
   "notification": {
-    "label": "Bildirimler",
-    "page_label": "{workspace} - Bildirimler",
+    "label": "Gelen Kutusu",
+    "page_label": "{workspace} - Gelen Kutusu",
     "options": {
       "mark_all_as_read": "Tümünü okundu olarak işaretle",
       "mark_read": "Okundu olarak işaretle",
       "mark_unread": "Okunmamış olarak işaretle",
       "refresh": "Yenile",
-      "filters": "Bildirim Filtreleri",
+      "filters": "Gelen Kutusu Filtreleri",
       "show_unread": "Okunmamışları göster",
       "show_snoozed": "Ertelenenleri göster",
       "show_archived": "Arşivlenmişleri göster",
       "mark_archive": "Arşivle",
       "mark_unarchive": "Arşivden çıkar",
-      "mark_snooze": "Ertelenmiş",
-      "mark_unsnooze": "Ertelenmemiş"
+      "mark_snooze": "Ertele",
+      "mark_unsnooze": "Ertelemeyi kaldır"
     },
     "toasts": {
       "read": "Bildirim okundu olarak işaretlendi",
@@ -22,7 +22,7 @@
       "archived": "Bildirim arşivlendi",
       "unarchived": "Bildirim arşivden çıkarıldı",
       "snoozed": "Bildirim ertelendi",
-      "unsnoozed": "Bildirim ertelenmedi"
+      "unsnoozed": "Bildirim ertelemesi kaldırıldı"
     },
     "empty_state": {
       "detail": {

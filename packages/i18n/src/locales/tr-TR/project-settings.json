@@ -57,10 +57,10 @@
     },
     "estimates": {
       "heading": "Tahminler",
-      "description": "Takımınızın karmaşıklık ve iş yükünü iletişim kurmanıza yardımcı olurlar.",
+      "description": "Her iş öğesi için gereken çabayı izlemek ve iletmek üzere tahmin sistemleri kurun.",
       "label": "Tahminler",
       "title": "Projem için tahminleri etkinleştir",
-      "enable_description": "Takımın karmaşıklığını ve iş yükünü iletmenize yardımcı olurlar.",
+      "enable_description": "Ekibin karmaşıklığını ve iş yükünü iletmenize yardımcı olurlar.",
       "no_estimate": "Tahmin yok",
       "new": "Yeni tahmin sistemi",
       "create": {
@@ -111,12 +111,12 @@
         },
         "reorder": {
           "success": {
-            "title": "Estimasyonlar yeniden sıralandı",
-            "message": "Projenizdeki estimasyonlar yeniden sıralandı."
+            "title": "Tahminler yeniden sıralandı",
+            "message": "Projenizdeki tahminler yeniden sıralandı."
           },
           "error": {
-            "title": "Estimasyonları yeniden sıralama başarısız",
-            "message": "Estimasyonlar yeniden sıralanamadı, lütfen tekrar deneyin"
+            "title": "Tahminleri yeniden sıralama başarısız",
+            "message": "Tahminler yeniden sıralanamadı, lütfen tekrar deneyin"
           }
         },
         "switch": {
@@ -125,8 +125,8 @@
             "message": "Başarıyla oluşturuldu ve aktif edildi"
           },
           "error": {
-            "title": "Erır",
-            "message": "Bir şeyler yanlış gitti"
+            "title": "Hata",
+            "message": "Bir şeyler ters gitti"
           }
         }
       },
@@ -139,8 +139,8 @@
         "already_exists": "Tahmin değeri zaten var.",
         "unsaved_changes": "Kaydedilmemiş değişiklikleriniz var, bitirmeden önce lütfen kaydedin",
         "remove_empty": "Tahmin boş olamaz. Her alana bir değer girin veya değeri olmayanları kaldırın.",
-        "fill": "Lütfen bu estimasyon alanını doldurun",
-        "repeat": "Estimasyon değeri tekrar edemez"
+        "fill": "Lütfen bu tahmin alanını doldurun",
+        "repeat": "Tahmin değeri tekrarlanamaz"
       },
       "systems": {
         "points": {
@@ -162,19 +162,19 @@
         }
       },
       "edit": {
-        "title": "Estimasyon sistemini düzenle",
+        "title": "Tahmin sistemini düzenle",
         "add_or_update": {
-          "title": "Estimasyonları ekle, güncelle veya sil",
+          "title": "Tahminleri ekle, güncelle veya sil",
           "description": "Mevcut sistemi puanlar veya kategoriler ekleyerek, güncelleyerek veya silerek yönetin."
         },
         "switch": {
-          "title": "Estimasyon tipini değiştir",
+          "title": "Tahmin türünü değiştir",
           "description": "Puan sisteminizi kategori sistemine veya tam tersine dönüştürün."
         }
       },
-      "switch": "Estimasyon sistemini değiştir",
-      "current": "Mevcut estimasyon sistemi",
-      "select": "Estimasyon sistemi seç"
+      "switch": "Tahmin sistemini değiştir",
+      "current": "Mevcut tahmin sistemi",
+      "select": "Tahmin sistemi seç"
     },
     "automations": {
       "label": "Otomasyonlar",
@@ -193,7 +193,7 @@
       },
       "auto-remind": {
         "title": "Otomatik hatırlatmalar",
-        "description": "Pace, e-posta ve uygulama bildirimleri aracılığıyla otomatik olarak takımınızı zamanlama yolunda tutacaktır.",
+        "description": "Pace, e-posta ve uygulama bildirimleri aracılığıyla otomatik olarak ekibinizi zamanlama yolunda tutacaktır.",
         "duration": "Hatırlatma gönderimi öncesi"
       }
     },
@@ -204,12 +204,12 @@
       },
       "estimates": {
         "title": "Henüz tahmin sistemi yok",
-        "description": "İş öğesi başına çalışma miktarını iletişim kurmak için bir tahmin seti oluşturun.",
+        "description": "İş öğesi başına yapılacak iş miktarını iletmek için bir tahmin seti oluşturun.",
         "primary_button": "Tahmin sistemi ekle"
       },
       "integrations": {
-        "title": "Konfigüre edilmiş entegrasyon yok",
-        "description": "Proje iş öğelerinizi senkronize etmek için GitHub ve diğer entegrasyonları konfigüre edin."
+        "title": "Yapılandırılmış entegrasyon yok",
+        "description": "Proje iş öğelerinizi senkronize etmek için GitHub ve diğer entegrasyonları yapılandırın."
       }
     },
     "workflows": {
@@ -352,22 +352,22 @@
         "toggle_description": "Proje üyeleri sayfalar oluşturabilir ve düzenleyebilir."
       },
       "intake": {
-        "intake_responsibility": "Alım sorumluluğu",
-        "intake_sources": "Alım kaynakları",
-        "title": "Alım",
-        "short_title": "Alım",
+        "intake_responsibility": "Talep sorumluluğu",
+        "intake_sources": "Talep kaynakları",
+        "title": "Talep",
+        "short_title": "Talep",
         "description": "Üye olmayanların hataları, geri bildirimleri ve önerileri paylaşmasına izin verin; iş akışınızı aksatmadan.",
-        "toggle_title": "Alımı etkinleştir",
-        "toggle_description": "Proje üyelerinin uygulama içinde alım talepleri oluşturmasına izin verin.",
+        "toggle_title": "Talebi etkinleştir",
+        "toggle_description": "Proje üyelerinin uygulama içinde talep oluşturmasına izin verin.",
         "toggle_tooltip_on": "Proje Yöneticinizden bunu açmasını isteyin.",
         "toggle_tooltip_off": "Proje Yöneticinizden bunu kapatmasını isteyin.",
         "notify_assignee": {
           "title": "Atanan kişileri bildir",
-          "description": "Yeni bir alım talebi için varsayılan atanan kişiler bildirimler aracılığıyla uyarılacaktır"
+          "description": "Talep bölümüne gelen yeni bir istekte varsayılan atanan kişiler bildirimler aracılığıyla uyarılacaktır"
         },
         "in_app": {
           "title": "Uygulama içi",
-          "description": "Mevcut iş öğelerinizi bozmadan çalışma alanınızdaki Üyeler ve Konuklardan yeni iş öğeleri alın."
+          "description": "Mevcut iş öğelerinizi bozmadan çalışma alanınızdaki Üyeler ve Misafirlerden yeni iş öğeleri alın."
         },
         "email": {
           "title": "E-posta",
@@ -380,7 +380,7 @@
           "fieldName": "Varsayılan form URL'si",
           "create_forms": "İş öğesi türlerini kullanarak form oluşturun",
           "manage_forms": "Formları yönet",
-          "manage_forms_tooltip": "Çalışma Alanı Yöneticinizden bunu yönetmesini isteyin.",
+          "manage_forms_tooltip": "Çalışma alanı yöneticinizden bunu yönetmesini isteyin.",
           "create_form": "Form oluştur",
           "edit_form": "Form ayrıntılarını düzenle",
           "form_title": "Form başlığı",
@@ -390,10 +390,10 @@
           "select_properties": "Özellikleri seç",
           "search_placeholder": "Özelliklerde ara",
           "toasts": {
-            "success_create": "Alım formu başarıyla oluşturuldu",
-            "success_update": "Alım formu başarıyla güncellendi",
-            "error_create": "Alım formu oluşturulamadı",
-            "error_update": "Alım formu güncellenemedi"
+            "success_create": "Talep formu başarıyla oluşturuldu",
+            "success_update": "Talep formu başarıyla güncellendi",
+            "error_create": "Talep formu oluşturulamadı",
+            "error_update": "Talep formu güncellenemedi"
           }
         },
         "toasts": {
@@ -405,7 +405,7 @@
             },
             "error": {
               "title": "Hata!",
-              "message": "Atanan kişileri ayarlarken bir şeyler yanlış gitti. Lütfen tekrar deneyin."
+              "message": "Atanan kişileri ayarlarken bir şeyler ters gitti. Lütfen tekrar deneyin."
             }
           }
         }
@@ -427,7 +427,7 @@
       "toasts": {
         "loading": "Proje özelliği güncelleniyor...",
         "success": "Proje özelliği başarıyla güncellendi.",
-        "error": "Proje özelliği güncellenirken bir şeyler yanlış gitti. Lütfen tekrar deneyin."
+        "error": "Proje özelliği güncellenirken bir şeyler ters gitti. Lütfen tekrar deneyin."
       }
     },
     "project_updates": {
