@@ -5,7 +5,6 @@
  */
 
 export * from "./app-progress-bar";
-export * from "./avatar";
 export * from "./breadcrumbs";
 export * from "./collapsible";
 export * from "./content-wrapper";

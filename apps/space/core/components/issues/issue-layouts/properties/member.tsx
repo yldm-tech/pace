@@ -8,8 +8,7 @@ import { observer } from "mobx-react";
 // icons
 import type { LucideIcon } from "lucide-react";
 import { MembersOutline } from "@makeplane/propel/icons";
-// pace ui
-import { Avatar, AvatarGroup } from "@pace/ui";
+import { Avatar, AvatarGroup } from "@pace/propel/avatar";
 // pace utils
 import { cn } from "@pace/utils";
 // hooks
