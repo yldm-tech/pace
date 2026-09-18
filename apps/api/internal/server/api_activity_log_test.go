@@ -134,6 +134,65 @@ func TestABodyThatIsNotTextIsRecordedAsASentence(t *testing.T) {
 	}
 }
 
+// A body too large for the column to be worth holding is cut and marked rather than kept whole, in the record and in the message that carries it to the broker. What the client receives is untouched.
+func TestALargeBodyIsCutAndMarked(t *testing.T) {
+	answer := strings.Repeat("a", maxLoggedBodyBytes+4096)
+	gin.SetMode(gin.TestMode)
+	publisher := &recordingAPILogs{}
+	router := gin.New()
+	router.Use(apiActivityLog(publisher, "the-secret"))
+	router.POST("/api/v1/workspaces/acme/projects/", func(c *gin.Context) {
+		c.String(http.StatusOK, answer)
+	})
+	request := httptest.NewRequest(http.MethodPost, "/api/v1/workspaces/acme/projects/", strings.NewReader(strings.Repeat("b", maxLoggedBodyBytes+10)))
+	request.Header.Set("X-Api-Key", "plane_api_secret")
+	response := httptest.NewRecorder()
+	router.ServeHTTP(response, request)
+
+	if response.Body.String() != answer {
+		t.Errorf("the client received %d bytes rather than %d", response.Body.Len(), len(answer))
+	}
+	entry := publisher.entries[0]
+	wantResponse := strings.Repeat("a", maxLoggedBodyBytes) + truncationMarker
+	if entry["response_body"] != wantResponse {
+		t.Errorf("the recorded response is %d bytes ending %q", len(entry["response_body"].(string)), last(entry["response_body"].(string)))
+	}
+	wantRequest := strings.Repeat("b", maxLoggedBodyBytes) + truncationMarker
+	if entry["body"] != wantRequest {
+		t.Errorf("the recorded request is %d bytes ending %q", len(entry["body"].(string)), last(entry["body"].(string)))
+	}
+}
+
+func last(text string) string {
+	if len(text) < 20 {
+		return text
+	}
+	return text[len(text)-20:]
+}
+
+// A body cut in the middle of a character stays readable text rather than turning into the sentence for bytes that cannot be decoded.
+func TestACutThroughACharacterLeavesTheBodyReadable(t *testing.T) {
+	// The three-byte character straddles the cap, so two of its bytes fall inside it.
+	payload := []byte(strings.Repeat("a", maxLoggedBodyBytes-1) + "。" + "tail")
+	got, ok := loggedBody(payload, false).(string)
+	if !ok {
+		t.Fatalf("the body is %v", loggedBody(payload, false))
+	}
+	if want := strings.Repeat("a", maxLoggedBodyBytes-1) + truncationMarker; got != want {
+		t.Errorf("the body is %d bytes ending %q", len(got), last(got))
+	}
+}
+
+// A body that fits is recorded exactly as before, with no marker.
+func TestABodyThatFitsIsUnmarked(t *testing.T) {
+	if got := loggedBody([]byte("plain"), false); got != "plain" {
+		t.Errorf("a short body is %v", got)
+	}
+	if got := loggedBody(nil, false); got != nil {
+		t.Errorf("an empty body is %v", got)
+	}
+}
+
 // The headers are written the way a python dict prints, since that is the shape the column already holds.
 func TestTheHeadersAreWrittenTheWayPythonPrintsThem(t *testing.T) {
 	header := http.Header{}
