@@ -19,6 +19,7 @@
     "generate:types": "tsx scripts/generate-types.ts",
     "sync:check": "tsx scripts/sync-check.ts",
     "check:sync": "tsx scripts/sync-check.ts --ci",
+    "unused:check": "tsx scripts/unused-check.ts",
     "check:lint": "oxlint --max-warnings=3 .",
     "check:types": "pnpm run generate:types && tsc --noEmit",
     "check:format": "oxfmt --check .",

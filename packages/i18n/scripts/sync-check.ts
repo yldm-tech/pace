@@ -12,6 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { LocaleData } from "./lib/locale-io.js";
 import { LOCALES_DIR, listLocales, loadLocale } from "./lib/locale-io.js";
+import { REPO_ROOT, collectSourceFiles, collectStringLiterals } from "./lib/source-scan.js";
 import { ADMIN_NAMESPACES } from "../src/constants/namespaces.js";
 
 // ---------------------------------------------------------------------------
@@ -135,7 +136,7 @@ interface EagerNamespaceScope {
 
 // Apps that download fewer than all namespaces before their first render. Anything absent here loads every namespace and cannot go out of range.
 const EAGER_NAMESPACE_SCOPES: EagerNamespaceScope[] = [
-  { app: "admin", dir: path.resolve(LOCALES_DIR, "../../../../apps/admin"), namespaces: ADMIN_NAMESPACES },
+  { app: "admin", dir: path.resolve(REPO_ROOT, "apps/admin"), namespaces: ADMIN_NAMESPACES },
 ];
 
 interface OutOfScopeKey {
@@ -144,27 +145,12 @@ interface OutOfScopeKey {
   file: string;
 }
 
-const SOURCE_EXTENSIONS = new Set([".ts", ".tsx"]);
-const SKIPPED_DIRECTORIES = new Set(["node_modules", "build", "dist", ".react-router", ".turbo"]);
-
-function collectSourceFiles(dir: string, out: string[] = []): string[] {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.isDirectory()) {
-      if (SKIPPED_DIRECTORIES.has(entry.name)) continue;
-      collectSourceFiles(path.join(dir, entry.name), out);
-    } else if (SOURCE_EXTENSIONS.has(path.extname(entry.name))) {
-      out.push(path.join(dir, entry.name));
-    }
-  }
-  return out;
-}
-
 /**
  * Finds translation keys an app references but will not have loaded.
  *
  * Narrowing the eager namespace set is what keeps the admin console from downloading twenty-seven namespaces it has no screens for, but it removes the safety net that made any key resolve from anywhere: i18next answers an unloaded lookup with the key itself, silently, so the failure would be a raw `admin.page.titles.general` painted into the UI rather than an error. This turns that into a build failure.
  *
- * Every double-quoted string literal in the app is considered, not just the arguments of `t(...)`. Keys reach `t` indirectly often enough -- through a label map, a strength-message table, a `labelKey` prop -- that matching on the call site would miss exactly the cases hardest to spot by eye.
+ * Every string literal in the app is considered, not just the arguments of `t(...)` -- see `collectStringLiterals`, which `unused-check.ts` resolves keys with as well so the two cannot disagree about what counts as a reference.
  */
 function findOutOfScopeKeys(enData: LocaleData, scope: EagerNamespaceScope): OutOfScopeKey[] {
   const eager = new Set(scope.namespaces);
@@ -180,7 +166,7 @@ function findOutOfScopeKeys(enData: LocaleData, scope: EagerNamespaceScope): Out
   const found = new Map<string, OutOfScopeKey>();
   for (const file of collectSourceFiles(scope.dir)) {
     const source = fs.readFileSync(file, "utf-8");
-    for (const [, literal] of source.matchAll(/"([^"\\\n]+)"/g)) {
+    for (const literal of collectStringLiterals(source)) {
       const owners = keyOwners.get(literal);
       if (!owners || owners.some((ns) => eager.has(ns))) continue;
       if (!found.has(literal)) {
