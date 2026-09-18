@@ -18,7 +18,7 @@ import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
 import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
 import { EmptyState } from "@/components/empty-state/empty-state";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

@@ -13,7 +13,7 @@ import { useTranslation } from "@pace/i18n";
 import type { TProjectAppliedDisplayFilterKeys, TProjectFilters } from "@pace/types";
 import { calculateTotalFilters } from "@pace/utils";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
 import { useProjectFilter } from "@/hooks/store/use-project-filter";

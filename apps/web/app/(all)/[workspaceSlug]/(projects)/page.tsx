@@ -7,9 +7,9 @@
 import { observer } from "mobx-react";
 // components
 import { useTranslation } from "@pace/i18n";
-import { AppHeader } from "@/components/core/app-header";
-import { ContentWrapper } from "@/components/core/content-wrapper";
-import { PageHead } from "@/components/core/page-title";
+import { AppHeader } from "@/components/shell/app-header";
+import { ContentWrapper } from "@/components/shell/content-wrapper";
+import { PageHead } from "@/components/shell/page-title";
 import { WorkspaceHomeView } from "@/components/home";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

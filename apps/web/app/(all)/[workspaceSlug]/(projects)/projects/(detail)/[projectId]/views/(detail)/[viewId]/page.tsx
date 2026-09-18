@@ -10,7 +10,7 @@ import useSWR from "swr";
 import emptyView from "@/assets/empty-state/view.svg?url";
 // components
 import { EmptyState } from "@/components/empty-state/empty-state";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProjectViewLayoutRoot } from "@/components/issues/issue-layouts/roots/project-view-layout-root";
 // hooks
 import { useProject } from "@/hooks/store/use-project";

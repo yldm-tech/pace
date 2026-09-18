@@ -11,7 +11,7 @@ import { useTranslation } from "@pace/i18n";
 import type { IUserStateDistribution, TStateGroups } from "@pace/types";
 import { ContentWrapper } from "@pace/ui";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProfileActivity } from "@/components/profile/overview/activity";
 import { ProfilePriorityDistribution } from "@/components/profile/overview/priority-distribution";
 import { ProfileStateDistribution } from "@/components/profile/overview/state-distribution";

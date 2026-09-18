@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import Link from "@/lib/navigation/link";
 import { useTranslation } from "@pace/i18n";
 import { PaceLockup } from "@pace/propel/icons";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { EAuthModes } from "@/helpers/authentication.helper";
 import { useInstance } from "@/hooks/store/use-instance";
 

@@ -13,7 +13,7 @@ import { useTranslation } from "@pace/i18n";
 import { SearchOutline } from "@makeplane/propel/icons";
 
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { GlobalDefaultViewListItem } from "@/components/workspace/views/default-view-list-item";
 import { GlobalViewsList } from "@/components/workspace/views/views-list";
 // hooks

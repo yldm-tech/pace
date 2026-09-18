@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProjectDetailsForm } from "@/components/project/form";
 import { ProjectDetailsFormLoader } from "@/components/project/form-loader";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";

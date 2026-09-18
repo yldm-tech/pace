@@ -15,7 +15,7 @@ import { Tab, Tabs, TabsList, TabsPanel } from "@makeplane/propel/components/tab
 // components
 import { cn } from "@pace/utils";
 import AnalyticsFilterActions from "@/components/analytics/analytics-filter-actions";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProject } from "@/hooks/store/use-project";

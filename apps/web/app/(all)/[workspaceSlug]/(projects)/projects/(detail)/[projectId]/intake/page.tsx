@@ -15,7 +15,7 @@ import { EUserProjectRoles, EInboxIssueCurrentTab } from "@pace/types";
 import darkIntakeAsset from "@/assets/empty-state/disabled-feature/intake-dark.webp?url";
 import lightIntakeAsset from "@/assets/empty-state/disabled-feature/intake-light.webp?url";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";
 import { InboxIssueRoot } from "@/components/inbox";
 // hooks

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 // local imports

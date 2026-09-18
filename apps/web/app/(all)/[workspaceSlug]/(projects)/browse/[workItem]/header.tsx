@@ -10,7 +10,7 @@ import { useParams } from "@/lib/navigation";
 import { Header, Row } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
-import { AppHeader } from "@/components/core/app-header";
+import { AppHeader } from "@/components/shell/app-header";
 import { TabNavigationRoot } from "@/components/navigation";
 import { AppSidebarToggleButton } from "@/components/sidebar/sidebar-toggle-button";
 // hooks
