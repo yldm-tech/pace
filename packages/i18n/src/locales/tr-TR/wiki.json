@@ -22,7 +22,7 @@
     },
     "delete_modal": {
       "title": "Koleksiyonu sil",
-      "page_count": "Bu koleksiyonda {pageCount} {pageCount, plural, one {sayfa} other {sayfa}} var. Onlara ne olacağını seçin.",
+      "page_count": "Bu koleksiyonda {pageCount} sayfa var. Onlara ne olacağını seçin.",
       "transfer_title": "Sayfaları taşı ve koleksiyonu sil",
       "transfer_description": "Silmeden önce tüm sayfaları başka bir koleksiyona taşıyın. Sayfalar ve izinleri korunur.",
       "transfer_warning": "Taşınan sayfalar seçilen koleksiyonun izinlerini devralır.",
