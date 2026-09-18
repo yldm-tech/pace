@@ -12,12 +12,15 @@ on:
       - "ready_for_review"
     paths:
       - "packages/i18n/**"
+      # The eager-namespace check reads the admin console's sources, so a key added there has to be able to fail this workflow.
+      - "apps/admin/**"
       - ".github/workflows/i18n-sync-check.yml"
   push:
     branches:
       - "main"
     paths:
       - "packages/i18n/**"
+      - "apps/admin/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
