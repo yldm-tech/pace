@@ -10,7 +10,7 @@
       "url": {
         "label": "Çalışma alanı URL'nizi belirleyin",
         "placeholder": "URL yazın veya yapıştırın",
-        "edit_slug": "Yalnızca URL'nin kısa adını düzenleyebilirsiniz"
+        "edit_slug": "Yalnızca URL'nin slug'ını düzenleyebilirsiniz"
       },
       "organization_size": {
         "label": "Bu çalışma alanını kaç kişi kullanacak?",

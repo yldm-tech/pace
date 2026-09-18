@@ -7,7 +7,7 @@
       },
       "step_one": {
         "title": "\"+ İş öğesi ekle\"ye tıklayın",
-        "description": "\"+ Yeni İş Öğesi\" düğmesine tıklayarak başlayın. İhtiyaçlarınıza uygun görevler, hatalar veya özel bir tür oluşturabilirsiniz."
+        "description": "\"+ Yeni iş öğesi\" düğmesine tıklayarak başlayın. İhtiyaçlarınıza uygun görevler, hatalar veya özel bir tür oluşturabilirsiniz."
       },
       "step_two": {
         "title": "İş öğelerinizi filtreleyin",
@@ -63,7 +63,7 @@
       },
       "step_four": {
         "title": "Modül ilerlemesi",
-        "description": "Modül ilerlemesi, performansı izlemek için analizlerle tamamlanan öğeler aracılığıyla izlenir."
+        "description": "Modül ilerlemesi, performansı izlemek için analitiklerle tamamlanan öğeler aracılığıyla izlenir."
       }
     },
     "page": {
@@ -72,8 +72,8 @@
         "description": "Pace'teki Sayfalar, proje bilgilerini yakalamanıza, düzenlemenize ve işbirliği yapmanıza olanak tanır—harici araçlara gerek yoktur."
       },
       "step_one": {
-        "title": "Sayfayı Genel veya Özel yapın",
-        "description": "Sayfalar, çalışma alanınızdaki herkes tarafından görülebilen genel veya yalnızca sizin erişebildiğiniz özel olarak ayarlanabilir."
+        "title": "Sayfayı herkese açık veya özel yapın",
+        "description": "Sayfalar, çalışma alanınızdaki herkes tarafından görülebilen herkese açık veya yalnızca sizin erişebildiğiniz özel olarak ayarlanabilir."
       },
       "step_two": {
         "title": "/ komutunu kullanın",
@@ -95,7 +95,7 @@
     "intake": {
       "step_zero": {
         "title": "Talep ile istekleri kolaylaştırın",
-        "description": "Konukların hatalar, istekler veya biletler için iş öğeleri oluşturmasına olanak tanıyan Pace'e özel bir özellik."
+        "description": "Misafirlerin hatalar, istekler veya biletler için iş öğeleri oluşturmasına olanak tanıyan Pace'e özel bir özellik."
       },
       "step_one": {
         "title": "Açık/kapalı talepler",
@@ -142,7 +142,7 @@
       "close": "Kapat",
       "next": "Sonraki",
       "back": "Geri",
-      "done": "Bitti",
+      "done": "Tamamlandı",
       "take_a_tour": "Tur yapın",
       "get_started": "Başlayın",
       "got_it": "Anladım"

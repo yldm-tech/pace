@@ -4,7 +4,7 @@
       "general": "Genel",
       "private": "Özel",
       "shared": "Paylaşılan",
-      "archived": "Arşivlenen"
+      "archived": "Arşivlenmiş"
     },
     "fallback_name": "Koleksiyon",
     "form": {
@@ -37,7 +37,7 @@
     },
     "menu": {
       "create_new_page": "Yeni sayfa oluştur",
-      "add_existing_page": "Var olan sayfa ekle",
+      "add_existing_page": "Mevcut sayfa ekle",
       "edit_collection": "Koleksiyonu düzenle",
       "collection_options": "Koleksiyon seçenekleri"
     },
@@ -61,14 +61,14 @@
       "restricted_access": "Kısıtlı erişim",
       "collapse_page": "Sayfayı daralt",
       "expand_page": "Sayfayı genişlet",
-      "page_actions": "Sayfa işlemleri",
+      "page_actions": "Sayfa eylemleri",
       "page_link_copied": "Sayfa bağlantısı panoya kopyalandı.",
       "columns": {
         "page_name": "Sayfa adı",
         "owner": "Sahip",
         "nested_pages": "İç içe sayfalar",
         "last_activity": "Son etkinlik",
-        "actions": "İşlemler"
+        "actions": "Eylemler"
       }
     },
     "toasts": {
@@ -88,7 +88,7 @@
   "wiki": {
     "upgrade_flow": {
       "title": "Wiki'yi açmak için yükseltin",
-      "description": "Pace Pro ile genel sayfaları, sürüm geçmişini, paylaşılan sayfaları, gerçek zamanlı işbirliğini ve wiki'ler, şirket içi belgeler ve bilgi tabanları için çalışma alanı sayfalarını açın.",
+      "description": "Pace Pro ile herkese açık sayfaları, sürüm geçmişini, paylaşılan sayfaları, gerçek zamanlı işbirliğini ve wiki'ler, şirket içi belgeler ve bilgi tabanları için çalışma alanı sayfalarını açın.",
       "upgrade_button": {
         "text": "Yükselt"
       },

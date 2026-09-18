@@ -53,7 +53,7 @@
     },
     "modules": {
       "title": "Proje hedeflerinizi Modüllere eşleyin ve kolayca takip edin.",
-      "description": "Modüller birbirine bağlı iş öğelerinden oluşur. Proje aşamalarındaki ilerlemeyi izlemeye yardımcı olurlar, her biri bu aşamalara ne kadar yakın olduğunuzu göstermek için belirli son tarihler ve analizlerle.",
+      "description": "Modüller birbirine bağlı iş öğelerinden oluşur. Proje aşamalarındaki ilerlemeyi izlemeye yardımcı olurlar, her biri bu aşamalara ne kadar yakın olduğunuzu göstermek için belirli son tarihler ve analitiklerle.",
       "cta_primary": "İlk modülünüzü ayarlayın"
     },
     "module_work_items": {

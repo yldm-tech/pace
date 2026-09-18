@@ -60,7 +60,7 @@
       "description": "Her iş öğesi için gereken çabayı izlemek ve iletmek üzere tahmin sistemleri kurun.",
       "label": "Tahminler",
       "title": "Projem için tahminleri etkinleştir",
-      "enable_description": "Takımın karmaşıklığını ve iş yükünü iletmenize yardımcı olurlar.",
+      "enable_description": "Ekibin karmaşıklığını ve iş yükünü iletmenize yardımcı olurlar.",
       "no_estimate": "Tahmin yok",
       "new": "Yeni tahmin sistemi",
       "create": {
@@ -193,7 +193,7 @@
       },
       "auto-remind": {
         "title": "Otomatik hatırlatmalar",
-        "description": "Pace, e-posta ve uygulama bildirimleri aracılığıyla otomatik olarak takımınızı zamanlama yolunda tutacaktır.",
+        "description": "Pace, e-posta ve uygulama bildirimleri aracılığıyla otomatik olarak ekibinizi zamanlama yolunda tutacaktır.",
         "duration": "Hatırlatma gönderimi öncesi"
       }
     },
@@ -380,7 +380,7 @@
           "fieldName": "Varsayılan form URL'si",
           "create_forms": "İş öğesi türlerini kullanarak form oluşturun",
           "manage_forms": "Formları yönet",
-          "manage_forms_tooltip": "Çalışma Alanı Yöneticinizden bunu yönetmesini isteyin.",
+          "manage_forms_tooltip": "Çalışma alanı yöneticinizden bunu yönetmesini isteyin.",
           "create_form": "Form oluştur",
           "edit_form": "Form ayrıntılarını düzenle",
           "form_title": "Form başlığı",
@@ -405,7 +405,7 @@
             },
             "error": {
               "title": "Hata!",
-              "message": "Atanan kişileri ayarlarken bir şeyler yanlış gitti. Lütfen tekrar deneyin."
+              "message": "Atanan kişileri ayarlarken bir şeyler ters gitti. Lütfen tekrar deneyin."
             }
           }
         }
@@ -427,7 +427,7 @@
       "toasts": {
         "loading": "Proje özelliği güncelleniyor...",
         "success": "Proje özelliği başarıyla güncellendi.",
-        "error": "Proje özelliği güncellenirken bir şeyler yanlış gitti. Lütfen tekrar deneyin."
+        "error": "Proje özelliği güncellenirken bir şeyler ters gitti. Lütfen tekrar deneyin."
       }
     },
     "project_updates": {

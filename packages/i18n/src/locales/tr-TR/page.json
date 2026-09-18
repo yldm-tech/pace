@@ -82,13 +82,13 @@
         "default": "Taşı",
         "loading": "Taşınıyor"
       },
-      "cannot_move_to_teamspace": "Özel ve paylaşılan sayfalar takım alanına taşınamaz.",
+      "cannot_move_to_teamspace": "Özel ve paylaşılan sayfalar ekip alanına taşınamaz.",
       "placeholders": {
-        "workspace_to_all": "Projeleri ve takım alanlarını ara",
+        "workspace_to_all": "Projeleri ve ekip alanlarını ara",
         "workspace_to_project": "Projeleri ara",
-        "project_to_all": "Projeleri ve takım alanlarını ara",
+        "project_to_all": "Projeleri ve ekip alanlarını ara",
         "project_to_project": "Projeleri ara",
-        "project_to_all_with_wiki": "Wiki koleksiyonlarını, projeleri ve takım alanlarını ara",
+        "project_to_all_with_wiki": "Wiki koleksiyonlarını, projeleri ve ekip alanlarını ara",
         "project_to_project_with_wiki": "Wiki koleksiyonlarını ve projeleri ara"
       },
       "toasts": {
