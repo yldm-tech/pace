@@ -1,14 +1,14 @@
 {
   "workspace_creation": {
-    "heading": "Çalışma Alanınızı Oluşturun",
+    "heading": "Çalışma alanınızı oluşturun",
     "subheading": "Pace'i kullanmaya başlamak için bir çalışma alanı oluşturmalı veya katılmalısınız.",
     "form": {
       "name": {
-        "label": "Çalışma Alanınıza Ad Verin",
+        "label": "Çalışma alanınıza ad verin",
         "placeholder": "Tanıdık ve tanınabilir bir şey her zaman iyidir."
       },
       "url": {
-        "label": "Çalışma Alanı URL'nizi Belirleyin",
+        "label": "Çalışma alanı URL'nizi belirleyin",
         "placeholder": "URL yazın veya yapıştırın",
         "edit_slug": "Yalnızca URL'nin kısa adını düzenleyebilirsiniz"
       },
@@ -33,7 +33,7 @@
     },
     "request_email": {
       "subject": "Yeni çalışma alanı isteği",
-      "body": "Merhaba örnek yönetici(ler),\n\nLütfen [çalışma-alanı-adı] URL'si ile [çalışma alanı oluşturma amacı] için yeni bir çalışma alanı oluşturun.\n\nTeşekkürler,\n{firstName} {lastName}\n{email}"
+      "body": "Merhaba örnek yönetici(ler),\n\nLütfen [workspace-name] URL'si ile [çalışma alanı oluşturma amacı] için yeni bir çalışma alanı oluşturun.\n\nTeşekkürler,\n{firstName} {lastName}\n{email}"
     },
     "button": {
       "default": "Çalışma alanı oluştur",
@@ -53,7 +53,7 @@
   "workspace_dashboard": {
     "empty_state": {
       "general": {
-        "title": "Projelerinizin, aktivitenizin ve metriklerinizin genel görünümü",
+        "title": "Projelerinize, etkinliğinize ve metriklerinize genel bakış",
         "description": "Pace'e hoş geldiniz, sizi aramızda görmekten heyecan duyuyoruz. İlk projenizi oluşturun ve iş öğelerinizi takip edin, bu sayfa ilerlemenize yardımcı olacak bir alana dönüşecek. Yöneticiler ayrıca ekiplerinin ilerlemesine yardımcı olacak öğeler görecek.",
         "primary_button": {
           "text": "İlk projenizi oluşturun",
@@ -122,7 +122,7 @@
       },
       "general": {
         "title": "İlerlemeyi, iş yüklerini ve tahsisleri takip edin. Eğilimleri tespit edin, engelleri kaldırın ve işi hızlandırın",
-        "description": "Kapsam ile talep, tahminler ve kapsam genişlemesini görün. Takım üyeleri ve takımlar bazında performans alın ve projenizin zamanında çalıştığından emin olun.",
+        "description": "Kapsam ile talep, tahminler ve kapsam genişlemesini görün. Ekip üyeleri ve ekipler bazında performans alın ve projenizin zamanında çalıştığından emin olun.",
         "primary_button": {
           "text": "İlk projenizi başlatın",
           "comic": {
@@ -133,22 +133,22 @@
       },
       "cycle_progress": {
         "title": "Henüz veri yok",
-        "description": "Döngü ilerleme analizleri burada görünecek. İlerlemesini izlemeye başlamak için döngülere iş öğeleri ekleyin."
+        "description": "Döngü ilerleme analitikleri burada görünecek. İlerlemesini izlemeye başlamak için döngülere iş öğeleri ekleyin."
       },
       "module_progress": {
         "title": "Henüz veri yok",
-        "description": "Modül ilerleme analizleri burada görünecek. İlerlemesini izlemeye başlamak için modüllere iş öğeleri ekleyin."
+        "description": "Modül ilerleme analitikleri burada görünecek. İlerlemesini izlemeye başlamak için modüllere iş öğeleri ekleyin."
       },
       "intake_trends": {
         "title": "Henüz veri yok",
-        "description": "Alım eğilimi analizleri burada görünecek. Eğilimleri izlemeye başlamak için alıma iş öğeleri ekleyin."
+        "description": "Talep eğilimi analitikleri burada görünecek. Eğilimleri izlemeye başlamak için talebe iş öğeleri ekleyin."
       }
     },
     "upgrade_to_plan": "{tab} sekmesini açmak için {plan} planına geçin",
     "workitem_resolved_vs_pending": "Çözülen / bekleyen iş öğeleri",
     "projects_by_status": "Durumuna göre projeler",
     "active_users": "Aktif kullanıcılar",
-    "intake_trends": "Alım Eğilimleri"
+    "intake_trends": "Talep Eğilimleri"
   },
   "workspace_projects": {
     "label": "{count, plural, one {Proje} other {Projeler}}",

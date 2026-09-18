@@ -1,6 +1,6 @@
 {
   "work_item_types": {
-    "label": "İş Öğesi Türleri",
+    "label": "İş öğesi türleri",
     "label_lowercase": "iş öğesi türleri",
     "settings": {
       "description": "Ekibinizin ihtiyaçlarına göre özelleştirin ve kendi özelliklerinizi ekleyin.",
@@ -15,7 +15,7 @@
       "properties": {
         "title": "Özellikler",
         "description": "Özellikler oluşturun ve özelleştirin.",
-        "tooltip": "Her iş öğesi türü, Başlık, Açıklama, Atanan, Durum, Öncelik, Başlangıç tarihi, Bitiş tarihi, Modül, Döngü vb. gibi varsayılan bir özellik seti ile gelir. Ayrıca ekibinizin ihtiyaçlarına göre kendi özelliklerinizi özelleştirebilir ve ekleyebilirsiniz.",
+        "tooltip": "Her iş öğesi türü, Başlık, Açıklama, Atanan, Durum, Öncelik, Başlangıç tarihi, Son tarih, Modül, Döngü vb. gibi varsayılan bir özellik seti ile gelir. Ayrıca ekibinizin ihtiyaçlarına göre kendi özelliklerinizi özelleştirebilir ve ekleyebilirsiniz.",
         "add_button": "Yeni özellik ekle",
         "project": {
           "add_button": {
@@ -360,14 +360,14 @@
     },
     "empty_state": {
       "enable": {
-        "title": "İş Öğesi Türlerini Etkinleştir",
+        "title": "İş öğesi türlerini etkinleştir",
         "description": "İş öğelerinizi İş öğesi türleriyle şekillendirin. Simgeler, arka planlar ve özelliklerle özelleştirin ve bu proje için yapılandırın.",
         "primary_button": {
           "text": "Etkinleştir"
         },
         "confirmation": {
-          "title": "Bir kez etkinleştirildikten sonra, İş Öğesi Türleri devre dışı bırakılamaz.",
-          "description": "Pace'in İş Öğesi, bu proje için varsayılan iş öğesi türü haline gelecek ve bu projede simgesi ve arka planıyla görünecektir.",
+          "title": "Bir kez etkinleştirildikten sonra, iş öğesi türleri devre dışı bırakılamaz.",
+          "description": "Pace'in iş öğesi, bu proje için varsayılan iş öğesi türü haline gelecek ve bu projede simgesi ve arka planıyla görünecektir.",
           "button": {
             "default": "Etkinleştir",
             "loading": "Ayarlanıyor"
@@ -402,7 +402,7 @@
         "tooltip": "Hiyerarşi etkinleştirildikten sonra devre dışı bırakılamaz."
       },
       "workspace_work_item_types_disabled_banner": {
-        "content": "Yeni bir hiyerarşi oluşturmak için önce İş Öğesi Türlerini tanımlayın.",
+        "content": "Yeni bir hiyerarşi oluşturmak için önce iş öğesi türlerini tanımlayın.",
         "cta": "İş öğesi türleri ayarları"
       }
     },
