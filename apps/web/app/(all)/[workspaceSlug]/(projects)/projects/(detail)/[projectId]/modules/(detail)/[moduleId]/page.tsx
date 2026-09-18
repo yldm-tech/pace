@@ -11,7 +11,7 @@ import { cn } from "@pace/utils";
 // assets
 import emptyModule from "@/assets/empty-state/module.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { PageHead } from "@/components/core/page-title";
 import { ModuleLayoutRoot } from "@/components/issues/issue-layouts/roots/module-layout-root";
 import { ModuleAnalyticsSidebar } from "@/components/modules";

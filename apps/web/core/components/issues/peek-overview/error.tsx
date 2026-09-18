@@ -9,7 +9,7 @@ import { Tooltip } from "@makeplane/propel/components/tooltip";
 // assets
 import emptyIssue from "@/assets/empty-state/issue.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 // hooks
 import { usePlatformOS } from "@/hooks/use-platform-os";
 

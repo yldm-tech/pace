@@ -17,7 +17,7 @@ import { Skeleton } from "@pace/propel/skeleton";
 import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
 import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { PageHead } from "@/components/core/page-title";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
