@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
+import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { SearchOutline } from "@makeplane/propel/icons";
 import { cn } from "../utils/classname";
 
@@ -73,11 +73,13 @@ function ComboboxRoot({
   onOpenChange,
   children,
 }: ComboboxProps) {
+  // Base UI 1.x reports a cleared selection as `null`, which the public `onValueChange` contract does not
+  // carry. Map it back to the empty value of whichever mode is active so callers keep seeing one shape.
   const handleValueChange = React.useCallback(
-    (newValue: string | string[]) => {
-      onValueChange?.(newValue);
+    (newValue: string | string[] | null) => {
+      onValueChange?.(newValue ?? (multiSelect ? [] : ""));
     },
-    [onValueChange]
+    [onValueChange, multiSelect]
   );
 
   return (

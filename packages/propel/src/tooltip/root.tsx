@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
+import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { cn } from "../utils";
 import type { TPlacement, TSide, TAlign } from "../utils/placement";
 import { convertPlacementToSideAndAlign } from "../utils/placement";
@@ -52,8 +52,9 @@ export function Tooltip(props: ITooltipProps) {
 
   // No `BaseTooltip.Provider` here on purpose: it exists to share one delay group across many tooltips, so one provider per tooltip is a `FloatingDelayGroup` of one that can never hand off to a neighbour. Mount it once per app root to get the adjacent-instant-open behaviour; the open delay below is passed per tooltip and wins over a provider either way.
   return (
-    <BaseTooltip.Root delay={openDelay} closeDelay={closeDelay} disabled={disabled}>
-      <BaseTooltip.Trigger render={children} />
+    // Base UI 1.x owns the hover delays on the trigger, not the root, so that one root can serve several detached triggers with different delays.
+    <BaseTooltip.Root disabled={disabled}>
+      <BaseTooltip.Trigger render={children} delay={openDelay} closeDelay={closeDelay} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner
           className={cn(
