@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"github.com/yldm-tech/pace/apps/api/internal/projects"
@@ -666,12 +667,8 @@ func (handler *Handler) workspaceOrProjectAdmin(ctx context.Context, slug, proje
 	if workspaceAdmins > 0 {
 		return true, nil
 	}
-	var projectAdmins int64
-	err = handler.db.WithContext(ctx).Table("project_members pm").
-		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.member_id = ? AND pm.project_id = ? AND pm.role = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL", slug, userID, projectID, roleAdmin).
-		Count(&projectAdmins).Error
-	return projectAdmins > 0, err
+	role, member, err := access.ProjectRole(ctx, handler.db, slug, projectID, userID)
+	return member && role == roleAdmin, err
 }
 
 // projectMemberIDsIncludingBots backs the membership check in retrieve, which

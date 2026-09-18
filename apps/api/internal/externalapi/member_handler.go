@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -352,20 +353,13 @@ func validMemberRole(role int) bool {
 }
 
 // requireProjectAdmin is ProjectAdminPermission, which the three write routes swap in for the read one.
-//
-// Like requireProjectMember it filters the membership's own soft delete, because the project's liveness is not tested anywhere else in the query.
 func (handler *Handler) requireProjectAdmin(c *gin.Context, user *auth.User) bool {
-	var admins int64
-	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
-		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.role = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL",
-			c.Param("slug"), c.Param("project"), user.ID, roleAdmin).
-		Count(&admins).Error
+	role, member, err := access.ProjectRole(c.Request.Context(), handler.db, c.Param("slug"), c.Param("project"), user.ID)
 	if err != nil {
 		handler.serverError(c, err)
 		return false
 	}
-	if admins == 0 {
+	if !member || role != roleAdmin {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 			"detail": "You do not have permission to perform this action.",
 		})
