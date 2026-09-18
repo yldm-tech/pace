@@ -17,7 +17,7 @@ import {
 } from "@makeplane/propel/icons";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { EmptySpace, EmptySpaceItem } from "@/components/ui/empty-space";
+import { EmptySpace, EmptySpaceItem } from "@/components/empty-state/empty-space";
 // constants
 import { WORKSPACE_INVITATION } from "@pace/constants";
 // helpers

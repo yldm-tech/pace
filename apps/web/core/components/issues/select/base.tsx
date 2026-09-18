@@ -17,7 +17,7 @@ import { useTranslation } from "@pace/i18n";
 import type { IIssueLabel } from "@pace/types";
 import { cn } from "@pace/utils";
 // components
-import { IssueLabelsList } from "@/components/ui/labels-list";
+import { IssueLabelsList } from "@/components/labels/labels-list";
 // hooks
 import { useDropdownKeyDown } from "@/hooks/use-dropdown-key-down";
 import { usePlatformOS } from "@/hooks/use-platform-os";
