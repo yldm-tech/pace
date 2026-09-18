@@ -13,7 +13,8 @@ import { Button } from "@pace/propel/button";
 import type { IFilterInstance } from "@pace/shared-state";
 import type { TExternalFilter, TFilterProperty } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
-import { cn, EHeaderVariant, Header } from "@pace/ui";
+import { EHeaderVariant, Header } from "@pace/ui";
+import { cn } from "@pace/utils";
 // local imports
 import type { TAddFilterButtonProps } from "./add-filters/button";
 import { AddFilterButton } from "./add-filters/button";
