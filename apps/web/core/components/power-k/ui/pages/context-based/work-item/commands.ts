@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { Signal, TicketCheck, Triangle } from "lucide-react";
 import {
   CyclesOutline,

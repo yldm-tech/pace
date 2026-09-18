@@ -7,8 +7,8 @@
 import React from "react";
 // mobx
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
 import { CloseOutline, MembersOutline, ProjectsOutline, TickOutline } from "@makeplane/propel/icons";
 // pace ui
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";

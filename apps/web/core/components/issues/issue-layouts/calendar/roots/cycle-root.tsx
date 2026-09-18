@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { EIssuesStoreType } from "@pace/types";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";

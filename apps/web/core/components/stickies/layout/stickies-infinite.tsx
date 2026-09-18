@@ -6,7 +6,7 @@
 
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 import { STICKIES_PER_PAGE } from "@pace/constants";
 import { ContentWrapper, Loader } from "@pace/ui";

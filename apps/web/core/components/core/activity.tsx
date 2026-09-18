@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // store hooks
 // icons
 import { TriangleIcon, SignalMediumIcon } from "lucide-react";

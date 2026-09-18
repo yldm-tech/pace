@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // mobx store
 // components
 import { ModuleIssueQuickActions } from "../../quick-action-dropdowns";

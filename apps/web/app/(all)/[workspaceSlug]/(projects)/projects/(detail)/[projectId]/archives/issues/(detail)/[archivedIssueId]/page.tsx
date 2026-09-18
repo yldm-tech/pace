@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useRouter } from "@/app/hooks/navigation";
+import { useRouter } from "@/lib/navigation";
 import useSWR from "swr";
 // ui
 import { Banner } from "@makeplane/propel/components/banner";

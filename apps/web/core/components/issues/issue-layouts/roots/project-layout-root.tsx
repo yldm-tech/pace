@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // pace constants
 import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";

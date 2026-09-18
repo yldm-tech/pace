@@ -7,7 +7,7 @@
 import type { MouseEvent } from "react";
 import { useRef } from "react";
 import { observer } from "mobx-react";
-import { usePathname, useSearchParams } from "@/app/hooks/navigation";
+import { usePathname, useSearchParams } from "@/lib/navigation";
 import { CircularProgress } from "@makeplane/propel/components/circular-progress";
 import { TickOutline } from "@makeplane/propel/icons";
 // pace imports

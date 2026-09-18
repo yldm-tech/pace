@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { useRouter } from "@/app/hooks/navigation";
+import { useRouter } from "@/lib/navigation";
 import useSWR from "swr";
 // pace imports
 import type { TWorkItemFilterCondition } from "@pace/shared-state";

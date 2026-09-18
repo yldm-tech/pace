@@ -7,7 +7,7 @@
 import type { FormEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace imports

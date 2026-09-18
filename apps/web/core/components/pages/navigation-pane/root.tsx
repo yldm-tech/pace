@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/lib/navigation";
 import { ArrowRightCircle } from "lucide-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";

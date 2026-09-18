@@ -6,7 +6,7 @@
 
 import { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/lib/navigation";
 // pace imports
 import type { TPageVersion } from "@pace/types";
 import { cn } from "@pace/utils";

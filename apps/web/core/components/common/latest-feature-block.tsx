@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme } from "next-themes";
 // icons
 import { ThoughtsOutline } from "@makeplane/propel/icons";

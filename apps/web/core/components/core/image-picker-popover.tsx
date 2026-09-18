@@ -6,7 +6,7 @@
 
 import React, { useState, useRef, useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { useDropzone } from "react-dropzone";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";

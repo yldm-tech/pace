@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { EIssuesStoreType, TIssue, TIssueGroupByOptions, TIssueOrderByOptions } from "@pace/types";
 import type { GroupDropLocation } from "@/components/issues/issue-layouts/utils";

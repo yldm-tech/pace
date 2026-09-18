@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { useForm, Controller } from "react-hook-form";
 // pace imports
 import { allTimeIn30MinutesInterval12HoursFormat } from "@pace/constants";

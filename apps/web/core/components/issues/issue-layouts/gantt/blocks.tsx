@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { Popover } from "@pace/propel/popover";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

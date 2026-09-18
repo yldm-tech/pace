@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { EUserPermissions, EUserPermissionsLevel, LOGIN_MEDIUM_LABELS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { renderFormattedDate } from "@pace/utils";

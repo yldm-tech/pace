@@ -6,7 +6,7 @@
 
 import { useMemo } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { DownloadOutline } from "@makeplane/propel/icons";
 // pace imports
 import { CORE_EXTENSIONS } from "@pace/editor";

@@ -6,7 +6,7 @@
 
 import React, { useCallback } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // hooks
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useCycle } from "@/hooks/store/use-cycle";

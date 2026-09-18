@@ -6,7 +6,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 // icons
 import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace imports

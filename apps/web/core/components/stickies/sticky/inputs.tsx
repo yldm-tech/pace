@@ -5,7 +5,7 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 import { Controller, useForm } from "react-hook-form";
 // pace imports
 import type { EditorRefApi } from "@pace/editor";

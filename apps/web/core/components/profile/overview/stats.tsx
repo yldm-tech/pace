@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
 
 // ui
 import { useTranslation } from "@pace/i18n";

@@ -5,7 +5,7 @@
  */
 
 import { useCallback, useMemo } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import type {
   TPersonalNavigationItemKey,
   TPersonalNavigationPreferences,

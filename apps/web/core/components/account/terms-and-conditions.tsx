@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { EAuthModes } from "@pace/constants";
 
 interface TermsAndConditionsProps {

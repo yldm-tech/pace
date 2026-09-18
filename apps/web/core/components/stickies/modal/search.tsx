@@ -7,7 +7,7 @@
 import { useCallback, useRef, useState } from "react";
 import { debounce } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace hooks
 import { useOutsideClickDetector } from "@pace/hooks";
 // helpers

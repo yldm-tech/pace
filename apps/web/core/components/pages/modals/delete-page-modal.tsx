@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 // ui
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { AlertModalCore } from "@pace/ui";
 import { getPageName } from "@pace/utils";
