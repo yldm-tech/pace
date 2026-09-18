@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Link } from "react-router";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 import { LockOutline } from "@pace/propel/icons";
 // pace imports
 import { Button } from "@pace/propel/button";

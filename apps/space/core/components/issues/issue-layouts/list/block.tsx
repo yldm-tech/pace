@@ -7,7 +7,7 @@
 import { useRef } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router";
-import { useParams, useSearchParams } from "@/app/hooks/navigation";
+import { useParams, useSearchParams } from "@/lib/navigation";
 // pace types
 import { Tooltip } from "@pace/propel/tooltip";
 import type { IIssueDisplayProperties } from "@pace/types";

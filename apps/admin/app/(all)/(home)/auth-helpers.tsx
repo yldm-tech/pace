@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 // pace packages
 import type { TAdminAuthErrorInfo } from "@pace/constants";
 import { SUPPORT_EMAIL, EAdminAuthErrorCodes } from "@pace/constants";

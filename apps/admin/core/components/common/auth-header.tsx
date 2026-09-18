@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { PaceLockup } from "@/components/common/pace-lockup";
 
 export function AuthHeader() {

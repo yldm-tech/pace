@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/lib/navigation";
 // ui
 import { SITES_ISSUE_LAYOUTS } from "@pace/constants";
 // pace i18n

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme as useNextTheme } from "next-themes";
 // ui
 import { Button } from "@makeplane/propel/components/button";

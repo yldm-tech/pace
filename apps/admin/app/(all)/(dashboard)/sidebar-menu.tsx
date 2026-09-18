@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { usePathname } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { usePathname } from "@/lib/navigation";
 // pace internal packages
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { useTranslation } from "@pace/i18n";

@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { isEmpty } from "lodash-es";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useForm } from "react-hook-form";
 import { MonitorOutline } from "@makeplane/propel/icons";
 // pace internal packages
