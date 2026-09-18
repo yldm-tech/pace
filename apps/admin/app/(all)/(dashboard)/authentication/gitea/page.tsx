@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import useSWR from "swr";
 // pace internal packages
 import { Switch } from "@makeplane/propel/components/switch";
+import { useTranslation } from "@pace/i18n";
 // assets
 import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
 // components
@@ -24,6 +25,8 @@ import type { Route } from "./+types/page";
 import { InstanceGiteaConfigForm } from "./form";
 
 const InstanceGiteaAuthenticationPage = observer(function InstanceGiteaAuthenticationPage() {
+  // i18n
+  const { t } = useTranslation();
   // store
   const { fetchInstanceConfigurations, formattedConfig, updateInstanceConfigurations } = useInstance();
   // state
@@ -42,14 +45,15 @@ const InstanceGiteaAuthenticationPage = observer(function InstanceGiteaAuthentic
     const updateConfigPromise = updateInstanceConfigurations(payload);
 
     setPromiseToast(updateConfigPromise, {
-      loading: "Saving Configuration",
+      loading: t("admin.auth.saving"),
       success: {
-        title: "Configuration saved",
-        message: () => `Gitea authentication is now ${value === "1" ? "active" : "disabled"}.`,
+        title: t("admin.auth.saved"),
+        message: () =>
+          t(value === "1" ? "admin.oauth.toast.enabled" : "admin.oauth.toast.disabled", { provider: "Gitea" }),
       },
       error: {
-        title: "Error",
-        message: () => "Failed to save configuration",
+        title: t("admin.toast.error"),
+        message: () => t("admin.auth.save_failed"),
       },
     });
 
@@ -70,7 +74,7 @@ const InstanceGiteaAuthenticationPage = observer(function InstanceGiteaAuthentic
       customHeader={
         <AuthenticationMethodCard
           name="Gitea"
-          description="Allow members to log in or sign up to Pace with their Gitea accounts."
+          description={t("admin.oauth.description", { provider: "Gitea" })}
           icon={<img src={giteaLogo} height={24} width={24} alt="Gitea Logo" />}
           config={
             <Switch

@@ -11,13 +11,16 @@ import { PageWrapper } from "@/components/common/page-wrapper";
 import type { Route } from "./+types/page";
 // local
 import { WorkspaceCreateForm } from "./form";
+import { useTranslation } from "@pace/i18n";
 
 const WorkspaceCreatePage = observer(function WorkspaceCreatePage(_props: Route.ComponentProps) {
+  const { t } = useTranslation();
+
   return (
     <PageWrapper
       header={{
-        title: "Create a new workspace on this instance.",
-        description: "You will need to invite users from Workspace Settings after you create this workspace.",
+        title: t("admin.page.workspace_create.title"),
+        description: t("admin.page.workspace_create.description"),
       }}
     >
       <WorkspaceCreateForm />

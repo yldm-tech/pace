@@ -13,6 +13,7 @@ import { AnchorButton } from "@makeplane/propel/components/anchor-button";
 import { Button } from "@makeplane/propel/components/button";
 import { Switch } from "@makeplane/propel/components/switch";
 import type { TInstanceAuthenticationMethodKeys } from "@pace/types";
+import { useTranslation } from "@pace/i18n";
 // hooks
 import { useInstance } from "@/hooks/store";
 
@@ -23,6 +24,8 @@ type Props = {
 
 export const GiteaConfiguration = observer(function GiteaConfiguration(props: Props) {
   const { disabled, updateConfig } = props;
+  // i18n
+  const { t } = useTranslation();
   // store
   const { formattedConfig } = useInstance();
   // derived values
@@ -39,7 +42,7 @@ export const GiteaConfiguration = observer(function GiteaConfiguration(props: Pr
             size="sm"
             nativeButton={false}
             render={<Link href="/authentication/gitea" />}
-            label="Edit"
+            label={t("admin.oauth.edit")}
           />
           <Switch
             checked={Boolean(parseInt(GiteaConfig))}
@@ -60,7 +63,7 @@ export const GiteaConfiguration = observer(function GiteaConfiguration(props: Pr
           nativeButton={false}
           render={<Link href="/authentication/gitea" />}
           icon={<SettingsOutline className="h-4 w-4 p-0.5 text-tertiary" />}
-          label="Configure"
+          label={t("admin.oauth.configure")}
         />
       )}
     </>

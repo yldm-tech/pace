@@ -45,7 +45,7 @@ export const WorkspaceListItem = observer(function WorkspaceListItem({ workspace
             <img
               src={getFileURL(workspace.logo_url)}
               className="absolute top-0 left-0 h-full w-full rounded-sm object-cover"
-              alt="Workspace Logo"
+              alt={t("admin.forms.workspace.logo_alt")}
             />
           ) : (
             (workspace?.name?.[0] ?? "...")
@@ -54,7 +54,7 @@ export const WorkspaceListItem = observer(function WorkspaceListItem({ workspace
         <div className="flex flex-col items-start gap-1">
           <div className="flex w-full flex-wrap items-center gap-2.5">
             <h3 className={`text-14 font-medium capitalize`}>{workspace.name}</h3>/
-            <Tooltip label="The unique URL of your workspace">
+            <Tooltip label={t("admin.forms.workspace.slug_tooltip")}>
               <h4 className="text-13 text-tertiary">[{workspace.slug}]</h4>
             </Tooltip>
           </div>

@@ -44,7 +44,7 @@ export function InstanceImageConfigForm(props: IInstanceImageConfigForm) {
         setToast({
           type: TOAST_TYPE.SUCCESS,
           title: t("admin.toast.success"),
-          message: "Image Configuration Settings updated successfully",
+          message: t("admin.forms.image.saved"),
         })
       )
       .catch((err) => console.error(err));
@@ -57,18 +57,18 @@ export function InstanceImageConfigForm(props: IInstanceImageConfigForm) {
           control={control}
           type="password"
           name="UNSPLASH_ACCESS_KEY"
-          label="Access key from your Unsplash account"
+          label={t("admin.forms.image.unsplash_key_label")}
           description={
             <>
-              You will find your access key in your Unsplash developer console.&nbsp;
+              {t("admin.forms.image.unsplash_key_help")}&nbsp;
               <a
                 href="https://unsplash.com/documentation#creating-a-developer-account"
                 target="_blank"
                 className="text-accent-primary hover:underline"
                 rel="noreferrer"
-                aria-label="Unsplash developer account documentation"
+                aria-label={t("admin.forms.image.unsplash_docs_aria")}
               >
-                Learn more.
+                {t("admin.forms.image.unsplash_docs_link")}
               </a>
             </>
           }

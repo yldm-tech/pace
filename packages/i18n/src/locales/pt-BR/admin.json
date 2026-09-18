@@ -10,7 +10,25 @@
       "authentication": "Autenticação",
       "ai": "Inteligência artificial",
       "images": "Imagens",
-      "workspace": "Espaços de trabalho"
+      "workspace": "Espaços de trabalho",
+      "general_description": "Identifique suas instâncias e veja os detalhes principais.",
+      "email_description": "Configure os controles de SMTP.",
+      "workspace_description": "Gerencie todos os espaços de trabalho desta instância.",
+      "authentication_description": "Configure os modos de autenticação.",
+      "ai_description": "Configure suas credenciais da OpenAI.",
+      "images_description": "Permita bibliotecas de imagens de terceiros.",
+      "instance_admin": "Administrador da instância",
+      "admin_user": "Usuário administrador",
+      "switch_to_light_mode": "Mudar para o modo claro",
+      "switch_to_dark_mode": "Mudar para o modo escuro",
+      "sign_out": "Sair",
+      "redirect_to_pace": "Redirecionar para o Pace",
+      "help": "Ajuda",
+      "toggle_sidebar": "Alternar barra lateral",
+      "documentation": "Documentação",
+      "forum": "Participe do nosso fórum",
+      "report_bug": "Reportar um bug",
+      "version_label": "Versão:"
     },
     "actions": {
       "save": "Salvar alterações",
@@ -91,7 +109,13 @@
       "sender": "Endereço de e-mail do remetente",
       "username": "Nome de usuário",
       "security": "Segurança de e-mail",
-      "authentication": "Autenticação"
+      "authentication": "Autenticação",
+      "send_test": "Enviar e-mail de teste",
+      "receiver": "E-mail do destinatário",
+      "send_failed": "Não foi possível enviar o e-mail",
+      "security_none": "Sem segurança de e-mail",
+      "security_select": "Selecione a segurança de e-mail",
+      "test_hint": "Se você ainda não encontrar, revise a configuração de SMTP e dispare um novo e-mail de teste."
     },
     "auth": {
       "heading": "Gerencie os modos de autenticação da sua instância",
@@ -116,6 +140,59 @@
       "authorized_redirect": "URI de redirecionamento autorizada",
       "authorized_callback": "URI de callback autorizada",
       "authorized_origin_url": "URL de origem autorizada"
+    },
+    "oauth": {
+      "description": "Permita que os membros entrem ou se cadastrem no Pace com as contas {provider} deles.",
+      "unique_codes_description": "Entre ou cadastre-se no Pace com códigos enviados por e-mail. É necessário ter o SMTP configurado para usar este método.",
+      "passwords_description": "Permita que os membros criem contas com senha e a usem com o e-mail para entrar.",
+      "provider_details": "Dados fornecidos pelo {provider} para o Pace",
+      "pace_details": "Dados fornecidos pelo Pace para o {provider}",
+      "web": "Web",
+      "go_back": "Voltar",
+      "edit": "Editar",
+      "configure": "Configurar",
+      "learn_more": "Saiba mais",
+      "here": "aqui",
+      "refresh_attributes": "Atualizar os atributos do usuário a partir do {provider} durante o login",
+      "paste_into_field": "Geramos isto automaticamente. Cole no campo {field} do seu aplicativo OAuth do {provider}, que você pode configurar {link}.",
+      "copy": {
+        "title": "Copiado para a área de transferência",
+        "message": "{label} foi copiado para a área de transferência."
+      },
+      "toast": {
+        "done": "Pronto!",
+        "enabled": "A autenticação {provider} está ativa.",
+        "disabled": "A autenticação {provider} está desativada.",
+        "configured": "Sua autenticação {provider} está configurada. Teste-a agora."
+      },
+      "google": {
+        "client_id_description": "Seu Client ID está no Google API Console. {link}",
+        "client_id_doc_label": "Documentação do Client ID OAuth do Google",
+        "client_secret_description": "Seu Client Secret também está no Google API Console. {link}",
+        "client_secret_doc_label": "Documentação do Client Secret OAuth do Google",
+        "console_label": "Credenciais de cliente OAuth no Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Você obtém isto nas suas {link}.",
+        "client_secret_description": "Seu Client Secret também está nas suas {link}.",
+        "organization_id_description": "O ID da organização do GitHub.",
+        "app_settings_link": "Configurações do aplicativo OAuth do GitHub",
+        "app_settings_label": "Configurações do aplicativo OAuth do GitHub"
+      },
+      "gitlab": {
+        "host_description": "É https://gitlab.com ou o {domain} onde você hospeda o GitLab.",
+        "application_id_description": "Obtenha isto nas suas {link}.",
+        "secret_description": "O Client Secret também está nas suas {link}.",
+        "app_settings_link": "Configurações do aplicativo OAuth do GitLab",
+        "app_settings_label": "Configurações do aplicativo OAuth do GitLab"
+      },
+      "gitea": {
+        "host_description": "Use a URL da sua instância do Gitea. Para a instância oficial do Gitea, use \"https://gitea.com\".",
+        "client_id_description": "Você obtém isto nas suas {link}.",
+        "client_secret_description": "Seu Client Secret também está nas suas {link}.",
+        "app_settings_link": "Configurações do aplicativo OAuth do Gitea",
+        "app_settings_label": "Configurações do aplicativo OAuth do Gitea"
+      }
     },
     "common": {
       "email": "E-mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Algo familiar e fácil de reconhecer é sempre melhor.",
       "slug_placeholder": "workspace-name",
       "go_back": "Voltar"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Chave de acesso da sua conta do Unsplash",
+        "unsplash_key_help": "Você encontrará sua chave de acesso no console de desenvolvedor do Unsplash.",
+        "unsplash_docs_link": "Saiba mais.",
+        "unsplash_docs_aria": "Documentação da conta de desenvolvedor do Unsplash",
+        "saved": "Configuração de imagens atualizada com sucesso"
+      },
+      "workspace": {
+        "name_label": "Dê um nome ao seu espaço de trabalho",
+        "url_label": "Defina a URL do seu espaço de trabalho",
+        "slug_taken": "Esta URL já está em uso. Tente outra.",
+        "slug_invalid": "As URLs podem conter apenas ( - ), ( _ ) e caracteres alfanuméricos.",
+        "size_label": "Quantas pessoas usarão este espaço de trabalho?",
+        "size_placeholder": "Selecione um intervalo",
+        "required_field": "Este campo é obrigatório.",
+        "create_submit": "Criar espaço de trabalho",
+        "creating": "Criando espaço de trabalho",
+        "logo_alt": "Logotipo do espaço de trabalho",
+        "slug_tooltip": "A URL exclusiva do seu espaço de trabalho",
+        "size_options": {
+          "just_myself": "Apenas eu",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Erro",
+          "message": "Algo deu errado. Tente novamente."
+        },
+        "admin_already_exist": {
+          "title": "O administrador já existe",
+          "message": "O administrador já existe. Tente novamente."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "E-mail, senha e nome são obrigatórios",
+          "message": "E-mail, senha e nome são obrigatórios. Tente novamente."
+        },
+        "invalid_admin_email": {
+          "title": "E-mail de administrador inválido",
+          "message": "O e-mail de administrador é inválido. Tente novamente."
+        },
+        "invalid_admin_password": {
+          "title": "Senha de administrador inválida",
+          "message": "A senha de administrador é inválida. Tente novamente."
+        },
+        "required_admin_email_password": {
+          "title": "E-mail e senha são obrigatórios",
+          "message": "E-mail e senha são obrigatórios. Tente novamente."
+        },
+        "admin_authentication_failed": {
+          "title": "Falha na autenticação",
+          "message": "A autenticação falhou. Tente novamente."
+        },
+        "admin_user_already_exist": {
+          "title": "O usuário administrador já existe",
+          "message": "O usuário administrador já existe. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "O usuário administrador não existe",
+          "message": "O usuário administrador não existe. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Conta de usuário desativada",
+          "message": "A conta de usuário foi desativada. Entre em contato com {contact}."
+        },
+        "sign_in_link": "Faça login agora",
+        "administrator": "o administrador",
+        "dismiss_banner": "Fechar o banner"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Configurações gerais",
+        "description": "Altere o nome da sua instância e os endereços de e-mail do administrador da instância. Ative ou desative a telemetria na sua instância."
+      },
+      "email": {
+        "description": "O Pace pode enviar e-mails úteis para você e seus usuários a partir da sua própria instância, sem depender da Internet.",
+        "test_hint": "Configure abaixo e teste suas configurações antes de salvá-las."
+      },
+      "ai": {
+        "title": "Recursos de IA para todos os seus espaços de trabalho",
+        "description": "Configure suas credenciais de API de IA para que os recursos de IA do Pace fiquem ativos em todos os seus espaços de trabalho."
+      },
+      "authentication": {
+        "description": "Configure os modos de autenticação da sua equipe e restrinja os cadastros somente a convites.",
+        "allow_signup_description": "Ao desativar esta opção, os usuários só poderão se cadastrar quando forem convidados.",
+        "cannot_disable_message": "Pelo menos um método de autenticação precisa continuar ativo. Ative outro método antes de desativar este."
+      },
+      "workspace": {
+        "title": "Espaços de trabalho nesta instância",
+        "description": "Veja todos os espaços de trabalho e controle quem pode criá-los.",
+        "prevent_creation_description": "Ao ativar esta opção, apenas você poderá criar espaços de trabalho. Você terá que convidar os usuários para os novos espaços de trabalho.",
+        "list_heading": "Todos os espaços de trabalho desta instância",
+        "list_description": "Ainda não é possível excluir espaços de trabalho, e você só pode acessar um espaço de trabalho se for Administrador ou Membro.",
+        "config_saving": "Salvando configuração",
+        "config_saved": "Configuração salva com sucesso",
+        "config_save_failed": "Não foi possível salvar a configuração"
+      },
+      "workspace_create": {
+        "title": "Crie um novo espaço de trabalho nesta instância.",
+        "description": "Você precisará convidar os usuários nas Configurações do espaço de trabalho depois de criá-lo."
+      },
+      "breadcrumb": {
+        "aria_label": "Trilha de navegação",
+        "settings": "Configurações",
+        "general": "Geral",
+        "ai": "Inteligência artificial",
+        "email": "E-mail",
+        "authentication": "Autenticação",
+        "image": "Imagem",
+        "workspace": "Espaço de trabalho",
+        "create": "Criar"
+      }
+    },
+    "misc": {
+      "something_wrong": "Ops! Algo deu errado.",
+      "go_to_general": "Ir para as configurações gerais",
+      "instance_unavailable": "Não foi possível obter os detalhes da instância.",
+      "instance_fetch_failed": "Não foi possível buscar as informações da instância",
+      "loading": "Carregando...",
+      "close_notification": "Fechar notificação",
+      "unsaved_changes": "Você tem alterações não salvas",
+      "unsaved_changes_body": "As alterações feitas serão perdidas se você voltar. Deseja voltar?",
+      "setup_after": "Após a configuração, você poderá gerenciar esta instância do Pace.",
+      "signin_subheading": "Defina configurações de toda a instância para proteger sua instância",
+      "root_error": "Algo deu errado.",
+      "create_workspace": "Criar espaço de trabalho"
     }
   }
 }

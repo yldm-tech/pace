@@ -14,9 +14,11 @@ import { resolveGeneralTheme } from "@pace/utils";
 import TakeoffIconDark from "@/app/assets/logos/takeoff-icon-dark.svg?url";
 import TakeoffIconLight from "@/app/assets/logos/takeoff-icon-light.svg?url";
 import { useTheme } from "@/hooks/store";
+import { useTranslation } from "@pace/i18n";
 // icons
 
 export const NewUserPopup = observer(function NewUserPopup() {
+  const { t } = useTranslation();
   // hooks
   const { isNewUserPopup, toggleNewUserPopup } = useTheme();
   // theme
@@ -39,7 +41,7 @@ export const NewUserPopup = observer(function NewUserPopup() {
               stretch="auto"
               nativeButton={false}
               render={<Link href="/workspace/create" />}
-              label="Create workspace"
+              label={t("admin.misc.create_workspace")}
             />
             <Button variant="secondary" size="md" stretch="auto" onClick={toggleNewUserPopup} label="Close" />
           </div>

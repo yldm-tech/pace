@@ -20,30 +20,34 @@ import {
   NewTabOutline,
   PagesOutline,
 } from "@makeplane/propel/icons";
+import { useTranslation } from "@pace/i18n";
 import { cn } from "@pace/utils";
 // hooks
 import { useInstance, useTheme } from "@/hooks/store";
 // assets
 
+// `name` holds a translation key, not text: this list lives outside the component and so cannot call the translation hook. The keys are resolved where the options are rendered, below.
 const helpOptions = [
   {
-    name: "Documentation",
+    name: "admin.nav.documentation",
     href: "https://pace.yldm.ai/docs/",
     Icon: PagesOutline,
   },
   {
-    name: "Join our Forum",
+    name: "admin.nav.forum",
     href: "https://pace.yldm.ai/forum",
     Icon: ChatOutline,
   },
   {
-    name: "Report a bug",
+    name: "admin.nav.report_bug",
     href: "https://github.com/makeplane/plane/issues/new/choose",
     Icon: Github,
   },
 ];
 
 export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection() {
+  // i18n
+  const { t } = useTranslation();
   // states
   const [isNeedHelpOpen, setIsNeedHelpOpen] = useState(false);
   // store
@@ -77,24 +81,24 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
               className={`relative flex items-center gap-1 rounded-sm bg-layer-1 px-2 py-1 text-body-xs-medium whitespace-nowrap text-secondary`}
             >
               <NewTabOutline width={14} height={14} />
-              {!isSidebarCollapsed && "Redirect to Pace"}
+              {!isSidebarCollapsed && t("admin.nav.redirect_to_pace")}
             </a>
           </>
         ) : (
-          <Tooltip label="Redirect to Pace" side="right">
+          <Tooltip label={t("admin.nav.redirect_to_pace")} side="right">
             <a
               href={redirectionLink}
               className={`relative flex items-center gap-1 rounded-sm bg-layer-1 px-2 py-1 text-body-xs-medium whitespace-nowrap text-secondary`}
             >
               <NewTabOutline width={14} height={14} />
-              {!isSidebarCollapsed && "Redirect to Pace"}
+              {!isSidebarCollapsed && t("admin.nav.redirect_to_pace")}
             </a>
           </Tooltip>
         )}
-        <Tooltip label="Help" side={isSidebarCollapsed ? "right" : "top"}>
+        <Tooltip label={t("admin.nav.help")} side={isSidebarCollapsed ? "right" : "top"}>
           <button
             type="button"
-            aria-label="Help"
+            aria-label={t("admin.nav.help")}
             className={`ml-auto grid place-items-center rounded-md p-1.5 text-secondary outline-none hover:bg-layer-1-hover hover:text-primary ${
               isSidebarCollapsed ? "w-full" : ""
             }`}
@@ -103,10 +107,10 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
             <HelpOutline className="size-4" />
           </button>
         </Tooltip>
-        <Tooltip label="Toggle sidebar" side={isSidebarCollapsed ? "right" : "top"}>
+        <Tooltip label={t("admin.nav.toggle_sidebar")} side={isSidebarCollapsed ? "right" : "top"}>
           <button
             type="button"
-            aria-label="Toggle sidebar"
+            aria-label={t("admin.nav.toggle_sidebar")}
             className={`grid place-items-center rounded-md p-1.5 text-secondary outline-none hover:bg-layer-1-hover hover:text-primary ${
               isSidebarCollapsed ? "w-full" : ""
             }`}
@@ -142,7 +146,7 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
                         <div className="grid flex-shrink-0 place-items-center">
                           <Icon className="h-3.5 w-3.5 text-secondary" />
                         </div>
-                        <span className="text-11">{name}</span>
+                        <span className="text-11">{t(name)}</span>
                       </div>
                     </Link>
                   );
@@ -156,12 +160,15 @@ export const AdminSidebarHelpSection = observer(function AdminSidebarHelpSection
                       <div className="grid flex-shrink-0 place-items-center">
                         <Icon className="h-3.5 w-3.5 text-secondary" />
                       </div>
-                      <span className="text-11">{name}</span>
+                      <span className="text-11">{t(name)}</span>
                     </button>
                   );
               })}
             </div>
-            <div className="px-2 pt-2 pb-1 text-10">Version: v{instance?.current_version}</div>
+            {/* The label is translated on its own and the version number appended: the number is not text and must not end up inside a translatable string. */}
+            <div className="px-2 pt-2 pb-1 text-10">
+              {t("admin.nav.version_label")} v{instance?.current_version}
+            </div>
           </div>
         </Transition>
       </div>

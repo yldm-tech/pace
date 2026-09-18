@@ -10,7 +10,25 @@
       "authentication": "Overovanie",
       "ai": "Umelá inteligencia",
       "images": "Obrázky",
-      "workspace": "Pracovné priestory"
+      "workspace": "Pracovné priestory",
+      "general_description": "Identifikujte svoje inštancie a získajte kľúčové údaje.",
+      "email_description": "Nastavte ovládanie SMTP.",
+      "workspace_description": "Spravujte všetky pracovné priestory v tejto inštancii.",
+      "authentication_description": "Nastavte režimy overovania.",
+      "ai_description": "Nastavte svoje prihlasovacie údaje k OpenAI.",
+      "images_description": "Povoľte knižnice obrázkov tretích strán.",
+      "instance_admin": "Správca inštancie",
+      "admin_user": "Používateľ správca",
+      "switch_to_light_mode": "Prepnúť na svetlý režim",
+      "switch_to_dark_mode": "Prepnúť na tmavý režim",
+      "sign_out": "Odhlásiť sa",
+      "redirect_to_pace": "Presmerovať do Pace",
+      "help": "Pomoc",
+      "toggle_sidebar": "Prepnúť bočný panel",
+      "documentation": "Dokumentácia",
+      "forum": "Pripojte sa na naše fórum",
+      "report_bug": "Nahlásiť chybu",
+      "version_label": "Verzia:"
     },
     "actions": {
       "save": "Uložiť zmeny",
@@ -91,7 +109,13 @@
       "sender": "E-mailová adresa odosielateľa",
       "username": "Používateľské meno",
       "security": "Zabezpečenie e-mailu",
-      "authentication": "Overovanie"
+      "authentication": "Overovanie",
+      "send_test": "Odoslať testovací e-mail",
+      "receiver": "E-mail príjemcu",
+      "send_failed": "E-mail sa nepodarilo odoslať",
+      "security_none": "Žiadne zabezpečenie e-mailu",
+      "security_select": "Vyberte zabezpečenie e-mailu",
+      "test_hint": "Ak ho stále nemôžete nájsť, skontrolujte konfiguráciu SMTP a spustite nový testovací e-mail."
     },
     "auth": {
       "heading": "Spravujte režimy overovania pre svoju inštanciu",
@@ -116,6 +140,59 @@
       "authorized_redirect": "Autorizovaná URI presmerovania",
       "authorized_callback": "Autorizovaná URI spätného volania",
       "authorized_origin_url": "Autorizovaná URL zdroja"
+    },
+    "oauth": {
+      "description": "Umožnite členom prihlásiť sa alebo zaregistrovať do Pace pomocou účtov {provider}.",
+      "unique_codes_description": "Prihlásenie alebo registrácia do Pace pomocou kódov zasielaných e-mailom. Na použitie tejto metódy musíte mať nastavené SMTP.",
+      "passwords_description": "Umožnite členom vytvárať účty s heslom a prihlasovať sa pomocou e-mailovej adresy.",
+      "provider_details": "Údaje poskytnuté službou {provider} pre Pace",
+      "pace_details": "Údaje poskytnuté službou Pace pre {provider}",
+      "web": "Web",
+      "go_back": "Späť",
+      "edit": "Upraviť",
+      "configure": "Konfigurovať",
+      "learn_more": "Zistiť viac",
+      "here": "tu",
+      "refresh_attributes": "Pri prihlásení aktualizovať atribúty používateľa z {provider}",
+      "paste_into_field": "Vygenerujeme to automaticky. Vložte túto hodnotu do poľa {field} svojej aplikácie OAuth {provider}, ktorú nastavíte {link}.",
+      "copy": {
+        "title": "Skopírované do schránky",
+        "message": "{label} bol skopírovaný do schránky."
+      },
+      "toast": {
+        "done": "Hotovo!",
+        "enabled": "Overovanie {provider} je teraz aktívne.",
+        "disabled": "Overovanie {provider} je teraz vypnuté.",
+        "configured": "Overovanie {provider} je nastavené. Teraz ho otestujte."
+      },
+      "google": {
+        "client_id_description": "Client ID nájdete vo svojej Google API Console. {link}",
+        "client_id_doc_label": "Dokumentácia ku Client ID OAuth Google",
+        "client_secret_description": "Client Secret nájdete tiež vo svojej Google API Console. {link}",
+        "client_secret_doc_label": "Dokumentácia ku Client Secret OAuth Google",
+        "console_label": "Prihlasovacie údaje klienta OAuth v Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Túto hodnotu získate v sekcii {link}.",
+        "client_secret_description": "Client Secret nájdete tiež v sekcii {link}.",
+        "organization_id_description": "ID organizácie GitHub.",
+        "app_settings_link": "Nastavenia aplikácie OAuth GitHub",
+        "app_settings_label": "Nastavenia aplikácie OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Je to buď https://gitlab.com, alebo {domain}, na ktorej hostujete GitLab.",
+        "application_id_description": "Túto hodnotu získate v sekcii {link}.",
+        "secret_description": "Client Secret nájdete tiež v sekcii {link}.",
+        "app_settings_link": "Nastavenia aplikácie OAuth GitLab",
+        "app_settings_label": "Nastavenia aplikácie OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Použite URL svojej inštancie Gitea. Pre oficiálnu inštanciu Gitea použite „https://gitea.com“.",
+        "client_id_description": "Túto hodnotu získate v sekcii {link}.",
+        "client_secret_description": "Client Secret nájdete tiež v sekcii {link}.",
+        "app_settings_link": "Nastavenia aplikácie OAuth Gitea",
+        "app_settings_label": "Nastavenia aplikácie OAuth Gitea"
+      }
     },
     "common": {
       "email": "E-mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Vždy je najlepšie niečo známe a ľahko rozpoznateľné.",
       "slug_placeholder": "workspace-name",
       "go_back": "Späť"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Prístupový kľúč z vášho účtu Unsplash",
+        "unsplash_key_help": "Prístupový kľúč nájdete vo vývojárskej konzole Unsplash.",
+        "unsplash_docs_link": "Zistiť viac.",
+        "unsplash_docs_aria": "Dokumentácia k vývojárskemu účtu Unsplash",
+        "saved": "Konfigurácia obrázkov bola úspešne aktualizovaná"
+      },
+      "workspace": {
+        "name_label": "Pomenujte svoj pracovný priestor",
+        "url_label": "Nastavte URL svojho pracovného priestoru",
+        "slug_taken": "Táto URL je už obsadená. Skúste inú.",
+        "slug_invalid": "URL môže obsahovať iba ( - ), ( _ ) a alfanumerické znaky.",
+        "size_label": "Koľko ľudí bude tento pracovný priestor používať?",
+        "size_placeholder": "Vyberte rozsah",
+        "required_field": "Toto pole je povinné.",
+        "create_submit": "Vytvoriť pracovný priestor",
+        "creating": "Vytváranie pracovného priestoru",
+        "logo_alt": "Logo pracovného priestoru",
+        "slug_tooltip": "Jedinečná URL vášho pracovného priestoru",
+        "size_options": {
+          "just_myself": "Iba ja",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Chyba",
+          "message": "Niečo sa pokazilo. Skúste to znova."
+        },
+        "admin_already_exist": {
+          "title": "Správca už existuje",
+          "message": "Správca už existuje. Skúste to znova."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Vyžaduje sa e-mail, heslo a meno",
+          "message": "Vyžaduje sa e-mail, heslo a meno. Skúste to znova."
+        },
+        "invalid_admin_email": {
+          "title": "Neplatný e-mail správcu",
+          "message": "Neplatný e-mail správcu. Skúste to znova."
+        },
+        "invalid_admin_password": {
+          "title": "Neplatné heslo správcu",
+          "message": "Neplatné heslo správcu. Skúste to znova."
+        },
+        "required_admin_email_password": {
+          "title": "Vyžaduje sa e-mail a heslo",
+          "message": "Vyžaduje sa e-mail a heslo. Skúste to znova."
+        },
+        "admin_authentication_failed": {
+          "title": "Overenie zlyhalo",
+          "message": "Overenie zlyhalo. Skúste to znova."
+        },
+        "admin_user_already_exist": {
+          "title": "Používateľ správca už existuje",
+          "message": "Používateľ správca už existuje. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Používateľ správca neexistuje",
+          "message": "Používateľ správca neexistuje. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Používateľský účet bol deaktivovaný",
+          "message": "Používateľský účet bol deaktivovaný. Kontaktujte, prosím, {contact}."
+        },
+        "sign_in_link": "Prihláste sa teraz",
+        "administrator": "správcu",
+        "dismiss_banner": "Zavrieť banner"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Všeobecné nastavenia",
+        "description": "Zmeňte názov svojej inštancie a e-mailové adresy správcov inštancie. Zapnite alebo vypnite telemetriu vo svojej inštancii."
+      },
+      "email": {
+        "description": "Pace môže vám aj vašim používateľom posielať užitočné e-maily z vašej vlastnej inštancie bez komunikácie s internetom.",
+        "test_hint": "Nastavte ho nižšie a pred uložením prosím svoje nastavenia otestujte."
+      },
+      "ai": {
+        "title": "Funkcie AI pre všetky vaše pracovné priestory",
+        "description": "Nastavte svoje prihlasovacie údaje k AI API, aby boli funkcie Pace AI zapnuté vo všetkých vašich pracovných priestoroch."
+      },
+      "authentication": {
+        "description": "Nastavte režimy overovania pre svoj tím a obmedzte registráciu iba na pozvánky.",
+        "allow_signup_description": "Vypnutím tejto voľby sa budú môcť zaregistrovať iba pozvaní používatelia.",
+        "cannot_disable_message": "Aspoň jedna metóda overovania musí zostať zapnutá. Pred vypnutím tejto metódy prosím povoľte inú."
+      },
+      "workspace": {
+        "title": "Pracovné priestory v tejto inštancii",
+        "description": "Zobrazte si všetky pracovné priestory a určte, kto ich môže vytvárať.",
+        "prevent_creation_description": "Zapnutím tejto voľby budete môcť pracovné priestory vytvárať iba vy. Používateľov do nových pracovných priestorov budete musieť pozvať.",
+        "list_heading": "Všetky pracovné priestory v tejto inštancii",
+        "list_description": "Pracovné priestory zatiaľ nie je možné mazať a prejsť do pracovného priestoru môžete iba vtedy, ak ste jeho správca alebo člen.",
+        "config_saving": "Ukladanie konfigurácie",
+        "config_saved": "Konfigurácia bola úspešne uložená",
+        "config_save_failed": "Konfiguráciu sa nepodarilo uložiť"
+      },
+      "workspace_create": {
+        "title": "Vytvorte v tejto inštancii nový pracovný priestor.",
+        "description": "Po vytvorení tohto pracovného priestoru budete musieť používateľov pozvať v nastaveniach pracovného priestoru."
+      },
+      "breadcrumb": {
+        "aria_label": "Navigačná stopa",
+        "settings": "Nastavenia",
+        "general": "Všeobecné",
+        "ai": "Umelá inteligencia",
+        "email": "E-mail",
+        "authentication": "Overovanie",
+        "image": "Obrázok",
+        "workspace": "Pracovný priestor",
+        "create": "Vytvoriť"
+      }
+    },
+    "misc": {
+      "something_wrong": "Ups! Niečo sa pokazilo.",
+      "go_to_general": "Prejsť na všeobecné nastavenia",
+      "instance_unavailable": "Nepodarilo sa načítať podrobnosti o inštancii.",
+      "instance_fetch_failed": "Načítanie informácií o inštancii zlyhalo",
+      "loading": "Načítavanie...",
+      "close_notification": "Zavrieť oznámenie",
+      "unsaved_changes": "Máte neuložené zmeny",
+      "unsaved_changes_body": "Vykonané zmeny sa stratia, ak sa vrátite späť. Chcete sa vrátiť späť?",
+      "setup_after": "Po nastavení budete môcť spravovať túto inštanciu Pace.",
+      "signin_subheading": "Nakonfigurujte nastavenia platné pre celú inštanciu a zabezpečte svoju inštanciu",
+      "root_error": "Niečo sa pokazilo.",
+      "create_workspace": "Vytvoriť pracovný priestor"
     }
   }
 }

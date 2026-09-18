@@ -12,41 +12,42 @@ import type { TSidebarMenuItem } from "./types";
 
 export type TCoreSidebarMenuKey = "general" | "email" | "workspace" | "authentication" | "ai" | "image";
 
+// `name` and `description` hold translation keys, not text: this is a module-level constant, so it cannot call the translation hook. The keys are resolved where the menu is rendered, in app/(all)/(dashboard)/sidebar-menu.tsx.
 export const coreSidebarMenuLinks: Record<TCoreSidebarMenuKey, TSidebarMenuItem> = {
   general: {
     Icon: SettingsOutline,
-    name: "General",
-    description: "Identify your instances and get key details.",
+    name: "admin.nav.general",
+    description: "admin.nav.general_description",
     href: `/general/`,
   },
   email: {
     Icon: MailOutline,
-    name: "Email",
-    description: "Configure your SMTP controls.",
+    name: "admin.nav.email",
+    description: "admin.nav.email_description",
     href: `/email/`,
   },
   workspace: {
     Icon: WorkspaceOutline,
-    name: "Workspaces",
-    description: "Manage all workspaces on this instance.",
+    name: "admin.nav.workspace",
+    description: "admin.nav.workspace_description",
     href: `/workspace/`,
   },
   authentication: {
     Icon: LockOutline,
-    name: "Authentication",
-    description: "Configure authentication modes.",
+    name: "admin.nav.authentication",
+    description: "admin.nav.authentication_description",
     href: `/authentication/`,
   },
   ai: {
     Icon: BrainCog,
-    name: "Artificial intelligence",
-    description: "Configure your OpenAI creds.",
+    name: "admin.nav.ai",
+    description: "admin.nav.ai_description",
     href: `/ai/`,
   },
   image: {
     Icon: ImageOutline,
-    name: "Images in Pace",
-    description: "Allow third-party image libraries.",
+    name: "admin.nav.images",
+    description: "admin.nav.images_description",
     href: `/image/`,
   },
 };

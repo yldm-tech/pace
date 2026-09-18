@@ -10,7 +10,25 @@
       "authentication": "Xác thực",
       "ai": "Trí tuệ nhân tạo",
       "images": "Hình ảnh",
-      "workspace": "Không gian làm việc"
+      "workspace": "Không gian làm việc",
+      "general_description": "Nhận diện các instance của bạn và xem những thông tin chính.",
+      "email_description": "Cấu hình các thiết lập SMTP của bạn.",
+      "workspace_description": "Quản lý tất cả không gian làm việc trên instance này.",
+      "authentication_description": "Cấu hình các phương thức xác thực.",
+      "ai_description": "Cấu hình thông tin xác thực OpenAI của bạn.",
+      "images_description": "Cho phép các thư viện ảnh của bên thứ ba.",
+      "instance_admin": "Quản trị instance",
+      "admin_user": "Người dùng quản trị",
+      "switch_to_light_mode": "Chuyển sang chế độ sáng",
+      "switch_to_dark_mode": "Chuyển sang chế độ tối",
+      "sign_out": "Đăng xuất",
+      "redirect_to_pace": "Chuyển hướng tới Pace",
+      "help": "Trợ giúp",
+      "toggle_sidebar": "Bật/tắt thanh bên",
+      "documentation": "Tài liệu",
+      "forum": "Tham gia diễn đàn của chúng tôi",
+      "report_bug": "Báo lỗi",
+      "version_label": "Phiên bản:"
     },
     "actions": {
       "save": "Lưu thay đổi",
@@ -91,7 +109,13 @@
       "sender": "Địa chỉ email người gửi",
       "username": "Tên người dùng",
       "security": "Bảo mật email",
-      "authentication": "Xác thực"
+      "authentication": "Xác thực",
+      "send_test": "Gửi email kiểm tra",
+      "receiver": "Email người nhận",
+      "send_failed": "Không thể gửi email",
+      "security_none": "Không dùng bảo mật email",
+      "security_select": "Chọn bảo mật email",
+      "test_hint": "Nếu bạn vẫn không tìm thấy email, hãy kiểm tra lại cấu hình SMTP và gửi một email kiểm tra mới."
     },
     "auth": {
       "heading": "Quản lý các phương thức xác thực cho instance của bạn",
@@ -116,6 +140,59 @@
       "authorized_redirect": "URI chuyển hướng được ủy quyền",
       "authorized_callback": "URI gọi lại được ủy quyền",
       "authorized_origin_url": "URL nguồn gốc được ủy quyền"
+    },
+    "oauth": {
+      "description": "Cho phép thành viên đăng nhập hoặc đăng ký Pace bằng tài khoản {provider} của họ.",
+      "unique_codes_description": "Đăng nhập hoặc đăng ký Pace bằng mã được gửi qua email. Bạn cần thiết lập SMTP để sử dụng phương thức này.",
+      "passwords_description": "Cho phép thành viên tạo tài khoản bằng mật khẩu và đăng nhập bằng địa chỉ email của họ.",
+      "provider_details": "Thông tin do {provider} cung cấp cho Pace",
+      "pace_details": "Thông tin do Pace cung cấp cho {provider}",
+      "web": "Web",
+      "go_back": "Quay lại",
+      "edit": "Chỉnh sửa",
+      "configure": "Cấu hình",
+      "learn_more": "Tìm hiểu thêm",
+      "here": "tại đây",
+      "refresh_attributes": "Làm mới thuộc tính người dùng từ {provider} khi đăng nhập",
+      "paste_into_field": "Chúng tôi sẽ tự động tạo giá trị này. Hãy dán vào trường {field} trong ứng dụng OAuth {provider} của bạn, bạn có thể thiết lập ứng dụng {link}.",
+      "copy": {
+        "title": "Đã sao chép vào bảng tạm",
+        "message": "{label} đã được sao chép vào bảng tạm."
+      },
+      "toast": {
+        "done": "Hoàn tất!",
+        "enabled": "Xác thực {provider} hiện đang hoạt động.",
+        "disabled": "Xác thực {provider} hiện đã bị tắt.",
+        "configured": "Xác thực {provider} của bạn đã được cấu hình. Bạn nên kiểm tra ngay."
+      },
+      "google": {
+        "client_id_description": "Client ID nằm trong Google API Console của bạn. {link}",
+        "client_id_doc_label": "Tài liệu về Client ID OAuth của Google",
+        "client_secret_description": "Client Secret cũng nằm trong Google API Console của bạn. {link}",
+        "client_secret_doc_label": "Tài liệu về Client Secret OAuth của Google",
+        "console_label": "Thông tin xác thực ứng dụng khách OAuth trong Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Bạn sẽ lấy được giá trị này trong {link}.",
+        "client_secret_description": "Client Secret cũng nằm trong {link}.",
+        "organization_id_description": "ID tổ chức GitHub.",
+        "app_settings_link": "Cài đặt ứng dụng OAuth GitHub",
+        "app_settings_label": "Cài đặt ứng dụng OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Đây là https://gitlab.com hoặc {domain} nơi bạn lưu trữ GitLab.",
+        "application_id_description": "Bạn sẽ lấy được giá trị này trong {link}.",
+        "secret_description": "Client Secret cũng nằm trong {link}.",
+        "app_settings_link": "Cài đặt ứng dụng OAuth GitLab",
+        "app_settings_label": "Cài đặt ứng dụng OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Sử dụng URL của instance Gitea của bạn. Với instance Gitea chính thức, hãy dùng \"https://gitea.com\".",
+        "client_id_description": "Bạn sẽ lấy được giá trị này trong {link}.",
+        "client_secret_description": "Client Secret cũng nằm trong {link}.",
+        "app_settings_link": "Cài đặt ứng dụng OAuth Gitea",
+        "app_settings_label": "Cài đặt ứng dụng OAuth Gitea"
+      }
     },
     "common": {
       "email": "Email",
@@ -161,6 +238,139 @@
       "name_placeholder": "Một cái tên quen thuộc và dễ nhận ra luôn là tốt nhất.",
       "slug_placeholder": "workspace-name",
       "go_back": "Quay lại"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Khóa truy cập từ tài khoản Unsplash của bạn",
+        "unsplash_key_help": "Bạn có thể tìm thấy khóa truy cập trong bảng điều khiển nhà phát triển Unsplash.",
+        "unsplash_docs_link": "Tìm hiểu thêm.",
+        "unsplash_docs_aria": "Tài liệu về tài khoản nhà phát triển Unsplash",
+        "saved": "Đã cập nhật cấu hình hình ảnh thành công"
+      },
+      "workspace": {
+        "name_label": "Đặt tên cho không gian làm việc của bạn",
+        "url_label": "Thiết lập URL cho không gian làm việc của bạn",
+        "slug_taken": "URL này đã được sử dụng. Hãy thử URL khác.",
+        "slug_invalid": "URL chỉ có thể chứa ( - ), ( _ ) và ký tự chữ và số.",
+        "size_label": "Bao nhiêu người sẽ sử dụng không gian làm việc này?",
+        "size_placeholder": "Chọn một khoảng",
+        "required_field": "Đây là trường bắt buộc.",
+        "create_submit": "Tạo không gian làm việc",
+        "creating": "Đang tạo không gian làm việc",
+        "logo_alt": "Logo không gian làm việc",
+        "slug_tooltip": "URL duy nhất của không gian làm việc của bạn",
+        "size_options": {
+          "just_myself": "Chỉ mình tôi",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Lỗi",
+          "message": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "admin_already_exist": {
+          "title": "Quản trị viên đã tồn tại",
+          "message": "Quản trị viên đã tồn tại. Vui lòng thử lại."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Cần có email, mật khẩu và tên",
+          "message": "Cần có email, mật khẩu và tên. Vui lòng thử lại."
+        },
+        "invalid_admin_email": {
+          "title": "Email quản trị viên không hợp lệ",
+          "message": "Email quản trị viên không hợp lệ. Vui lòng thử lại."
+        },
+        "invalid_admin_password": {
+          "title": "Mật khẩu quản trị viên không hợp lệ",
+          "message": "Mật khẩu quản trị viên không hợp lệ. Vui lòng thử lại."
+        },
+        "required_admin_email_password": {
+          "title": "Cần có email và mật khẩu",
+          "message": "Cần có email và mật khẩu. Vui lòng thử lại."
+        },
+        "admin_authentication_failed": {
+          "title": "Xác thực không thành công",
+          "message": "Xác thực không thành công. Vui lòng thử lại."
+        },
+        "admin_user_already_exist": {
+          "title": "Người dùng quản trị đã tồn tại",
+          "message": "Người dùng quản trị đã tồn tại. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Người dùng quản trị không tồn tại",
+          "message": "Người dùng quản trị không tồn tại. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Tài khoản người dùng đã bị vô hiệu hóa",
+          "message": "Tài khoản người dùng đã bị vô hiệu hóa. Vui lòng liên hệ {contact}."
+        },
+        "sign_in_link": "Đăng nhập ngay",
+        "administrator": "quản trị viên",
+        "dismiss_banner": "Đóng biểu ngữ"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Cài đặt chung",
+        "description": "Thay đổi tên instance và địa chỉ e-mail của quản trị viên instance. Bật hoặc tắt dữ liệu đo từ xa trong instance của bạn."
+      },
+      "email": {
+        "description": "Pace có thể gửi những email hữu ích cho bạn và người dùng của bạn từ chính instance của bạn mà không cần kết nối ra Internet.",
+        "test_hint": "Hãy thiết lập bên dưới và kiểm tra cài đặt của bạn trước khi lưu."
+      },
+      "ai": {
+        "title": "Tính năng AI cho tất cả không gian làm việc của bạn",
+        "description": "Cấu hình thông tin xác thực API AI của bạn để các tính năng AI của Pace được bật cho tất cả không gian làm việc của bạn."
+      },
+      "authentication": {
+        "description": "Cấu hình các phương thức xác thực cho nhóm của bạn và giới hạn việc đăng ký chỉ dành cho người được mời.",
+        "allow_signup_description": "Tắt tùy chọn này sẽ chỉ cho phép người dùng đăng ký khi họ được mời.",
+        "cannot_disable_message": "Phải giữ bật ít nhất một phương thức xác thực. Vui lòng bật một phương thức khác trước khi tắt phương thức này."
+      },
+      "workspace": {
+        "title": "Không gian làm việc trên instance này",
+        "description": "Xem tất cả không gian làm việc và kiểm soát ai có thể tạo chúng.",
+        "prevent_creation_description": "Bật tùy chọn này sẽ chỉ cho phép bạn tạo không gian làm việc. Bạn sẽ phải mời người dùng vào các không gian làm việc mới.",
+        "list_heading": "Tất cả không gian làm việc trên instance này",
+        "list_description": "Bạn chưa thể xóa không gian làm việc và chỉ có thể truy cập không gian làm việc nếu bạn là Quản trị viên hoặc Thành viên.",
+        "config_saving": "Đang lưu cấu hình",
+        "config_saved": "Đã lưu cấu hình thành công",
+        "config_save_failed": "Không thể lưu cấu hình"
+      },
+      "workspace_create": {
+        "title": "Tạo một không gian làm việc mới trên instance này.",
+        "description": "Bạn sẽ cần mời người dùng từ Cài đặt không gian làm việc sau khi tạo không gian làm việc này."
+      },
+      "breadcrumb": {
+        "aria_label": "Đường dẫn phân cấp",
+        "settings": "Cài đặt",
+        "general": "Chung",
+        "ai": "Trí tuệ nhân tạo",
+        "email": "Email",
+        "authentication": "Xác thực",
+        "image": "Hình ảnh",
+        "workspace": "Không gian làm việc",
+        "create": "Tạo"
+      }
+    },
+    "misc": {
+      "something_wrong": "Rất tiếc! Đã xảy ra lỗi.",
+      "go_to_general": "Đi tới cài đặt chung",
+      "instance_unavailable": "Không thể tải chi tiết instance.",
+      "instance_fetch_failed": "Không thể tải thông tin instance",
+      "loading": "Đang tải...",
+      "close_notification": "Đóng thông báo",
+      "unsaved_changes": "Bạn có thay đổi chưa lưu",
+      "unsaved_changes_body": "Những thay đổi bạn đã thực hiện sẽ bị mất nếu bạn quay lại. Bạn có muốn quay lại không?",
+      "setup_after": "Sau khi thiết lập, bạn sẽ có thể quản lý instance Pace này.",
+      "signin_subheading": "Cấu hình các cài đặt trên toàn instance để bảo mật instance của bạn",
+      "root_error": "Đã xảy ra lỗi.",
+      "create_workspace": "Tạo không gian làm việc"
     }
   }
 }

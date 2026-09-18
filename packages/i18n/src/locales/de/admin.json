@@ -10,7 +10,25 @@
       "authentication": "Authentifizierung",
       "ai": "Künstliche Intelligenz",
       "images": "Bilder",
-      "workspace": "Arbeitsbereiche"
+      "workspace": "Arbeitsbereiche",
+      "general_description": "Benennen Sie Ihre Instanzen und sehen Sie die wichtigsten Details.",
+      "email_description": "Konfigurieren Sie Ihre SMTP-Einstellungen.",
+      "workspace_description": "Verwalten Sie alle Arbeitsbereiche dieser Instanz.",
+      "authentication_description": "Konfigurieren Sie die Authentifizierungsmethoden.",
+      "ai_description": "Konfigurieren Sie Ihre OpenAI-Zugangsdaten.",
+      "images_description": "Bildbibliotheken von Drittanbietern erlauben.",
+      "instance_admin": "Instanz-Administrator",
+      "admin_user": "Administratorbenutzer",
+      "switch_to_light_mode": "Zum hellen Theme wechseln",
+      "switch_to_dark_mode": "Zum dunklen Theme wechseln",
+      "sign_out": "Abmelden",
+      "redirect_to_pace": "Zu Pace weiterleiten",
+      "help": "Hilfe",
+      "toggle_sidebar": "Seitenleiste umschalten",
+      "documentation": "Dokumentation",
+      "forum": "Unserem Forum beitreten",
+      "report_bug": "Fehler melden",
+      "version_label": "Version:"
     },
     "actions": {
       "save": "Änderungen speichern",
@@ -91,7 +109,13 @@
       "sender": "E-Mail-Adresse des Absenders",
       "username": "Benutzername",
       "security": "E-Mail-Sicherheit",
-      "authentication": "Authentifizierung"
+      "authentication": "Authentifizierung",
+      "send_test": "Test-E-Mail senden",
+      "receiver": "E-Mail-Adresse des Empfängers",
+      "send_failed": "E-Mail konnte nicht gesendet werden",
+      "security_none": "Keine E-Mail-Sicherheit",
+      "security_select": "E-Mail-Sicherheit auswählen",
+      "test_hint": "Wenn Sie sie immer noch nicht finden, prüfen Sie Ihre SMTP-Konfiguration erneut und lösen Sie eine neue Test-E-Mail aus."
     },
     "auth": {
       "heading": "Authentifizierungsmethoden für Ihre Instanz verwalten",
@@ -116,6 +140,59 @@
       "authorized_redirect": "Autorisierte Redirect-URI",
       "authorized_callback": "Autorisierte Callback-URI",
       "authorized_origin_url": "Autorisierte Origin-URL"
+    },
+    "oauth": {
+      "description": "Erlauben Sie Mitgliedern, sich mit ihrem {provider}-Konto bei Pace anzumelden oder zu registrieren.",
+      "unique_codes_description": "Melden Sie sich bei Pace mit Codes an, die per E-Mail versendet werden. Dafür muss SMTP eingerichtet sein.",
+      "passwords_description": "Erlauben Sie Mitgliedern, Konten mit Passwort anzulegen und sich damit über ihre E-Mail-Adresse anzumelden.",
+      "provider_details": "Von {provider} bereitgestellte Angaben für Pace",
+      "pace_details": "Von Pace bereitgestellte Angaben für {provider}",
+      "web": "Web",
+      "go_back": "Zurück",
+      "edit": "Bearbeiten",
+      "configure": "Konfigurieren",
+      "learn_more": "Mehr erfahren",
+      "here": "hier",
+      "refresh_attributes": "Benutzerattribute bei der Anmeldung von {provider} aktualisieren",
+      "paste_into_field": "Dies wird automatisch generiert. Fügen Sie es in das Feld {field} Ihrer {provider} OAuth-Anwendung ein, die Sie {link} einrichten können.",
+      "copy": {
+        "title": "In die Zwischenablage kopiert",
+        "message": "{label} wurde in die Zwischenablage kopiert."
+      },
+      "toast": {
+        "done": "Fertig!",
+        "enabled": "Die {provider}-Authentifizierung ist jetzt aktiv.",
+        "disabled": "Die {provider}-Authentifizierung ist jetzt deaktiviert.",
+        "configured": "Ihre {provider}-Authentifizierung ist konfiguriert. Testen Sie sie jetzt."
+      },
+      "google": {
+        "client_id_description": "Ihre Client ID finden Sie in Ihrer Google API Console. {link}",
+        "client_id_doc_label": "Dokumentation zur Google OAuth Client ID",
+        "client_secret_description": "Ihr Client Secret finden Sie ebenfalls in Ihrer Google API Console. {link}",
+        "client_secret_doc_label": "Dokumentation zum Google OAuth Client Secret",
+        "console_label": "Anmeldedaten für OAuth-Clients in der Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Diesen Wert erhalten Sie in Ihren {link}.",
+        "client_secret_description": "Ihr Client Secret finden Sie ebenfalls in Ihren {link}.",
+        "organization_id_description": "Die GitHub-Organisations-ID.",
+        "app_settings_link": "GitHub OAuth-Anwendungseinstellungen",
+        "app_settings_label": "GitHub OAuth-Anwendungseinstellungen"
+      },
+      "gitlab": {
+        "host_description": "Das ist entweder https://gitlab.com oder die {domain}, unter der Sie GitLab hosten.",
+        "application_id_description": "Diesen Wert erhalten Sie in Ihren {link}.",
+        "secret_description": "Das Client Secret finden Sie ebenfalls in Ihren {link}.",
+        "app_settings_link": "GitLab OAuth-Anwendungseinstellungen",
+        "app_settings_label": "GitLab OAuth-Anwendungseinstellungen"
+      },
+      "gitea": {
+        "host_description": "Verwenden Sie die URL Ihrer Gitea-Instanz. Für die offizielle Gitea-Instanz verwenden Sie „https://gitea.com“.",
+        "client_id_description": "Diesen Wert erhalten Sie in Ihren {link}.",
+        "client_secret_description": "Ihr Client Secret finden Sie ebenfalls in Ihren {link}.",
+        "app_settings_link": "Gitea OAuth-Anwendungseinstellungen",
+        "app_settings_label": "Gitea OAuth-Anwendungseinstellungen"
+      }
     },
     "common": {
       "email": "E-Mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Etwas Vertrautes und Wiedererkennbares ist immer am besten.",
       "slug_placeholder": "workspace-name",
       "go_back": "Zurück"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Zugriffsschlüssel aus Ihrem Unsplash-Konto",
+        "unsplash_key_help": "Ihren Zugriffsschlüssel finden Sie in Ihrer Unsplash-Entwicklerkonsole.",
+        "unsplash_docs_link": "Mehr erfahren.",
+        "unsplash_docs_aria": "Dokumentation zum Unsplash-Entwicklerkonto",
+        "saved": "Bildkonfiguration erfolgreich aktualisiert"
+      },
+      "workspace": {
+        "name_label": "Benennen Sie Ihren Arbeitsbereich",
+        "url_label": "Legen Sie die URL Ihres Arbeitsbereichs fest",
+        "slug_taken": "Diese URL ist bereits vergeben. Versuchen Sie eine andere.",
+        "slug_invalid": "URLs dürfen nur ( - ), ( _ ) und alphanumerische Zeichen enthalten.",
+        "size_label": "Wie viele Personen werden diesen Arbeitsbereich nutzen?",
+        "size_placeholder": "Bereich auswählen",
+        "required_field": "Dies ist ein Pflichtfeld.",
+        "create_submit": "Arbeitsbereich erstellen",
+        "creating": "Arbeitsbereich wird erstellt",
+        "logo_alt": "Logo des Arbeitsbereichs",
+        "slug_tooltip": "Die eindeutige URL Ihres Arbeitsbereichs",
+        "size_options": {
+          "just_myself": "Nur ich",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Fehler",
+          "message": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+        },
+        "admin_already_exist": {
+          "title": "Administrator existiert bereits",
+          "message": "Der Administrator existiert bereits. Bitte versuchen Sie es erneut."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "E-Mail, Passwort und Vorname erforderlich",
+          "message": "E-Mail, Passwort und Vorname sind erforderlich. Bitte versuchen Sie es erneut."
+        },
+        "invalid_admin_email": {
+          "title": "Ungültige Administrator-E-Mail",
+          "message": "Die Administrator-E-Mail ist ungültig. Bitte versuchen Sie es erneut."
+        },
+        "invalid_admin_password": {
+          "title": "Ungültiges Administrator-Passwort",
+          "message": "Das Administrator-Passwort ist ungültig. Bitte versuchen Sie es erneut."
+        },
+        "required_admin_email_password": {
+          "title": "E-Mail und Passwort erforderlich",
+          "message": "E-Mail und Passwort sind erforderlich. Bitte versuchen Sie es erneut."
+        },
+        "admin_authentication_failed": {
+          "title": "Authentifizierung fehlgeschlagen",
+          "message": "Die Authentifizierung ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+        },
+        "admin_user_already_exist": {
+          "title": "Administratorbenutzer existiert bereits",
+          "message": "Der Administratorbenutzer existiert bereits. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Administratorbenutzer existiert nicht",
+          "message": "Der Administratorbenutzer existiert nicht. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Benutzerkonto deaktiviert",
+          "message": "Das Benutzerkonto wurde deaktiviert. Bitte wenden Sie sich an {contact}."
+        },
+        "sign_in_link": "Jetzt anmelden",
+        "administrator": "einen Administrator",
+        "dismiss_banner": "Banner schließen"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Allgemeine Einstellungen",
+        "description": "Ändern Sie den Namen Ihrer Instanz und die E-Mail-Adressen der Instanz-Administratoren. Aktivieren oder deaktivieren Sie die Telemetrie in Ihrer Instanz."
+      },
+      "email": {
+        "description": "Pace kann Ihnen und Ihren Benutzern nützliche E-Mails aus Ihrer eigenen Instanz senden, ohne dafür mit dem Internet zu kommunizieren.",
+        "test_hint": "Richten Sie sie unten ein und testen Sie Ihre Einstellungen bitte, bevor Sie sie speichern."
+      },
+      "ai": {
+        "title": "KI-Funktionen für alle Ihre Arbeitsbereiche",
+        "description": "Konfigurieren Sie Ihre KI-API-Zugangsdaten, damit die KI-Funktionen von Pace für alle Ihre Arbeitsbereiche aktiviert sind."
+      },
+      "authentication": {
+        "description": "Konfigurieren Sie die Authentifizierungsmethoden für Ihr Team und beschränken Sie Registrierungen auf eingeladene Personen.",
+        "allow_signup_description": "Wenn Sie dies ausschalten, können sich Benutzer nur noch nach einer Einladung registrieren.",
+        "cannot_disable_message": "Mindestens eine Authentifizierungsmethode muss aktiviert bleiben. Bitte aktivieren Sie eine andere Methode, bevor Sie diese deaktivieren."
+      },
+      "workspace": {
+        "title": "Arbeitsbereiche dieser Instanz",
+        "description": "Sehen Sie alle Arbeitsbereiche und steuern Sie, wer sie erstellen darf.",
+        "prevent_creation_description": "Wenn Sie dies einschalten, können nur Sie Arbeitsbereiche erstellen. Sie müssen Benutzer dann selbst in neue Arbeitsbereiche einladen.",
+        "list_heading": "Alle Arbeitsbereiche dieser Instanz",
+        "list_description": "Arbeitsbereiche können noch nicht gelöscht werden, und Sie können einen Arbeitsbereich nur öffnen, wenn Sie dort Administrator oder Mitglied sind.",
+        "config_saving": "Konfiguration wird gespeichert",
+        "config_saved": "Konfiguration erfolgreich gespeichert",
+        "config_save_failed": "Konfiguration konnte nicht gespeichert werden"
+      },
+      "workspace_create": {
+        "title": "Erstellen Sie einen neuen Arbeitsbereich auf dieser Instanz.",
+        "description": "Nachdem Sie diesen Arbeitsbereich erstellt haben, müssen Sie Benutzer über die Arbeitsbereichseinstellungen einladen."
+      },
+      "breadcrumb": {
+        "aria_label": "Navigationspfad",
+        "settings": "Einstellungen",
+        "general": "Allgemein",
+        "ai": "Künstliche Intelligenz",
+        "email": "E-Mail",
+        "authentication": "Authentifizierung",
+        "image": "Bild",
+        "workspace": "Arbeitsbereich",
+        "create": "Erstellen"
+      }
+    },
+    "misc": {
+      "something_wrong": "Hoppla! Etwas ist schiefgelaufen.",
+      "go_to_general": "Zu den allgemeinen Einstellungen",
+      "instance_unavailable": "Die Instanzdetails konnten nicht abgerufen werden.",
+      "instance_fetch_failed": "Die Instanzinformationen konnten nicht abgerufen werden",
+      "loading": "Wird geladen...",
+      "close_notification": "Benachrichtigung schließen",
+      "unsaved_changes": "Sie haben nicht gespeicherte Änderungen",
+      "unsaved_changes_body": "Ihre Änderungen gehen verloren, wenn Sie zurückgehen. Möchten Sie zurückgehen?",
+      "setup_after": "Nach der Einrichtung können Sie diese Pace-Instanz verwalten.",
+      "signin_subheading": "Konfigurieren Sie instanzweite Einstellungen, um Ihre Instanz abzusichern",
+      "root_error": "Etwas ist schiefgelaufen.",
+      "create_workspace": "Arbeitsbereich erstellen"
     }
   }
 }

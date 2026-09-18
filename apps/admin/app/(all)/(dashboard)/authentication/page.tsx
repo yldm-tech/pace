@@ -59,8 +59,7 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
             setToast({
               type: TOAST_TYPE.ERROR,
               title: t("admin.auth.cannot_disable"),
-              message:
-                "At least one authentication method must remain enabled. Please enable another method before disabling this one.",
+              message: t("admin.page.authentication.cannot_disable_message"),
             });
             return;
           }
@@ -117,7 +116,7 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
     <PageWrapper
       header={{
         title: t("admin.auth.heading"),
-        description: "Configure authentication modes for your team and restrict sign-ups to be invite only.",
+        description: t("admin.page.authentication.description"),
       }}
     >
       {formattedConfig ? (
@@ -127,7 +126,7 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
               <div className="grow">
                 <div className="pb-1 text-16 font-medium">{t("admin.auth.allow_signup")}</div>
                 <div className={cn("text-11 leading-5 font-regular text-tertiary")}>
-                  Toggling this off will only let users sign up when they are invited.
+                  {t("admin.page.authentication.allow_signup_description")}
                 </div>
               </div>
             </div>
@@ -174,6 +173,6 @@ const InstanceAuthenticationPage = observer(function InstanceAuthenticationPage(
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Authentication Settings - Pace Web" }];
+export const meta: Route.MetaFunction = () => [{ title: "Authentication Settings - Pace Admin" }];
 
 export default InstanceAuthenticationPage;

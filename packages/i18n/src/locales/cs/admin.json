@@ -10,7 +10,25 @@
       "authentication": "Ověřování",
       "ai": "Umělá inteligence",
       "images": "Obrázky",
-      "workspace": "Pracovní prostory"
+      "workspace": "Pracovní prostory",
+      "general_description": "Identifikujte své instance a získejte klíčové údaje.",
+      "email_description": "Nastavte ovládání SMTP.",
+      "workspace_description": "Spravujte všechny pracovní prostory v této instanci.",
+      "authentication_description": "Nastavte režimy ověřování.",
+      "ai_description": "Nastavte své přihlašovací údaje k OpenAI.",
+      "images_description": "Povolte knihovny obrázků třetích stran.",
+      "instance_admin": "Správce instance",
+      "admin_user": "Uživatel-správce",
+      "switch_to_light_mode": "Přepnout na světlý režim",
+      "switch_to_dark_mode": "Přepnout na tmavý režim",
+      "sign_out": "Odhlásit se",
+      "redirect_to_pace": "Přesměrovat do Pace",
+      "help": "Nápověda",
+      "toggle_sidebar": "Přepnout postranní panel",
+      "documentation": "Dokumentace",
+      "forum": "Připojte se k našemu fóru",
+      "report_bug": "Nahlásit chybu",
+      "version_label": "Verze:"
     },
     "actions": {
       "save": "Uložit změny",
@@ -24,15 +42,15 @@
     },
     "ai": {
       "heading": "Jazykový model",
-      "subheading": "Asistent mluví jediným protokolem, takže ho obslouží jakýkoli endpoint, který odpovídá na OpenAI-shaped chat completion.",
+      "subheading": "Asistent mluví jediným protokolem, takže ho obslouží jakýkoli endpoint, který odpovídá na chat completion ve formátu OpenAI.",
       "provider": {
         "label": "Poskytovatel",
         "custom": "Vlastní",
-        "description": "Výběrem poskytovatele se doplní jeho endpoint a model dostane výchozí hodnotu. Volba Vlastní se zeptá na obojí a funguje s čímkoli, co odpovídá na OpenAI-shaped chat completion."
+        "description": "Výběrem poskytovatele se doplní jeho endpoint a model dostane výchozí hodnotu. Volba Vlastní se zeptá na obojí a funguje s čímkoli, co odpovídá na chat completion ve formátu OpenAI."
       },
       "base_url": {
         "label": "Base URL",
-        "description": "Adresa, na které se žádá o completions. Funguje tu cokoli, co odpovídá na OpenAI-shaped POST /chat/completions — brána, vlastní server, nebo endpoint samotného poskytovatele. Pro OpenAI ji nechte prázdnou.",
+        "description": "Adresa, na kterou se posílají žádosti o completion. Funguje tu cokoli, co odpovídá na POST /chat/completions ve formátu OpenAI — brána, vlastní server, nebo endpoint samotného poskytovatele. Pro OpenAI ji nechte prázdnou.",
         "placeholder": "https://api.openai.com/v1"
       },
       "model": {
@@ -53,7 +71,7 @@
         "description": "Odesílá se jako bearer token na Base URL výše.",
         "placeholder": "sk-..."
       },
-      "not_listed": "Není váš poskytovatel v seznamu? Zvolte Vlastní a zadejte Base URL — stačí cokoli OpenAI-shaped.",
+      "not_listed": "Není váš poskytovatel v seznamu? Zvolte Vlastní a zadejte Base URL — stačí cokoli ve formátu OpenAI.",
       "saved": "Nastavení AI bylo úspěšně aktualizováno"
     },
     "general": {
@@ -86,12 +104,18 @@
       "disable_error_title": "Chyba při zakazování e-mailu",
       "disable_error_message": "Funkci e-mailu se nepodařilo zakázat. Zkuste to prosím znovu.",
       "saved": "Nastavení e-mailu bylo úspěšně aktualizováno",
-      "host": "Host",
+      "host": "Hostitel",
       "port": "Port",
       "sender": "E-mailová adresa odesílatele",
       "username": "Uživatelské jméno",
       "security": "Zabezpečení e-mailu",
-      "authentication": "Ověřování"
+      "authentication": "Ověřování",
+      "send_test": "Odeslat testovací e-mail",
+      "receiver": "E-mail příjemce",
+      "send_failed": "E-mail se nepodařilo odeslat",
+      "security_none": "Žádné zabezpečení e-mailu",
+      "security_select": "Vyberte zabezpečení e-mailu",
+      "test_hint": "Pokud ho stále nemůžete najít, zkontrolujte konfiguraci SMTP a odešlete nový testovací e-mail."
     },
     "auth": {
       "heading": "Spravujte režimy ověřování pro svou instanci",
@@ -103,19 +127,72 @@
       "save_failed": "Konfiguraci se nepodařilo uložit",
       "client_id": "Client ID",
       "client_secret": "Client Secret",
-      "host": "Host",
+      "host": "Hostitel",
       "origin_url": "Origin URL",
       "callback_uri": "Callback URI",
       "callback_url": "Callback URL",
       "redirect_uri": "Redirect URI",
       "application_id": "ID aplikace",
-      "secret": "Tajný klíč",
+      "secret": "Client Secret",
       "organization_id": "ID organizace",
-      "gitea_host": "Gitea Host",
+      "gitea_host": "Hostitel Gitea",
       "authorized_origins": "Autorizované zdroje JavaScriptu",
       "authorized_redirect": "Autorizovaný Redirect URI",
       "authorized_callback": "Autorizovaný Callback URI",
       "authorized_origin_url": "Autorizovaná Origin URL"
+    },
+    "oauth": {
+      "description": "Umožněte členům přihlásit se nebo zaregistrovat do Pace pomocí účtů {provider}.",
+      "unique_codes_description": "Přihlášení nebo registrace do Pace pomocí kódů zasílaných e-mailem. Pro použití této metody musíte mít nastavené SMTP.",
+      "passwords_description": "Umožněte členům vytvářet účty s heslem a přihlašovat se pomocí e-mailové adresy.",
+      "provider_details": "Údaje poskytnuté službou {provider} pro Pace",
+      "pace_details": "Údaje poskytnuté službou Pace pro {provider}",
+      "web": "Web",
+      "go_back": "Zpět",
+      "edit": "Upravit",
+      "configure": "Konfigurovat",
+      "learn_more": "Zjistit více",
+      "here": "zde",
+      "refresh_attributes": "Při přihlášení aktualizovat atributy uživatele z {provider}",
+      "paste_into_field": "Vygenerujeme to automaticky. Vložte tuto hodnotu do pole {field} své aplikace OAuth {provider}, kterou nastavíte {link}.",
+      "copy": {
+        "title": "Zkopírováno do schránky",
+        "message": "Hodnota {label} byla zkopírována do schránky."
+      },
+      "toast": {
+        "done": "Hotovo!",
+        "enabled": "Ověřování {provider} je nyní aktivní.",
+        "disabled": "Ověřování {provider} je nyní zakázané.",
+        "configured": "Ověřování {provider} je nastavené. Nyní ho otestujte."
+      },
+      "google": {
+        "client_id_description": "Client ID najdete ve své Google API Console. {link}",
+        "client_id_doc_label": "Dokumentace k Client ID OAuth Google",
+        "client_secret_description": "Client Secret najdete rovněž ve své Google API Console. {link}",
+        "client_secret_doc_label": "Dokumentace ke Client Secret OAuth Google",
+        "console_label": "Přihlašovací údaje klienta OAuth v Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Tuto hodnotu získáte v sekci {link}.",
+        "client_secret_description": "Client Secret najdete rovněž v sekci {link}.",
+        "organization_id_description": "ID organizace GitHub.",
+        "app_settings_link": "Nastavení aplikace OAuth GitHub",
+        "app_settings_label": "Nastavení aplikace OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Je to buď https://gitlab.com, nebo {domain}, na které hostujete GitLab.",
+        "application_id_description": "Tuto hodnotu získáte v sekci {link}.",
+        "secret_description": "Client Secret najdete rovněž v sekci {link}.",
+        "app_settings_link": "Nastavení aplikace OAuth GitLab",
+        "app_settings_label": "Nastavení aplikace OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Použijte URL své instance Gitea. Pro oficiální instanci Gitea použijte „https://gitea.com“.",
+        "client_id_description": "Tuto hodnotu získáte v sekci {link}.",
+        "client_secret_description": "Client Secret najdete rovněž v sekci {link}.",
+        "app_settings_link": "Nastavení aplikace OAuth Gitea",
+        "app_settings_label": "Nastavení aplikace OAuth Gitea"
+      }
     },
     "common": {
       "email": "E-mail",
@@ -161,6 +238,139 @@
       "name_placeholder": "Nejlepší je něco známého a dobře rozpoznatelného.",
       "slug_placeholder": "workspace-name",
       "go_back": "Zpět"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Přístupový klíč z vašeho účtu Unsplash",
+        "unsplash_key_help": "Přístupový klíč najdete ve vývojářské konzoli Unsplash.",
+        "unsplash_docs_link": "Zjistit více.",
+        "unsplash_docs_aria": "Dokumentace k vývojářskému účtu Unsplash",
+        "saved": "Konfigurace obrázků byla úspěšně aktualizována"
+      },
+      "workspace": {
+        "name_label": "Pojmenujte svůj pracovní prostor",
+        "url_label": "Nastavte URL svého pracovního prostoru",
+        "slug_taken": "Tato URL je již obsazená. Zkuste jinou.",
+        "slug_invalid": "URL může obsahovat pouze ( - ), ( _ ) a alfanumerické znaky.",
+        "size_label": "Kolik lidí bude tento pracovní prostor používat?",
+        "size_placeholder": "Vyberte rozsah",
+        "required_field": "Toto pole je povinné.",
+        "create_submit": "Vytvořit pracovní prostor",
+        "creating": "Vytváření pracovního prostoru",
+        "logo_alt": "Logo pracovního prostoru",
+        "slug_tooltip": "Jedinečná URL vašeho pracovního prostoru",
+        "size_options": {
+          "just_myself": "Pouze já",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Chyba",
+          "message": "Něco se pokazilo. Zkuste to prosím znovu."
+        },
+        "admin_already_exist": {
+          "title": "Správce již existuje",
+          "message": "Správce již existuje. Zkuste to prosím znovu."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Je vyžadován e-mail, heslo a jméno",
+          "message": "Je vyžadován e-mail, heslo a jméno. Zkuste to prosím znovu."
+        },
+        "invalid_admin_email": {
+          "title": "Neplatný e-mail správce",
+          "message": "Neplatný e-mail správce. Zkuste to prosím znovu."
+        },
+        "invalid_admin_password": {
+          "title": "Neplatné heslo správce",
+          "message": "Neplatné heslo správce. Zkuste to prosím znovu."
+        },
+        "required_admin_email_password": {
+          "title": "Je vyžadován e-mail a heslo",
+          "message": "Je vyžadován e-mail a heslo. Zkuste to prosím znovu."
+        },
+        "admin_authentication_failed": {
+          "title": "Ověření se nezdařilo",
+          "message": "Ověření se nezdařilo. Zkuste to prosím znovu."
+        },
+        "admin_user_already_exist": {
+          "title": "Uživatel-správce již existuje",
+          "message": "Uživatel-správce již existuje. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Uživatel-správce neexistuje",
+          "message": "Uživatel-správce neexistuje. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Uživatelský účet byl deaktivován",
+          "message": "Uživatelský účet byl deaktivován. Kontaktujte prosím {contact}."
+        },
+        "sign_in_link": "Přihlaste se nyní",
+        "administrator": "správce",
+        "dismiss_banner": "Zavřít oznámení"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Obecná nastavení",
+        "description": "Změňte název své instance a e-mailové adresy správců instance. Povolte nebo zakažte telemetrii ve své instanci."
+      },
+      "email": {
+        "description": "Pace může vám i vašim uživatelům posílat užitečné e-maily z vaší vlastní instance, aniž by komunikoval s internetem.",
+        "test_hint": "Nastavte ho níže a před uložením prosím své nastavení otestujte."
+      },
+      "ai": {
+        "title": "Funkce AI pro všechny vaše pracovní prostory",
+        "description": "Nastavte své přihlašovací údaje k AI API, aby byly funkce Pace AI zapnuté ve všech vašich pracovních prostorech."
+      },
+      "authentication": {
+        "description": "Nastavte režimy ověřování pro svůj tým a omezte registraci pouze na pozvánky.",
+        "allow_signup_description": "Vypnutím této volby se budou moci zaregistrovat pouze pozvaní uživatelé.",
+        "cannot_disable_message": "Alespoň jedna metoda ověřování musí zůstat povolená. Před zakázáním této metody prosím povolte jinou."
+      },
+      "workspace": {
+        "title": "Pracovní prostory v této instanci",
+        "description": "Zobrazte si všechny pracovní prostory a určete, kdo je může vytvářet.",
+        "prevent_creation_description": "Zapnutím této volby budete moci pracovní prostory vytvářet jen vy. Uživatele do nových pracovních prostorů budete muset pozvat.",
+        "list_heading": "Všechny pracovní prostory v této instanci",
+        "list_description": "Pracovní prostory zatím nelze mazat a přejít do pracovního prostoru můžete, jen pokud jste jeho správce nebo člen.",
+        "config_saving": "Ukládání konfigurace",
+        "config_saved": "Konfigurace byla úspěšně uložena",
+        "config_save_failed": "Konfiguraci se nepodařilo uložit"
+      },
+      "workspace_create": {
+        "title": "Vytvořte v této instanci nový pracovní prostor.",
+        "description": "Po vytvoření tohoto pracovního prostoru budete muset uživatele pozvat v nastavení pracovního prostoru."
+      },
+      "breadcrumb": {
+        "aria_label": "Drobečková navigace",
+        "settings": "Nastavení",
+        "general": "Obecné",
+        "ai": "Umělá inteligence",
+        "email": "E-mail",
+        "authentication": "Ověřování",
+        "image": "Obrázek",
+        "workspace": "Pracovní prostor",
+        "create": "Vytvořit"
+      }
+    },
+    "misc": {
+      "something_wrong": "Jejda! Něco se pokazilo.",
+      "go_to_general": "Přejít do obecných nastavení",
+      "instance_unavailable": "Nepodařilo se načíst podrobnosti instance.",
+      "instance_fetch_failed": "Načtení informací o instanci se nezdařilo",
+      "loading": "Načítání...",
+      "close_notification": "Zavřít oznámení",
+      "unsaved_changes": "Máte neuložené změny",
+      "unsaved_changes_body": "Provedené změny se ztratí, pokud se vrátíte zpět. Chcete se vrátit zpět?",
+      "setup_after": "Po dokončení nastavení budete moci spravovat tuto instanci Pace.",
+      "signin_subheading": "Nastavte možnosti platné pro celou instanci a zabezpečte ji",
+      "root_error": "Něco se pokazilo.",
+      "create_workspace": "Vytvořit pracovní prostor"
     }
   }
 }

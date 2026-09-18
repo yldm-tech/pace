@@ -15,8 +15,10 @@ import { useInstance } from "@/hooks/store";
 import type { Route } from "./+types/page";
 // local
 import { InstanceAIForm } from "./form";
+import { useTranslation } from "@pace/i18n";
 
 const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentProps) {
+  const { t } = useTranslation();
   // store
   const { fetchInstanceConfigurations, formattedConfig } = useInstance();
 
@@ -25,8 +27,8 @@ const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentP
   return (
     <PageWrapper
       header={{
-        title: "AI features for all your workspaces",
-        description: "Configure your AI API credentials so Pace AI features are turned on for all your workspaces.",
+        title: t("admin.page.ai.title"),
+        description: t("admin.page.ai.description"),
       }}
     >
       {formattedConfig ? (

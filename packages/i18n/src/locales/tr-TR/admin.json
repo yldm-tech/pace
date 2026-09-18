@@ -10,7 +10,25 @@
       "authentication": "Kimlik Doğrulama",
       "ai": "Yapay zeka",
       "images": "Görseller",
-      "workspace": "Çalışma alanları"
+      "workspace": "Çalışma alanları",
+      "general_description": "Örneklerinizi tanımlayın ve önemli ayrıntıları görün.",
+      "email_description": "SMTP denetimlerinizi yapılandırın.",
+      "workspace_description": "Bu örnekteki tüm çalışma alanlarını yönetin.",
+      "authentication_description": "Kimlik doğrulama modlarını yapılandırın.",
+      "ai_description": "OpenAI kimlik bilgilerinizi yapılandırın.",
+      "images_description": "Üçüncü taraf görsel kitaplıklarına izin verin.",
+      "instance_admin": "Örnek yöneticisi",
+      "admin_user": "Yönetici kullanıcı",
+      "switch_to_light_mode": "Açık moda geç",
+      "switch_to_dark_mode": "Koyu moda geç",
+      "sign_out": "Çıkış yap",
+      "redirect_to_pace": "Pace'e yönlendir",
+      "help": "Yardım",
+      "toggle_sidebar": "Kenar çubuğunu aç/kapat",
+      "documentation": "Dokümantasyon",
+      "forum": "Forumumuza katılın",
+      "report_bug": "Hata bildir",
+      "version_label": "Sürüm:"
     },
     "actions": {
       "save": "Değişiklikleri kaydet",
@@ -91,7 +109,13 @@
       "sender": "Gönderenin e-posta adresi",
       "username": "Kullanıcı adı",
       "security": "E-posta güvenliği",
-      "authentication": "Kimlik Doğrulama"
+      "authentication": "Kimlik Doğrulama",
+      "send_test": "Test e-postası gönder",
+      "receiver": "Alıcı e-postası",
+      "send_failed": "E-posta gönderilemedi",
+      "security_none": "E-posta güvenliği yok",
+      "security_select": "E-posta güvenliğini seçin",
+      "test_hint": "Hâlâ bulamıyorsanız SMTP yapılandırmanızı tekrar gözden geçirin ve yeni bir test e-postası gönderin."
     },
     "auth": {
       "heading": "Örneğiniz için kimlik doğrulama modlarını yönetin",
@@ -116,6 +140,59 @@
       "authorized_redirect": "Yetkilendirilmiş Yönlendirme URI'si",
       "authorized_callback": "Yetkilendirilmiş Geri Çağırma URI'si",
       "authorized_origin_url": "Yetkilendirilmiş kaynak URL'si"
+    },
+    "oauth": {
+      "description": "Üyelerin {provider} hesaplarıyla Pace'e giriş yapmasına veya kaydolmasına izin verin.",
+      "unique_codes_description": "E-posta ile gönderilen kodları kullanarak Pace'e giriş yapın veya kaydolun. Bu yöntemi kullanmak için SMTP'yi yapılandırmış olmanız gerekir.",
+      "passwords_description": "Üyelerin şifreyle hesap oluşturmasına ve e-posta adresleriyle giriş yapmasına izin verin.",
+      "provider_details": "Pace için {provider} tarafından sağlanan bilgiler",
+      "pace_details": "{provider} için Pace tarafından sağlanan bilgiler",
+      "web": "Web",
+      "go_back": "Geri dön",
+      "edit": "Düzenle",
+      "configure": "Yapılandır",
+      "learn_more": "Daha fazla bilgi",
+      "here": "buradan",
+      "refresh_attributes": "Giriş sırasında kullanıcı özniteliklerini {provider} üzerinden yenile",
+      "paste_into_field": "Bu değeri sizin için otomatik oluşturuyoruz. {link} yapılandırabileceğiniz {provider} OAuth uygulamanızdaki {field} alanına yapıştırın.",
+      "copy": {
+        "title": "Panoya kopyalandı",
+        "message": "{label} panonuza kopyalandı."
+      },
+      "toast": {
+        "done": "Tamamlandı!",
+        "enabled": "{provider} kimlik doğrulaması artık etkin.",
+        "disabled": "{provider} kimlik doğrulaması artık devre dışı.",
+        "configured": "{provider} kimlik doğrulamanız yapılandırıldı. Şimdi test etmelisiniz."
+      },
+      "google": {
+        "client_id_description": "Client ID bilginiz Google API Console'da yer alır. {link}",
+        "client_id_doc_label": "Google OAuth Client ID belgeleri",
+        "client_secret_description": "Client Secret bilginiz de Google API Console'da yer alır. {link}",
+        "client_secret_doc_label": "Google OAuth Client Secret belgeleri",
+        "console_label": "Google Cloud Console OAuth istemci kimlik bilgileri"
+      },
+      "github": {
+        "client_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
+        "client_secret_description": "Client Secret bilginiz de {link} bölümünde yer alır.",
+        "organization_id_description": "GitHub kuruluş kimliği.",
+        "app_settings_link": "GitHub OAuth uygulama ayarları",
+        "app_settings_label": "GitHub OAuth uygulama ayarları"
+      },
+      "gitlab": {
+        "host_description": "Bu ya https://gitlab.com ya da GitLab'ı barındırdığınız {domain} adresidir.",
+        "application_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
+        "secret_description": "Client Secret de {link} bölümünde yer alır.",
+        "app_settings_link": "GitLab OAuth uygulama ayarları",
+        "app_settings_label": "GitLab OAuth uygulama ayarları"
+      },
+      "gitea": {
+        "host_description": "Gitea örneğinizin URL'sini kullanın. Resmi Gitea örneği için \"https://gitea.com\" adresini kullanın.",
+        "client_id_description": "Bu değeri {link} bölümünden alabilirsiniz.",
+        "client_secret_description": "Client Secret bilginiz de {link} bölümünde yer alır.",
+        "app_settings_link": "Gitea OAuth uygulama ayarları",
+        "app_settings_label": "Gitea OAuth uygulama ayarları"
+      }
     },
     "common": {
       "email": "E-posta",
@@ -161,6 +238,139 @@
       "name_placeholder": "Tanıdık ve akılda kalıcı bir ad her zaman en iyisidir.",
       "slug_placeholder": "workspace-name",
       "go_back": "Geri dön"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Unsplash hesabınızdan erişim anahtarı",
+        "unsplash_key_help": "Erişim anahtarınızı Unsplash geliştirici konsolunuzda bulabilirsiniz.",
+        "unsplash_docs_link": "Daha fazla bilgi edinin.",
+        "unsplash_docs_aria": "Unsplash geliştirici hesabı belgeleri",
+        "saved": "Görsel yapılandırması başarıyla güncellendi"
+      },
+      "workspace": {
+        "name_label": "Çalışma alanınıza bir ad verin",
+        "url_label": "Çalışma alanınızın URL'sini belirleyin",
+        "slug_taken": "Bu URL kullanılıyor. Başka bir tane deneyin.",
+        "slug_invalid": "URL'ler yalnızca ( - ), ( _ ) ve alfanümerik karakterler içerebilir.",
+        "size_label": "Bu çalışma alanını kaç kişi kullanacak?",
+        "size_placeholder": "Bir aralık seçin",
+        "required_field": "Bu alan zorunludur.",
+        "create_submit": "Çalışma alanı oluştur",
+        "creating": "Çalışma alanı oluşturuluyor",
+        "logo_alt": "Çalışma alanı logosu",
+        "slug_tooltip": "Çalışma alanınızın benzersiz URL'si",
+        "size_options": {
+          "just_myself": "Yalnızca ben",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Hata",
+          "message": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+        },
+        "admin_already_exist": {
+          "title": "Yönetici zaten mevcut",
+          "message": "Yönetici zaten mevcut. Lütfen tekrar deneyin."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "E-posta, şifre ve ad gerekli",
+          "message": "E-posta, şifre ve ad gereklidir. Lütfen tekrar deneyin."
+        },
+        "invalid_admin_email": {
+          "title": "Geçersiz yönetici e-postası",
+          "message": "Yönetici e-postası geçersiz. Lütfen tekrar deneyin."
+        },
+        "invalid_admin_password": {
+          "title": "Geçersiz yönetici şifresi",
+          "message": "Yönetici şifresi geçersiz. Lütfen tekrar deneyin."
+        },
+        "required_admin_email_password": {
+          "title": "E-posta ve şifre gerekli",
+          "message": "E-posta ve şifre gereklidir. Lütfen tekrar deneyin."
+        },
+        "admin_authentication_failed": {
+          "title": "Kimlik doğrulama başarısız",
+          "message": "Kimlik doğrulama başarısız oldu. Lütfen tekrar deneyin."
+        },
+        "admin_user_already_exist": {
+          "title": "Yönetici kullanıcı zaten mevcut",
+          "message": "Yönetici kullanıcı zaten mevcut. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Yönetici kullanıcı mevcut değil",
+          "message": "Yönetici kullanıcı mevcut değil. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Kullanıcı hesabı devre dışı bırakıldı",
+          "message": "Kullanıcı hesabı devre dışı bırakıldı. Lütfen {contact} ile iletişime geçin."
+        },
+        "sign_in_link": "Şimdi giriş yapın",
+        "administrator": "yönetici",
+        "dismiss_banner": "Banner'ı kapat"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Genel ayarlar",
+        "description": "Örneğinizin adını ve örnek yöneticisi e-posta adreslerini değiştirin. Örneğinizde telemetriyi etkinleştirin veya devre dışı bırakın."
+      },
+      "email": {
+        "description": "Pace, kendi örneğinizden size ve kullanıcılarınıza internete çıkmadan faydalı e-postalar gönderebilir.",
+        "test_hint": "Aşağıdan yapılandırın ve kaydetmeden önce lütfen ayarlarınızı test edin."
+      },
+      "ai": {
+        "title": "Tüm çalışma alanlarınız için yapay zeka özellikleri",
+        "description": "Yapay zeka API kimlik bilgilerinizi yapılandırın; böylece Pace yapay zeka özellikleri tüm çalışma alanlarınız için açılır."
+      },
+      "authentication": {
+        "description": "Ekibiniz için kimlik doğrulama modlarını yapılandırın ve kayıtları yalnızca davetle sınırlayın.",
+        "allow_signup_description": "Bunu kapatmak, kullanıcıların yalnızca davet edildiklerinde kaydolmasına izin verir.",
+        "cannot_disable_message": "En az bir kimlik doğrulama yöntemi etkin kalmalıdır. Bunu devre dışı bırakmadan önce lütfen başka bir yöntemi etkinleştirin."
+      },
+      "workspace": {
+        "title": "Bu örnekteki çalışma alanları",
+        "description": "Tüm çalışma alanlarını görün ve kimlerin oluşturabileceğini denetleyin.",
+        "prevent_creation_description": "Bunu açmak, çalışma alanı oluşturmaya yalnızca sizin yetkili olmanızı sağlar. Yeni çalışma alanlarına kullanıcıları siz davet etmeniz gerekir.",
+        "list_heading": "Bu örnekteki tüm çalışma alanları",
+        "list_description": "Çalışma alanlarını henüz silemezsiniz ve bir çalışma alanına yalnızca Yönetici veya Üye iseniz gidebilirsiniz.",
+        "config_saving": "Yapılandırma kaydediliyor",
+        "config_saved": "Yapılandırma başarıyla kaydedildi",
+        "config_save_failed": "Yapılandırma kaydedilemedi"
+      },
+      "workspace_create": {
+        "title": "Bu örnekte yeni bir çalışma alanı oluşturun.",
+        "description": "Bu çalışma alanını oluşturduktan sonra kullanıcıları Çalışma Alanı Ayarları'ndan davet etmeniz gerekecek."
+      },
+      "breadcrumb": {
+        "aria_label": "Gezinti yolu",
+        "settings": "Ayarlar",
+        "general": "Genel",
+        "ai": "Yapay Zeka",
+        "email": "E-posta",
+        "authentication": "Kimlik Doğrulama",
+        "image": "Görsel",
+        "workspace": "Çalışma Alanı",
+        "create": "Oluştur"
+      }
+    },
+    "misc": {
+      "something_wrong": "Hay aksi! Bir şeyler yanlış gitti.",
+      "go_to_general": "Genel ayarlara git",
+      "instance_unavailable": "Örnek ayrıntıları alınamıyor.",
+      "instance_fetch_failed": "Örnek bilgileri alınamadı",
+      "loading": "Yükleniyor...",
+      "close_notification": "Bildirimi kapat",
+      "unsaved_changes": "Kaydedilmemiş değişiklikleriniz var",
+      "unsaved_changes_body": "Geri dönerseniz yaptığınız değişiklikler kaybolacak. Geri dönmek istiyor musunuz?",
+      "setup_after": "Kurulumdan sonra bu Pace örneğini yönetebileceksiniz.",
+      "signin_subheading": "Örneğinizi güvence altına almak için örnek genelindeki ayarları yapılandırın",
+      "root_error": "Bir şeyler yanlış gitti.",
+      "create_workspace": "Çalışma alanı oluştur"
     }
   }
 }

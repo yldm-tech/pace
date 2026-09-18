@@ -28,10 +28,11 @@ type EmailFormValues = Record<TInstanceEmailConfigurationKeys, string>;
 
 type TEmailSecurityKeys = "EMAIL_USE_TLS" | "EMAIL_USE_SSL" | "NONE";
 
+// TLS and SSL are protocol names and stay as they are. The third is a translation key rather than text, because this object is module-level and cannot call the hook; whoever renders it translates.
 const EMAIL_SECURITY_OPTIONS: { [key in TEmailSecurityKeys]: string } = {
   EMAIL_USE_TLS: "TLS",
   EMAIL_USE_SSL: "SSL",
-  NONE: "No email security",
+  NONE: "admin.email.security_none",
 };
 
 export function InstanceEmailForm(props: IInstanceEmailForm) {
@@ -169,7 +170,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
               value={emailSecurityKey}
               onValueChange={(value) => handleEmailSecurityChange(value as TEmailSecurityKeys)}
             >
-              <SelectTrigger size="lg" placeholder="Select email security" />
+              <SelectTrigger size="lg" placeholder={t("admin.email.security_select")} />
               <SelectContent>
                 <SelectList>
                   {Object.entries(EMAIL_SECURITY_OPTIONS).map(([key, value]) => (
@@ -225,7 +226,7 @@ export function InstanceEmailForm(props: IInstanceEmailForm) {
           onClick={() => setIsSendTestEmailModalOpen(true)}
           loading={isSubmitting}
           disabled={!isValid}
-          label="Send test email"
+          label={t("admin.email.send_test")}
         />
       </div>
     </div>

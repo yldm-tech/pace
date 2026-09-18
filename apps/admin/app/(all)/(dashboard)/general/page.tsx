@@ -13,16 +13,17 @@ import { useInstance } from "@/hooks/store";
 import { GeneralConfigurationForm } from "./form";
 // types
 import type { Route } from "./+types/page";
+import { useTranslation } from "@pace/i18n";
 
 function GeneralPage() {
+  const { t } = useTranslation();
   const { instance, instanceAdmins } = useInstance();
 
   return (
     <PageWrapper
       header={{
-        title: "General settings",
-        description:
-          "Change the name of your instance and instance admin e-mail addresses. Enable or disable telemetry in your instance.",
+        title: t("admin.page.general.title"),
+        description: t("admin.page.general.description"),
       }}
     >
       {instance && instanceAdmins && <GeneralConfigurationForm instance={instance} instanceAdmins={instanceAdmins} />}

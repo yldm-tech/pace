@@ -99,7 +99,8 @@ export enum EAdminAuthErrorCodes {
 export type TAdminAuthErrorInfo = {
   type: EErrorAlertType;
   code: EAdminAuthErrorCodes;
-  title: string;
+  /** An i18n key, not display copy — run it through `t()` before rendering it. */
+  titleKey: string;
   message: string | React.ReactNode;
 };
 

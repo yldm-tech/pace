@@ -57,14 +57,14 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
     const updateConfigPromise = updateInstanceConfigurations(payload);
 
     setPromiseToast(updateConfigPromise, {
-      loading: "Saving configuration",
+      loading: t("admin.page.workspace.config_saving"),
       success: {
-        title: "Success",
-        message: () => "Configuration saved successfully",
+        title: t("admin.toast.success"),
+        message: () => t("admin.page.workspace.config_saved"),
       },
       error: {
-        title: "Error",
-        message: () => "Failed to save configuration",
+        title: t("admin.toast.error"),
+        message: () => t("admin.page.workspace.config_save_failed"),
       },
     });
 
@@ -81,8 +81,8 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
   return (
     <PageWrapper
       header={{
-        title: "Workspaces on this instance",
-        description: "See all workspaces and control who can create them.",
+        title: t("admin.page.workspace.title"),
+        description: t("admin.page.workspace.description"),
       }}
     >
       <div className="space-y-3">
@@ -92,7 +92,7 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
               <div className="grow">
                 <div className="pb-1 text-16 font-medium">{t("admin.workspace.prevent_creation")}</div>
                 <div className={cn("text-11 leading-5 font-regular text-tertiary")}>
-                  Toggling this on will let only you create workspaces. You will have to invite users to new workspaces.
+                  {t("admin.page.workspace.prevent_creation_description")}
                 </div>
               </div>
             </div>
@@ -123,14 +123,14 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
             <div className="flex items-center justify-between gap-2 pt-6">
               <div className="flex flex-col items-start gap-x-2">
                 <div className="flex items-center gap-2 text-16 font-medium">
-                  All workspaces on this instance <span className="text-tertiary">• {workspaceIds.length}</span>
+                  {t("admin.page.workspace.list_heading")}{" "}
+                  <span className="text-tertiary">• {workspaceIds.length}</span>
                   {workspaceLoader && ["mutation", "pagination"].includes(workspaceLoader) && (
                     <LoaderIcon className="h-4 w-4 animate-spin" />
                   )}
                 </div>
                 <div className={cn("text-11 leading-5 font-regular text-tertiary")}>
-                  You can&apos;t yet delete workspaces and you can only go to the workspace if you are an Admin or a
-                  Member.
+                  {t("admin.page.workspace.list_description")}
                 </div>
               </div>
               <div className="flex items-center gap-2">

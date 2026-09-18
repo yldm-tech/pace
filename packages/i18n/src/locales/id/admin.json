@@ -10,7 +10,25 @@
       "authentication": "Autentikasi",
       "ai": "Kecerdasan buatan",
       "images": "Gambar",
-      "workspace": "Ruang kerja"
+      "workspace": "Ruang kerja",
+      "general_description": "Kenali instansi Anda dan lihat detail pentingnya.",
+      "email_description": "Konfigurasikan kontrol SMTP Anda.",
+      "workspace_description": "Kelola semua ruang kerja di instansi ini.",
+      "authentication_description": "Konfigurasikan mode autentikasi.",
+      "ai_description": "Konfigurasikan kredensial OpenAI Anda.",
+      "images_description": "Izinkan pustaka gambar pihak ketiga.",
+      "instance_admin": "Admin instansi",
+      "admin_user": "Pengguna admin",
+      "switch_to_light_mode": "Beralih ke mode terang",
+      "switch_to_dark_mode": "Beralih ke mode gelap",
+      "sign_out": "Keluar",
+      "redirect_to_pace": "Alihkan ke Pace",
+      "help": "Bantuan",
+      "toggle_sidebar": "Alihkan sidebar",
+      "documentation": "Dokumentasi",
+      "forum": "Gabung dengan forum kami",
+      "report_bug": "Laporkan bug",
+      "version_label": "Versi:"
     },
     "actions": {
       "save": "Simpan perubahan",
@@ -91,7 +109,13 @@
       "sender": "Alamat email pengirim",
       "username": "Nama pengguna",
       "security": "Keamanan email",
-      "authentication": "Autentikasi"
+      "authentication": "Autentikasi",
+      "send_test": "Kirim email uji",
+      "receiver": "Email penerima",
+      "send_failed": "Gagal mengirim email",
+      "security_none": "Tanpa keamanan email",
+      "security_select": "Pilih keamanan email",
+      "test_hint": "Jika Anda masih belum menemukannya, periksa kembali konfigurasi SMTP Anda lalu kirim email uji yang baru."
     },
     "auth": {
       "heading": "Kelola mode autentikasi untuk instansi Anda",
@@ -116,6 +140,59 @@
       "authorized_redirect": "URI pengalihan yang diizinkan",
       "authorized_callback": "URI callback yang diizinkan",
       "authorized_origin_url": "URL asal yang diizinkan"
+    },
+    "oauth": {
+      "description": "Izinkan anggota masuk atau mendaftar ke Pace dengan akun {provider} mereka.",
+      "unique_codes_description": "Masuk atau daftar ke Pace menggunakan kode yang dikirim melalui email. Anda perlu mengatur SMTP untuk menggunakan metode ini.",
+      "passwords_description": "Izinkan anggota membuat akun dengan kata sandi dan menggunakannya bersama alamat email untuk masuk.",
+      "provider_details": "Detail yang disediakan {provider} untuk Pace",
+      "pace_details": "Detail yang disediakan Pace untuk {provider}",
+      "web": "Web",
+      "go_back": "Kembali",
+      "edit": "Sunting",
+      "configure": "Konfigurasikan",
+      "learn_more": "Pelajari lebih lanjut",
+      "here": "di sini",
+      "refresh_attributes": "Perbarui atribut pengguna dari {provider} saat masuk",
+      "paste_into_field": "Kami membuat nilai ini secara otomatis. Tempelkan ke kolom {field} pada aplikasi OAuth {provider} Anda, yang dapat Anda siapkan {link}.",
+      "copy": {
+        "title": "Disalin ke clipboard",
+        "message": "{label} telah disalin ke clipboard Anda."
+      },
+      "toast": {
+        "done": "Selesai!",
+        "enabled": "Autentikasi {provider} kini aktif.",
+        "disabled": "Autentikasi {provider} kini dinonaktifkan.",
+        "configured": "Autentikasi {provider} Anda telah dikonfigurasi. Sebaiknya uji sekarang."
+      },
+      "google": {
+        "client_id_description": "Client ID Anda ada di Google API Console. {link}",
+        "client_id_doc_label": "Dokumentasi Client ID OAuth Google",
+        "client_secret_description": "Client Secret Anda juga ada di Google API Console. {link}",
+        "client_secret_doc_label": "Dokumentasi Client Secret OAuth Google",
+        "console_label": "Kredensial klien OAuth di Google Cloud Console"
+      },
+      "github": {
+        "client_id_description": "Anda akan mendapatkannya di {link}.",
+        "client_secret_description": "Client Secret Anda juga ada di {link}.",
+        "organization_id_description": "ID organisasi GitHub.",
+        "app_settings_link": "Pengaturan aplikasi OAuth GitHub",
+        "app_settings_label": "Pengaturan aplikasi OAuth GitHub"
+      },
+      "gitlab": {
+        "host_description": "Ini adalah https://gitlab.com atau {domain} tempat Anda meng-hosting GitLab.",
+        "application_id_description": "Anda akan mendapatkannya di {link}.",
+        "secret_description": "Client Secret juga ada di {link}.",
+        "app_settings_link": "Pengaturan aplikasi OAuth GitLab",
+        "app_settings_label": "Pengaturan aplikasi OAuth GitLab"
+      },
+      "gitea": {
+        "host_description": "Gunakan URL instansi Gitea Anda. Untuk instansi Gitea resmi, gunakan \"https://gitea.com\".",
+        "client_id_description": "Anda akan mendapatkannya di {link}.",
+        "client_secret_description": "Client Secret Anda juga ada di {link}.",
+        "app_settings_link": "Pengaturan aplikasi OAuth Gitea",
+        "app_settings_label": "Pengaturan aplikasi OAuth Gitea"
+      }
     },
     "common": {
       "email": "Email",
@@ -161,6 +238,139 @@
       "name_placeholder": "Sesuatu yang familier dan mudah dikenali selalu paling baik.",
       "slug_placeholder": "workspace-name",
       "go_back": "Kembali"
+    },
+    "forms": {
+      "image": {
+        "unsplash_key_label": "Kunci akses dari akun Unsplash Anda",
+        "unsplash_key_help": "Anda dapat menemukan kunci akses di konsol pengembang Unsplash.",
+        "unsplash_docs_link": "Pelajari lebih lanjut.",
+        "unsplash_docs_aria": "Dokumentasi akun pengembang Unsplash",
+        "saved": "Konfigurasi gambar berhasil diperbarui"
+      },
+      "workspace": {
+        "name_label": "Beri nama ruang kerja Anda",
+        "url_label": "Tetapkan URL ruang kerja Anda",
+        "slug_taken": "URL ini sudah digunakan. Coba yang lain.",
+        "slug_invalid": "URL hanya boleh berisi ( - ), ( _ ), dan karakter alfanumerik.",
+        "size_label": "Berapa banyak orang yang akan menggunakan ruang kerja ini?",
+        "size_placeholder": "Pilih rentang",
+        "required_field": "Kolom ini wajib diisi.",
+        "create_submit": "Buat ruang kerja",
+        "creating": "Membuat ruang kerja",
+        "logo_alt": "Logo ruang kerja",
+        "slug_tooltip": "URL unik ruang kerja Anda",
+        "size_options": {
+          "just_myself": "Hanya saya",
+          "range_2_10": "2-10",
+          "range_11_50": "11-50",
+          "range_51_200": "51-200",
+          "range_201_500": "201-500",
+          "range_500_plus": "500+"
+        }
+      },
+      "auth_errors": {
+        "default": {
+          "title": "Kesalahan",
+          "message": "Terjadi kesalahan. Silakan coba lagi."
+        },
+        "admin_already_exist": {
+          "title": "Admin sudah ada",
+          "message": "Admin sudah ada. Silakan coba lagi."
+        },
+        "required_admin_email_password_first_name": {
+          "title": "Email, kata sandi, dan nama depan wajib diisi",
+          "message": "Email, kata sandi, dan nama depan wajib diisi. Silakan coba lagi."
+        },
+        "invalid_admin_email": {
+          "title": "Email admin tidak valid",
+          "message": "Email admin tidak valid. Silakan coba lagi."
+        },
+        "invalid_admin_password": {
+          "title": "Kata sandi admin tidak valid",
+          "message": "Kata sandi admin tidak valid. Silakan coba lagi."
+        },
+        "required_admin_email_password": {
+          "title": "Email dan kata sandi wajib diisi",
+          "message": "Email dan kata sandi wajib diisi. Silakan coba lagi."
+        },
+        "admin_authentication_failed": {
+          "title": "Autentikasi gagal",
+          "message": "Autentikasi gagal. Silakan coba lagi."
+        },
+        "admin_user_already_exist": {
+          "title": "Pengguna admin sudah ada",
+          "message": "Pengguna admin sudah ada. {link}."
+        },
+        "admin_user_does_not_exist": {
+          "title": "Pengguna admin tidak ditemukan",
+          "message": "Pengguna admin tidak ditemukan. {link}."
+        },
+        "admin_user_deactivated": {
+          "title": "Akun pengguna dinonaktifkan",
+          "message": "Akun pengguna telah dinonaktifkan. Silakan hubungi {contact}."
+        },
+        "sign_in_link": "Masuk sekarang",
+        "administrator": "administrator",
+        "dismiss_banner": "Tutup spanduk"
+      }
+    },
+    "page": {
+      "general": {
+        "title": "Pengaturan umum",
+        "description": "Ubah nama instansi Anda dan alamat email admin instansi. Aktifkan atau nonaktifkan telemetri di instansi Anda."
+      },
+      "email": {
+        "description": "Pace dapat mengirim email yang berguna kepada Anda dan pengguna Anda dari instansi Anda sendiri tanpa menghubungi Internet.",
+        "test_hint": "Siapkan di bawah ini dan silakan uji pengaturan Anda sebelum menyimpannya."
+      },
+      "ai": {
+        "title": "Fitur AI untuk semua ruang kerja Anda",
+        "description": "Konfigurasikan kredensial API AI Anda agar fitur AI Pace aktif untuk semua ruang kerja Anda."
+      },
+      "authentication": {
+        "description": "Konfigurasikan mode autentikasi untuk tim Anda dan batasi pendaftaran hanya melalui undangan.",
+        "allow_signup_description": "Menonaktifkan ini hanya akan mengizinkan pengguna mendaftar bila mereka diundang.",
+        "cannot_disable_message": "Setidaknya satu metode autentikasi harus tetap aktif. Silakan aktifkan metode lain sebelum menonaktifkan yang ini."
+      },
+      "workspace": {
+        "title": "Ruang kerja di instansi ini",
+        "description": "Lihat semua ruang kerja dan kendalikan siapa yang dapat membuatnya.",
+        "prevent_creation_description": "Mengaktifkan ini akan membuat hanya Anda yang dapat membuat ruang kerja. Anda harus mengundang pengguna ke ruang kerja baru.",
+        "list_heading": "Semua ruang kerja di instansi ini",
+        "list_description": "Anda belum dapat menghapus ruang kerja, dan Anda hanya dapat membuka ruang kerja jika Anda adalah Admin atau Anggota.",
+        "config_saving": "Menyimpan konfigurasi",
+        "config_saved": "Konfigurasi berhasil disimpan",
+        "config_save_failed": "Gagal menyimpan konfigurasi"
+      },
+      "workspace_create": {
+        "title": "Buat ruang kerja baru di instansi ini.",
+        "description": "Anda perlu mengundang pengguna dari Pengaturan Ruang Kerja setelah membuat ruang kerja ini."
+      },
+      "breadcrumb": {
+        "aria_label": "Jalur navigasi",
+        "settings": "Pengaturan",
+        "general": "Umum",
+        "ai": "Kecerdasan Buatan",
+        "email": "Email",
+        "authentication": "Autentikasi",
+        "image": "Gambar",
+        "workspace": "Ruang kerja",
+        "create": "Buat"
+      }
+    },
+    "misc": {
+      "something_wrong": "Ups! Terjadi kesalahan.",
+      "go_to_general": "Buka pengaturan umum",
+      "instance_unavailable": "Tidak dapat mengambil detail instansi.",
+      "instance_fetch_failed": "Gagal mengambil informasi instansi",
+      "loading": "Memuat...",
+      "close_notification": "Tutup notifikasi",
+      "unsaved_changes": "Anda memiliki perubahan yang belum disimpan",
+      "unsaved_changes_body": "Perubahan yang Anda buat akan hilang jika Anda kembali. Apakah Anda ingin kembali?",
+      "setup_after": "Setelah penyiapan, Anda akan dapat mengelola instansi Pace ini.",
+      "signin_subheading": "Konfigurasikan pengaturan seluruh instansi untuk mengamankan instansi Anda",
+      "root_error": "Terjadi kesalahan.",
+      "create_workspace": "Buat ruang kerja"
     }
   }
 }
