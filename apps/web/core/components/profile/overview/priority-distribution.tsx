@@ -6,10 +6,11 @@
 
 // pace imports
 import { useTranslation } from "@pace/i18n";
+import { Card } from "@pace/propel/card";
 import { BarChart } from "@pace/propel/charts/bar-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData } from "@pace/types";
-import { Loader, Card } from "@pace/ui";
+import { Loader } from "@pace/ui";
 import { capitalizeFirstLetter } from "@pace/utils";
 
 type Props = {

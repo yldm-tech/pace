@@ -9,10 +9,11 @@ import { useParams } from "@/app/hooks/navigation";
 
 // ui
 import { useTranslation } from "@pace/i18n";
+import { Card, ECardDirection, ECardSpacing } from "@pace/propel/card";
 import { LayerStackIcon } from "@pace/propel/icons";
 import { AddOutline, UserOutline } from "@makeplane/propel/icons";
 import type { IUserProfileData } from "@pace/types";
-import { Loader, Card, ECardSpacing, ECardDirection } from "@pace/ui";
+import { Loader } from "@pace/ui";
 // types
 
 type Props = {

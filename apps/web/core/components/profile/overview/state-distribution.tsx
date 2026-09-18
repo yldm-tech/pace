@@ -7,10 +7,10 @@
 // pace imports
 import { STATE_GROUPS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
+import { Card } from "@pace/propel/card";
 import { PieChart } from "@pace/propel/charts/pie-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData, IUserStateDistribution } from "@pace/types";
-import { Card } from "@pace/ui";
 import { capitalizeFirstLetter } from "@pace/utils";
 
 type Props = {

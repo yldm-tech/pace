@@ -10,8 +10,9 @@ import useSWR from "swr";
 // ui
 import { useTranslation } from "@pace/i18n";
 import { Avatar } from "@pace/propel/avatar";
+import { Card } from "@pace/propel/card";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
-import { Loader, Card } from "@pace/ui";
+import { Loader } from "@pace/ui";
 import { calculateTimeAgo, getFileURL } from "@pace/utils";
 // components
 import { ActivityMessage, IssueLink } from "@/components/core/activity";
