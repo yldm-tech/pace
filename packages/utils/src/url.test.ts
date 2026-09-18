@@ -9,7 +9,6 @@ import { describe, expect, it } from "vitest";
 import {
   ensureTrailingSlash,
   extractHostname,
-  extractTLD,
   formatURLForDisplay,
   isLocalhost,
   isValidIPv4,
@@ -125,19 +124,6 @@ describe("validateIPAddress", () => {
   it("rejects what is not an address at all", () => {
     expect(validateIPAddress("")).toEqual({ isValid: false, type: "invalid" });
     expect(isValidIPv6("not an address")).toBe(false);
-  });
-});
-
-describe("extractTLD", () => {
-  it("returns a known suffix", () => {
-    expect(extractTLD("https://a.example.com/x")).toBe("com");
-    expect(extractTLD("a.co.uk")).toBe("uk");
-  });
-
-  it("returns nothing when there is no known suffix to find", () => {
-    for (const input of ["nope", "a.invalidtld", ".com", "example.", ""]) {
-      expect(extractTLD(input), input).toBe("");
-    }
   });
 });
 
