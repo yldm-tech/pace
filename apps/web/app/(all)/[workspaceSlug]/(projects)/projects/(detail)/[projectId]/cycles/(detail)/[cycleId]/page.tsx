@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { cn } from "@pace/utils";
 // assets
-import emptyCycle from "@/app/assets/empty-state/cycle.svg?url";
+import emptyCycle from "@/assets/empty-state/cycle.svg?url";
 // components
 import { EmptyState } from "@/components/common/empty-state";
 import { PageHead } from "@/components/core/page-title";

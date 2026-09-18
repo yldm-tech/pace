@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import FigmaFileIcon from "@/app/assets/attachment/figma-icon.png?url";
+import FigmaFileIcon from "@/assets/attachment/figma-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

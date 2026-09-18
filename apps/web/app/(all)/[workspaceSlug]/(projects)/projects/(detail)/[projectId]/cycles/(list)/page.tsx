@@ -17,8 +17,8 @@ import { EUserProjectRoles } from "@pace/types";
 import { Header, EHeaderVariant } from "@pace/ui";
 import { calculateTotalFilters } from "@pace/utils";
 // assets
-import darkEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-dark.webp?url";
-import lightEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-light.webp?url";
+import darkEmptyState from "@/assets/empty-state/disabled-feature/cycles-dark.webp?url";
+import lightEmptyState from "@/assets/empty-state/disabled-feature/cycles-light.webp?url";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { CycleAppliedFiltersList } from "@/components/cycles/applied-filters";

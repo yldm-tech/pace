@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { Switch } from "@makeplane/propel/components/switch";
 import { useTranslation } from "@pace/i18n";
 // assets
-import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
+import giteaLogo from "@/assets/logos/gitea-logo.svg?url";
 // components
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";
 import { PageWrapper } from "@/components/common/page-wrapper";

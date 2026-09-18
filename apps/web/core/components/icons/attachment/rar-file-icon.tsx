@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import RarFileIcon from "@/app/assets/attachment/rar-icon.png?url";
+import RarFileIcon from "@/assets/attachment/rar-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

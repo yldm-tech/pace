@@ -12,8 +12,8 @@ import { EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { EUserProjectRoles, EInboxIssueCurrentTab } from "@pace/types";
 // assets
-import darkIntakeAsset from "@/app/assets/empty-state/disabled-feature/intake-dark.webp?url";
-import lightIntakeAsset from "@/app/assets/empty-state/disabled-feature/intake-light.webp?url";
+import darkIntakeAsset from "@/assets/empty-state/disabled-feature/intake-dark.webp?url";
+import lightIntakeAsset from "@/assets/empty-state/disabled-feature/intake-light.webp?url";
 // components
 import { PageHead } from "@/components/core/page-title";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";

@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 // assets
-import emptyLabel from "@/app/assets/empty-state/empty_label.svg?url";
+import emptyLabel from "@/assets/empty-state/empty_label.svg?url";
 // components
 import { SingleProgressStats } from "@/components/core/sidebar/single-progress-stats";
 

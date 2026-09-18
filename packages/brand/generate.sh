@@ -52,7 +52,7 @@ PY
 tile 512 "$work/master-512.png"
 
 for app in web space admin; do
-  assets="$root/apps/$app/app/assets/favicon"
+  assets="$root/apps/$app/core/assets/favicon"
   public="$root/apps/$app/public/favicon"
   mkdir -p "$assets" "$public"
 
@@ -69,8 +69,8 @@ for app in web space admin; do
 done
 
 # web keeps a second copy of the two sizes its manifest and apple-touch links point at.
-tile 180 "$root/apps/web/app/assets/icons/icon-180x180.png"
-cp "$work/master-512.png" "$root/apps/web/app/assets/icons/icon-512x512.png"
+tile 180 "$root/apps/web/core/assets/icons/icon-180x180.png"
+cp "$work/master-512.png" "$root/apps/web/core/assets/icons/icon-512x512.png"
 
 # The "instance not ready" screen shows the mark twice: once solid over a gradient wash, once as the wash itself.
 gradient() {
@@ -98,8 +98,8 @@ PY
   magick "$work/gradient.png" -define webp:lossless=true "$out"
 }
 
-gradient 561 312 1 "$root/apps/web/app/assets/auth/gradient-logo.webp"
-gradient 1080 672 0.35 "$root/apps/web/app/assets/auth/gradient-bg-logo.webp"
+gradient 561 312 1 "$root/apps/web/core/assets/auth/gradient-logo.webp"
+gradient 1080 672 0.35 "$root/apps/web/core/assets/auth/gradient-bg-logo.webp"
 
 # Storybook reads its brand image from propel's public directory rather than from a package it depends on, so that one copy is written here instead of being kept in step by hand.
 cp "$brand/lockup.svg" "$root/packages/propel/public/pace-lockup-light.svg"

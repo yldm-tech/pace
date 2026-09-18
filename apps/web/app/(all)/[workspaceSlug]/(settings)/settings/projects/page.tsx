@@ -12,8 +12,8 @@ import { MARKETING_SITE_URL } from "@pace/constants";
 import { Button, getButtonStyling } from "@pace/propel/button";
 import { cn } from "@pace/utils";
 // assets
-import ProjectDarkEmptyState from "@/app/assets/empty-state/project-settings/no-projects-dark.png?url";
-import ProjectLightEmptyState from "@/app/assets/empty-state/project-settings/no-projects-light.png?url";
+import ProjectDarkEmptyState from "@/assets/empty-state/project-settings/no-projects-dark.png?url";
+import ProjectLightEmptyState from "@/assets/empty-state/project-settings/no-projects-light.png?url";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 

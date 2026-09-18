@@ -14,8 +14,8 @@ import type { TIssue } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // assets
-import emptyIssueDark from "@/app/assets/empty-state/search/issues-dark.webp?url";
-import emptyIssueLight from "@/app/assets/empty-state/search/issues-light.webp?url";
+import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
+import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
 import { EmptyState } from "@/components/common/empty-state";
 import { PageHead } from "@/components/core/page-title";

@@ -8,9 +8,9 @@ import React from "react";
 import { observer } from "mobx-react";
 // assets
 import { cn } from "@pace/utils";
-import ProjectNotAuthorizedImg from "@/app/assets/auth/project-not-authorized.svg?url";
-import Unauthorized from "@/app/assets/auth/unauthorized.svg?url";
-import WorkspaceNotAuthorizedImg from "@/app/assets/auth/workspace-not-authorized.svg?url";
+import ProjectNotAuthorizedImg from "@/assets/auth/project-not-authorized.svg?url";
+import Unauthorized from "@/assets/auth/unauthorized.svg?url";
+import WorkspaceNotAuthorizedImg from "@/assets/auth/workspace-not-authorized.svg?url";
 // layouts
 import DefaultLayout from "@/layouts/default-layout";
 

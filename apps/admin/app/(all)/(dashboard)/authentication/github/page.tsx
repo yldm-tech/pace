@@ -13,8 +13,8 @@ import { Switch } from "@makeplane/propel/components/switch";
 import { useTranslation } from "@pace/i18n";
 import { resolveGeneralTheme } from "@pace/utils";
 // assets
-import githubLightModeImage from "@/app/assets/logos/github-black.png?url";
-import githubDarkModeImage from "@/app/assets/logos/github-white.png?url";
+import githubLightModeImage from "@/assets/logos/github-black.png?url";
+import githubDarkModeImage from "@/assets/logos/github-white.png?url";
 // components
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";
 import { PageWrapper } from "@/components/common/page-wrapper";

@@ -11,7 +11,7 @@ import { Switch } from "@makeplane/propel/components/switch";
 // pace internal packages
 import { useTranslation } from "@pace/i18n";
 // assets
-import GoogleLogo from "@/app/assets/logos/google-logo.svg?url";
+import GoogleLogo from "@/assets/logos/google-logo.svg?url";
 // components
 import { AuthenticationMethodCard } from "@/components/authentication/authentication-method-card";
 import { PageWrapper } from "@/components/common/page-wrapper";

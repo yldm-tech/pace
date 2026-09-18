@@ -10,8 +10,8 @@ import { Avatar } from "@makeplane/propel/components/avatar";
 import { useTranslation } from "@pace/i18n";
 import { getFileURL } from "@pace/utils";
 // assets
-import emptyMembers from "@/app/assets/empty-state/empty_members.svg?url";
-import userImage from "@/app/assets/user.png?url";
+import emptyMembers from "@/assets/empty-state/empty_members.svg?url";
+import userImage from "@/assets/user.png?url";
 // components
 import { SingleProgressStats } from "@/components/core/sidebar/single-progress-stats";
 

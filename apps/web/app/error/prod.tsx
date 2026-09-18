@@ -9,8 +9,8 @@ import { useTheme } from "next-themes";
 import { STATUS_URL, SUPPORT_EMAIL } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 // assets
-import maintenanceModeDarkModeImage from "@/app/assets/instance/maintenance-mode-dark.svg?url";
-import maintenanceModeLightModeImage from "@/app/assets/instance/maintenance-mode-light.svg?url";
+import maintenanceModeDarkModeImage from "@/assets/instance/maintenance-mode-dark.svg?url";
+import maintenanceModeLightModeImage from "@/assets/instance/maintenance-mode-light.svg?url";
 // layouts
 import DefaultLayout from "@/layouts/default-layout";
 

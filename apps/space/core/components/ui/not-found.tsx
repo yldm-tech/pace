@@ -5,7 +5,7 @@
  */
 
 // images
-import Image404 from "@/app/assets/404.svg?url";
+import Image404 from "@/assets/404.svg?url";
 
 export function PageNotFound() {
   return (

@@ -12,8 +12,8 @@ import useSWR from "swr";
 import { SPACE_BASE_PATH } from "@pace/constants";
 import { PaceLockup } from "@pace/propel/icons";
 // assets
-import PlaneBackgroundPatternDark from "@/app/assets/auth/background-pattern-dark.svg?url";
-import PlaneBackgroundPattern from "@/app/assets/auth/background-pattern.svg?url";
+import PlaneBackgroundPatternDark from "@/assets/auth/background-pattern-dark.svg?url";
+import PlaneBackgroundPattern from "@/assets/auth/background-pattern.svg?url";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { InstanceFailureView } from "@/components/instance/instance-failure-view";

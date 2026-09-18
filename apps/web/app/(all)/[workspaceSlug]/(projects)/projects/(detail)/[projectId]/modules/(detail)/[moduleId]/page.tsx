@@ -9,7 +9,7 @@ import useSWR from "swr";
 // pace imports
 import { cn } from "@pace/utils";
 // assets
-import emptyModule from "@/app/assets/empty-state/module.svg?url";
+import emptyModule from "@/assets/empty-state/module.svg?url";
 // components
 import { EmptyState } from "@/components/common/empty-state";
 import { PageHead } from "@/components/core/page-title";
