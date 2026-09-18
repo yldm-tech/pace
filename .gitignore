@@ -21,6 +21,8 @@ dist/
 out/
 build/
 .react-router/
+# Source maps are generated output and never belong in a commit. The two that were tracked -- apps/web/public/{sw,workbox-9f2f79cf}.js.map -- were 166 KB of orphaned Next.js-era service-worker output whose .js files did not exist, and their sourcesContent embedded an upstream developer's home directory.
+*.js.map
 
 # Misc
 .DS_Store

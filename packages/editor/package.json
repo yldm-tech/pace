@@ -1,6 +1,6 @@
 {
   "name": "@pace/editor",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "description": "Core Editor that powers Pace",
   "keywords": [
@@ -25,7 +25,7 @@
   "scripts": {
     "build": "tsc && tsdown",
     "dev": "tsdown --watch --no-clean",
-    "check:lint": "oxlint --max-warnings=416 .",
+    "check:lint": "oxlint --max-warnings=75 .",
     "check:types": "tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",

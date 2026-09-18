@@ -1,6 +1,6 @@
 {
   "name": "@pace/i18n",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "description": "I18n shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -19,7 +19,7 @@
     "generate:types": "tsx scripts/generate-types.ts",
     "sync:check": "tsx scripts/sync-check.ts",
     "check:sync": "tsx scripts/sync-check.ts --ci",
-    "check:lint": "oxlint --max-warnings=9 .",
+    "check:lint": "oxlint --max-warnings=3 .",
     "check:types": "pnpm run generate:types && tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",
