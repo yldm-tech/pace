@@ -12,7 +12,7 @@ import { Circle } from "lucide-react";
 import { EUserPermissions, EUserPermissionsLevel, SPACE_BASE_PATH, SPACE_BASE_URL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { NewTabOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { NewTabOutline, WorkItemsOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { EIssuesStoreType } from "@pace/types";
 import { Breadcrumbs, Header } from "@pace/ui";

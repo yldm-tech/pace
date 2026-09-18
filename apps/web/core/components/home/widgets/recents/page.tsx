@@ -7,7 +7,7 @@
 import { useRouter } from "@/app/hooks/navigation";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { PagesOutline } from "@makeplane/propel/icons";
+import { PagesOutline } from "@pace/propel/icons";
 // pace import
 import type { TActivityEntityData, TPageEntityData } from "@pace/types";
 import { calculateTimeAgo, getFileURL, getPageName } from "@pace/utils";

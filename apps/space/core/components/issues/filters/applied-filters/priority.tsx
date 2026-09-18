@@ -5,7 +5,7 @@
  */
 
 import { PriorityIcon } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TIssuePriorities } from "@pace/propel/icons";
 
 type Props = {

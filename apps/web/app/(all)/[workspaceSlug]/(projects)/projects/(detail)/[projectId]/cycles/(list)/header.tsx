@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { CyclesOutline } from "@makeplane/propel/icons";
+import { CyclesOutline } from "@pace/propel/icons";
 import { Breadcrumbs, Header } from "@pace/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";

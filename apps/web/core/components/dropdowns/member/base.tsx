@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import type { ComponentType, SVGProps } from "react";
 import { useTranslation } from "@pace/i18n";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 // pace imports
 import type { IUserLite } from "@pace/types";
 import { ComboDropDown } from "@pace/ui";

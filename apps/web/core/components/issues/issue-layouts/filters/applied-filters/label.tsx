@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 
 // icons
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { IIssueLabel } from "@pace/types";
 // types
 

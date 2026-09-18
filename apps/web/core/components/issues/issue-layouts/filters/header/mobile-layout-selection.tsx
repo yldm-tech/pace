@@ -7,7 +7,7 @@
 import { ISSUE_LAYOUTS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import type { EIssueLayoutTypes } from "@pace/types";
 import { CustomMenu } from "@pace/ui";
 import { IssueLayoutIcon } from "../../layout-icon";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
+import { HideOutline, ShowOutline } from "@pace/propel/icons";
 import { useState } from "react";
 import { Tooltip } from "@pace/propel/tooltip";
 import { cn } from "@pace/utils";

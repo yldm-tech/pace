@@ -9,7 +9,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
-import { ChevronDownOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, DeleteOutline, EditOutline } from "@pace/propel/icons";
 import type { IIssueLabel } from "@pace/types";
 // components
 import type { TLabelOperationsCallbacks } from "./create-update-label-inline";

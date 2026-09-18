@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CalendarOutline, DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
+import { CalendarOutline, DueDateOutline, StartDateOutline } from "@pace/propel/icons";
 // pace imports
 import type { TStateGroups } from "@pace/types";
 import { cn, renderFormattedDate, shouldHighlightIssueDueDate } from "@pace/utils";

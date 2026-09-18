@@ -6,7 +6,7 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { HelpOutline, PagesOutline, UserOutline } from "@makeplane/propel/icons";
+import { HelpOutline, PagesOutline, UserOutline } from "@pace/propel/icons";
 import { DOCS_URL, FORUM_URL, SUPPORT_EMAIL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // ui

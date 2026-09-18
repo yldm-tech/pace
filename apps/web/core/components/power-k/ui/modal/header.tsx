@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Command } from "cmdk";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace imports
 // local imports

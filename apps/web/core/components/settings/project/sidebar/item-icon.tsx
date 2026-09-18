@@ -16,7 +16,7 @@ import {
   StateOutline,
   TriggerOutline,
   ViewsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import type { ISvgIcons } from "@pace/propel/icons";
 import type { TProjectSettingsTabs } from "@pace/types";

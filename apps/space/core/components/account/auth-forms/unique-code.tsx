@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { CloseCircleOutline, TickCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline, TickCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { API_BASE_URL, EAuthModes } from "@pace/constants";
 import { Button } from "@pace/propel/button";

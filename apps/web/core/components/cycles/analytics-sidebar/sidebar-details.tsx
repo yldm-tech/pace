@@ -7,7 +7,7 @@
 import React from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-import { MembersOutline, UserAltOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { MembersOutline, UserAltOutline, WorkItemsOutline } from "@pace/propel/icons";
 // pace types
 import { EEstimateSystem } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

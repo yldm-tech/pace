@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // hooks
-import { CloseOutline, ModuleOutline } from "@makeplane/propel/icons";
+import { CloseOutline, ModuleOutline } from "@pace/propel/icons";
 import { useModule } from "@/hooks/store/use-module";
 // ui
 

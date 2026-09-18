@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { ORGANIZATION_SIZE, RESTRICTED_URLS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

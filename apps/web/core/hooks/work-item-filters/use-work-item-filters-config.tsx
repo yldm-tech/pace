@@ -18,7 +18,7 @@ import {
   StartDateOutline,
   StateOutline,
   UserOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Logo } from "@pace/propel/emoji-icon-picker";

@@ -6,7 +6,7 @@
 
 import { memo } from "react";
 import { Ban } from "lucide-react";
-import { TextOutline } from "@makeplane/propel/icons";
+import { TextOutline } from "@pace/propel/icons";
 import { Popover } from "@headlessui/react";
 // pace editor
 import { COLORS_LIST } from "@pace/editor";

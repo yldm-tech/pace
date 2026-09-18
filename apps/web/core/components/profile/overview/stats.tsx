@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { useTranslation } from "@pace/i18n";
 import { Card, ECardDirection, ECardSpacing } from "@pace/propel/card";
 import { LayerStackIcon } from "@pace/propel/icons";
-import { AddOutline, UserOutline } from "@makeplane/propel/icons";
+import { AddOutline, UserOutline } from "@pace/propel/icons";
 import type { IUserProfileData } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // types

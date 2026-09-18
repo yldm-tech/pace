@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { MODULE_STATUS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { ModuleStatusIcon } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // constants
 
 type Props = {

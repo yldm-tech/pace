@@ -7,7 +7,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { observer } from "mobx-react";
 
-import { LinkOutline, TickOutline } from "@makeplane/propel/icons";
+import { LinkOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { IconButton } from "@pace/propel/icon-button";

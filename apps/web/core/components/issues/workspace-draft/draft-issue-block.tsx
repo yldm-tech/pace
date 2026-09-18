@@ -8,7 +8,7 @@ import React, { useRef, useState } from "react";
 import { omit } from "lodash-es";
 import { observer } from "mobx-react";
 import { SquareStackIcon } from "lucide-react";
-import { CopyOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
+import { CopyOutline, DeleteOutline, EditOutline } from "@pace/propel/icons";
 // pace utils
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TWorkspaceDraftIssue } from "@pace/types";

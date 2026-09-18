@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { LogOutOutline, MailOutline } from "@makeplane/propel/icons";
+import { LogOutOutline, MailOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";

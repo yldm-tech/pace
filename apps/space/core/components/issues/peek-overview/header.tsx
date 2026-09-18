@@ -12,7 +12,7 @@ import {
   LinkOutline,
   ModalPeekOutline,
   SidePeekOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { Listbox, Transition } from "@headlessui/react";
 // ui
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

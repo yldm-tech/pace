@@ -6,7 +6,7 @@
 
 import React from "react";
 // pace imports
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 
 type Props = {
   icon?: React.ReactNode;

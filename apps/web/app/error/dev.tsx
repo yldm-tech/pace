@@ -7,7 +7,7 @@
 // pace imports
 import { isRouteErrorResponse } from "react-router";
 import { Banner } from "@makeplane/propel/components/banner";
-import { InfoFilled } from "@makeplane/propel/icons";
+import { InfoFilled } from "@pace/propel/icons";
 import { Button } from "@pace/propel/button";
 import { Card, ECardVariant } from "@pace/propel/card";
 

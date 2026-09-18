@@ -11,7 +11,7 @@ import { useSearchParams } from "@/app/hooks/navigation";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronUpOutline } from "@pace/propel/icons";
 import type { ICycle, TCyclePlotType, TProgressSnapshot } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
 import { getDate } from "@pace/utils";

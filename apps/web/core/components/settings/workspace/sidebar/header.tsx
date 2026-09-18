@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowNarrowLeftOutline } from "@makeplane/propel/icons";
+import { ArrowNarrowLeftOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
 // pace imports
 import { ROLE_DETAILS } from "@pace/constants";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { BlockingOutline, CloseCircleOutline, DuplicateOfOutline, RelatesToOutline } from "@makeplane/propel/icons";
+import { BlockingOutline, CloseCircleOutline, DuplicateOfOutline, RelatesToOutline } from "@pace/propel/icons";
 import type { TRelationObject } from "@/components/issues/issue-detail-widgets/relations";
 import type { TIssueRelationTypes } from "@pace/types";
 

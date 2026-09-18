@@ -7,7 +7,7 @@
 import { Disclosure } from "@headlessui/react";
 import type { Editor } from "@tiptap/core";
 import { Ban } from "lucide-react";
-import { ChevronRightOutline, PaletteOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline, PaletteOutline } from "@pace/propel/icons";
 // pace imports
 import { cn } from "@pace/utils";
 // constants

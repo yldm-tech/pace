@@ -5,7 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { HomeOutline, SettingsOutline } from "@makeplane/propel/icons";
+import { HomeOutline, SettingsOutline } from "@pace/propel/icons";
 import * as React from "react";
 import { Breadcrumbs } from "./breadcrumbs";
 

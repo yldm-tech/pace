@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { WorkItemsOutline } from "@makeplane/propel/icons";
+import { WorkItemsOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { cn } from "@pace/utils";

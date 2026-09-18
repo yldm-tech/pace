@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { CyclesOutline } from "@makeplane/propel/icons";
+import { CyclesOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";

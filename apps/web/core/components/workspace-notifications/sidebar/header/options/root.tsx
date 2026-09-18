@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CheckDoneOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { CheckDoneOutline, RefreshOutline } from "@pace/propel/icons";
 // pace imports
 import { ENotificationLoader, ENotificationQueryParamType } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

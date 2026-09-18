@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // types
 import type { IIssueLabel } from "@/types/issue";
 

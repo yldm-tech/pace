@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { TransferWorkItemOutline, WarningCircleOutline } from "@makeplane/propel/icons";
+import { TransferWorkItemOutline, WarningCircleOutline } from "@pace/propel/icons";
 // ui
 import { Button } from "@pace/propel/button";
 

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { ArchiveOutline } from "@makeplane/propel/icons";
+import { ArchiveOutline } from "@pace/propel/icons";
 import { renderFormattedDate } from "@pace/utils";
 // store
 import type { TPageInstance } from "@/store/pages/base-page";

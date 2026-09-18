@@ -6,7 +6,7 @@
 
 import type { Editor } from "@tiptap/core";
 import type { ComponentType, SVGProps } from "react";
-import { AlignCenterOutline, AlignLeftOutline, AlignRightOutline } from "@makeplane/propel/icons";
+import { AlignCenterOutline, AlignLeftOutline, AlignRightOutline } from "@pace/propel/icons";
 // pace utils
 import { cn } from "@pace/utils";
 // components

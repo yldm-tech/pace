@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // pace imports
-import { PagesOutline } from "@makeplane/propel/icons";
+import { PagesOutline } from "@pace/propel/icons";
 import type { ICustomSearchSelectOption } from "@pace/types";
 import { Breadcrumbs, Header, BreadcrumbNavigationSearchDropdown } from "@pace/ui";
 import { getPageName } from "@pace/utils";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 import React from "react";
 import { E_PASSWORD_STRENGTH } from "@pace/constants";
 import { cn, getPasswordStrength, getPasswordCriteria } from "@pace/utils";

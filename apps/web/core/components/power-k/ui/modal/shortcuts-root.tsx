@@ -8,7 +8,7 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 // pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 import { ScrollArea } from "@pace/propel/scrollarea";
 
 // hooks

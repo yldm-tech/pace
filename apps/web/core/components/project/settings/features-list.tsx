@@ -10,7 +10,7 @@ import { useTranslation } from "@pace/i18n";
 import { setPromiseToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IProject } from "@pace/types";
-import { CyclesOutline, IntakeOutline, ModuleOutline, PagesOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { CyclesOutline, IntakeOutline, ModuleOutline, PagesOutline, ViewsOutline } from "@pace/propel/icons";
 // components
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";
 import { SettingsHeading } from "@/components/settings/heading";

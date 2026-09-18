@@ -8,7 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR, { mutate } from "swr";
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

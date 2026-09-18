@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { CYCLE_STATUS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 type Props = {

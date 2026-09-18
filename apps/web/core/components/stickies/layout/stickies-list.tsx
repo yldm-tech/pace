@@ -18,7 +18,7 @@ import Masonry from "react-masonry-component";
 // pace imports
 import { EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import { EUserWorkspaceRoles } from "@pace/types";
 // assets
 import darkStickiesAsset from "@/app/assets/empty-state/stickies/stickies-dark.webp?url";

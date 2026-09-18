@@ -8,7 +8,7 @@ import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 
 import { useTranslation } from "@pace/i18n";
-import { DeleteOutline, EditOutline, LinkOutline, NewTabOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, EditOutline, LinkOutline, NewTabOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TContextMenuItem } from "@pace/ui";
 import { LinkItemBlock } from "@pace/ui";

@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { useOutsideClickDetector } from "@pace/hooks";
 // i18n
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 // helpers
 import { cn } from "@pace/utils";
 // hooks

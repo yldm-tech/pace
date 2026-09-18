@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { CircleArrowUp } from "lucide-react";
-import { AiStar1Outline, CornerRightDownOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { AiStar1Outline, CornerRightDownOutline, RefreshOutline } from "@pace/propel/icons";
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // components

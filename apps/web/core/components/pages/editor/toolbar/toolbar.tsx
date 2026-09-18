@@ -7,7 +7,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import type { EditorRefApi } from "@pace/editor";
 // pace imports
-import { ChevronDownOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, TickOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { CustomMenu } from "@pace/ui";
 import { cn } from "@pace/utils";

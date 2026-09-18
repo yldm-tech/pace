@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { RightSidePaneOutline } from "@makeplane/propel/icons";
+import { RightSidePaneOutline } from "@pace/propel/icons";
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 
 export const SidebarHamburgerToggle = observer(function SidebarHamburgerToggle() {

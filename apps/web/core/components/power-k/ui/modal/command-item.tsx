@@ -7,7 +7,7 @@
 import React from "react";
 import { Command } from "cmdk";
 
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 // pace imports
 import { cn } from "@pace/utils";
 // local imports

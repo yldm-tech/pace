@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // icons
-import { ChevronDownOutline, FilterOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, FilterOutline } from "@pace/propel/icons";
 // components
 import { Row } from "@pace/ui";
 import { FiltersDropdown } from "@/components/issues/issue-layouts/filters";

@@ -7,7 +7,7 @@
 import { Combobox } from "@headlessui/react";
 
 import React from "react";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 // helpers
 import { cn } from "../../utils";
 // types

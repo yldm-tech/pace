@@ -11,7 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Disclosure } from "@headlessui/react";
 // pace imports
 import { ROLE, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
-import { DeactivatedUserOutline, DeleteOutline } from "@makeplane/propel/icons";
+import { DeactivatedUserOutline, DeleteOutline } from "@pace/propel/icons";
 import { Pill, EPillVariant, EPillSize } from "@pace/propel/pill";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IUser, IWorkspaceMember } from "@pace/types";

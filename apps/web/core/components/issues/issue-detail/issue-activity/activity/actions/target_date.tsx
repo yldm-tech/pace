@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CalendarOutline } from "@makeplane/propel/icons";
+import { CalendarOutline } from "@pace/propel/icons";
 // hooks
 import { renderFormattedDate } from "@pace/utils";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

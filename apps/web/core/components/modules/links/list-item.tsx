@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 
-import { CopyOutline, DeleteOutline, EditOutline } from "@makeplane/propel/icons";
+import { CopyOutline, DeleteOutline, EditOutline } from "@pace/propel/icons";
 // pace types
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

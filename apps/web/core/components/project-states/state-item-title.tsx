@@ -6,7 +6,7 @@
 
 import type { SetStateAction } from "react";
 import { observer } from "mobx-react";
-import { DragDropOutline, EditOutline } from "@makeplane/propel/icons";
+import { DragDropOutline, EditOutline } from "@pace/propel/icons";
 import { EIconSize } from "@pace/constants";
 // pace imports
 import { StateGroupIcon } from "@pace/propel/icons";

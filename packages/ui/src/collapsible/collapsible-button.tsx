@@ -6,7 +6,7 @@
 
 import React from "react";
 import type { ISvgIcons } from "@pace/propel/icons";
-import { DropdownOutline } from "@makeplane/propel/icons";
+import { DropdownOutline } from "@pace/propel/icons";
 import { cn } from "../utils";
 
 type Props = {

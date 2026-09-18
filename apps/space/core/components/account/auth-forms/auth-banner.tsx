@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CloseOutline, InfoOutline } from "@makeplane/propel/icons";
+import { CloseOutline, InfoOutline } from "@pace/propel/icons";
 // helpers
 import type { TAuthErrorInfo } from "@/helpers/authentication.helper";
 

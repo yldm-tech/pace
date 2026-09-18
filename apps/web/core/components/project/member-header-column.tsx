@@ -13,7 +13,7 @@ import {
   SortAscendingOutline,
   SortDescendingOutline,
   TickOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // constants
 import type { IProjectMemberDisplayProperties, TMemberOrderByOptions } from "@pace/constants";
 import { MEMBER_PROPERTY_DETAILS } from "@pace/constants";

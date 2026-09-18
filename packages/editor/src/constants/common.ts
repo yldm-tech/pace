@@ -27,7 +27,7 @@ import {
   TextOutline,
   ToDoOutline,
   UnderlineOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { MonospaceIcon, SansSerifIcon, SerifIcon } from "@pace/propel/icons";
 import type { TCommandExtraProps, TEditorCommands, TEditorFontStyle } from "@/types";
 

@@ -8,7 +8,7 @@ import type { LucideIcon } from "lucide-react";
 // pace imports
 import type { TLogoProps } from "@pace/types";
 import { FavoriteFolderIcon } from "@pace/propel/icons";
-import { CyclesOutline, ModuleOutline, PagesOutline, ProjectsOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { CyclesOutline, ModuleOutline, PagesOutline, ProjectsOutline, ViewsOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 import { Logo } from "@pace/propel/emoji-icon-picker";
 

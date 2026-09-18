@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { SortAscendingOutline, SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
+import { SortAscendingOutline, SortDescendingOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import { getButtonStyling } from "@pace/propel/button";
 // types

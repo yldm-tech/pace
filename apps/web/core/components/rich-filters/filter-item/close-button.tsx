@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { IFilterInstance } from "@pace/shared-state";
 import type { TExternalFilter, TFilterProperty } from "@pace/types";
 

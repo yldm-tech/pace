@@ -9,7 +9,7 @@ import Link from "@/app/hooks/link";
 import { useSearchParams } from "@/app/hooks/navigation";
 import { Controller, useForm } from "react-hook-form";
 // icons
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

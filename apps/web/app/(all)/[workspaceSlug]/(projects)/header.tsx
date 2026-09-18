@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { HomeOutline, WidgetOutline } from "@makeplane/propel/icons";
+import { HomeOutline, WidgetOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";

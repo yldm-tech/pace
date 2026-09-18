@@ -7,7 +7,7 @@
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "@/app/hooks/navigation";
-import { LogOutOutline, SettingsOutline } from "@makeplane/propel/icons";
+import { LogOutOutline, SettingsOutline } from "@pace/propel/icons";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { ADMIN_URL } from "@pace/constants";

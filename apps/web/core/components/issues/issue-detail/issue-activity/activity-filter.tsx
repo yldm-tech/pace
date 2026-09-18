@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { FilterOutline, TickOutline } from "@makeplane/propel/icons";
+import { FilterOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import type { TActivityFilters, TActivityFilterOption } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

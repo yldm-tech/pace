@@ -12,7 +12,7 @@ import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { ROLE } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { CustomSelect } from "@pace/ui";
 import { cn } from "@pace/utils";
 // hooks

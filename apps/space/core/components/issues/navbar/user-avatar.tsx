@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { Link } from "react-router";
 import { usePathname, useSearchParams } from "@/app/hooks/navigation";
 import { usePopper } from "react-popper";
-import { LogOutOutline } from "@makeplane/propel/icons";
+import { LogOutOutline } from "@pace/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // pace imports
 import { API_BASE_URL } from "@pace/constants";

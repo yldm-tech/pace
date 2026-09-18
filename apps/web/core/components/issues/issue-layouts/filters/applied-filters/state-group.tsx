@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // icons
 import { EIconSize } from "@pace/constants";
 import { StateGroupIcon } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TStateGroups } from "@pace/types";
 
 type Props = {

@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 
 import type { ENotificationFilterType } from "@pace/constants";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 // pace imports
 // helpers
 import { cn } from "@pace/utils";

@@ -7,7 +7,7 @@
 import { Fragment, useState } from "react";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
-import { AddOutline, LoadingOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { AddOutline, LoadingOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { Combobox } from "@headlessui/react";
 // pace imports
 import { EUserPermissionsLevel, getRandomLabelColor } from "@pace/constants";

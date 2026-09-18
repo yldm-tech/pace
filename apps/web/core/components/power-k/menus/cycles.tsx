@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { CyclesOutline } from "@makeplane/propel/icons";
+import { CyclesOutline } from "@pace/propel/icons";
 import type { ICycle } from "@pace/types";
 // local imports
 import { PowerKMenuBuilder } from "./builder";

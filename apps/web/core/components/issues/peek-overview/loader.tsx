@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowNarrowRightOutline } from "@makeplane/propel/icons";
+import { ArrowNarrowRightOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { Skeleton } from "@pace/propel/skeleton";
 // hooks

@@ -7,7 +7,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
-import { CloseOutline, DragDropOutline } from "@makeplane/propel/icons";
+import { CloseOutline, DragDropOutline } from "@pace/propel/icons";
 // pace imports
 import { WORKSPACE_SIDEBAR_DYNAMIC_NAVIGATION_ITEMS_LINKS, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

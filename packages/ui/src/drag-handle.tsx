@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { MoreVerticalOutline } from "@makeplane/propel/icons";
+import { MoreVerticalOutline } from "@pace/propel/icons";
 import React, { forwardRef } from "react";
 // helpers
 import { cn } from "./utils";

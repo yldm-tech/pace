@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import type { TRecentActivityFilterKeys } from "@pace/types";
 import { CustomMenu } from "@pace/ui";
 import { cn } from "@pace/utils";

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { FilterOutline } from "@makeplane/propel/icons";
+import { FilterOutline } from "@pace/propel/icons";
 // pace imports
 import type { ENotificationFilterType } from "@pace/constants";
 import { FILTER_TYPE_OPTIONS } from "@pace/constants";

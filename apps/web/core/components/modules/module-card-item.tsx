@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
 import { usePathname, useSearchParams } from "@/app/hooks/navigation";
-import { InfoOutline, UserAltOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { InfoOutline, UserAltOutline, WorkItemsOutline } from "@pace/propel/icons";
 // pace package imports
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";

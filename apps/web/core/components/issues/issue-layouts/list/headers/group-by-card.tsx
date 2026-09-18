@@ -8,7 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { CircleDashed } from "lucide-react";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // types
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueGroupByOptions } from "@pace/types";

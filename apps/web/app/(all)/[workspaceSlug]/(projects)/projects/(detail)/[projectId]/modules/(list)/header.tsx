@@ -11,7 +11,7 @@ import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // ui
 import { Button } from "@pace/propel/button";
-import { ModuleOutline } from "@makeplane/propel/icons";
+import { ModuleOutline } from "@pace/propel/icons";
 import { Breadcrumbs, Header } from "@pace/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";

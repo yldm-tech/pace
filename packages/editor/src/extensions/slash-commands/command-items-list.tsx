@@ -22,7 +22,7 @@ import {
   TableEditorOutline,
   TextOutline,
   ToDoOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // constants
 import { COLORS_LIST } from "@/constants/common";
 // helpers

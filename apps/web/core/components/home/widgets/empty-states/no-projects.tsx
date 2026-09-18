@@ -9,7 +9,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
-import { CloseOutline, MembersOutline, ProjectsOutline, TickOutline } from "@makeplane/propel/icons";
+import { CloseOutline, MembersOutline, ProjectsOutline, TickOutline } from "@pace/propel/icons";
 // pace ui
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";

@@ -7,7 +7,7 @@
 // pace package imports
 import type { ReactNode } from "react";
 import React from "react";
-import { CalendarOutline } from "@makeplane/propel/icons";
+import { CalendarOutline } from "@pace/propel/icons";
 // pace package imports
 import { ANALYTICS_DURATION_FILTER_OPTIONS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

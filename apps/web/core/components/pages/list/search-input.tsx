@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 // pace imports
 import { useOutsideClickDetector } from "@pace/hooks";
 import { IconButton } from "@pace/propel/icon-button";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 type Props = {

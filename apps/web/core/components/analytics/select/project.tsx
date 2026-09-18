@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace package imports
 import { getButtonStyling } from "@pace/propel/button";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ChevronDownOutline, ProjectsOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ProjectsOutline } from "@pace/propel/icons";
 import { CustomSearchSelect } from "@pace/ui";
 import { cn } from "@pace/utils";
 // hooks

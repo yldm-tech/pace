@@ -23,7 +23,7 @@ import {
   MoreHorizontalOutline,
   SettingsOutline,
   ShareAltOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";

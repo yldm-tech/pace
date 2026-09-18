@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback, useMemo } from "react";
-import { ChevronDownOutline, LockOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, LockOutline } from "@pace/propel/icons";
 import { PasswordInput, PasswordStrengthIndicator } from "@pace/ui";
 import { cn } from "@pace/utils";
 

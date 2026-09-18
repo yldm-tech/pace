@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { DownloadOutline } from "@makeplane/propel/icons";
+import { DownloadOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@pace/propel/tooltip";
 

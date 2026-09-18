@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { WarningCircleOutline } from "@makeplane/propel/icons";
+import { WarningCircleOutline } from "@pace/propel/icons";
 // pace imports
 import type { TExternalFilter, TFilterProperty } from "@pace/types";
 // local imports

@@ -7,7 +7,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@pace/propel/button";
 import { Calendar } from "@pace/propel/calendar";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { renderFormattedPayloadDate, renderFormattedDate, getDate } from "@pace/utils";
 import { DateFilterSelect } from "./date-filter-select";

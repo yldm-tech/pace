@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { IntakeOutline, LeftSidePaneOutline } from "@makeplane/propel/icons";
+import { IntakeOutline, LeftSidePaneOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { EmptyStateCompact } from "@pace/propel/empty-state";

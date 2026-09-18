@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 
 // pace imports
 import { DEFAULT_GLOBAL_VIEWS_LIST, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import type { TStaticViewTypes } from "@pace/types";
 import { Header, EHeaderVariant } from "@pace/ui";
 // hooks

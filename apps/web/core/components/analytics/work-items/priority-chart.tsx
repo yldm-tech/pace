@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { useTheme } from "next-themes";
 import useSWR from "swr";
 // pace package imports
-import { DownloadOutline } from "@makeplane/propel/icons";
+import { DownloadOutline } from "@pace/propel/icons";
 import type { ChartXAxisDateGrouping } from "@pace/constants";
 import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES, CHART_COLOR_PALETTES, EChartModels } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

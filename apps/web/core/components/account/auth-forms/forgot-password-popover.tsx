@@ -9,7 +9,7 @@ import { usePopper } from "react-popper";
 import { Popover } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 
 export function ForgotPasswordPopover() {
   // popper-js refs

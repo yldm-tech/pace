@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
+import { HideOutline, ShowOutline } from "@pace/propel/icons";
 // pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

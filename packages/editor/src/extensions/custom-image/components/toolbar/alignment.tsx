@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 // pace imports
 import { useOutsideClickDetector } from "@pace/hooks";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import { Tooltip } from "@pace/propel/tooltip";
 // local imports
 import type { TCustomImageAlignment } from "../../types";

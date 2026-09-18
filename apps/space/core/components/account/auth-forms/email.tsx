@@ -8,7 +8,7 @@ import type { FormEvent } from "react";
 import { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
-import { CloseCircleOutline, WarningCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline, WarningCircleOutline } from "@pace/propel/icons";
 // types
 import { Button } from "@pace/propel/button";
 import type { IEmailCheckData } from "@pace/types";

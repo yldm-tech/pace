@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 
 import { useTranslation } from "@pace/i18n";
-import { DeleteOutline } from "@makeplane/propel/icons";
+import { DeleteOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TIssueServiceType } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";

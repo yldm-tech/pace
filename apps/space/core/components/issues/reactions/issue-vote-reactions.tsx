@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { ArrowDownOutline, TopArrowOutline } from "@makeplane/propel/icons";
+import { ArrowDownOutline, TopArrowOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
 import { usePathname, useRouter, useSearchParams } from "@/app/hooks/navigation";
 // pace imports

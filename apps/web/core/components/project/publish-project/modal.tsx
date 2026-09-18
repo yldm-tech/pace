@@ -12,7 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 // types
 import { SPACE_BASE_PATH, SPACE_BASE_URL } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { GlobeOutline, NewTabOutline, TickOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, NewTabOutline, TickOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TProjectPublishLayouts, TProjectPublishSettings } from "@pace/types";
 // ui

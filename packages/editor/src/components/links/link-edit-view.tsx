@@ -5,7 +5,7 @@
  */
 
 import type { Node } from "@tiptap/pm/model";
-import { UnlinkOutline } from "@makeplane/propel/icons";
+import { UnlinkOutline } from "@pace/propel/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 // components
 import type { LinkViewProps, LinkViews } from "@/components/links";

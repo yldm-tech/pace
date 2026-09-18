@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { ReactionOutline } from "@makeplane/propel/icons";
+import { ReactionOutline } from "@pace/propel/icons";
 // pace imports
 import { EmojiPicker, EmojiIconPickerTypes } from "@pace/propel/emoji-icon-picker";
 import { cn } from "@pace/utils";

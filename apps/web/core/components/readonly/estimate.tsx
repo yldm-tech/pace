@@ -7,7 +7,7 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
-import { EstimateOutline } from "@makeplane/propel/icons";
+import { EstimateOutline } from "@pace/propel/icons";
 import { EEstimateSystem } from "@pace/types";
 import { cn, convertMinutesToHoursMinutesString } from "@pace/utils";
 // hooks

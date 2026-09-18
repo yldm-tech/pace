@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ChevronDownOutline, FilterOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, FilterOutline } from "@pace/propel/icons";
 import { getButtonStyling } from "@pace/propel/button";
 // pace imports
 import { cn } from "@pace/utils";

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // helpers
 import { getFileURL } from "@pace/utils";
 // types

@@ -16,7 +16,7 @@ import {
   RestoreOutline,
   StarOutline,
   UnlockedOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace imports
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";

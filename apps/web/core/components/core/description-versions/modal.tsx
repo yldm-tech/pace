@@ -11,7 +11,7 @@ import { Avatar } from "@makeplane/propel/components/avatar";
 import type { EditorRefApi } from "@pace/editor";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { ChevronLeftOutline, ChevronRightOutline, CopyOutline } from "@makeplane/propel/icons";
+import { ChevronLeftOutline, ChevronRightOutline, CopyOutline } from "@pace/propel/icons";
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TDescriptionVersion } from "@pace/types";

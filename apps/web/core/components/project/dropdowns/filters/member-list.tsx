@@ -8,7 +8,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 // pace imports
 import { Button } from "@pace/propel/button";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import { EUserProjectRoles, EUserWorkspaceRoles } from "@pace/types";
 // pace ui
 import { CustomMenu } from "@pace/ui";

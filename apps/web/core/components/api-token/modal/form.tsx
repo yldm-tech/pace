@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { add } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
-import { CalendarOutline } from "@makeplane/propel/icons";
+import { CalendarOutline } from "@pace/propel/icons";
 // types
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

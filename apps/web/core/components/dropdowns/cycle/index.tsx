@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
 // ui
-import { ChevronDownOutline, CyclesOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, CyclesOutline } from "@pace/propel/icons";
 import { ComboDropDown } from "@pace/ui";
 // helpers
 import { cn } from "@pace/utils";

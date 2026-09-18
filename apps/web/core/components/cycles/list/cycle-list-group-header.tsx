@@ -7,7 +7,7 @@
 import React from "react";
 // types
 import { CycleGroupIcon } from "@pace/propel/icons";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import type { TCycleGroups } from "@pace/types";
 // icons
 import { Row } from "@pace/ui";

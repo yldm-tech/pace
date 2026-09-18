@@ -11,7 +11,7 @@ import { useDropzone } from "react-dropzone";
 // pace imports
 import { ACCEPTED_AVATAR_IMAGE_MIME_TYPES_FOR_REACT_DROPZONE, MAX_FILE_SIZE } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { UserOutline } from "@makeplane/propel/icons";
+import { UserOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EFileAssetType } from "@pace/types";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";

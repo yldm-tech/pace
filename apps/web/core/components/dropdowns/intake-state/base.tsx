@@ -12,7 +12,7 @@ import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { IntakeStateGroupIcon } from "@pace/propel/icons";
-import { ChevronDownOutline, SearchOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, SearchOutline } from "@pace/propel/icons";
 import type { IIntakeState } from "@pace/types";
 import { Spinner } from "@pace/propel/spinners";
 import { ComboDropDown } from "@pace/ui";

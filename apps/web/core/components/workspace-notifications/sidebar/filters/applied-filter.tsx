@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { ENotificationFilterType, FILTER_TYPE_OPTIONS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { PillButton } from "@makeplane/propel/components/pill";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { Header, EHeaderVariant } from "@pace/ui";
 // hooks
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";

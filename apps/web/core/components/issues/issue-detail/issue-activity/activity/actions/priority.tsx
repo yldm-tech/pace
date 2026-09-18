@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { PriorityOutline } from "@makeplane/propel/icons";
+import { PriorityOutline } from "@pace/propel/icons";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

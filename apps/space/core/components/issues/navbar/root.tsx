@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ProjectsOutline } from "@makeplane/propel/icons";
+import { ProjectsOutline } from "@pace/propel/icons";
 // components
 import { ProjectLogo } from "@/components/common/project-logo";
 // store

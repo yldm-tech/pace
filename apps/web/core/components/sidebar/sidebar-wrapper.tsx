@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // pace helpers
 import { useOutsideClickDetector } from "@pace/hooks";
-import { PreferencesOutline } from "@makeplane/propel/icons";
+import { PreferencesOutline } from "@pace/propel/icons";
 import { ScrollArea } from "@pace/propel/scrollarea";
 // components
 import { CustomizeNavigationDialog } from "@/components/navigation/customize-navigation-dialog";

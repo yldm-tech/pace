@@ -8,7 +8,7 @@ import type React from "react";
 import { observer } from "mobx-react";
 // ui
 import type { ISvgIcons } from "@pace/propel/icons";
-import { GridOutline, ListOutline, TimelineOutline } from "@makeplane/propel/icons";
+import { GridOutline, ListOutline, TimelineOutline } from "@pace/propel/icons";
 // pace package imports
 import type { TCycleLayoutOptions } from "@pace/types";
 import { CustomMenu } from "@pace/ui";

@@ -9,7 +9,7 @@ import type { SyntheticEvent } from "react";
 import { useMemo } from "react";
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
-import { DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
+import { DueDateOutline, StartDateOutline } from "@pace/propel/icons";
 import type { IIssueDisplayProperties, TIssue } from "@pace/types";
 import { getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";
 // components

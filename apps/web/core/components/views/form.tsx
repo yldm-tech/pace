@@ -15,7 +15,7 @@ import { ETabIndices, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
-import { ViewsOutline } from "@makeplane/propel/icons";
+import { ViewsOutline } from "@pace/propel/icons";
 import type {
   IIssueDisplayFilterOptions,
   IIssueDisplayProperties,

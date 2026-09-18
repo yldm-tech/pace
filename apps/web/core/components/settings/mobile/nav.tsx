@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { Menu } from "lucide-react";
 import { useOutsideClickDetector } from "@pace/hooks";
 import { useTranslation } from "@pace/i18n";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 import { useUserSettings } from "@/hooks/store/user";
 import { IconButton } from "@pace/propel/icon-button";
 

@@ -5,7 +5,7 @@
  */
 
 import type { ColumnDef, Row, Table } from "@tanstack/react-table";
-import { DownloadOutline } from "@makeplane/propel/icons";
+import { DownloadOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import type { AnalyticsTableDataMap, TAnalyticsTabsBase } from "@pace/types";

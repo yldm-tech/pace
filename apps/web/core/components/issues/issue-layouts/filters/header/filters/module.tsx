@@ -9,7 +9,7 @@ import { sortBy } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // components
-import { ModuleOutline } from "@makeplane/propel/icons";
+import { ModuleOutline } from "@pace/propel/icons";
 import { Skeleton } from "@pace/propel/skeleton";
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 import { useModule } from "@/hooks/store/use-module";

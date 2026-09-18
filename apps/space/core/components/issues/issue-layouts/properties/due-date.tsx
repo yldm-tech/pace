@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { DueDateOutline } from "@makeplane/propel/icons";
+import { DueDateOutline } from "@pace/propel/icons";
 import { Tooltip } from "@pace/propel/tooltip";
 import { cn, renderFormattedDate, shouldHighlightIssueDueDate } from "@pace/utils";
 // helpers

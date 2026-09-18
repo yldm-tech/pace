@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // lucide icons
 import { Circle } from "lucide-react";
-import { AddOutline, ArrowCollapseOutline, FullScreenOutline } from "@makeplane/propel/icons";
+import { AddOutline, ArrowCollapseOutline, FullScreenOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssue, ISearchIssueResponse, TIssueKanbanFilters, TIssueGroupByOptions } from "@pace/types";
 // ui

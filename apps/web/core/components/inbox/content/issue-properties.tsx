@@ -12,7 +12,7 @@ import {
   MembersOutline,
   PriorityOutline,
   StateOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TInboxDuplicateIssueDetails, TIssue } from "@pace/types";
 import { ControlLink } from "@pace/ui";

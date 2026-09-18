@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // icons
 import { DATE_AFTER_FILTER_OPTIONS } from "@pace/constants";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { renderFormattedDate, capitalizeFirstLetter } from "@pace/utils";
 // helpers
 // constants

@@ -10,7 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 // Plane Imports
 import { CYCLE_STATUS, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { ICycle } from "@pace/types";
 import { getDate, renderFormattedPayloadDate } from "@pace/utils";

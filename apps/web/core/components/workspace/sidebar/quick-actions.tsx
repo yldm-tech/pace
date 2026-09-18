@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { AddWorkItemOutline } from "@makeplane/propel/icons";
+import { AddWorkItemOutline } from "@pace/propel/icons";
 import type { TIssue } from "@pace/types";
 // components
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";

@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { EIconSize } from "@pace/constants";
 import { StateGroupIcon } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // hooks
 import { useStates } from "@/hooks/store/use-state";
 

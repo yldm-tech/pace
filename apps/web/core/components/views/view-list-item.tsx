@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ViewsOutline } from "@makeplane/propel/icons";
+import { ViewsOutline } from "@pace/propel/icons";
 // types
 import type { IProjectView } from "@pace/types";
 // components

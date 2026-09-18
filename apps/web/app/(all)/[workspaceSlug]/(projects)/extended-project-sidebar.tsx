@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
-import { AddOutline, SearchOutline } from "@makeplane/propel/icons";
+import { AddOutline, SearchOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { copyUrlToClipboard, orderJoinedProjects } from "@pace/utils";

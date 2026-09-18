@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { LinkOutline } from "@makeplane/propel/icons";
+import { LinkOutline } from "@pace/propel/icons";
 import { IconButton } from "@pace/propel/icon-button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

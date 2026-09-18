@@ -6,7 +6,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline, HideOutline, ShowOutline } from "@pace/propel/icons";
 // pace imports
 import { API_BASE_URL, EAuthModes, EAuthSteps, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@pace/propel/button";

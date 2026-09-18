@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline, DeleteOutline, EditOutline, LinkOutline } from "@makeplane/propel/icons";
+import { CloseOutline, DeleteOutline, EditOutline, LinkOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TIssueRelationTypes } from "@pace/types";

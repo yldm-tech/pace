@@ -6,7 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { DeleteOutline, DragDropOutline, EditOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, DragDropOutline, EditOutline } from "@pace/propel/icons";
 // pace imports
 import { EEstimateSystem, estimateCount } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

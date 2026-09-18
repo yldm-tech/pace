@@ -7,7 +7,7 @@
 import { useCallback, useState } from "react";
 import { debounce } from "lodash-es";
 import { observer } from "mobx-react";
-import { ArrowCollapseOutline } from "@makeplane/propel/icons";
+import { ArrowCollapseOutline } from "@pace/propel/icons";
 // pace types
 import type { TSticky } from "@pace/types";
 // pace utils

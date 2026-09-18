@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
 import { usePathname } from "@/app/hooks/navigation";
-import { PinOutline, UnpinOutline } from "@makeplane/propel/icons";
+import { PinOutline, UnpinOutline } from "@pace/propel/icons";
 // pace imports
 import type { IWorkspaceSidebarNavigationItem } from "@pace/constants";
 import { EUserPermissionsLevel } from "@pace/constants";

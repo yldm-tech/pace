@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 import { Tooltip } from "@pace/propel/tooltip";
 import { cn } from "../utils";
 

@@ -12,7 +12,7 @@ import type { UseFormRegister } from "react-hook-form";
 import { useForm } from "react-hook-form";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import { setPromiseToast } from "@pace/propel/toast";
 import type { IProject, TIssue, EIssueLayoutTypes } from "@pace/types";
 import { cn, createIssuePayload } from "@pace/utils";

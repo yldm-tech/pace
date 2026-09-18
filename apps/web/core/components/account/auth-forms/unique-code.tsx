@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { CloseCircleOutline, TickCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline, TickCircleOutline } from "@pace/propel/icons";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { API_BASE_URL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { CircleDashed, Microscope } from "lucide-react";
-import { AlertOctagonOutline, BarOutline, FolderOutline, SearchOutline } from "@makeplane/propel/icons";
+import { AlertOctagonOutline, BarOutline, FolderOutline, SearchOutline } from "@pace/propel/icons";
 // pace imports
 import { MARKETING_PRICING_PAGE_LINK } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

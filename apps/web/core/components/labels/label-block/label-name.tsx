@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { GroupOutline } from "@makeplane/propel/icons";
+import { GroupOutline } from "@pace/propel/icons";
 
 interface ILabelName {
   name: string;

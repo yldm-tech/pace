@@ -11,7 +11,7 @@ import {
   CornerRightDownOutline,
   RefreshOutline,
   WarningTriangleOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace editor
 import type { EditorRefApi } from "@pace/editor";
 // pace ui

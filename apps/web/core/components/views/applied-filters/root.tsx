@@ -6,7 +6,7 @@
 
 import { useTranslation } from "@pace/i18n";
 import { PillButton } from "@makeplane/propel/components/pill";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // pace imports
 import type { EViewAccess, TViewFilterProps } from "@pace/types";
 import { replaceUnderscoreIfSnakeCase } from "@pace/utils";

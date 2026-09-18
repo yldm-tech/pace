@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ParentOutline } from "@makeplane/propel/icons";
+import { ParentOutline } from "@pace/propel/icons";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

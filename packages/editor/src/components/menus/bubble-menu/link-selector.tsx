@@ -7,7 +7,7 @@
 import type { Editor } from "@tiptap/core";
 
 import { useCallback, useRef, useState } from "react";
-import { DeleteOutline, LinkOutline, TickOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, LinkOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import { cn } from "@pace/utils";
 // constants

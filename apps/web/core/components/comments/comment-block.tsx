@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { useRef } from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { ReplyOutline } from "@makeplane/propel/icons";
+import { ReplyOutline } from "@pace/propel/icons";
 import type { TIssueComment } from "@pace/types";
 import { cn } from "@pace/utils";
 // hooks

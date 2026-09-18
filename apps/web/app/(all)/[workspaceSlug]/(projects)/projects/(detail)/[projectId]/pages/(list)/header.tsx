@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from "@/app/hooks/navigation";
 import { EPageAccess } from "@pace/constants";
 // pace types
 import { Button } from "@pace/propel/button";
-import { PagesOutline } from "@makeplane/propel/icons";
+import { PagesOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TPage } from "@pace/types";
 // pace ui

@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { Placement } from "@popperjs/core";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
-import { GroupOutline, LabelsOutline, LoadingOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { GroupOutline, LabelsOutline, LoadingOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { Combobox } from "@headlessui/react";
 import { getRandomLabelColor } from "@pace/constants";
 // pace imports

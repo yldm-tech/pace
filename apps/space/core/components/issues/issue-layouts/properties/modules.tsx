@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace ui
-import { ModuleOutline } from "@makeplane/propel/icons";
+import { ModuleOutline } from "@pace/propel/icons";
 import { Tooltip } from "@pace/propel/tooltip";
 // pace utils
 import { cn } from "@pace/utils";

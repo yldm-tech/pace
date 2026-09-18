@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { PillButton } from "@makeplane/propel/components/pill";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TCycleFilters } from "@pace/types";
 import { replaceUnderscoreIfSnakeCase } from "@pace/utils";
 // hooks

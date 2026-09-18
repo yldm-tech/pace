@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace types
 import { PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
-import { WorkItemsOutline } from "@makeplane/propel/icons";
+import { WorkItemsOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TActivityEntityData, TIssueEntityData } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";

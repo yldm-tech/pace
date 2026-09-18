@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import useSWR, { mutate } from "swr";
-import { ArrowNarrowLeftOutline, ArrowNarrowRightOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { ArrowNarrowLeftOutline, ArrowNarrowRightOutline, RefreshOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";

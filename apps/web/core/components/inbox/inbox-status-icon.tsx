@@ -10,7 +10,7 @@ import {
   CopyOutline,
   TickCircleOutline,
   WarningTriangleOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import type { TInboxIssueStatus } from "@pace/types";
 import { EInboxIssueStatus } from "@pace/types";
 import { cn } from "@pace/utils";

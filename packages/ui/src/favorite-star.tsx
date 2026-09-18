@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { StarFilled, StarOutline } from "@makeplane/propel/icons";
+import { StarFilled, StarOutline } from "@pace/propel/icons";
 import React from "react";
 // helpers
 import { cn } from "./utils";

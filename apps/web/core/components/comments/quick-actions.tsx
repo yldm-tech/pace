@@ -13,7 +13,7 @@ import {
   LinkOutline,
   LockOutline,
   MoreHorizontalOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { EIssueCommentAccessSpecifier } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

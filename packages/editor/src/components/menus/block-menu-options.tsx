@@ -7,7 +7,7 @@
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { TableMap } from "@tiptap/pm/tables";
 import type { Editor } from "@tiptap/react";
-import { DragDropOutline } from "@makeplane/propel/icons";
+import { DragDropOutline } from "@pace/propel/icons";
 // constants
 import { CORE_EXTENSIONS } from "@/constants/extension";
 // types

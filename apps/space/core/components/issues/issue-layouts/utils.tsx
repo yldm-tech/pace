@@ -9,7 +9,7 @@ import { isNil } from "lodash-es";
 import { EIconSize, ISSUE_PRIORITIES } from "@pace/constants";
 import { Avatar } from "@pace/propel/avatar";
 import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
-import { CyclesOutline, ModuleOutline } from "@makeplane/propel/icons";
+import { CyclesOutline, ModuleOutline } from "@pace/propel/icons";
 import type {
   GroupByColumnTypes,
   IGroupByColumn,

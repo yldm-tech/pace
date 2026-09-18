@@ -8,7 +8,7 @@ import { Fragment, useCallback, useRef, useState } from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
-import { CompletedAtOutline } from "@makeplane/propel/icons";
+import { CompletedAtOutline } from "@pace/propel/icons";
 // headless ui
 import { Tab } from "@headlessui/react";
 // pace imports

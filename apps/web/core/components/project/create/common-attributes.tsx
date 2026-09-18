@@ -10,7 +10,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { TextArea, TextAreaGroup } from "@makeplane/propel/components/text-area";
-import { InfoOutline } from "@makeplane/propel/icons";
+import { InfoOutline } from "@pace/propel/icons";
 // pace imports
 import { ETabIndices } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

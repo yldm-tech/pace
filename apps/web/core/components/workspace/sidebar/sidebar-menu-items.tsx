@@ -6,7 +6,7 @@
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react";
-import { ChevronRightOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline, MoreHorizontalOutline } from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import {

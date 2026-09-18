@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import { addDays } from "date-fns";
 import { observer } from "mobx-react";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IBlockUpdateData, IGanttBlock } from "@pace/types";

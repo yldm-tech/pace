@@ -10,7 +10,7 @@ import type { LucideIcon } from "lucide-react";
 // pace helpers
 import { useOutsideClickDetector } from "@pace/hooks";
 import type { ISvgIcons } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // types
 import type { IIssueLabel } from "@pace/types";
 // ui

@@ -17,7 +17,7 @@ import {
   FloatingPortal,
 } from "@floating-ui/react";
 import type { Editor } from "@tiptap/core";
-import { MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { MoreHorizontalOutline } from "@pace/propel/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 // pace imports
 import { cn } from "@pace/utils";

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ChatOutline } from "@makeplane/propel/icons";
+import { ChatOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

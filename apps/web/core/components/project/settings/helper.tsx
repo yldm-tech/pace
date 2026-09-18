@@ -5,7 +5,7 @@
  */
 
 import Link from "@/app/hooks/link";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 import { EPillVariant, Pill, EPillSize } from "@pace/propel/pill";
 import { Switch } from "@makeplane/propel/components/switch";
 import { joinUrlPath } from "@pace/utils";

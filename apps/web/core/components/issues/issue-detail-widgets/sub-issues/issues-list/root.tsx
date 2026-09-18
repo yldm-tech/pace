@@ -7,7 +7,7 @@
 import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { FilterOutline } from "@makeplane/propel/icons";
+import { FilterOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import type { GroupByColumnTypes, TIssue, TIssueServiceType, TSubIssueOperations } from "@pace/types";

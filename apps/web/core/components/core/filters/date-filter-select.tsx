@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { CalendarOutline } from "@makeplane/propel/icons";
+import { CalendarOutline } from "@pace/propel/icons";
 // ui
 import { CalendarAfterIcon, CalendarBeforeIcon } from "@pace/propel/icons";
 import { CustomSelect } from "@pace/ui";

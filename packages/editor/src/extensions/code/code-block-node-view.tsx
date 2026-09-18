@@ -8,7 +8,7 @@ import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
 import ts from "highlight.js/lib/languages/typescript";
 import { common, createLowlight } from "lowlight";
-import { CopyOutline, TickOutline } from "@makeplane/propel/icons";
+import { CopyOutline, TickOutline } from "@pace/propel/icons";
 import { useState } from "react";
 // ui
 import { Tooltip } from "@pace/propel/tooltip";

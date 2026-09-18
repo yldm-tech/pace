@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
-import { UserAltOutline } from "@makeplane/propel/icons";
+import { UserAltOutline } from "@pace/propel/icons";
 // Plane imports
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";

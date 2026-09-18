@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { PAST_DURATION_FILTER_OPTIONS } from "@pace/constants";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TInboxIssueFilterDateKeys } from "@pace/types";
 import { renderFormattedDate } from "@pace/utils";
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";

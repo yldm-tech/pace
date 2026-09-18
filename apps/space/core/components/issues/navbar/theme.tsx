@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
-import { AppearanceOutline, MoonOutline } from "@makeplane/propel/icons";
+import { AppearanceOutline, MoonOutline } from "@pace/propel/icons";
 
 export const NavbarTheme = observer(function NavbarTheme() {
   // states

@@ -17,7 +17,7 @@ import {
 import type { Editor } from "@tiptap/react";
 import type { LucideIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CopyOutline, DeleteOutline } from "@makeplane/propel/icons";
+import { CopyOutline, DeleteOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 // constants

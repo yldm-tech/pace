@@ -9,7 +9,7 @@ import { range } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // icons
-import { CopyOutline, HideOutline, RefreshOutline, ShowOutline } from "@makeplane/propel/icons";
+import { CopyOutline, HideOutline, RefreshOutline, ShowOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

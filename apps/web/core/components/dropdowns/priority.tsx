@@ -13,7 +13,7 @@ import { ISSUE_PRIORITIES } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // types
 import { PriorityIcon } from "@pace/propel/icons";
-import { ChevronDownOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TIssuePriorities } from "@pace/types";
 // ui

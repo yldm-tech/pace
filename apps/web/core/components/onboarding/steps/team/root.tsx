@@ -16,7 +16,7 @@ import type {
 } from "react-hook-form";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { usePopper } from "react-popper";
-import { AddOutline, ChevronDownOutline, CloseCircleOutline, TickOutline } from "@makeplane/propel/icons";
+import { AddOutline, ChevronDownOutline, CloseCircleOutline, TickOutline } from "@pace/propel/icons";
 import { Listbox } from "@headlessui/react";
 // pace imports
 import { Field } from "@makeplane/propel/components/field";

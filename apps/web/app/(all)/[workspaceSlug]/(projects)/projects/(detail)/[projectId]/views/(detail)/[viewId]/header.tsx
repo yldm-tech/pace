@@ -16,7 +16,7 @@ import {
   EUserPermissionsLevel,
 } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { LockOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { LockOutline, ViewsOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { ICustomSearchSelectOption, IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@pace/types";
 import { EIssuesStoreType, EViewAccess, EIssueLayoutTypes } from "@pace/types";

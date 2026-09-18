@@ -8,7 +8,7 @@ import { useCallback, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // icons
-import { BarOutline, ModuleOutline, PreferencesOutline, RightSidePaneOutline } from "@makeplane/propel/icons";
+import { BarOutline, ModuleOutline, PreferencesOutline, RightSidePaneOutline } from "@pace/propel/icons";
 // pace imports
 import {
   EIssueFilterType,

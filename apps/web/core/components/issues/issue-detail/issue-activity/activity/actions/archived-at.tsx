@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ArchiveOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { ArchiveOutline, RefreshOutline } from "@pace/propel/icons";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

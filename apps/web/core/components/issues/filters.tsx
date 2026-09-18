@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { BarOutline, PreferencesOutline } from "@makeplane/propel/icons";
+import { BarOutline, PreferencesOutline } from "@pace/propel/icons";
 // pace imports
 import { EIssueFilterType, ISSUE_STORE_TO_FILTERS_MAP } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

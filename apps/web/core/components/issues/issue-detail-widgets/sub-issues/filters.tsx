@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutline, FilterOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, FilterOutline, SearchOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import type { IIssueFilterOptions, IState } from "@pace/types";
 import { cn } from "@pace/utils";

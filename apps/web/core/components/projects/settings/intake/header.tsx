@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
-import { IntakeOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { IntakeOutline, RefreshOutline } from "@pace/propel/icons";
 // ui
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
