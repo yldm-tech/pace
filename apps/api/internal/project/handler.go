@@ -15,7 +15,6 @@ import (
 	"github.com/yldm-tech/pace/apps/api/internal/projects"
 	"github.com/yldm-tech/pace/apps/api/internal/storage"
 	"gorm.io/gorm"
-	"net/netip"
 )
 
 const (
@@ -47,10 +46,6 @@ type Settings struct {
 	Environment map[string]string
 	// LLMBaseURL is where the assistant's completions are asked for. The python client points at OpenAI unless it is told otherwise.
 	LLMBaseURL string
-	// The three webhook settings, which together decide which urls a workspace may be told to call.
-	WebhookAllowedIPs        []netip.Prefix
-	WebhookAllowedHosts      []string
-	WebhookDisallowedDomains []string
 	// SecretKey is what an encrypted configuration value is read back with.
 	SecretKey string
 }
@@ -194,7 +189,6 @@ func (handler *Handler) Register(router gin.IRouter) {
 	handler.registerIssueSearchRoutes(router)
 	handler.registerGlobalSearchRoutes(router)
 	handler.registerEntitySearchRoutes(router)
-	handler.registerWebhookRoutes(router)
 	handler.registerAnalyticViewRoutes(router)
 	handler.registerAnalyticsRoutes(router)
 	handler.registerAnalyticsSummaryRoutes(router)

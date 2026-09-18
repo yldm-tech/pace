@@ -1,4 +1,4 @@
-package project
+package webhooks
 
 import (
 	"crypto/rand"
