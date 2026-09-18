@@ -1,6 +1,6 @@
 {
   "name": "@pace/codemods",
-  "version": "1.4.42",
+  "version": "1.4.43",
   "private": true,
   "scripts": {
     "check:format": "oxfmt --check .",
