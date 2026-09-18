@@ -11,7 +11,7 @@ import { useTranslation } from "@pace/i18n";
 import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
 import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { LogoSpinner } from "@/components/common/logo-spinner";
 // hooks
 import { useAppRouter } from "@/hooks/use-app-router";

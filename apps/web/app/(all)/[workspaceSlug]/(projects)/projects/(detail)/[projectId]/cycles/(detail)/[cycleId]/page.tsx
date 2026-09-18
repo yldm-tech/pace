@@ -10,7 +10,7 @@ import { cn } from "@pace/utils";
 // assets
 import emptyCycle from "@/assets/empty-state/cycle.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { PageHead } from "@/components/core/page-title";
 import useCyclesDetails from "@/components/cycles/active-cycle/use-cycles-details";
 import { CycleDetailsSidebar } from "@/components/cycles/analytics-sidebar";

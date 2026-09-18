@@ -22,7 +22,7 @@ import { truncateText } from "@pace/utils";
 // assets
 import emptyInvitation from "@/assets/empty-state/invitation.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { WorkspaceLogo } from "@/components/workspace/logo";
 import { USER_WORKSPACES_LIST } from "@pace/constants";
 // hooks
