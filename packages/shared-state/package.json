@@ -1,6 +1,6 @@
 {
   "name": "@pace/shared-state",
-  "version": "1.4.43",
+  "version": "1.4.45",
   "private": true,
   "description": "Shared state shared across multiple apps internally",
   "license": "AGPL-3.0",

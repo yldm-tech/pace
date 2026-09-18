@@ -1,6 +1,6 @@
 {
   "name": "@pace/tailwind-config",
-  "version": "1.4.43",
+  "version": "1.4.45",
   "private": true,
   "description": "common tailwind configuration across monorepo",
   "license": "AGPL-3.0",
