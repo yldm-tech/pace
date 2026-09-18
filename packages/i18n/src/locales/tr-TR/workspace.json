@@ -58,7 +58,7 @@
         "primary_button": {
           "text": "İlk projenizi oluşturun",
           "comic": {
-            "title": "Pace'de her şey bir projeyle başlar",
+            "title": "Pace'te her şey bir projeyle başlar",
             "description": "Bir proje, bir ürünün yol haritası, bir pazarlama kampanyası veya yeni bir araba lansmanı olabilir."
           }
         }
@@ -200,7 +200,7 @@
         "primary_button": {
           "text": "İlk projenizi başlatın",
           "comic": {
-            "title": "Pace'de her şey bir projeyle başlar",
+            "title": "Pace'te her şey bir projeyle başlar",
             "description": "Bir proje, bir ürünün yol haritası, bir pazarlama kampanyası veya yeni bir araba lansmanı olabilir."
           }
         }
@@ -211,7 +211,7 @@
         "primary_button": {
           "text": "İlk projenizi başlatın",
           "comic": {
-            "title": "Pace'de her şey bir projeyle başlar",
+            "title": "Pace'te her şey bir projeyle başlar",
             "description": "Bir proje, bir ürünün yol haritası, bir pazarlama kampanyası veya yeni bir araba lansmanı olabilir."
           }
         }
@@ -290,7 +290,7 @@
     "empty_state": {
       "general": {
         "title": "Bir not, bir belge veya tam bir bilgi tabanı yazın. Başlamanıza yardımcı olması için Pace'in yapay zeka asistanı Galileo'yu alın",
-        "description": "Sayfalar, Pace'deki düşünce saksı alanıdır. Toplantı notları alın, bunları kolayca biçimlendirin, iş öğelerini gömin, bunları bir bileşen kitaplığı kullanarak düzenleyin ve hepsini projenizin bağlamında tutun. Herhangi bir belgeyi kısa sürede yapmak için, Pace'in yapay zekası Galileo'yu bir kısayolla veya bir düğmeye tıklayarak çağırın.",
+        "description": "Sayfalar, Pace'teki düşünce saksı alanıdır. Toplantı notları alın, bunları kolayca biçimlendirin, iş öğelerini gömin, bunları bir bileşen kitaplığı kullanarak düzenleyin ve hepsini projenizin bağlamında tutun. Herhangi bir belgeyi kısa sürede yapmak için, Pace'in yapay zekası Galileo'yu bir kısayolla veya bir düğmeye tıklayarak çağırın.",
         "primary_button": {
           "text": "İlk sayfanızı oluşturun"
         }

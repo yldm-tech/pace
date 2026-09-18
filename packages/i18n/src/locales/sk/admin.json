@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Správa Pace",
+        "app": "Pace | Jednoduchý, rozšíriteľný open source nástroj na riadenie projektov.",
+        "home": "Správa – nastavenie inštancie a prihlásenie",
+        "general": "Všeobecné nastavenia",
+        "email": "Nastavenia e-mailu",
+        "images": "Nastavenia obrázkov",
+        "ai": "Nastavenia umelej inteligencie",
+        "authentication": "Nastavenia overovania",
+        "workspace": "Správa pracovných priestorov",
+        "workspace_create": "Vytvoriť pracovný priestor",
+        "google": "Overovanie cez Google",
+        "github": "Overovanie cez GitHub",
+        "gitlab": "Overovanie cez GitLab",
+        "gitea": "Overovanie cez Gitea"
+      },
+      "descriptions": {
+        "app": "Open source nástroj na riadenie projektov, s ktorým pokojne spravujete pracovné položky, šprinty a produktové plány.",
+        "home": "Nastavte svoju inštanciu Pace alebo sa prihláste do portálu správy."
+      },
       "general": {
         "title": "Všeobecné nastavenia",
         "description": "Zmeňte názov svojej inštancie a e-mailové adresy správcov inštancie. Zapnite alebo vypnite telemetriu vo svojej inštancii."

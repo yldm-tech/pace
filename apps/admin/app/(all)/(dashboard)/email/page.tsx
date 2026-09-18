@@ -14,6 +14,8 @@ import { Skeleton } from "@/components/common/skeleton";
 import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -101,6 +103,6 @@ const InstanceEmailPage = observer(function InstanceEmailPage(_props: Route.Comp
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Email Settings - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("email") }];
 
 export default InstanceEmailPage;

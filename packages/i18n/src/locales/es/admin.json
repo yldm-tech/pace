@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Administración de Pace",
+        "app": "Pace | Herramienta de gestión de proyectos sencilla, extensible y de código abierto.",
+        "home": "Administración – Configuración de la instancia e inicio de sesión",
+        "general": "Configuración general",
+        "email": "Configuración de correo electrónico",
+        "images": "Configuración de imágenes",
+        "ai": "Configuración de inteligencia artificial",
+        "authentication": "Configuración de autenticación",
+        "workspace": "Gestión de espacios de trabajo",
+        "workspace_create": "Crear espacio de trabajo",
+        "google": "Autenticación con Google",
+        "github": "Autenticación con GitHub",
+        "gitlab": "Autenticación con GitLab",
+        "gitea": "Autenticación con Gitea"
+      },
+      "descriptions": {
+        "app": "Herramienta de gestión de proyectos de código abierto para gestionar elementos de trabajo, sprints y hojas de ruta de producto con tranquilidad.",
+        "home": "Configura tu instancia de Pace o inicia sesión en el portal de administración."
+      },
       "general": {
         "title": "Configuración general",
         "description": "Cambia el nombre de tu instancia y las direcciones de correo electrónico del administrador de la instancia. Activa o desactiva la telemetría en tu instancia."

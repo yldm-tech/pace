@@ -19,6 +19,8 @@ import { Skeleton } from "@/components/common/skeleton";
 import { setPromiseToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -110,6 +112,6 @@ const InstanceGoogleAuthenticationPage = observer(function InstanceGoogleAuthent
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Google Authentication - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("google") }];
 
 export default InstanceGoogleAuthenticationPage;

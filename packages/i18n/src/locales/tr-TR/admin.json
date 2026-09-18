@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace Yönetimi",
+        "app": "Pace | Basit, genişletilebilir, açık kaynaklı proje yönetim aracı.",
+        "home": "Yönetim – Örnek kurulumu ve giriş",
+        "general": "Genel ayarlar",
+        "email": "E-posta ayarları",
+        "images": "Görsel ayarları",
+        "ai": "Yapay zeka ayarları",
+        "authentication": "Kimlik doğrulama ayarları",
+        "workspace": "Çalışma alanı yönetimi",
+        "workspace_create": "Çalışma alanı oluştur",
+        "google": "Google kimlik doğrulaması",
+        "github": "GitHub kimlik doğrulaması",
+        "gitlab": "GitLab kimlik doğrulaması",
+        "gitea": "Gitea kimlik doğrulaması"
+      },
+      "descriptions": {
+        "app": "İş öğelerini, sprintleri ve ürün yol haritalarını gönül rahatlığıyla yönetmek için açık kaynaklı proje yönetim aracı.",
+        "home": "Pace örneğinizi yapılandırın veya yönetim portalına giriş yapın."
+      },
       "general": {
         "title": "Genel ayarlar",
         "description": "Örneğinizin adını ve örnek yöneticisi e-posta adreslerini değiştirin. Örneğinizde telemetriyi etkinleştirin veya devre dışı bırakın."

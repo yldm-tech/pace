@@ -21,7 +21,7 @@
         "label": "Şablon oluştur",
         "no_permission": {
           "project": "Şablon oluşturmak için proje admininizle iletişime geçin",
-          "workspace": "Şablon oluşturmak için workspace admininizle iletişime geçin"
+          "workspace": "Şablon oluşturmak için çalışma alanı yöneticinizle iletişime geçin"
         }
       },
       "use_template": {
@@ -32,7 +32,7 @@
       },
       "template_source": {
         "workspace": {
-          "info": "Workspace'den türetildi"
+          "info": "Çalışma alanından türetildi"
         },
         "project": {
           "info": "Projeden türetildi"
@@ -120,8 +120,8 @@
           }
         },
         "publish": {
-          "action": "{isPublished, select, true {Yayın ayarları} other {Marketplace'de yayınla}}",
-          "unpublish_action": "Marketplace'den kaldır",
+          "action": "{isPublished, select, true {Yayın ayarları} other {Marketplace'te yayınla}}",
+          "unpublish_action": "Marketplace'ten kaldır",
           "title": "Şablonunuzu keşfedilebilir ve tanınabilir yapın.",
           "name": {
             "label": "Şablon adı",
@@ -186,7 +186,7 @@
           },
           "privacy_policy_url": {
             "label": "Gizlilik politikası bağlantısı",
-            "placeholder": "https://planes.so/privacy-policy",
+            "placeholder": "https://pace.example/privacy-policy",
             "validation": {
               "invalid": "Geçersiz URL",
               "maxLength": "URL 800 karakterden az olmalıdır"
@@ -194,7 +194,7 @@
           },
           "terms_of_service_url": {
             "label": "Kullanım koşulları bağlantısı",
-            "placeholder": "https://planes.so/terms-of-use",
+            "placeholder": "https://pace.example/terms-of-use",
             "validation": {
               "invalid": "Geçersiz URL",
               "maxLength": "URL 800 karakterden az olmalıdır"
@@ -227,7 +227,7 @@
     "empty_state": {
       "upgrade": {
         "title": "Şablonlar",
-        "description": "Pace'deki proje, iş-öğesi ve sayfa şablonlarıyla, bir projeyi sıfırdan oluşturmanız veya iş öğesi özelliklerini manuel olarak ayarlamanız gerekmez.",
+        "description": "Pace'teki proje, iş-öğesi ve sayfa şablonlarıyla, bir projeyi sıfırdan oluşturmanız veya iş öğesi özelliklerini manuel olarak ayarlamanız gerekmez.",
         "sub_description": "Şablonları kullandığınızda admin zamanınızın %80'ini geri kazanın."
       },
       "no_templates": {
@@ -260,7 +260,7 @@
       "create": {
         "success": {
           "title": "Şablon oluşturuldu",
-          "message": "{templateType} şablonu olan {templateName}, artık workspace'iniz için kullanılabilir."
+          "message": "{templateType} şablonu olan {templateName}, artık çalışma alanınız için kullanılabilir."
         },
         "error": {
           "title": "Bu sefer o şablonu oluşturamadık.",
@@ -280,7 +280,7 @@
       "delete": {
         "success": {
           "title": "Şablon silindi",
-          "message": "{templateType} şablonu olan {templateName} artık workspace'inizden silindi."
+          "message": "{templateType} şablonu olan {templateName} artık çalışma alanınızdan silindi."
         },
         "error": {
           "title": "O şablonu bu sefer silemedik.",
@@ -290,7 +290,7 @@
       "unpublish": {
         "success": {
           "title": "Şablon yayından kaldırıldı",
-          "message": "{templateType} şablonu olan {templateName} marketplace'den kaldırıldı."
+          "message": "{templateType} şablonu olan {templateName} marketplace'ten kaldırıldı."
         },
         "error": {
           "title": "Şablonu yayından kaldıramadık.",
@@ -309,7 +309,7 @@
       "title": "Şablonu yayından kaldır",
       "description": {
         "prefix": "Şablonu yayından kaldırmak istediğinizden emin misiniz-",
-        "suffix": "? Şablon marketplace'den kaldırılacak ve diğerleri için artık mevcut olmayacak."
+        "suffix": "? Şablon marketplace'ten kaldırılacak ve diğerleri için artık mevcut olmayacak."
       }
     },
     "dropdown": {

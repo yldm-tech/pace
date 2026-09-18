@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Administrare Pace",
+        "app": "Pace | Instrument simplu, extensibil și open source pentru managementul proiectelor.",
+        "home": "Administrare – Configurarea instanței și autentificare",
+        "general": "Setări generale",
+        "email": "Setări de email",
+        "images": "Setări de imagini",
+        "ai": "Setări de inteligență artificială",
+        "authentication": "Setări de autentificare",
+        "workspace": "Gestionarea spațiilor de lucru",
+        "workspace_create": "Creează spațiu de lucru",
+        "google": "Autentificare Google",
+        "github": "Autentificare GitHub",
+        "gitlab": "Autentificare GitLab",
+        "gitea": "Autentificare Gitea"
+      },
+      "descriptions": {
+        "app": "Instrument open source de management al proiectelor pentru a gestiona activități, sprinturi și foi de parcurs de produs în liniște.",
+        "home": "Configurează instanța ta Pace sau autentifică-te în portalul de administrare."
+      },
       "general": {
         "title": "Setări generale",
         "description": "Schimbă numele instanței și adresele de email ale administratorilor de instanță. Activează sau dezactivează telemetria în instanța ta."

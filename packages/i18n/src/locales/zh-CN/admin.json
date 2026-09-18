@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace 管理后台",
+        "app": "Pace | 简单、可扩展的开源项目管理工具。",
+        "home": "管理 – 实例设置与登录",
+        "general": "常规设置",
+        "email": "邮件设置",
+        "images": "图片设置",
+        "ai": "人工智能设置",
+        "authentication": "身份验证设置",
+        "workspace": "工作区管理",
+        "workspace_create": "创建工作区",
+        "google": "Google 身份验证",
+        "github": "GitHub 身份验证",
+        "gitlab": "GitLab 身份验证",
+        "gitea": "Gitea 身份验证"
+      },
+      "descriptions": {
+        "app": "开源项目管理工具，让您从容管理工作项、冲刺和产品路线图。",
+        "home": "配置您的 Pace 实例，或登录管理后台。"
+      },
       "general": {
         "title": "常规设置",
         "description": "修改实例名称和实例管理员邮箱地址，启用或关闭实例的遥测。"

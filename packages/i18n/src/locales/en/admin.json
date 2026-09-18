@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Pace Admin",
+        "app": "Pace | Simple, extensible, open-source project management tool.",
+        "home": "Admin – Instance Setup & Sign-In",
+        "general": "General Settings",
+        "email": "Email Settings",
+        "images": "Images Settings",
+        "ai": "Artificial Intelligence Settings",
+        "authentication": "Authentication Settings",
+        "workspace": "Workspace Management",
+        "workspace_create": "Create Workspace",
+        "google": "Google Authentication",
+        "github": "GitHub Authentication",
+        "gitlab": "GitLab Authentication",
+        "gitea": "Gitea Authentication"
+      },
+      "descriptions": {
+        "app": "Open-source project management tool to manage work items, sprints, and product roadmaps with peace of mind.",
+        "home": "Configure your Pace instance or sign in to the admin portal."
+      },
       "general": {
         "title": "General settings",
         "description": "Change the name of your instance and instance admin e-mail addresses. Enable or disable telemetry in your instance."

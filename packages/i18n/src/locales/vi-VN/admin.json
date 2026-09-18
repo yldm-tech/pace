@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Quản trị Pace",
+        "app": "Pace | Công cụ quản lý dự án đơn giản, có thể mở rộng, mã nguồn mở.",
+        "home": "Quản trị – Thiết lập instance và đăng nhập",
+        "general": "Cài đặt chung",
+        "email": "Cài đặt email",
+        "images": "Cài đặt hình ảnh",
+        "ai": "Cài đặt trí tuệ nhân tạo",
+        "authentication": "Cài đặt xác thực",
+        "workspace": "Quản lý không gian làm việc",
+        "workspace_create": "Tạo không gian làm việc",
+        "google": "Xác thực Google",
+        "github": "Xác thực GitHub",
+        "gitlab": "Xác thực GitLab",
+        "gitea": "Xác thực Gitea"
+      },
+      "descriptions": {
+        "app": "Công cụ quản lý dự án mã nguồn mở giúp bạn yên tâm quản lý mục công việc, sprint và lộ trình sản phẩm.",
+        "home": "Cấu hình instance Pace của bạn hoặc đăng nhập vào cổng quản trị."
+      },
       "general": {
         "title": "Cài đặt chung",
         "description": "Thay đổi tên instance và địa chỉ e-mail của quản trị viên instance. Bật hoặc tắt dữ liệu đo từ xa trong instance của bạn."

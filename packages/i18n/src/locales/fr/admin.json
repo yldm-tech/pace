@@ -315,6 +315,27 @@
       }
     },
     "page": {
+      "titles": {
+        "template": "{page} - {suffix}",
+        "suffix": "Administration Pace",
+        "app": "Pace | Outil de gestion de projet simple, extensible et open source.",
+        "home": "Administration – Configuration de l’instance et connexion",
+        "general": "Paramètres généraux",
+        "email": "Paramètres d’e-mail",
+        "images": "Paramètres des images",
+        "ai": "Paramètres d’intelligence artificielle",
+        "authentication": "Paramètres d’authentification",
+        "workspace": "Gestion des espaces de travail",
+        "workspace_create": "Créer un espace de travail",
+        "google": "Authentification Google",
+        "github": "Authentification GitHub",
+        "gitlab": "Authentification GitLab",
+        "gitea": "Authentification Gitea"
+      },
+      "descriptions": {
+        "app": "Outil de gestion de projet open source pour gérer les éléments de travail, les sprints et les feuilles de route produit en toute sérénité.",
+        "home": "Configurez votre instance Pace ou connectez-vous au portail d’administration."
+      },
       "general": {
         "title": "Paramètres généraux",
         "description": "Modifiez le nom de votre instance et les adresses e-mail des administrateurs de l’instance. Activez ou désactivez la télémétrie dans votre instance."

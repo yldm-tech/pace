@@ -19,6 +19,8 @@ import { Skeleton } from "@/components/common/skeleton";
 import { setPromiseToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 // local
@@ -105,6 +107,6 @@ const InstanceGiteaAuthenticationPage = observer(function InstanceGiteaAuthentic
     </PageWrapper>
   );
 });
-export const meta: Route.MetaFunction = () => [{ title: "Gitea Authentication - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("gitea") }];
 
 export default InstanceGiteaAuthenticationPage;

@@ -195,7 +195,7 @@
         "primary_button": {
           "text": "İlk iş öğenizi oluşturun",
           "comic": {
-            "title": "İş öğeleri Pace'de yapı taşlarıdır.",
+            "title": "İş öğeleri Pace'te yapı taşlarıdır.",
             "description": "Pace UI'yi yeniden tasarlamak, şirketi yeniden markalaştırmak veya yeni yakıt enjeksiyon sistemini başlatmak, muhtemelen alt iş öğeleri olan iş öğesi örnekleridir."
           }
         }
@@ -272,7 +272,7 @@
     "empty_state": {
       "general": {
         "title": "Bir not, belge veya tam bir bilgi bankası yazın. Pace'in AI asistanı Galileo'nun başlamanıza yardımcı olmasını sağlayın",
-        "description": "Sayfalar Pace'de düşüncelerinizi döktüğünüz alanlardır. Toplantı notları alın, kolayca biçimlendirin, iş öğelerini yerleştirin, bir bileşen kitaplığı kullanarak düzenleyin ve hepsini proje bağlamınızda tutun. Herhangi bir belgeyi hızlıca tamamlamak için bir kısayol veya düğme ile Pace'in AI'sı Galileo'yu çağırın.",
+        "description": "Sayfalar Pace'te düşüncelerinizi döktüğünüz alanlardır. Toplantı notları alın, kolayca biçimlendirin, iş öğelerini yerleştirin, bir bileşen kitaplığı kullanarak düzenleyin ve hepsini proje bağlamınızda tutun. Herhangi bir belgeyi hızlıca tamamlamak için bir kısayol veya düğme ile Pace'in AI'sı Galileo'yu çağırın.",
         "primary_button": {
           "text": "İlk sayfanızı oluşturun"
         }

@@ -22,6 +22,8 @@ import { WorkspaceListItem } from "@/components/workspace/list-item";
 import { setPromiseToast } from "@/providers/toast";
 // hooks
 import { useInstance, useWorkspace } from "@/hooks/store";
+// helpers
+import { getAdminPageTitle } from "@/helpers/page-title";
 // types
 import type { Route } from "./+types/page";
 import { useTranslation } from "@pace/i18n";
@@ -174,6 +176,6 @@ const WorkspaceManagementPage = observer(function WorkspaceManagementPage(_props
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Workspace Management - Pace Admin" }];
+export const meta: Route.MetaFunction = () => [{ title: getAdminPageTitle("workspace") }];
 
 export default WorkspaceManagementPage;
