@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -261,7 +262,7 @@ func (handler *Handler) issueLinkScope(c *gin.Context, user *auth.User) *gorm.DB
 	return handler.db.WithContext(c.Request.Context()).Table("issue_links l").Select("l.*").
 		Joins("JOIN workspaces w ON w.id = l.workspace_id").
 		Joins("JOIN projects p ON p.id = l.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = l.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("l", "project_id"), user.ID).
 		Where("w.slug = ? AND l.project_id = ? AND l.issue_id = ? AND l.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), c.Param("issue"))
 }

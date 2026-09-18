@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
 )
@@ -53,7 +54,7 @@ func loadExportIssues(ctx context.Context, db *gorm.DB, workspaceID string, proj
 	}
 	err := db.WithContext(ctx).Table("issues i").
 		Joins("JOIN projects p ON p.id = i.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = i.project_id AND pm.member_id = ? AND pm.is_active = TRUE", memberID).
+		Joins(access.MemberJoin("i", "project_id"), memberID).
 		Joins("LEFT JOIN states s ON s.id = i.state_id").
 		Joins("LEFT JOIN users cu ON cu.id = i.created_by_id").
 		Joins("LEFT JOIN estimate_points ep ON ep.id = i.estimate_point_id").

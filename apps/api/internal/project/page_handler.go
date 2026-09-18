@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -150,7 +151,7 @@ func (handler *Handler) pageScope(c *gin.Context, user *auth.User, slug, project
 		Joins("JOIN workspaces w ON w.id = p.workspace_id").
 		Joins("JOIN project_pages pp ON pp.page_id = p.id AND pp.deleted_at IS NULL").
 		Joins("JOIN projects pr ON pr.id = pp.project_id AND pr.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = pp.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("pp", "project_id"), user.ID).
 		Where("w.slug = ? AND p.deleted_at IS NULL AND p.parent_id IS NULL", slug).
 		Where("p.owned_by_id = ? OR p.access = ?", user.ID, pagePublicAccess).
 		// The project filter is an annotation that is then filtered on, so the page has to be linked to *this* project while still being reachable through any of them.
@@ -587,7 +588,7 @@ func (handler *Handler) pageSummary(c *gin.Context, user *auth.User) {
 		Joins("JOIN workspaces w ON w.id = p.workspace_id").
 		Joins("JOIN project_pages pp ON pp.page_id = p.id").
 		Joins("JOIN projects pr ON pr.id = pp.project_id AND pr.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = pp.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("pp", "project_id"), user.ID).
 		Where("w.slug = ? AND p.deleted_at IS NULL AND p.parent_id IS NULL", slug).
 		Where("p.owned_by_id = ? OR p.access = ?", user.ID, pagePublicAccess).
 		Where(`EXISTS (SELECT 1 FROM project_pages fp WHERE fp.page_id = p.id AND fp.project_id = ?)`, projectID)

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 )
@@ -27,7 +28,7 @@ func (handler *Handler) archivedCycleList(c *gin.Context, user *auth.User) {
 		Select(archivedCycleAnnotations(), user.ID, projectID, slug, now, now, now, now).
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
 		Joins("JOIN projects p ON p.id = c.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("c", "project_id"), user.ID).
 		Where("w.slug = ? AND c.project_id = ? AND c.deleted_at IS NULL AND c.archived_at IS NOT NULL", slug, projectID).
 		Group("c.id").Order("is_favorite DESC, c.created_at DESC").Scan(&rows).Error
 	if err != nil {

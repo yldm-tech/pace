@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"github.com/yldm-tech/pace/apps/api/internal/pagination"
@@ -90,7 +91,7 @@ func (handler *Handler) exporterCreate(c *gin.Context, user *auth.User) {
 	if len(projectIDs) == 0 {
 		// Nobody named a project, so it is every project in the workspace this person is still a member of and which has not been archived.
 		err = handler.db.WithContext(c.Request.Context()).Table("projects p").
-			Joins("JOIN project_members pm ON pm.project_id = p.id AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL", user.ID).
+			Joins(access.MemberJoin("p", "id", access.WithMembershipSoftDelete()), user.ID).
 			Where("p.workspace_id = ? AND p.archived_at IS NULL AND p.deleted_at IS NULL", workspaceID).
 			Distinct().Pluck("p.id", &projectIDs).Error
 		if err != nil {

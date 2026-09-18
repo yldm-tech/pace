@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 )
@@ -26,8 +27,7 @@ func (handler *Handler) workspaceLabels(c *gin.Context, user *auth.User) {
 	err := handler.db.WithContext(c.Request.Context()).Table("labels l").Select("l.*").
 		Joins("JOIN workspaces w ON w.id = l.workspace_id").
 		Joins("JOIN projects p ON p.id = l.project_id AND p.archived_at IS NULL").
-		Joins(`JOIN project_members pm ON pm.project_id = l.project_id
-			AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL`, user.ID).
+		Joins(access.MemberJoin("l", "project_id", access.WithMembershipSoftDelete()), user.ID).
 		Where("w.slug = ? AND l.deleted_at IS NULL", c.Param("slug")).
 		Order("l.created_at").Scan(&labels).Error
 	if err != nil {
@@ -52,8 +52,7 @@ func (handler *Handler) workspaceStates(c *gin.Context, user *auth.User) {
 	err := handler.db.WithContext(c.Request.Context()).Table("states s").Select("s.*").
 		Joins("JOIN workspaces w ON w.id = s.workspace_id").
 		Joins("JOIN projects p ON p.id = s.project_id AND p.archived_at IS NULL").
-		Joins(`JOIN project_members pm ON pm.project_id = s.project_id
-			AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL`, user.ID).
+		Joins(access.MemberJoin("s", "project_id", access.WithMembershipSoftDelete()), user.ID).
 		Where("w.slug = ? AND s.is_triage = FALSE AND s.deleted_at IS NULL", c.Param("slug")).
 		Order("s.sequence").Scan(&states).Error
 	if err != nil {
@@ -93,8 +92,7 @@ func (handler *Handler) workspaceCycles(c *gin.Context, user *auth.User) {
 		Select(cycleAnnotations(), user.ID, nil, c.Param("slug"), now, now, now, now).
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
 		Joins("JOIN projects p ON p.id = c.project_id AND p.archived_at IS NULL").
-		Joins(`JOIN project_members pm ON pm.project_id = c.project_id
-			AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL`, user.ID).
+		Joins(access.MemberJoin("c", "project_id", access.WithMembershipSoftDelete()), user.ID).
 		Where("w.slug = ? AND c.archived_at IS NULL AND c.deleted_at IS NULL", c.Param("slug")).
 		Group("c.id").Order("c.created_at DESC").Scan(&rows).Error
 	if err != nil {
@@ -128,8 +126,7 @@ func (handler *Handler) workspaceModules(c *gin.Context, user *auth.User) {
 		Select(moduleAnnotations(), user.ID, nil, c.Param("slug")).
 		Joins("JOIN workspaces w ON w.id = m.workspace_id").
 		Joins("JOIN projects p ON p.id = m.project_id AND p.archived_at IS NULL").
-		Joins(`JOIN project_members pm ON pm.project_id = m.project_id
-			AND pm.member_id = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL`, user.ID).
+		Joins(access.MemberJoin("m", "project_id", access.WithMembershipSoftDelete()), user.ID).
 		Where("w.slug = ? AND m.archived_at IS NULL AND m.deleted_at IS NULL", c.Param("slug")).
 		Group("m.id").Order("m.created_at DESC").Scan(&rows).Error
 	if err != nil {

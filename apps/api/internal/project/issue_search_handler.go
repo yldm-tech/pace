@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -24,7 +25,7 @@ func (handler *Handler) issueSearch(c *gin.Context, user *auth.User) {
 	query := handler.db.WithContext(c.Request.Context()).Table("issues i").
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Joins("JOIN projects p ON p.id = i.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = i.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("i", "project_id"), user.ID).
 		Where("w.slug = ?", slug).
 		Where(issueObjectsPredicate("i"))
 

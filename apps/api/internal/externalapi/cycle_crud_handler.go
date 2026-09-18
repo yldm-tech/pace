@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/cycles"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
@@ -102,7 +103,7 @@ func (handler *Handler) cycleRetrieve(c *gin.Context, user *auth.User, _ APIToke
 func (handler *Handler) cycleScope(c *gin.Context, user *auth.User) *gorm.DB {
 	return handler.db.WithContext(c.Request.Context()).Table("cycles c").
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
-		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("c", "project_id"), user.ID).
 		Joins("LEFT JOIN cycle_issues ci ON ci.cycle_id = c.id").
 		Joins("LEFT JOIN issues ii ON ii.id = ci.issue_id").
 		Where("w.slug = ? AND c.project_id = ? AND c.deleted_at IS NULL", c.Param("slug"), c.Param("project"))

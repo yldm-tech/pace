@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -285,7 +286,7 @@ func (handler *Handler) cycleIssueLinks(c *gin.Context, user *auth.User) ([]cycl
 	err := handler.db.WithContext(c.Request.Context()).Table("cycle_issues ci").
 		Select(cycleIssueSelection()).
 		Joins("JOIN workspaces w ON w.id = ci.workspace_id").
-		Joins("JOIN project_members pm ON pm.project_id = ci.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("ci", "project_id"), user.ID).
 		Where("w.slug = ? AND ci.project_id = ? AND ci.cycle_id = ? AND ci.deleted_at IS NULL",
 			c.Param("slug"), c.Param("project"), c.Param("cycle")).
 		Order("ci.created_at DESC").Scan(&rows).Error
