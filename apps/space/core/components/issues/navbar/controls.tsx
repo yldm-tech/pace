@@ -6,7 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
-import { useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/lib/navigation";
 // components
 import { IssueFiltersDropdown } from "@/components/issues/filters";
 // helpers

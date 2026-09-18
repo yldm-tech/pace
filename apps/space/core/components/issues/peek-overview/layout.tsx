@@ -6,7 +6,7 @@
 
 import { Fragment, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { useRouter, useSearchParams } from "@/lib/navigation";
 import { Dialog, Transition } from "@headlessui/react";
 // hooks
 import { useIssueDetails } from "@/hooks/store/use-issue-details";

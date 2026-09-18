@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace internal packages
@@ -16,7 +16,7 @@ import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { AuthService } from "@pace/services";
 import { getPasswordStrength, validatePersonName, validateCompanyName } from "@pace/utils";
 // components
-import { AuthHeader } from "@/app/(all)/(home)/auth-header";
+import { AuthHeader } from "@/components/common/auth-header";
 import { PasswordStrengthIndicator } from "@/components/common/password-strength-indicator";
 import { Banner } from "../common/banner";
 import { FormHeader } from "./form-header";

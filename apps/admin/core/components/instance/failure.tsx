@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 import { Button } from "@makeplane/propel/components/button";
 // assets
-import { AuthHeader } from "@/app/(all)/(home)/auth-header";
+import { AuthHeader } from "@/components/common/auth-header";
 import InstanceFailureDarkImage from "@/assets/instance/instance-failure-dark.svg?url";
 import InstanceFailureImage from "@/assets/instance/instance-failure.svg?url";
 import { useTranslation } from "@pace/i18n";
