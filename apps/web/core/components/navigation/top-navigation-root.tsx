@@ -20,7 +20,7 @@ import { InboxOutline } from "@makeplane/propel/icons";
 import useSWR from "swr";
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
 // local imports
-import { StarUsOnGitHubLink } from "@/app/(all)/[workspaceSlug]/(projects)/star-us-link";
+import { StarUsOnGitHubLink } from "./star-us-link";
 
 export const TopNavigationRoot = observer(function TopNavigationRoot() {
   // router
