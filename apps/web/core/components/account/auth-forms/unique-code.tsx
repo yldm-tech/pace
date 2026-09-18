@@ -10,7 +10,7 @@ import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { API_BASE_URL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // constants
 // helpers
 import { EAuthModes } from "@/helpers/authentication.helper";

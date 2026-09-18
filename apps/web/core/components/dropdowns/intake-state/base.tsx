@@ -14,7 +14,8 @@ import { useTranslation } from "@pace/i18n";
 import { IntakeStateGroupIcon } from "@pace/propel/icons";
 import { ChevronDownOutline, SearchOutline } from "@makeplane/propel/icons";
 import type { IIntakeState } from "@pace/types";
-import { ComboDropDown, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { ComboDropDown } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
 import { DropdownButton } from "@/components/dropdowns/buttons";

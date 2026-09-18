@@ -10,7 +10,7 @@ import useSWR from "swr";
 // pace constants
 import { ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
 import { EIssueLayoutTypes, EIssuesStoreType } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // components
 import { ProjectLevelWorkItemFiltersHOC } from "@/components/work-item-filters/filters-hoc/project-level";
 import { WorkItemFiltersRow } from "@/components/work-item-filters/filters-row";

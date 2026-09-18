@@ -30,7 +30,7 @@ import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IUser, IWorkspace } from "@pace/types";
 // ui
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // services
 import { WorkspaceService } from "@pace/services";
 // components

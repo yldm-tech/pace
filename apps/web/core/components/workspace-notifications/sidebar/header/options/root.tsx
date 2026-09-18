@@ -10,7 +10,7 @@ import { CheckDoneOutline, RefreshOutline } from "@makeplane/propel/icons";
 import { ENotificationLoader, ENotificationQueryParamType } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // hooks
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
 import { usePlatformOS } from "@/hooks/use-platform-os";

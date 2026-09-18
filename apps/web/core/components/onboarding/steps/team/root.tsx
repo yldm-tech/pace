@@ -27,7 +27,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EOnboardingSteps } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 // services

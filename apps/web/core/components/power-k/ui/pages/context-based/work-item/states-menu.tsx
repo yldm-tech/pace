@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace types
 import { useParams } from "@/app/hooks/navigation";
 import type { TIssue } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";
 // local imports

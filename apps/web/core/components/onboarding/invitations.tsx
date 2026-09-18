@@ -12,7 +12,7 @@ import { Button } from "@pace/propel/button";
 import type { IWorkspaceMemberInvitation } from "@pace/types";
 // ui
 import { Checkbox } from "@makeplane/propel/components/checkbox";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { truncateText } from "@pace/utils";
 // constants
 // helpers
