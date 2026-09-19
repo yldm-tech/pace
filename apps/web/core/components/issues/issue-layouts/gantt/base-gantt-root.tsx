@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { ALL_ISSUES, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
@@ -26,7 +26,7 @@ import { useIssuesActions } from "@/hooks/use-issues-actions";
 import { useTimeLineChart } from "@/hooks/use-timeline-chart";
 import { useBulkOperationStatus } from "@/hooks/use-bulk-operation-status";
 // local imports
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import { GanttQuickAddIssueButton, QuickAddIssueRoot } from "../quick-add";
 import { IssueGanttBlock } from "./blocks";
 

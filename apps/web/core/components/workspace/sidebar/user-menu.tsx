@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { PiChatLogo } from "@pace/propel/icons";
 import { DashboardsOutline, DraftsOutline, HomeOutline, YourWorkOutline } from "@makeplane/propel/icons";

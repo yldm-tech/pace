@@ -23,13 +23,13 @@ import { EIssuesStoreType } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 import { cn, renderFormattedDate, renderFormattedDateWithoutYear, getFileURL } from "@pace/utils";
 // assets
-import darkAssigneeAsset from "@/app/assets/empty-state/active-cycle/assignee-dark.webp?url";
-import lightAssigneeAsset from "@/app/assets/empty-state/active-cycle/assignee-light.webp?url";
-import darkLabelAsset from "@/app/assets/empty-state/active-cycle/label-dark.webp?url";
-import lightLabelAsset from "@/app/assets/empty-state/active-cycle/label-light.webp?url";
-import darkPriorityAsset from "@/app/assets/empty-state/active-cycle/priority-dark.webp?url";
-import lightPriorityAsset from "@/app/assets/empty-state/active-cycle/priority-light.webp?url";
-import userImage from "@/app/assets/user.png?url";
+import darkAssigneeAsset from "@/assets/empty-state/active-cycle/assignee-dark.webp?url";
+import lightAssigneeAsset from "@/assets/empty-state/active-cycle/assignee-light.webp?url";
+import darkLabelAsset from "@/assets/empty-state/active-cycle/label-dark.webp?url";
+import lightLabelAsset from "@/assets/empty-state/active-cycle/label-light.webp?url";
+import darkPriorityAsset from "@/assets/empty-state/active-cycle/priority-dark.webp?url";
+import lightPriorityAsset from "@/assets/empty-state/active-cycle/priority-light.webp?url";
+import userImage from "@/assets/user.png?url";
 // components
 import { SingleProgressStats } from "@/components/core/sidebar/single-progress-stats";
 import { StateDropdown } from "@/components/dropdowns/state/dropdown";

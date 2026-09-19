@@ -7,8 +7,8 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { useParams } from "@/app/hooks/navigation";
-import { useRouter } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { useRouter } from "@/lib/navigation";
 import { EUserPermissionsLevel, EPageAccess } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { EmptyStateDetailed } from "@pace/propel/empty-state";

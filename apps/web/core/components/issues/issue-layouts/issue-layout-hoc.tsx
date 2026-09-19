@@ -9,11 +9,11 @@ import { observer } from "mobx-react";
 import { EIssueLayoutTypes } from "@pace/types";
 // components
 import { LayoutErrorBoundary } from "@/components/common/layout-error-boundary";
-import { CalendarLayoutLoader } from "@/components/ui/loader/layouts/calendar-layout-loader";
-import { GanttLayoutLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
-import { KanbanLayoutLoader } from "@/components/ui/loader/layouts/kanban-layout-loader";
-import { ListLayoutLoader } from "@/components/ui/loader/layouts/list-layout-loader";
-import { SpreadsheetLayoutLoader } from "@/components/ui/loader/layouts/spreadsheet-layout-loader";
+import { CalendarLayoutLoader } from "@/components/skeletons/loader/layouts/calendar-layout-loader";
+import { GanttLayoutLoader } from "@/components/skeletons/loader/layouts/gantt-layout-loader";
+import { KanbanLayoutLoader } from "@/components/skeletons/loader/layouts/kanban-layout-loader";
+import { ListLayoutLoader } from "@/components/skeletons/loader/layouts/list-layout-loader";
+import { SpreadsheetLayoutLoader } from "@/components/skeletons/loader/layouts/spreadsheet-layout-loader";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";

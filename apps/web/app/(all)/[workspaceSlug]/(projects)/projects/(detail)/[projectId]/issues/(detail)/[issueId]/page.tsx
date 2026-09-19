@@ -8,10 +8,10 @@ import { useTheme } from "next-themes";
 import { redirect } from "react-router";
 import { useTranslation } from "@pace/i18n";
 // assets
-import emptyIssueDark from "@/app/assets/empty-state/search/issues-dark.webp?url";
-import emptyIssueLight from "@/app/assets/empty-state/search/issues-light.webp?url";
+import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
+import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 import { LogoSpinner } from "@/components/common/logo-spinner";
 // hooks
 import { useAppRouter } from "@/hooks/use-app-router";

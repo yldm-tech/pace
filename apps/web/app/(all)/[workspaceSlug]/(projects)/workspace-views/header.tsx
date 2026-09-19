@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { EIssueFilterType, ISSUE_DISPLAY_FILTERS_BY_PAGE, DEFAULT_GLOBAL_VIEWS_LIST } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

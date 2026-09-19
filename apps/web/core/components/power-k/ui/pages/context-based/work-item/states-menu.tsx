@@ -7,7 +7,7 @@
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
 // pace types
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import type { TIssue } from "@pace/types";
 import { Spinner } from "@pace/propel/spinners";
 // hooks

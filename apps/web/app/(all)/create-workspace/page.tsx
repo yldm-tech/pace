@@ -6,14 +6,14 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Button, getButtonStyling } from "@pace/propel/button";
 import { PaceLogo } from "@pace/propel/icons";
 import type { IWorkspace } from "@pace/types";
 // assets
-import WorkspaceCreationDisabled from "@/app/assets/workspace/workspace-creation-disabled.png?url";
+import WorkspaceCreationDisabled from "@/assets/workspace/workspace-creation-disabled.png?url";
 // components
 import { CreateWorkspaceForm } from "@/components/workspace/create-workspace-form";
 // hooks

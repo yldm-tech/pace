@@ -6,8 +6,8 @@
 
 import { Outlet } from "react-router";
 // components
-import { AppHeader } from "@/components/core/app-header";
-import { ContentWrapper } from "@/components/core/content-wrapper";
+import { AppHeader } from "@/components/shell/app-header";
+import { ContentWrapper } from "@/components/shell/content-wrapper";
 import { ProjectsListMobileHeader } from "@/components/projects/mobile-header";
 import { ProjectsBaseHeader } from "@/components/project/header";
 

@@ -19,8 +19,8 @@ import type { TLabelData } from "@/components/core/sidebar/progress-stats/label"
 import { LabelStatComponent } from "@/components/core/sidebar/progress-stats/label";
 import type { TSelectedFilterProgressStats } from "@/components/core/sidebar/progress-stats/shared";
 import { createFilterUpdateHandler, PROGRESS_STATS } from "@/components/core/sidebar/progress-stats/shared";
-import type { TStateGroupData } from "@/components/core/sidebar/progress-stats/state_group";
-import { StateGroupStatComponent } from "@/components/core/sidebar/progress-stats/state_group";
+import type { TStateGroupData } from "@/components/core/sidebar/progress-stats/state-group";
+import { StateGroupStatComponent } from "@/components/core/sidebar/progress-stats/state-group";
 // helpers
 // hooks
 import useLocalStorage from "@/hooks/use-local-storage";

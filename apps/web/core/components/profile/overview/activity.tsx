@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // ui
 import { useTranslation } from "@pace/i18n";

@@ -7,7 +7,7 @@
 import type { FC } from "react";
 import { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace constants
 import { EIssueFilterType, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // types
@@ -22,7 +22,7 @@ import { useGroupIssuesDragNDrop } from "@/hooks/use-group-dragndrop";
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";
 import { useIssuesActions } from "@/hooks/use-issues-actions";
 // components
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import { List } from "./default";
 // types
 import type { IQuickActionProps, TRenderQuickActions } from "./list-view-types";

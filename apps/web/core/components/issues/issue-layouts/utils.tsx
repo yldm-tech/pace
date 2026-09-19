@@ -54,7 +54,7 @@ import { renderFormattedDate, getFileURL } from "@pace/utils";
 // store
 import { store } from "@/lib/store-context";
 import { ISSUE_FILTER_DEFAULT_DATA } from "@/store/issue/helpers/base-issues.store";
-import { DEFAULT_DISPLAY_PROPERTIES } from "@/store/issue/issue-details/sub_issues_filter.store";
+import { DEFAULT_DISPLAY_PROPERTIES } from "@/store/issue/issue-details/sub-issues-filter.store";
 // constants
 import { ISSUE_GROUP_BY_OPTIONS } from "@pace/constants";
 // components

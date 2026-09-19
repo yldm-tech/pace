@@ -6,7 +6,7 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { EAuthModes, EAuthSteps } from "@pace/constants";
 import type { IEmailCheckData } from "@pace/types";
 // helpers

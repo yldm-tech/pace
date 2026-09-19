@@ -13,9 +13,9 @@ import { TOAST_TYPE, setPromiseToast, setToast } from "@pace/propel/toast";
 import type { TIssue } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
 // assets
-import emptyIssue from "@/app/assets/empty-state/issue.svg?url";
+import emptyIssue from "@/assets/empty-state/issue.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/empty-state/empty-state";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { PagesOutline } from "@pace/propel/icons";
 import type { ICustomSearchSelectOption } from "@pace/types";

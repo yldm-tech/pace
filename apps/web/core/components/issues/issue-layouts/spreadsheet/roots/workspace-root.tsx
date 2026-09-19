@@ -12,14 +12,14 @@ import type { IIssueDisplayFilterOptions } from "@pace/types";
 import { EIssuesStoreType, EIssueLayoutTypes } from "@pace/types";
 // components
 import { AllIssueQuickActions } from "@/components/issues/issue-layouts/quick-action-dropdowns";
-import { SpreadsheetLayoutLoader } from "@/components/ui/loader/layouts/spreadsheet-layout-loader";
+import { SpreadsheetLayoutLoader } from "@/components/skeletons/loader/layouts/spreadsheet-layout-loader";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
 import { useUserPermissions } from "@/hooks/store/user";
 import { useIssuesActions } from "@/hooks/use-issues-actions";
 import { useWorkspaceIssueProperties } from "@/hooks/use-workspace-issue-properties";
 // store
-import { IssueLayoutHOC } from "../../issue-layout-HOC";
+import { IssueLayoutHOC } from "../../issue-layout-hoc";
 import type { TRenderQuickActions } from "../../list/list-view-types";
 import { SpreadsheetView } from "../spreadsheet-view";
 

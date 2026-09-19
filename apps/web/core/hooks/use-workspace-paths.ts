@@ -4,8 +4,8 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "@/app/hooks/navigation";
-import { usePathname } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { usePathname } from "@/lib/navigation";
 
 /**
  * Custom hook to detect different workspace paths

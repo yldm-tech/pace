@@ -14,11 +14,11 @@ import type {
   TInstanceAuthenticationModes,
 } from "@pace/types";
 // assets
-import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
-import githubLightModeImage from "@/app/assets/logos/github-black.png?url";
-import githubDarkModeImage from "@/app/assets/logos/github-white.png?url";
-import gitlabLogo from "@/app/assets/logos/gitlab-logo.svg?url";
-import googleLogo from "@/app/assets/logos/google-logo.svg?url";
+import giteaLogo from "@/assets/logos/gitea-logo.svg?url";
+import githubLightModeImage from "@/assets/logos/github-black.png?url";
+import githubDarkModeImage from "@/assets/logos/github-white.png?url";
+import gitlabLogo from "@/assets/logos/gitlab-logo.svg?url";
+import googleLogo from "@/assets/logos/google-logo.svg?url";
 // components
 import { EmailCodesConfiguration } from "@/components/authentication/email-config-switch";
 import { GiteaConfiguration } from "@/components/authentication/gitea-config";

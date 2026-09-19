@@ -5,14 +5,14 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme as useNextTheme } from "next-themes";
 // ui
 import { Button } from "@makeplane/propel/components/button";
 import { resolveGeneralTheme } from "@pace/utils";
 // hooks
-import TakeoffIconDark from "@/app/assets/logos/takeoff-icon-dark.svg?url";
-import TakeoffIconLight from "@/app/assets/logos/takeoff-icon-light.svg?url";
+import TakeoffIconDark from "@/assets/logos/takeoff-icon-dark.svg?url";
+import TakeoffIconLight from "@/assets/logos/takeoff-icon-light.svg?url";
 import { useTheme } from "@/hooks/store";
 import { useTranslation } from "@pace/i18n";
 // icons

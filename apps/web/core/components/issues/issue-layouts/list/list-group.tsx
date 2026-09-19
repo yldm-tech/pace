@@ -26,7 +26,7 @@ import { EIssueLayoutTypes } from "@pace/types";
 import { Row } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
-import { ListLoaderItemRow } from "@/components/ui/loader/layouts/list-layout-loader";
+import { ListLoaderItemRow } from "@/components/skeletons/loader/layouts/list-layout-loader";
 import { useWorkFlowFDragNDrop } from "@/components/workflow";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";

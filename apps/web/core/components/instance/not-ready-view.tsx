@@ -4,11 +4,11 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { ADMIN_URL } from "@pace/constants";
 // assets
-import GradientLogo from "@/app/assets/auth/gradient-logo.webp?url";
-import GradientBgLogo from "@/app/assets/auth/gradient-bg-logo.webp?url";
+import GradientLogo from "@/assets/auth/gradient-logo.webp?url";
+import GradientBgLogo from "@/assets/auth/gradient-bg-logo.webp?url";
 import DefaultLayout from "@/layouts/default-layout";
 import { PaceLockup } from "@pace/propel/icons";
 import { Button } from "@pace/propel/button";

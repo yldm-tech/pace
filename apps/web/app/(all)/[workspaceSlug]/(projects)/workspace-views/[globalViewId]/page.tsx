@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { DEFAULT_GLOBAL_VIEWS_LIST } from "@pace/constants";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { AllIssueLayoutRoot } from "@/components/issues/issue-layouts/roots/all-issue-layout-root";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

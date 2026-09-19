@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // services
 // ui
 import { useTranslation } from "@pace/i18n";

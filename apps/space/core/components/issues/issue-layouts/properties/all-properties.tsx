@@ -11,7 +11,7 @@ import { Tooltip } from "@pace/propel/tooltip";
 import type { IIssueDisplayProperties } from "@pace/types";
 import { cn, getDate } from "@pace/utils";
 // components
-import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-hoc";
 // helpers
 //// hooks
 import type { IIssue } from "@/types/issue";

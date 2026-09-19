@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import SheetFileIcon from "@/app/assets/attachment/excel-icon.png?url";
+import SheetFileIcon from "@/assets/attachment/excel-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

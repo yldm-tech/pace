@@ -12,15 +12,15 @@ import { GANTT_TIMELINE_TYPE } from "@pace/types";
 import type { IBlockUpdateData } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // components
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
-import { GanttLayoutListItemLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
+import { GanttLayoutListItemLoader } from "@/components/skeletons/loader/layouts/gantt-layout-loader";
 //hooks
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useIssuesStore } from "@/hooks/use-issue-layout-store";
 import type { TSelectionHelper } from "@/hooks/use-multiple-select";
 // local imports
 import { useTimeLineChart } from "../../../../hooks/use-timeline-chart";
-import { GanttDnDHOC } from "../gantt-dnd-HOC";
+import { GanttDnDHOC } from "../gantt-dnd-hoc";
 import { handleOrderChange } from "../utils";
 import { IssuesSidebarBlock } from "./block";
 

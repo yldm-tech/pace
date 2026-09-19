@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 import { Combobox } from "@headlessui/react";
 // pace imports
@@ -16,10 +16,10 @@ import type { ISearchIssueResponse } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // assets
-import darkIssuesAsset from "@/app/assets/empty-state/search/issues-dark.webp?url";
-import lightIssuesAsset from "@/app/assets/empty-state/search/issues-light.webp?url";
-import darkSearchAsset from "@/app/assets/empty-state/search/search-dark.webp?url";
-import lightSearchAsset from "@/app/assets/empty-state/search/search-light.webp?url";
+import darkIssuesAsset from "@/assets/empty-state/search/issues-dark.webp?url";
+import lightIssuesAsset from "@/assets/empty-state/search/issues-light.webp?url";
+import darkSearchAsset from "@/assets/empty-state/search/search-dark.webp?url";
+import lightSearchAsset from "@/assets/empty-state/search/search-light.webp?url";
 // components
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";
 // hooks

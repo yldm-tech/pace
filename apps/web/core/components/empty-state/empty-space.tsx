@@ -6,7 +6,7 @@
 
 // next
 import React from "react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { ChevronRightOutline } from "@pace/propel/icons";
 
 type EmptySpaceProps = {

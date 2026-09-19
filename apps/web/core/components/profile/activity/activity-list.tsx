@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
 import { ChatOutline, HistoryOutline } from "@pace/propel/icons";
 // pace imports
 import type { IUserActivityResponse } from "@pace/types";
@@ -14,7 +14,7 @@ import { calculateTimeAgo, getFileURL } from "@pace/utils";
 // components
 import { ActivityIcon, ActivityMessage, IssueLink } from "@/components/core/activity";
 import { RichTextEditor } from "@/components/editor/rich-text";
-import { ActivitySettingsLoader } from "@/components/ui/loader/settings/activity";
+import { ActivitySettingsLoader } from "@/components/skeletons/loader/settings/activity";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUser } from "@/hooks/store/user";

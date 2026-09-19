@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // ui
 import { Button } from "@pace/propel/button";
 import { ViewsOutline } from "@pace/propel/icons";

@@ -5,7 +5,7 @@
  */
 
 import type { ReactNode } from "react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 // pace imports
 import { SUPPORT_EMAIL } from "@pace/constants";
 

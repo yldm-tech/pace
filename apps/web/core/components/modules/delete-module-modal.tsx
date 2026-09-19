@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // types
 import { PROJECT_ERROR_MESSAGES } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

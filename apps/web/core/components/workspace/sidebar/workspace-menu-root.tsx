@@ -6,7 +6,7 @@
 
 import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 // icons
 import { ChevronDownOutline, LogOutOutline, MailOutline, PlusCircleOutline } from "@pace/propel/icons";
 // ui

@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // i18n
 import { useTranslation } from "@pace/i18n";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProjectLayoutRoot } from "@/components/issues/issue-layouts/roots/project-layout-root";
 // hooks
 import { useProject } from "@/hooks/store/use-project";

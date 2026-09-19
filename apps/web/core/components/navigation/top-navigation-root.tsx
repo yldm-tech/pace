@@ -6,8 +6,8 @@
 
 // components
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { usePathname } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { usePathname } from "@/lib/navigation";
 import { cn } from "@pace/utils";
 import { TopNavPowerK } from "@/components/navigation";
 import { HelpMenuRoot } from "@/components/workspace/sidebar/help-section/root";
@@ -20,7 +20,7 @@ import { InboxOutline } from "@pace/propel/icons";
 import useSWR from "swr";
 import { useWorkspaceNotifications } from "@/hooks/store/notifications";
 // local imports
-import { StarUsOnGitHubLink } from "@/app/(all)/[workspaceSlug]/(projects)/star-us-link";
+import { StarUsOnGitHubLink } from "./star-us-link";
 
 export const TopNavigationRoot = observer(function TopNavigationRoot() {
   // router

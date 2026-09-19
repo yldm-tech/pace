@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import CSVFileIcon from "@/app/assets/attachment/csv-icon.png?url";
+import CSVFileIcon from "@/assets/attachment/csv-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

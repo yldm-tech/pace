@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
@@ -13,7 +13,7 @@ import { EmptyStateDetailed } from "@pace/propel/empty-state";
 import { EUserProjectRoles } from "@pace/types";
 // components
 import { ListLayout } from "@/components/core/list";
-import { ViewListLoader } from "@/components/ui/loader/view-list-loader";
+import { ViewListLoader } from "@/components/skeletons/loader/view-list-loader";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProjectView } from "@/hooks/store/use-project-view";

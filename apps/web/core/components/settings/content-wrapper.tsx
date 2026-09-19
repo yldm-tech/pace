@@ -8,7 +8,7 @@
 import { ScrollArea } from "@pace/propel/scrollarea";
 import { cn } from "@pace/utils";
 // components
-import { AppHeader } from "@/components/core/app-header";
+import { AppHeader } from "@/components/shell/app-header";
 
 type Props = {
   children: React.ReactNode;

@@ -6,9 +6,9 @@
 
 import type { ReactNode } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
-import { usePathname } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
+import { usePathname } from "@/lib/navigation";
 // pace imports
 import type { IWorkspaceSidebarNavigationItem } from "@pace/constants";
 import { EUserPermissionsLevel } from "@pace/constants";

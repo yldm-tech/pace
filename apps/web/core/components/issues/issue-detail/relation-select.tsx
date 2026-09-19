@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 
 import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
 // Plane
@@ -15,7 +15,7 @@ import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { ISearchIssueResponse } from "@pace/types";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";

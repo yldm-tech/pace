@@ -13,7 +13,7 @@ import { useMember } from "@/hooks/store/use-member";
 import { useUser, useUserPermissions } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
 // pace web imports
-import { useProjectColumns } from "@/components/projects/settings/useProjectColumns";
+import { useProjectColumns } from "@/components/projects/settings/use-project-columns";
 // store
 import type { IProjectMemberDetails } from "@/store/member/project/base-project-member.store";
 // local imports

@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 // components
 import type { IBlockUpdateDependencyData } from "@pace/types";
 import { cn } from "@pace/utils";
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 // helpers
 // hooks
 import { useTimeLineChartStore } from "@/hooks/use-timeline-chart";
@@ -18,7 +18,7 @@ import { useTimeLineChartStore } from "@/hooks/use-timeline-chart";
 import { BLOCK_HEIGHT } from "../constants";
 // components
 import { ChartDraggable } from "../helpers";
-import { useGanttResizable } from "../helpers/blockResizables/use-gantt-resizable";
+import { useGanttResizable } from "../helpers/block-resizables/use-gantt-resizable";
 
 type Props = {
   blockId: string;

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import type { PageProps } from "@react-pdf/renderer";
 import { Controller, useForm } from "react-hook-form";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace editor
 import type { EditorRefApi } from "@pace/editor";
 // pace ui

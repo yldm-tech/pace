@@ -5,16 +5,16 @@
  */
 
 // pace imports
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 import { API_BASE_URL } from "@pace/constants";
 import type { TOAuthConfigs, TOAuthOption } from "@pace/types";
 // assets
-import giteaLogo from "@/app/assets/logos/gitea-logo.svg?url";
-import githubLightLogo from "@/app/assets/logos/github-black.png?url";
-import githubDarkLogo from "@/app/assets/logos/github-dark.svg?url";
-import gitlabLogo from "@/app/assets/logos/gitlab-logo.svg?url";
-import googleLogo from "@/app/assets/logos/google-logo.svg?url";
+import giteaLogo from "@/assets/logos/gitea-logo.svg?url";
+import githubLightLogo from "@/assets/logos/github-black.png?url";
+import githubDarkLogo from "@/assets/logos/github-dark.svg?url";
+import gitlabLogo from "@/assets/logos/gitlab-logo.svg?url";
+import googleLogo from "@/assets/logos/google-logo.svg?url";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 

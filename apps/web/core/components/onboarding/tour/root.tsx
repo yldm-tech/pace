@@ -11,11 +11,11 @@ import { Button } from "@pace/propel/button";
 import { PaceLockup } from "@pace/propel/icons";
 import { CloseOutline } from "@pace/propel/icons";
 // assets
-import CyclesTour from "@/app/assets/onboarding/cycles.webp?url";
-import IssuesTour from "@/app/assets/onboarding/issues.webp?url";
-import ModulesTour from "@/app/assets/onboarding/modules.webp?url";
-import PagesTour from "@/app/assets/onboarding/pages.webp?url";
-import ViewsTour from "@/app/assets/onboarding/views.webp?url";
+import CyclesTour from "@/assets/onboarding/cycles.webp?url";
+import IssuesTour from "@/assets/onboarding/issues.webp?url";
+import ModulesTour from "@/assets/onboarding/modules.webp?url";
+import PagesTour from "@/assets/onboarding/pages.webp?url";
+import ViewsTour from "@/assets/onboarding/views.webp?url";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useUser } from "@/hooks/store/user";

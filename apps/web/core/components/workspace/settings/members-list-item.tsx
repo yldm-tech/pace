@@ -12,7 +12,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceMember } from "@pace/types";
 import { Table } from "@pace/ui";
 // components
-import { MembersLayoutLoader } from "@/components/ui/loader/layouts/members-layout-loader";
+import { MembersLayoutLoader } from "@/components/skeletons/loader/layouts/members-layout-loader";
 import { ConfirmWorkspaceMemberRemove } from "@/components/workspace/confirm-workspace-member-remove";
 import type { RowData } from "@/components/workspace/settings/member-columns";
 // hooks
@@ -21,7 +21,7 @@ import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUser, useUserPermissions, useUserSettings } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
 // pace web imports
-import { useMemberColumns } from "@/components/workspace/settings/useMemberColumns";
+import { useMemberColumns } from "@/components/workspace/settings/use-member-columns";
 
 type Props = {
   memberDetails: (IWorkspaceMember | null)[];

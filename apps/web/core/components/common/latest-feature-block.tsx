@@ -4,14 +4,14 @@
  * See the LICENSE file for details.
  */
 
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme } from "next-themes";
 // pace imports
 import { CHANGELOG_URL } from "@pace/constants";
 // icons
 import { ThoughtsOutline } from "@makeplane/propel/icons";
 // images
-import latestFeatures from "@/app/assets/onboarding/onboarding-pages.webp?url";
+import latestFeatures from "@/assets/onboarding/onboarding-pages.webp?url";
 
 export function LatestFeatureBlock() {
   const { resolvedTheme } = useTheme();

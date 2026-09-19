@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 // components
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProjectSettingsLabelList } from "@/components/labels";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 // hooks

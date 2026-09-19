@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import { PaceLockup } from "@pace/propel/icons";
 // assets
-import UserLoggedInImage from "@/app/assets/user-logged-in.svg?url";
+import UserLoggedInImage from "@/assets/user-logged-in.svg?url";
 // components
 import { PoweredBy } from "@/components/common/powered-by";
 import { UserAvatar } from "@/components/issues/navbar/user-avatar";

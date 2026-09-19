@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import type { ColumnDef, Row, RowData } from "@tanstack/react-table";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 import { ProjectsOutline, UserOutline } from "@pace/propel/icons";
 import { Avatar } from "@makeplane/propel/components/avatar";

@@ -5,8 +5,8 @@
  */
 
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
-import { useParams } from "@/app/hooks/navigation";
+import Link from "@/lib/navigation/link";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // pace utils
 import { useTranslation } from "@pace/i18n";
@@ -14,7 +14,7 @@ import { cn } from "@pace/utils";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";
 // components
-import { ContentOverflowWrapper } from "../../core/content-overflow-HOC";
+import { ContentOverflowWrapper } from "../../core/content-overflow-hoc";
 import { StickiesLayout } from "./stickies-list";
 
 type StickiesTruncatedProps = {

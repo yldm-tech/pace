@@ -9,7 +9,7 @@ import { Link } from "react-router";
 // ui
 import { Button } from "@makeplane/propel/components/button";
 // images
-import Image404 from "@/app/assets/images/404.svg?url";
+import Image404 from "@/assets/images/404.svg?url";
 import { useTranslation } from "@pace/i18n";
 
 function PageNotFound() {

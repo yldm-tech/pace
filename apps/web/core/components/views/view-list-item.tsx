@@ -6,7 +6,7 @@
 
 import { useRef } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { Logo } from "@pace/propel/emoji-icon-picker";
 import { ViewsOutline } from "@pace/propel/icons";
 // types

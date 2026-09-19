@@ -6,8 +6,8 @@
 
 import { useTheme } from "next-themes";
 // assets
-import maintenanceModeDarkModeImage from "@/app/assets/instance/maintenance-mode-dark.svg?url";
-import maintenanceModeLightModeImage from "@/app/assets/instance/maintenance-mode-light.svg?url";
+import maintenanceModeDarkModeImage from "@/assets/instance/maintenance-mode-dark.svg?url";
+import maintenanceModeLightModeImage from "@/assets/instance/maintenance-mode-light.svg?url";
 // layouts
 import DefaultLayout from "@/layouts/default-layout";
 // components

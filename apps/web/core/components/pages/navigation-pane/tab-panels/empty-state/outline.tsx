@@ -8,8 +8,8 @@ import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 // assets
-import darkOutlineAsset from "@/app/assets/empty-state/wiki/navigation-pane/outline-dark.webp?url";
-import lightOutlineAsset from "@/app/assets/empty-state/wiki/navigation-pane/outline-light.webp?url";
+import darkOutlineAsset from "@/assets/empty-state/wiki/navigation-pane/outline-dark.webp?url";
+import lightOutlineAsset from "@/assets/empty-state/wiki/navigation-pane/outline-light.webp?url";
 
 export function PageNavigationPaneOutlineTabEmptyState() {
   // theme hook

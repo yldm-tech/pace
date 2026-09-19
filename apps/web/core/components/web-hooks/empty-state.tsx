@@ -8,7 +8,7 @@ import React from "react";
 // ui
 import { Button } from "@pace/propel/button";
 // assets
-import EmptyWebhook from "@/app/assets/empty-state/web-hook.svg?url";
+import EmptyWebhook from "@/assets/empty-state/web-hook.svg?url";
 
 type Props = {
   onClick: () => void;

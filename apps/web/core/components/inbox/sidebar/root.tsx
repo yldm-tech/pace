@@ -15,7 +15,7 @@ import { Skeleton } from "@pace/propel/skeleton";
 import { Header, EHeaderVariant } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
-import { InboxSidebarLoader } from "@/components/ui/loader/layouts/project-inbox/inbox-sidebar-loader";
+import { InboxSidebarLoader } from "@/components/skeletons/loader/layouts/project-inbox/inbox-sidebar-loader";
 // hooks
 import { useProject } from "@/hooks/store/use-project";
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";

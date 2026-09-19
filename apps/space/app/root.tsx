@@ -6,11 +6,11 @@
 
 import { Links, Meta, Outlet, Scripts } from "react-router";
 // assets
-import appleTouchIcon from "@/app/assets/favicon/apple-touch-icon.png?url";
-import favicon16 from "@/app/assets/favicon/favicon-16x16.png?url";
-import favicon32 from "@/app/assets/favicon/favicon-32x32.png?url";
-import faviconIco from "@/app/assets/favicon/favicon.ico?url";
-import siteWebmanifest from "@/app/assets/favicon/site.webmanifest?url";
+import appleTouchIcon from "@/assets/favicon/apple-touch-icon.png?url";
+import favicon16 from "@/assets/favicon/favicon-16x16.png?url";
+import favicon32 from "@/assets/favicon/favicon-32x32.png?url";
+import faviconIco from "@/assets/favicon/favicon.ico?url";
+import siteWebmanifest from "@/assets/favicon/site.webmanifest?url";
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import globalStyles from "@/styles/globals.css?url";
 // types

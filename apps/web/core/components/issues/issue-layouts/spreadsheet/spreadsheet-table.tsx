@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 // pace imports
 import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, TIssue } from "@pace/types";
 // components
-import { SpreadsheetIssueRowLoader } from "@/components/ui/loader/layouts/spreadsheet-layout-loader";
+import { SpreadsheetIssueRowLoader } from "@/components/skeletons/loader/layouts/spreadsheet-layout-loader";
 // hooks
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useIssuesStore } from "@/hooks/use-issue-layout-store";

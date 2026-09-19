@@ -7,7 +7,7 @@
 import type { Dispatch, MouseEvent, MutableRefObject, SetStateAction } from "react";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { ChevronRightOutline, MoreHorizontalOutline } from "@pace/propel/icons";
 import { SPREADSHEET_SELECT_GROUP } from "@pace/constants";
 // pace helpers
@@ -21,7 +21,7 @@ import { ControlLink, Row } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
 import { MultipleSelectEntityAction } from "@/components/core/multiple-select";
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";

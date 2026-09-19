@@ -5,12 +5,12 @@
  */
 
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import useSWR from "swr";
 import { BoxesOutline, CloseOutline, ShareAltOutline, StarOutline, TickOutline, UserOutline } from "@pace/propel/icons";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { EmptySpace, EmptySpaceItem } from "@/components/ui/empty-space";
+import { EmptySpace, EmptySpaceItem } from "@/components/empty-state/empty-space";
 // constants
 import { FORUM_URL, WORKSPACE_INVITATION } from "@pace/constants";
 // helpers

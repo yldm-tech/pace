@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import type { IIssueDisplayFilterOptions, IIssueDisplayProperties } from "@pace/types";
 //components
 import { shouldRenderColumn } from "@/helpers/issue-filter.helper";
-import { WithDisplayPropertiesHOC } from "../properties/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "../properties/with-display-properties-hoc";
 import { HeaderColumn } from "./columns/header-column";
 
 interface Props {

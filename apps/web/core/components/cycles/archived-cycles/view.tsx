@@ -6,12 +6,12 @@
 
 import { observer } from "mobx-react";
 // assets
-import AllFiltersImage from "@/app/assets/empty-state/cycle/all-filters.svg?url";
-import NameFilterImage from "@/app/assets/empty-state/cycle/name-filter.svg?url";
+import AllFiltersImage from "@/assets/empty-state/cycle/all-filters.svg?url";
+import NameFilterImage from "@/assets/empty-state/cycle/name-filter.svg?url";
 // components
 import { CyclesList } from "@/components/cycles/list";
 // ui
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";

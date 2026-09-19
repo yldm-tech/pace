@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 import { Outlet } from "react-router";
 // components
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";

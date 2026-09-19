@@ -8,15 +8,15 @@ import type { PageProps, Styles } from "@react-pdf/renderer";
 import { Document, Font, Page, StyleSheet } from "@react-pdf/renderer";
 import { Html } from "react-pdf-html";
 // assets
-import interBold from "@/app/assets/fonts/inter/bold.ttf?url";
-import interHeavy from "@/app/assets/fonts/inter/heavy.ttf?url";
-import interLight from "@/app/assets/fonts/inter/light.ttf?url";
-import interMedium from "@/app/assets/fonts/inter/medium.ttf?url";
-import interRegular from "@/app/assets/fonts/inter/regular.ttf?url";
-import interSemibold from "@/app/assets/fonts/inter/semibold.ttf?url";
-import interThin from "@/app/assets/fonts/inter/thin.ttf?url";
-import interUltraBold from "@/app/assets/fonts/inter/ultrabold.ttf?url";
-import interUltraLight from "@/app/assets/fonts/inter/ultralight.ttf?url";
+import interBold from "@/assets/fonts/inter/bold.ttf?url";
+import interHeavy from "@/assets/fonts/inter/heavy.ttf?url";
+import interLight from "@/assets/fonts/inter/light.ttf?url";
+import interMedium from "@/assets/fonts/inter/medium.ttf?url";
+import interRegular from "@/assets/fonts/inter/regular.ttf?url";
+import interSemibold from "@/assets/fonts/inter/semibold.ttf?url";
+import interThin from "@/assets/fonts/inter/thin.ttf?url";
+import interUltraBold from "@/assets/fonts/inter/ultrabold.ttf?url";
+import interUltraLight from "@/assets/fonts/inter/ultralight.ttf?url";
 // pace imports
 import { convertRemToPixel } from "@pace/utils";
 

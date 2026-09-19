@@ -5,7 +5,7 @@
  */
 
 // assets
-import SomethingWentWrongImage from "@/app/assets/something-went-wrong.svg?url";
+import SomethingWentWrongImage from "@/assets/something-went-wrong.svg?url";
 
 export function SomethingWentWrongError() {
   return (

@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import ZipFileIcon from "@/app/assets/attachment/zip-icon.png?url";
+import ZipFileIcon from "@/assets/attachment/zip-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

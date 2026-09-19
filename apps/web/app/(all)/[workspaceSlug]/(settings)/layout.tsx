@@ -6,7 +6,7 @@
 
 import { Outlet } from "react-router";
 // components
-import { ContentWrapper } from "@/components/core/content-wrapper";
+import { ContentWrapper } from "@/components/shell/content-wrapper";
 import { ProjectsAppPowerKProvider } from "@/components/power-k/projects-app-provider";
 
 export default function SettingsLayout() {

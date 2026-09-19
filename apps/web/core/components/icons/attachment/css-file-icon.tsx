@@ -6,7 +6,7 @@
 
 import React from "react";
 // image
-import CssFileIcon from "@/app/assets/attachment/css-icon.png?url";
+import CssFileIcon from "@/assets/attachment/css-icon.png?url";
 // type
 import type { ImageIconPros } from "../types";
 

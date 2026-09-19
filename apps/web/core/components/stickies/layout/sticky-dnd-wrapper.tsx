@@ -16,7 +16,7 @@ import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/eleme
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { attachInstruction } from "@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item";
 import { observer } from "mobx-react";
-import { usePathname } from "@/app/hooks/navigation";
+import { usePathname } from "@/lib/navigation";
 import { createRoot } from "react-dom/client";
 // pace types
 import type { InstructionType } from "@pace/types";

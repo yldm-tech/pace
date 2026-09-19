@@ -21,8 +21,8 @@ import { getFileURL } from "@pace/utils";
 // components
 import { DeactivateAccountModal } from "@/components/account/deactivate-account-modal";
 import { ImagePickerPopover } from "@/components/core/image-picker-popover";
-import { ChangeEmailModal } from "@/components/core/modals/change-email-modal";
-import { UserImageUploadModal } from "@/components/core/modals/user-image-upload-modal";
+import { ChangeEmailModal } from "@/components/account/change-email-modal";
+import { UserImageUploadModal } from "@/components/profile/user-image-upload-modal";
 import { CoverImage } from "@/components/common/cover-image";
 import { SettingsBoxedControlItem } from "@/components/settings/boxed-control-item";
 // helpers

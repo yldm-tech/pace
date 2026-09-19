@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // pace imports
 import { useTranslation } from "@pace/i18n";
@@ -14,7 +14,7 @@ import { EmptyStateDetailed } from "@pace/propel/empty-state";
 import type { TCycleFilters } from "@pace/types";
 import { calculateTotalFilters } from "@pace/utils";
 // components
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";

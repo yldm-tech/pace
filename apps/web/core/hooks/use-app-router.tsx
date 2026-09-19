@@ -5,6 +5,6 @@
  */
 
 // router from n-progress-bar
-import { useRouter } from "@/app/hooks/navigation";
+import { useRouter } from "@/lib/navigation";
 
 export const useAppRouter = () => useRouter();

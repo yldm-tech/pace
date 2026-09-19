@@ -7,7 +7,7 @@
 import type { FC } from "react";
 import { useCallback, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import { ALL_ISSUES, EIssueFilterType, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import type { EIssuesStoreType, IIssueDisplayFilterOptions } from "@pace/types";
@@ -18,7 +18,7 @@ import { useUserPermissions } from "@/hooks/store/user";
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";
 import { useIssuesActions } from "@/hooks/use-issues-actions";
 // local imports
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import type { IQuickActionProps, TRenderQuickActions } from "../list/list-view-types";
 import { SpreadsheetView } from "./spreadsheet-view";
 

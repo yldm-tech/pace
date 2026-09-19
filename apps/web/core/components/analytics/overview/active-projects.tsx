@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // pace package imports
 import { useTranslation } from "@pace/i18n";

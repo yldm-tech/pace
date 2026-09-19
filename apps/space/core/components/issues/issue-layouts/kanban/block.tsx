@@ -7,7 +7,7 @@
 import type { MutableRefObject } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router";
-import { useParams, useSearchParams } from "@/app/hooks/navigation";
+import { useParams, useSearchParams } from "@/lib/navigation";
 // pace types
 import { Tooltip } from "@pace/propel/tooltip";
 import type { IIssueDisplayProperties } from "@pace/types";
@@ -15,7 +15,7 @@ import type { IIssueDisplayProperties } from "@pace/types";
 // pace utils
 import { cn } from "@pace/utils";
 // components
-import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "@/components/issues/issue-layouts/with-display-properties-hoc";
 // helpers
 import { queryParamGenerator } from "@/helpers/query-param-generator";
 // hooks

@@ -17,15 +17,15 @@ import { EUserProjectRoles } from "@pace/types";
 import { Header, EHeaderVariant } from "@pace/ui";
 import { calculateTotalFilters } from "@pace/utils";
 // assets
-import darkEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-dark.webp?url";
-import lightEmptyState from "@/app/assets/empty-state/disabled-feature/cycles-light.webp?url";
+import darkEmptyState from "@/assets/empty-state/disabled-feature/cycles-dark.webp?url";
+import lightEmptyState from "@/assets/empty-state/disabled-feature/cycles-light.webp?url";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { CycleAppliedFiltersList } from "@/components/cycles/applied-filters";
 import { CyclesView } from "@/components/cycles/cycles-view";
 import { CycleCreateUpdateModal } from "@/components/cycles/modal";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useCycleFilter } from "@/hooks/store/use-cycle-filter";

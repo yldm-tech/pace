@@ -10,7 +10,7 @@ import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { autoScrollForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-scroll/element";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { EIssueFilterType, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import type { EIssuesStoreType } from "@pace/types";
 import { EIssueServiceType, EIssueLayoutTypes } from "@pace/types";
@@ -26,7 +26,7 @@ import { useIssuesActions } from "@/hooks/use-issues-actions";
 // ui
 // types
 import { DeleteIssueModal } from "../../delete-issue-modal";
-import { IssueLayoutHOC } from "../issue-layout-HOC";
+import { IssueLayoutHOC } from "../issue-layout-hoc";
 import type { IQuickActionProps, TRenderQuickActions } from "../list/list-view-types";
 //components
 import { getSourceFromDropPayload } from "../utils";

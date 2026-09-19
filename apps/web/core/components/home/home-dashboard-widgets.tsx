@@ -5,15 +5,15 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
-import { usePathname } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
+import { usePathname } from "@/lib/navigation";
 import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import type { THomeWidgetKeys, THomeWidgetProps } from "@pace/types";
 // assets
-import darkWidgetsAsset from "@/app/assets/empty-state/dashboard/widgets-dark.webp?url";
-import lightWidgetsAsset from "@/app/assets/empty-state/dashboard/widgets-light.webp?url";
+import darkWidgetsAsset from "@/assets/empty-state/dashboard/widgets-dark.webp?url";
+import lightWidgetsAsset from "@/assets/empty-state/dashboard/widgets-light.webp?url";
 // components
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";
 // hooks

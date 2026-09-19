@@ -6,14 +6,14 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR from "swr";
 // pace imports
 import { Collapsible } from "@makeplane/propel/components/collapsible";
 import { useTranslation } from "@pace/i18n";
 // components
 import { CountChip } from "@/components/common/count-chip";
-import { MembersSettingsLoader } from "@/components/ui/loader/settings/members";
+import { MembersSettingsLoader } from "@/components/skeletons/loader/settings/members";
 // hooks
 import { useMember } from "@/hooks/store/use-member";
 // local imports

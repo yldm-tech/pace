@@ -6,15 +6,15 @@
 
 import { Fragment } from "react";
 import { observer } from "mobx-react";
-import Link from "@/app/hooks/link";
+import Link from "@/lib/navigation/link";
 import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import type { ICycle, TCycleEstimateType } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // assets
-import darkChartAsset from "@/app/assets/empty-state/active-cycle/chart-dark.webp?url";
-import lightChartAsset from "@/app/assets/empty-state/active-cycle/chart-light.webp?url";
+import darkChartAsset from "@/assets/empty-state/active-cycle/chart-dark.webp?url";
+import lightChartAsset from "@/assets/empty-state/active-cycle/chart-light.webp?url";
 // components
 import ProgressChart from "@/components/core/sidebar/progress-chart";
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";

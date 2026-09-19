@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";

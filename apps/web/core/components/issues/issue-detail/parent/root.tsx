@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useRouter } from "@/app/hooks/navigation";
+import { useRouter } from "@/lib/navigation";
 import { MinusCircle } from "lucide-react";
 import { useTranslation } from "@pace/i18n";
 import type { TIssue } from "@pace/types";

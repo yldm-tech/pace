@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { usePathname, useRouter, useSearchParams } from "@/app/hooks/navigation";
+import { usePathname, useRouter, useSearchParams } from "@/lib/navigation";
 // lib
 import { stringToEmoji } from "@pace/propel/emoji-icon-picker";
 import { EmojiReactionGroup, EmojiReactionPicker } from "@pace/propel/emoji-reaction";

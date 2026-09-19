@@ -6,7 +6,7 @@
 
 import { useMemo } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace imports
 import type { E_SORT_ORDER } from "@pace/constants";
 import type { TCommentsOperations, TIssueComment } from "@pace/types";

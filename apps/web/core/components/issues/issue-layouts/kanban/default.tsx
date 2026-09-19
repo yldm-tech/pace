@@ -21,8 +21,8 @@ import type {
 // constants
 import { ContentWrapper } from "@pace/ui";
 // components
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
-import { KanbanColumnLoader } from "@/components/ui/loader/layouts/kanban-layout-loader";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
+import { KanbanColumnLoader } from "@/components/skeletons/loader/layouts/kanban-layout-loader";
 // hooks
 import { useKanbanView } from "@/hooks/store/use-kanban-view";
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";

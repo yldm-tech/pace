@@ -16,7 +16,7 @@ import type { IUser } from "@pace/types";
 import { EOnboardingSteps } from "@pace/types";
 import { cn, getFileURL, getPasswordStrength, validatePersonName } from "@pace/utils";
 // components
-import { UserImageUploadModal } from "@/components/core/modals/user-image-upload-modal";
+import { UserImageUploadModal } from "@/components/profile/user-image-upload-modal";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 import { useUser, useUserProfile } from "@/hooks/store/user";

@@ -6,7 +6,7 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { CloseOutline, EditOutline } from "@pace/propel/icons";
 // types
 import type { IIssueLabel } from "@pace/types";
@@ -17,7 +17,7 @@ import type { TLabelOperationsCallbacks } from "./create-update-label-inline";
 import { CreateUpdateLabelInline } from "./create-update-label-inline";
 import type { ICustomMenuItem } from "./label-block/label-item-block";
 import { LabelItemBlock } from "./label-block/label-item-block";
-import { LabelDndHOC } from "./label-drag-n-drop-HOC";
+import { LabelDndHOC } from "./label-drag-n-drop-hoc";
 
 type Props = {
   label: IIssueLabel;

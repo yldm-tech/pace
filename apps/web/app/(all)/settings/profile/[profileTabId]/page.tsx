@@ -11,7 +11,7 @@ import { useTranslation } from "@pace/i18n";
 import type { TProfileSettingsTabs } from "@pace/types";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProfileSettingsContent } from "@/components/settings/profile/content";
 import { ProfileSettingsSidebarRoot } from "@/components/settings/profile/sidebar";
 // hooks

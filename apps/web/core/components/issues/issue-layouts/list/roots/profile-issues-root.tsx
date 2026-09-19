@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // hooks
 import { useUserPermissions } from "@/hooks/store/user";

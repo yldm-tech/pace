@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "@/app/hooks/navigation";
+import { useSearchParams } from "@/lib/navigation";
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace internal packages
 import type { EAdminAuthErrorCodes, TAdminAuthErrorInfo } from "@pace/constants";
@@ -14,11 +14,11 @@ import { Button } from "@makeplane/propel/components/button";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { AuthService } from "@pace/services";
 // components
+import { AuthHeader } from "@/components/common/auth-header";
 import { Banner } from "@/components/common/banner";
 // local components
 import { FormHeader } from "@/components/instance/form-header";
 import { AuthBanner } from "./auth-banner";
-import { AuthHeader } from "./auth-header";
 import { authErrorHandler } from "./auth-helpers";
 import { useTranslation } from "@pace/i18n";
 

@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { draggable, dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // pace helpers
 import { MoreHorizontalOutline } from "@pace/propel/icons";
 import { useOutsideClickDetector } from "@pace/hooks";
@@ -22,7 +22,7 @@ import { EIssueServiceType } from "@pace/types";
 import { ControlLink, DropIndicator } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 import { HIGHLIGHT_CLASS, getIssueBlockId } from "@/components/issues/issue-layouts/utils";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 // hooks

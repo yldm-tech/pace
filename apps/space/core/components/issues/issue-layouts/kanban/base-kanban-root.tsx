@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 // types
 import type { IIssueDisplayProperties } from "@pace/types";
 // components
-import { IssueLayoutHOC } from "@/components/issues/issue-layouts/issue-layout-HOC";
+import { IssueLayoutHOC } from "@/components/issues/issue-layouts/issue-layout-hoc";
 // hooks
 import { useIssue } from "@/hooks/store/use-issue";
 

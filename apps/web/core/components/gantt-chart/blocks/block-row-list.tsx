@@ -6,7 +6,7 @@
 
 // components
 import type { IBlockUpdateData, IGanttBlock } from "@pace/types";
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 // hooks
 import { BlockRow } from "@/components/gantt-chart/blocks/block-row";
 import { BLOCK_HEIGHT } from "@/components/gantt-chart/constants";

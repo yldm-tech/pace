@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useRouter } from "@/app/hooks/navigation";
+import { useRouter } from "@/lib/navigation";
 // pace package imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
@@ -15,7 +15,7 @@ import { Tab, Tabs, TabsList, TabsPanel } from "@makeplane/propel/components/tab
 // components
 import { cn } from "@pace/utils";
 import AnalyticsFilterActions from "@/components/analytics/analytics-filter-actions";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProject } from "@/hooks/store/use-project";

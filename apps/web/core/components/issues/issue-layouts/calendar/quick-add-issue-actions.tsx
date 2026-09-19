@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { differenceInCalendarDays } from "date-fns/differenceInCalendarDays";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 
 import { useTranslation } from "@pace/i18n";
 // pace imports
@@ -18,7 +18,7 @@ import { EIssueLayoutTypes } from "@pace/types";
 import { CustomMenu } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { QuickAddIssueRoot } from "../quick-add";

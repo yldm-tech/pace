@@ -11,7 +11,7 @@ import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { DownloadActivityButton } from "@/components/profile/activity/download-button";
 import { WorkspaceActivityListPage } from "@/components/profile/activity/workspace-activity-list";
 // hooks

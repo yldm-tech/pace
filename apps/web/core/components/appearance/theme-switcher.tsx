@@ -14,8 +14,8 @@ import { useTranslation } from "@pace/i18n";
 import { setPromiseToast } from "@pace/propel/toast";
 import { applyCustomTheme } from "@pace/utils/theme";
 // components
-import { CustomThemeSelector } from "@/components/core/theme/custom-theme-selector";
-import { ThemeSwitch } from "@/components/core/theme/theme-switch";
+import { CustomThemeSelector } from "./custom-theme-selector";
+import { ThemeSwitch } from "./theme-switch";
 import { SettingsControlItem } from "@/components/settings/control-item";
 // hooks
 import { useUserProfile } from "@/hooks/store/user";

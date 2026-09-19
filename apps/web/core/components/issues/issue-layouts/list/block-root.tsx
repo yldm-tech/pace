@@ -17,8 +17,8 @@ import type { IIssueDisplayProperties, TIssue, TIssueMap } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 // components
 import { DropIndicator } from "@pace/ui";
-import RenderIfVisible from "@/components/core/render-if-visible-HOC";
-import { ListLoaderItemRow } from "@/components/ui/loader/layouts/list-layout-loader";
+import RenderIfVisible from "@/components/core/render-if-visible-hoc";
+import { ListLoaderItemRow } from "@/components/skeletons/loader/layouts/list-layout-loader";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import type { TSelectionHelper } from "@/hooks/use-multiple-select";

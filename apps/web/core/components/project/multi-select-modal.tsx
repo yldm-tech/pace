@@ -18,8 +18,8 @@ import { Checkbox } from "@makeplane/propel/components/checkbox";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { cn } from "@pace/utils";
 // assets
-import darkProjectAsset from "@/app/assets/empty-state/search/project-dark.webp?url";
-import lightProjectAsset from "@/app/assets/empty-state/search/project-light.webp?url";
+import darkProjectAsset from "@/assets/empty-state/search/project-dark.webp?url";
+import lightProjectAsset from "@/assets/empty-state/search/project-light.webp?url";
 // components
 import { SimpleEmptyState } from "@/components/empty-state/simple-empty-state-root";
 // hooks

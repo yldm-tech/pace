@@ -4,13 +4,13 @@
  * See the LICENSE file for details.
  */
 
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR, { mutate } from "swr";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceIntegration } from "@pace/types";
 // assets
-import GithubLogo from "@/app/assets/logos/github-square.png?url";
-import SlackLogo from "@/app/assets/services/slack.png?url";
+import GithubLogo from "@/assets/logos/github-square.png?url";
+import SlackLogo from "@/assets/services/slack.png?url";
 // components
 import { SelectChannel } from "@/components/integration/slack/select-channel";
 import { SelectRepository } from "@/components/integration/github/select-repository";

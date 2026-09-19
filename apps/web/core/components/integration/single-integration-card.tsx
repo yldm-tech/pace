@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 import useSWR, { mutate } from "swr";
 import { TickCircleOutline } from "@pace/propel/icons";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
@@ -17,8 +17,8 @@ import type { IAppIntegration, IWorkspaceIntegration } from "@pace/types";
 // ui
 import { Skeleton } from "@pace/propel/skeleton";
 // assets
-import GithubLogo from "@/app/assets/services/github.png?url";
-import SlackLogo from "@/app/assets/services/slack.png?url";
+import GithubLogo from "@/assets/services/github.png?url";
+import SlackLogo from "@/assets/services/slack.png?url";
 // constants
 import { WORKSPACE_INTEGRATIONS } from "@pace/constants";
 // hooks

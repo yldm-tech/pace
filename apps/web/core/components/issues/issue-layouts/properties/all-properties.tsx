@@ -8,7 +8,7 @@ import type { SyntheticEvent } from "react";
 import { useCallback, useMemo } from "react";
 import { xor } from "lodash-es";
 import { observer } from "mobx-react";
-import { useParams } from "@/app/hooks/navigation";
+import { useParams } from "@/lib/navigation";
 // icons
 import { AttachOutline, DueDateOutline, LinkOutline, StartDateOutline, ViewsOutline } from "@pace/propel/icons";
 // i18n
@@ -43,7 +43,7 @@ import { useIssueStoreType } from "@/hooks/use-issue-layout-store";
 import { usePlatformOS } from "@/hooks/use-platform-os";
 // local components
 import { IssuePropertyLabels } from "./labels";
-import { WithDisplayPropertiesHOC } from "./with-display-properties-HOC";
+import { WithDisplayPropertiesHOC } from "./with-display-properties-hoc";
 
 export interface IIssueProperties {
   issue: TIssue;

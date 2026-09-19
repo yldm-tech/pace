@@ -8,10 +8,10 @@ import { observer } from "mobx-react";
 // pace imports
 import { cn } from "@pace/utils";
 // assets
-import emptyCycle from "@/app/assets/empty-state/cycle.svg?url";
+import emptyCycle from "@/assets/empty-state/cycle.svg?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
-import { PageHead } from "@/components/core/page-title";
+import { EmptyState } from "@/components/empty-state/empty-state";
+import { PageHead } from "@/components/shell/page-title";
 import useCyclesDetails from "@/components/cycles/active-cycle/use-cycles-details";
 import { CycleDetailsSidebar } from "@/components/cycles/analytics-sidebar";
 import { CycleLayoutRoot } from "@/components/issues/issue-layouts/roots/cycle-layout-root";

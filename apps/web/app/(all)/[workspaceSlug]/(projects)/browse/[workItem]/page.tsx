@@ -14,11 +14,11 @@ import type { TIssue } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // assets
-import emptyIssueDark from "@/app/assets/empty-state/search/issues-dark.webp?url";
-import emptyIssueLight from "@/app/assets/empty-state/search/issues-light.webp?url";
+import emptyIssueDark from "@/assets/empty-state/search/issues-dark.webp?url";
+import emptyIssueLight from "@/assets/empty-state/search/issues-light.webp?url";
 // components
-import { EmptyState } from "@/components/common/empty-state";
-import { PageHead } from "@/components/core/page-title";
+import { EmptyState } from "@/components/empty-state/empty-state";
+import { PageHead } from "@/components/shell/page-title";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
@@ -28,7 +28,7 @@ import { useAppRouter } from "@/hooks/use-app-router";
 import { ProjectAuthWrapper } from "@/layouts/auth-layout/project-wrapper";
 // pace web imports
 import { useWorkItemProperties } from "@/hooks/use-issue-properties";
-import { WorkItemDetailRoot } from "@/components/browse/workItem-detail";
+import { WorkItemDetailRoot } from "@/components/browse/work-item-detail";
 
 import type { Route } from "./+types/page";
 

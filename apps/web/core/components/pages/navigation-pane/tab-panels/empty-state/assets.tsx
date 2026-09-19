@@ -8,8 +8,8 @@ import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 // assets
-import darkAssetsAsset from "@/app/assets/empty-state/wiki/navigation-pane/assets-dark.webp?url";
-import lightAssetsAsset from "@/app/assets/empty-state/wiki/navigation-pane/assets-light.webp?url";
+import darkAssetsAsset from "@/assets/empty-state/wiki/navigation-pane/assets-dark.webp?url";
+import lightAssetsAsset from "@/assets/empty-state/wiki/navigation-pane/assets-light.webp?url";
 
 export function PageNavigationPaneAssetsTabEmptyState() {
   // theme hook

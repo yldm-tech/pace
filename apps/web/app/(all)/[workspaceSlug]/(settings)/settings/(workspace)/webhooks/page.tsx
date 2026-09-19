@@ -14,9 +14,9 @@ import { Button } from "@pace/propel/button";
 // components
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { SettingsHeading } from "@/components/settings/heading";
-import { WebhookSettingsLoader } from "@/components/ui/loader/settings/web-hook";
+import { WebhookSettingsLoader } from "@/components/skeletons/loader/settings/web-hook";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 import { WebhooksList, CreateWebhookModal } from "@/components/web-hooks";
 // hooks

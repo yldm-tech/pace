@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 import { WorkspaceDetails } from "@/components/workspace/settings/workspace-details";
 // hooks
