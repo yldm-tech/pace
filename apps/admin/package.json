@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "description": "Admin UI for Pace",
   "license": "AGPL-3.0",
@@ -11,7 +11,7 @@
     "preview": "react-router build && serve -s build/client -l 3001",
     "start": "serve -s build/client -l 3001",
     "clean": "rm -rf .turbo && rm -rf .next && rm -rf node_modules && rm -rf dist && rm -rf build",
-    "check:lint": "oxlint --max-warnings=759 .",
+    "check:lint": "oxlint --max-warnings=23 .",
     "check:types": "react-router typegen && tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",
@@ -21,7 +21,6 @@
     "@bprogress/core": "catalog:",
     "@fontsource-variable/inter": "catalog:",
     "@fontsource/ibm-plex-mono": "catalog:",
-    "@fontsource/material-symbols-rounded": "catalog:",
     "@headlessui/react": "catalog:",
     "@makeplane/propel": "catalog:",
     "@pace/constants": "workspace:*",
@@ -44,8 +43,7 @@
     "react-hook-form": "catalog:",
     "react-router": "catalog:",
     "serve": "catalog:",
-    "swr": "catalog:",
-    "uuid": "catalog:"
+    "swr": "catalog:"
   },
   "devDependencies": {
     "@pace/tailwind-config": "workspace:*",

@@ -43,7 +43,7 @@ func TestTheSyncProjectionLeavesNullCountsAlone(t *testing.T) {
 
 // This route's id arrays carry no soft-delete filter on the through table, which every other issue list does.
 func TestTheSyncAnnotationsOmitTheSoftDeleteFilters(t *testing.T) {
-	annotations := issueV2Annotations()
+	annotations := issueV2Annotations(false)
 	for _, absent := range []string{"il2.deleted_at", "ia.deleted_at", "mi.deleted_at"} {
 		if strings.Contains(annotations, absent) {
 			t.Errorf("the sync select filters %s, which Django's does not", absent)

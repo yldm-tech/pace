@@ -1,6 +1,6 @@
 {
   "name": "@pace/ui",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "description": "UI components shared across multiple apps internally",
   "license": "AGPL-3.0",
@@ -19,7 +19,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "postcss": "postcss styles/globals.css -o styles/output.css --watch",
-    "check:lint": "oxlint --max-warnings=66 .",
+    "check:lint": "oxlint --max-warnings=33 .",
     "check:types": "tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",
@@ -43,8 +43,7 @@
     "react-color": "catalog:",
     "react-day-picker": "catalog:",
     "react-popper": "catalog:",
-    "tailwind-merge": "catalog:",
-    "use-font-face-observer": "catalog:"
+    "tailwind-merge": "catalog:"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:",

@@ -105,6 +105,9 @@ export const ListGroup = observer(function ListGroup(props: Props) {
   const isExpanded = !collapsedGroups?.group_by.includes(group.id);
   const groupRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
+  // `useTranslation` hands back a new `t` on every render, so the drop-target effect below reads it through a ref instead of listing it as a dependency — listing it would tear down and re-register the drop target on every render.
+  const translateRef = useRef(t);
+  translateRef.current = t;
   const projectState = useProjectState();
 
   const {
@@ -176,6 +179,7 @@ export const ListGroup = observer(function ListGroup(props: Props) {
     return preloadedData;
   };
 
+  // Enable the list group as a drop target. `group`, `getGroupIndex` and `handleOnDrop` are stable now, so this no longer re-runs on every render — everything `onDrop` reads has to be in the dependency list below to stay fresh.
   useEffect(() => {
     const element = groupRef.current;
 
@@ -221,7 +225,7 @@ export const ListGroup = observer(function ListGroup(props: Props) {
             if (group.dropErrorMessage)
               setToast({
                 type: TOAST_TYPE.WARNING,
-                title: t("common.warning"),
+                title: translateRef.current("common.warning"),
                 message: group.dropErrorMessage,
               });
             return;
@@ -243,6 +247,9 @@ export const ListGroup = observer(function ListGroup(props: Props) {
     group,
     orderBy,
     getGroupIndex,
+    handleOnDrop,
+    handleCollapsedGroups,
+    isExpanded,
     setDragColumnOrientation,
     setIsDraggingOverColumn,
     isWorkflowDropDisabled,

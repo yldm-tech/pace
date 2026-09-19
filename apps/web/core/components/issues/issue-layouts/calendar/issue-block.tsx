@@ -41,6 +41,7 @@ export const CalendarIssueBlock = observer(
     const { issue, quickActions, isDragging = false, isEpic = false } = props;
     // states
     const [isMenuActive, setIsMenuActive] = useState(false);
+    const [placement, setPlacement] = useState<"bottom-end" | "top-end">("top-end");
     // refs
     const blockRef = useRef(null);
     const menuActionRef = useRef<HTMLDivElement | null>(null);
@@ -63,6 +64,15 @@ export const CalendarIssueBlock = observer(
 
     useOutsideClickDetector(menuActionRef, () => setIsMenuActive(false));
 
+    // Measuring in the click that opens the menu keeps the layout read out of the render phase, where it forced a synchronous layout on every calendar block and read a ref that is still null on the first render. This click is the only way to reach the menu — the wrapper is `display: none` until hover, so the button inside it is never keyboard-reachable.
+    const handleMenuToggle = () => {
+      const menuActionBottom = menuActionRef.current?.getBoundingClientRect().bottom;
+      setPlacement(
+        menuActionBottom !== undefined && menuActionBottom < window.innerHeight - 220 ? "bottom-end" : "top-end"
+      );
+      setIsMenuActive(!isMenuActive);
+    };
+
     const customActionButton = (
       // CustomMenu renders this inside its own <button>, which already carries the
       // interactive semantics and keyboard handling — this div is presentational.
@@ -72,18 +82,11 @@ export const CalendarIssueBlock = observer(
         className={`w-full cursor-pointer rounded-sm p-1 text-placeholder hover:bg-layer-1 ${
           isMenuActive ? "bg-layer-1-active text-primary" : "text-secondary"
         }`}
-        onClick={() => setIsMenuActive(!isMenuActive)}
+        onClick={handleMenuToggle}
       >
         <MoreHorizontalOutline className="h-3.5 w-3.5" />
       </div>
     );
-
-    const isMenuActionRefAboveScreenBottom =
-      typeof window !== "undefined" &&
-      menuActionRef?.current &&
-      menuActionRef?.current?.getBoundingClientRect().bottom < window.innerHeight - 220;
-
-    const placement = isMenuActionRefAboveScreenBottom ? "bottom-end" : "top-end";
 
     const workItemLink = generateWorkItemLink({
       workspaceSlug: workspaceSlug?.toString(),

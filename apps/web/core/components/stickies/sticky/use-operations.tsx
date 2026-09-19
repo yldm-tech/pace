@@ -10,7 +10,7 @@ import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { InstructionType, TSticky } from "@pace/types";
 // pace utils
-import { isCommentEmpty } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 // components
 import { STICKY_COLORS_LIST } from "@/components/editor/sticky-editor/color-palette";
 // hooks

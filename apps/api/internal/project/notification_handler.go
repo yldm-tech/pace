@@ -236,38 +236,31 @@ func (handler *Handler) respondPagedNotifications(c *gin.Context, results []gin.
 // notificationUnreadCounts is the badge: what is waiting, split into mentions and everything else.
 //
 // Neither count includes anything archived or snoozed, so a notification put off until tomorrow stops showing up today.
+//
+// The two numbers are halves of one set — what is unread and mentions the caller, and what is unread and does not — so they are two FILTERs over one pass rather than two passes that differ only by a negation. The pass reads notif_receiver_unread_idx, whose predicate is the WHERE below, so a person with years of notifications is scanned over the unread ones alone.
 func (handler *Handler) notificationUnreadCounts(c *gin.Context, user *auth.User) {
 	if !handler.requireWorkspaceRole(c, user, roleAdmin, roleMember, roleGuest) {
 		return
 	}
 	slug := c.Param("slug")
-	count := func(mentioned bool) (int64, error) {
-		query := handler.db.WithContext(c.Request.Context()).Table("notifications n").
-			Joins("JOIN workspaces w ON w.id = n.workspace_id").
-			Where(`w.slug = ? AND n.receiver_id = ? AND n.deleted_at IS NULL
-				AND n.read_at IS NULL AND n.archived_at IS NULL AND n.snoozed_till IS NULL`, slug, user.ID)
-		if mentioned {
-			query = query.Where("n.sender ILIKE '%mentioned%'")
-		} else {
-			query = query.Where("n.sender NOT ILIKE '%mentioned%'")
-		}
-		var total int64
-		return total, query.Count(&total).Error
+	var counts struct {
+		Unread   int64 `gorm:"column:total_unread"`
+		Mentions int64 `gorm:"column:mention_unread"`
 	}
-
-	unread, err := count(false)
-	if err != nil {
-		handler.internalError(c, err)
-		return
-	}
-	mentions, err := count(true)
+	err := handler.db.WithContext(c.Request.Context()).Table("notifications n").
+		Joins("JOIN workspaces w ON w.id = n.workspace_id").
+		Where(`w.slug = ? AND n.receiver_id = ? AND n.deleted_at IS NULL
+			AND n.read_at IS NULL AND n.archived_at IS NULL AND n.snoozed_till IS NULL`, slug, user.ID).
+		Select(`COUNT(*) FILTER (WHERE n.sender NOT ILIKE '%mentioned%') AS total_unread,
+			COUNT(*) FILTER (WHERE n.sender ILIKE '%mentioned%') AS mention_unread`).
+		Take(&counts).Error
 	if err != nil {
 		handler.internalError(c, err)
 		return
 	}
 	drf.Respond(c, http.StatusOK, gin.H{
-		"total_unread_notifications_count":   unread,
-		"mention_unread_notifications_count": mentions,
+		"total_unread_notifications_count":   counts.Unread,
+		"mention_unread_notifications_count": counts.Mentions,
 	})
 }
 

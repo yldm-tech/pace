@@ -192,9 +192,14 @@ func (handler *Handler) issueListPage(c *gin.Context, request issueListRequest) 
 	return rows, err
 }
 
+// issueListColumns is the issue's own share of every list projection: the columns the list serializers read, and nothing else.
+//
+// The four description columns are deliberately absent. `i.*` shipped description_json, description_html, description_stripped and the description_binary bytea beside them for every row of a page that holds up to a thousand, unmarshalled the jsonb into auth.JSONValue on the way, and then threw all four away — none of these projections emits a description. The one that can, the sync list's, asks for description_html by hand.
+const issueListColumns = `i.id, i.created_at, i.updated_at, i.created_by_id, i.updated_by_id, i.deleted_at, i.project_id, i.parent_id, i.state_id, i.estimate_point_id, i.name, i.priority, i.start_date, i.target_date, i.sequence_id, i.sort_order, i.completed_at, i.archived_at, i.is_draft`
+
 // issueListAnnotations is apply_annotations plus the id arrays issue_queryset_grouper adds. The counts do not coalesce here, which is why the serializer turns a null into zero rather than the query doing it.
 func issueListAnnotations() string {
-	return `i.*,
+	return issueListColumns + `,
 		(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 		(SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL) AS link_count,
 		(SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL) AS attachment_count,

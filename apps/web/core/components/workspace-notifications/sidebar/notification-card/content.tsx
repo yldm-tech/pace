@@ -7,12 +7,8 @@
 import type { ReactNode } from "react";
 // pace imports
 import type { TNotification } from "@pace/types";
-import {
-  convertMinutesToHoursMinutesString,
-  renderFormattedDate,
-  sanitizeCommentForNotification,
-  stripAndTruncateHTML,
-} from "@pace/utils";
+import { convertMinutesToHoursMinutesString, renderFormattedDate } from "@pace/utils";
+import { sanitizeCommentForNotification, stripAndTruncateHTML } from "@pace/utils/html";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 import {

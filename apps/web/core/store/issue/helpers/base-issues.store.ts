@@ -28,7 +28,7 @@ import type {
 } from "@pace/types";
 import { EIssueServiceType, EIssueLayoutTypes } from "@pace/types";
 // helpers
-import { convertToISODateString } from "@pace/utils";
+import { convertToEpoch, convertToISODateString } from "@pace/utils";
 // pace web imports
 // services
 import { CycleService } from "@pace/services";
@@ -1765,191 +1765,158 @@ export abstract class BaseIssuesStore implements IBaseIssuesStore {
 
   issuesSortWithOrderBy = (issueIds: string[], key: TIssueOrderByOptions | undefined): string[] => {
     const issues = this.rootIssueStore.issues.getIssuesByIds(issueIds, this.isArchived ? "archived" : "un-archived");
-    const array = orderBy(issues, (issue) => convertToISODateString(issue["created_at"]), ["desc"]);
+    // Comparing epochs orders identically to comparing the ISO strings this used to build, without allocating a Date and a string per work item.
+    const createdAtIteratee = (issue: TIssue) => convertToEpoch(issue["created_at"]);
+    // lodash `orderBy` is a stable sort, so the old shape here — pre-sort every work item by created_at desc, then sort the result again by the requested key — is exactly one sort with created_at desc appended as the last tiebreak. Folding it in that way keeps the resulting order identical for every key below, the default one included, and halves the sorting work each grouped mutation pays.
+    const sortedIssueIds = (iteratees: (string | ((issue: TIssue) => unknown))[], orders: ("asc" | "desc")[] = []) => {
+      // lodash pads a short `orders` with "asc", which would misalign once the tiebreak is appended, so pad it here instead.
+      const sortOrders: ("asc" | "desc")[] = [...iteratees.map((_iteratee, index) => orders[index] ?? "asc"), "desc"];
+      return getIssueIds(orderBy(issues, [...iteratees, createdAtIteratee], sortOrders));
+    };
 
     switch (key) {
       case "sort_order":
-        return getIssueIds(orderBy(array, "sort_order"));
+        return sortedIssueIds(["sort_order"]);
       case "state__name":
-        return getIssueIds(
-          orderBy(array, (issue) =>
-            this.populateIssueDataForSorting("state_id", issue?.["state_id"], issue?.["project_id"])
-          )
-        );
+        return sortedIssueIds([
+          (issue) => this.populateIssueDataForSorting("state_id", issue?.["state_id"], issue?.["project_id"]),
+        ]);
       case "-state__name":
-        return getIssueIds(
-          orderBy(
-            array,
-            (issue) => this.populateIssueDataForSorting("state_id", issue?.["state_id"], issue?.["project_id"]),
-            ["desc"]
-          )
+        return sortedIssueIds(
+          [(issue) => this.populateIssueDataForSorting("state_id", issue?.["state_id"], issue?.["project_id"])],
+          ["desc"]
         );
       // dates
       case "created_at":
-        return getIssueIds(orderBy(array, (issue) => convertToISODateString(issue["created_at"])));
+        return sortedIssueIds([createdAtIteratee]);
       case "-created_at":
-        return getIssueIds(orderBy(array, (issue) => convertToISODateString(issue["created_at"]), ["desc"]));
+        return sortedIssueIds([createdAtIteratee], ["desc"]);
       case "updated_at":
-        return getIssueIds(orderBy(array, (issue) => convertToISODateString(issue["updated_at"])));
+        return sortedIssueIds([(issue) => convertToISODateString(issue["updated_at"])]);
       case "-updated_at":
-        return getIssueIds(orderBy(array, (issue) => convertToISODateString(issue["updated_at"]), ["desc"]));
+        return sortedIssueIds([(issue) => convertToISODateString(issue["updated_at"])], ["desc"]);
       case "start_date":
-        return getIssueIds(orderBy(array, [getSortOrderToFilterEmptyValues.bind(null, "start_date"), "start_date"])); //preferring sorting based on empty values to always keep the empty values below
+        return sortedIssueIds([getSortOrderToFilterEmptyValues.bind(null, "start_date"), "start_date"]); //preferring sorting based on empty values to always keep the empty values below
       case "-start_date":
-        return getIssueIds(
-          orderBy(
-            array,
-            [getSortOrderToFilterEmptyValues.bind(null, "start_date"), "start_date"], //preferring sorting based on empty values to always keep the empty values below
-            ["asc", "desc"]
-          )
+        return sortedIssueIds(
+          [getSortOrderToFilterEmptyValues.bind(null, "start_date"), "start_date"], //preferring sorting based on empty values to always keep the empty values below
+          ["asc", "desc"]
         );
 
       case "target_date":
-        return getIssueIds(orderBy(array, [getSortOrderToFilterEmptyValues.bind(null, "target_date"), "target_date"])); //preferring sorting based on empty values to always keep the empty values below
+        return sortedIssueIds([getSortOrderToFilterEmptyValues.bind(null, "target_date"), "target_date"]); //preferring sorting based on empty values to always keep the empty values below
       case "-target_date":
-        return getIssueIds(
-          orderBy(
-            array,
-            [getSortOrderToFilterEmptyValues.bind(null, "target_date"), "target_date"], //preferring sorting based on empty values to always keep the empty values below
-            ["asc", "desc"]
-          )
+        return sortedIssueIds(
+          [getSortOrderToFilterEmptyValues.bind(null, "target_date"), "target_date"], //preferring sorting based on empty values to always keep the empty values below
+          ["asc", "desc"]
         );
 
       // custom
       case "-priority": {
         const sortArray = ISSUE_PRIORITIES.map((i) => i.key);
-        return getIssueIds(orderBy(array, (currentIssue: TIssue) => indexOf(sortArray, currentIssue?.priority)));
+        return sortedIssueIds([(currentIssue: TIssue) => indexOf(sortArray, currentIssue?.priority)]);
       }
       case "priority": {
         const sortArray = ISSUE_PRIORITIES.map((i) => i.key);
-        return getIssueIds(
-          orderBy(array, (currentIssue: TIssue) => indexOf(sortArray, currentIssue?.priority), ["desc"])
-        );
+        return sortedIssueIds([(currentIssue: TIssue) => indexOf(sortArray, currentIssue?.priority)], ["desc"]);
       }
 
       // number
       case "attachment_count":
-        return getIssueIds(orderBy(array, "attachment_count"));
+        return sortedIssueIds(["attachment_count"]);
       case "-attachment_count":
-        return getIssueIds(orderBy(array, "attachment_count", ["desc"]));
+        return sortedIssueIds(["attachment_count"], ["desc"]);
 
       case "estimate_point__key":
-        return getIssueIds(
-          orderBy(array, [
-            getSortOrderToFilterEmptyValues.bind(null, "estimate_point"),
+        return sortedIssueIds([
+          getSortOrderToFilterEmptyValues.bind(null, "estimate_point"), //preferring sorting based on empty values to always keep the empty values below
+          (issue) =>
+            this.populateIssueDataForSorting("estimate_point", issue?.["estimate_point"], issue?.["project_id"]),
+        ]);
+      case "-estimate_point__key":
+        return sortedIssueIds(
+          [
+            getSortOrderToFilterEmptyValues.bind(null, "estimate_point"), //preferring sorting based on empty values to always keep the empty values below
             (issue) =>
               this.populateIssueDataForSorting("estimate_point", issue?.["estimate_point"], issue?.["project_id"]),
-          ])
-        ); //preferring sorting based on empty values to always keep the empty values below
-      case "-estimate_point__key":
-        return getIssueIds(
-          orderBy(
-            array,
-            [
-              getSortOrderToFilterEmptyValues.bind(null, "estimate_point"),
-              (issue) =>
-                this.populateIssueDataForSorting("estimate_point", issue?.["estimate_point"], issue?.["project_id"]),
-            ], //preferring sorting based on empty values to always keep the empty values below
-            ["asc", "desc"]
-          )
+          ],
+          ["asc", "desc"]
         );
 
       case "link_count":
-        return getIssueIds(orderBy(array, "link_count"));
+        return sortedIssueIds(["link_count"]);
       case "-link_count":
-        return getIssueIds(orderBy(array, "link_count", ["desc"]));
+        return sortedIssueIds(["link_count"], ["desc"]);
 
       case "sub_issues_count":
-        return getIssueIds(orderBy(array, "sub_issues_count"));
+        return sortedIssueIds(["sub_issues_count"]);
       case "-sub_issues_count":
-        return getIssueIds(orderBy(array, "sub_issues_count", ["desc"]));
+        return sortedIssueIds(["sub_issues_count"], ["desc"]);
 
       // Array
       case "labels__name":
-        return getIssueIds(
-          orderBy(array, [
+        return sortedIssueIds([
+          getSortOrderToFilterEmptyValues.bind(null, "label_ids"), //preferring sorting based on empty values to always keep the empty values below
+          (issue) => this.populateIssueDataForSorting("label_ids", issue?.["label_ids"], issue?.["project_id"], "asc"),
+        ]);
+      case "-labels__name":
+        return sortedIssueIds(
+          [
             getSortOrderToFilterEmptyValues.bind(null, "label_ids"), //preferring sorting based on empty values to always keep the empty values below
             (issue) =>
               this.populateIssueDataForSorting("label_ids", issue?.["label_ids"], issue?.["project_id"], "asc"),
-          ])
-        );
-      case "-labels__name":
-        return getIssueIds(
-          orderBy(
-            array,
-            [
-              getSortOrderToFilterEmptyValues.bind(null, "label_ids"), //preferring sorting based on empty values to always keep the empty values below
-              (issue) =>
-                this.populateIssueDataForSorting("label_ids", issue?.["label_ids"], issue?.["project_id"], "asc"),
-            ],
-            ["asc", "desc"]
-          )
+          ],
+          ["asc", "desc"]
         );
 
       case "issue_module__module__name":
-        return getIssueIds(
-          orderBy(array, [
+        return sortedIssueIds([
+          getSortOrderToFilterEmptyValues.bind(null, "module_ids"), //preferring sorting based on empty values to always keep the empty values below
+          (issue) =>
+            this.populateIssueDataForSorting("module_ids", issue?.["module_ids"], issue?.["project_id"], "asc"),
+        ]);
+      case "-issue_module__module__name":
+        return sortedIssueIds(
+          [
             getSortOrderToFilterEmptyValues.bind(null, "module_ids"), //preferring sorting based on empty values to always keep the empty values below
             (issue) =>
               this.populateIssueDataForSorting("module_ids", issue?.["module_ids"], issue?.["project_id"], "asc"),
-          ])
-        );
-      case "-issue_module__module__name":
-        return getIssueIds(
-          orderBy(
-            array,
-            [
-              getSortOrderToFilterEmptyValues.bind(null, "module_ids"), //preferring sorting based on empty values to always keep the empty values below
-              (issue) =>
-                this.populateIssueDataForSorting("module_ids", issue?.["module_ids"], issue?.["project_id"], "asc"),
-            ],
-            ["asc", "desc"]
-          )
+          ],
+          ["asc", "desc"]
         );
 
       case "issue_cycle__cycle__name":
-        return getIssueIds(
-          orderBy(array, [
+        return sortedIssueIds([
+          getSortOrderToFilterEmptyValues.bind(null, "cycle_id"), //preferring sorting based on empty values to always keep the empty values below
+          (issue) => this.populateIssueDataForSorting("cycle_id", issue?.["cycle_id"], issue?.["project_id"], "asc"),
+        ]);
+      case "-issue_cycle__cycle__name":
+        return sortedIssueIds(
+          [
             getSortOrderToFilterEmptyValues.bind(null, "cycle_id"), //preferring sorting based on empty values to always keep the empty values below
             (issue) => this.populateIssueDataForSorting("cycle_id", issue?.["cycle_id"], issue?.["project_id"], "asc"),
-          ])
-        );
-      case "-issue_cycle__cycle__name":
-        return getIssueIds(
-          orderBy(
-            array,
-            [
-              getSortOrderToFilterEmptyValues.bind(null, "cycle_id"), //preferring sorting based on empty values to always keep the empty values below
-              (issue) =>
-                this.populateIssueDataForSorting("cycle_id", issue?.["cycle_id"], issue?.["project_id"], "asc"),
-            ],
-            ["asc", "desc"]
-          )
+          ],
+          ["asc", "desc"]
         );
 
       case "assignees__first_name":
-        return getIssueIds(
-          orderBy(array, [
+        return sortedIssueIds([
+          getSortOrderToFilterEmptyValues.bind(null, "assignee_ids"), //preferring sorting based on empty values to always keep the empty values below
+          (issue) =>
+            this.populateIssueDataForSorting("assignee_ids", issue?.["assignee_ids"], issue?.["project_id"], "asc"),
+        ]);
+      case "-assignees__first_name":
+        return sortedIssueIds(
+          [
             getSortOrderToFilterEmptyValues.bind(null, "assignee_ids"), //preferring sorting based on empty values to always keep the empty values below
             (issue) =>
               this.populateIssueDataForSorting("assignee_ids", issue?.["assignee_ids"], issue?.["project_id"], "asc"),
-          ])
-        );
-      case "-assignees__first_name":
-        return getIssueIds(
-          orderBy(
-            array,
-            [
-              getSortOrderToFilterEmptyValues.bind(null, "assignee_ids"), //preferring sorting based on empty values to always keep the empty values below
-              (issue) =>
-                this.populateIssueDataForSorting("assignee_ids", issue?.["assignee_ids"], issue?.["project_id"], "asc"),
-            ],
-            ["asc", "desc"]
-          )
+          ],
+          ["asc", "desc"]
         );
 
       default:
-        return getIssueIds(array);
+        return sortedIssueIds([]);
     }
   };
 

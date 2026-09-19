@@ -21,7 +21,8 @@ import { AppProviders } from "./providers";
 // fonts
 import "@fontsource-variable/inter";
 import interVariableWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
-import "@fontsource/material-symbols-rounded";
+// Weight 400 only: the `.material-symbols-rounded` rule pins font-weight 400, so the package's index.css would add three more unusable @font-face blocks (100/200/300) to a render-blocking stylesheet.
+import "@fontsource/material-symbols-rounded/400.css";
 import "@fontsource/ibm-plex-mono";
 
 const APP_TITLE = "Pace Publish | Make your Pace boards public with one-click";

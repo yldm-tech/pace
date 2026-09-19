@@ -9,7 +9,8 @@ import React from "react";
 import { LiteTextEditorWithRef } from "@pace/editor";
 import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@pace/editor";
 import type { MakeOptional } from "@pace/types";
-import { cn, isCommentEmpty } from "@pace/utils";
+import { cn } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 // helpers
 import { getEditorFileHandlers } from "@/helpers/editor.helper";
 // hooks

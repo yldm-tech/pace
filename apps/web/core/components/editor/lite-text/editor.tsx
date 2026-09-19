@@ -12,7 +12,8 @@ import { LiteTextEditorWithRef } from "@pace/editor";
 import type { EditorRefApi, ILiteTextEditorProps, TFileHandler } from "@pace/editor";
 import { useTranslation } from "@pace/i18n";
 import type { MakeOptional } from "@pace/types";
-import { cn, isCommentEmpty } from "@pace/utils";
+import { cn } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 // components
 import { EditorMentionsRoot } from "@/components/editor/embeds/mentions";
 import { IssueCommentToolbar } from "@/components/editor/lite-text/toolbar";

@@ -656,18 +656,20 @@ func (handler *Handler) userProjectRoles(c *gin.Context, user *auth.User) {
 // caller needs one of the roles on the project, or an active membership plus
 // the workspace admin role.
 func (handler *Handler) requireProjectRole(c *gin.Context, user *auth.User, allowed ...int) bool {
-	member, found, err := handler.activeProjectMember(c.Request.Context(), c.Param("slug"), c.Param("id"), user.ID)
+	slug, projectID := c.Param("slug"), c.Param("id")
+	member, found, err := handler.activeProjectMember(c.Request.Context(), slug, projectID, user.ID)
 	if err != nil {
 		handler.internalError(c, err)
 		return false
 	}
+	cacheProjectMember(c, projectMemberLookup{slug: slug, projectID: projectID, memberID: user.ID, member: member, found: found})
 	if found {
 		for _, candidate := range allowed {
 			if member.Role == candidate {
 				return true
 			}
 		}
-		workspaceRole, _, err := handler.workspaceMemberRole(c.Request.Context(), c.Param("slug"), user.ID)
+		workspaceRole, _, err := handler.workspaceMemberRole(c.Request.Context(), slug, user.ID)
 		if err != nil {
 			handler.internalError(c, err)
 			return false
@@ -680,7 +682,32 @@ func (handler *Handler) requireProjectRole(c *gin.Context, user *auth.User, allo
 	return false
 }
 
+// projectMemberCacheKey is the context key the membership requireProjectRole resolved hangs from.
+type projectMemberCacheKey struct{}
+
+// projectMemberLookup is one answered activeProjectMember call, carrying the arguments that produced it so that a question about another workspace, project or member never reads it.
+type projectMemberLookup struct {
+	slug      string
+	projectID string
+	memberID  string
+	member    ProjectMember
+	found     bool
+}
+
+// matches reports whether the cached lookup answers exactly the question being asked, so a question about another workspace, project or member falls through to the database.
+func (lookup projectMemberLookup) matches(slug, projectID, memberID string) bool {
+	return lookup.slug == slug && lookup.projectID == projectID && lookup.memberID == memberID
+}
+
+// cacheProjectMember hangs a resolved membership on the request's own context, so the handlers that need the row again after their permission check read it instead of repeating the query. The entry lives on this one http.Request and dies with it, which is what keeps it from ever answering for a different caller.
+func cacheProjectMember(c *gin.Context, lookup projectMemberLookup) {
+	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), projectMemberCacheKey{}, lookup))
+}
+
 func (handler *Handler) activeProjectMember(ctx context.Context, slug, projectID, memberID string) (ProjectMember, bool, error) {
+	if lookup, cached := ctx.Value(projectMemberCacheKey{}).(projectMemberLookup); cached && lookup.matches(slug, projectID, memberID) {
+		return lookup.member, lookup.found, nil
+	}
 	var member ProjectMember
 	err := handler.db.WithContext(ctx).
 		Where("project_id = ? AND workspace_id = (SELECT id FROM workspaces WHERE slug = ?) AND member_id = ? AND is_active = TRUE AND deleted_at IS NULL",

@@ -11,7 +11,8 @@ import { useForm, Controller } from "react-hook-form";
 import { EIssueCommentAccessSpecifier } from "@pace/constants";
 import type { EditorRefApi } from "@pace/editor";
 import type { TIssueComment, TCommentsOperations } from "@pace/types";
-import { cn, isCommentEmpty } from "@pace/utils";
+import { cn } from "@pace/utils";
+import { isCommentEmpty } from "@pace/utils/html";
 // components
 import { LiteTextEditor } from "@/components/editor/lite-text";
 // hooks

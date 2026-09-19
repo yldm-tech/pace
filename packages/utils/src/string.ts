@@ -4,8 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import sanitizeHtml from "sanitize-html";
-import type { Content, JSONContent } from "@pace/types";
+import type { JSONContent } from "@pace/types";
 
 /**
  * @description Adds space between camelCase words
@@ -56,7 +55,7 @@ export const truncateText = (str: string, length: number) => {
 export const createSimilarString = (str: string) => {
   const shuffled = str
     .split("")
-    .sort(() => Math.random() - 0.5)
+    .toSorted(() => Math.random() - 0.5)
     .join("");
 
   return shuffled;
@@ -117,32 +116,6 @@ export const getNumberCount = (number: number): string => {
 export const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 /**
- * @description : This function will remove all the HTML tags from the string
- * @param {string} htmlString
- * @return {string}
- * @example :
- * const html = "<p>Some text</p>";
-const text = stripHTML(html);
-console.log(text); // Some text
- */
-export const sanitizeHTML = (htmlString: string) => {
-  const sanitizedText = sanitizeHtml(htmlString, { allowedTags: [] }); // sanitize the string to remove all HTML tags
-  return sanitizedText.trim(); // trim the string to remove leading and trailing whitespaces
-};
-
-/**
- * @description: This function will remove all the HTML tags from the string and truncate the string to the specified length
- * @param {string} html
- * @param {number} length
- * @return {string}
- * @example:
- * const html = "<p>Some text</p>";
- * const text = stripAndTruncateHTML(html);
- * console.log(text); // Some text
- */
-export const stripAndTruncateHTML = (html: string, length: number = 55) => truncateText(sanitizeHTML(html), length);
-
-/**
  * @returns {boolean} true if email is valid, false otherwise
  * @description Returns true if email is valid, false otherwise
  * @param {string} email string to check if it is a valid email
@@ -153,18 +126,11 @@ export const checkEmailValidity = (email: string): boolean => {
   if (!email) return false;
 
   const isEmailValid =
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       email
     );
 
   return isEmailValid;
-};
-
-export const isEmptyHtmlString = (htmlString: string, allowedHTMLTags: string[] = []) => {
-  // Remove HTML tags using sanitize-html
-  const cleanText = sanitizeHtml(htmlString, { allowedTags: allowedHTMLTags });
-  // Trim the string and check if it's empty
-  return cleanText.trim() === "";
 };
 
 /**
@@ -199,65 +165,6 @@ export const isJSONContentEmpty = (content: JSONContent | undefined): boolean =>
 
   // Check if all nested content is empty
   return content.content.every(isJSONContentEmpty);
-};
-
-/**
- * @description
- * This function will check if the comment is empty or not.
- * It returns true if comment is empty.
- * Now supports TipTap Content types (HTMLContent, JSONContent, JSONContent[], null)
- *
- * For HTML content:
- * 1. If comment is undefined/null
- * 2. If comment is an empty string
- * 3. If comment is "<p></p>"
- * 4. If comment contains only empty HTML tags
- *
- * For JSON content:
- * 1. If content is null/undefined
- * 2. If content has no meaningful text or nested content
- * 3. If all nested content is empty
- *
- * @param {Content} comment - TipTap Content type
- * @returns {boolean}
- */
-export const isCommentEmpty = (comment: Content | undefined): boolean => {
-  // Handle null/undefined
-  if (!comment) return true;
-
-  // Handle HTMLContent (string)
-  if (typeof comment === "string") {
-    return (
-      comment.trim() === "" ||
-      comment === "<p></p>" ||
-      isEmptyHtmlString(comment, ["img", "mention-component", "image-component"])
-    );
-  }
-
-  // Handle JSONContent[] (array)
-  if (Array.isArray(comment)) {
-    return comment.length === 0 || comment.every(isJSONContentEmpty);
-  }
-
-  // Handle JSONContent (object)
-  return isJSONContentEmpty(comment);
-};
-
-/**
- * @description
- * Legacy function for backward compatibility with string comments
- * @param {string | undefined} comment
- * @returns {boolean}
- * @deprecated Use isCommentEmpty with Content type instead
- */
-export const isStringCommentEmpty = (comment: string | undefined): boolean => {
-  // return true if comment is undefined
-  if (!comment) return true;
-  return (
-    comment?.trim() === "" ||
-    comment === "<p></p>" ||
-    isEmptyHtmlString(comment ?? "", ["img", "mention-component", "image-component", "embed-component"])
-  );
 };
 
 /**

@@ -4,13 +4,19 @@
  * See the LICENSE file for details.
  */
 
+import { lazy, Suspense } from "react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { BarChart } from "@pace/propel/charts/bar-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData } from "@pace/types";
 import { Loader, Card } from "@pace/ui";
 import { capitalizeFirstLetter } from "@pace/utils";
+
+const BarChart = lazy(function BarChart() {
+  return import("@pace/propel/charts/bar-chart").then((mod) => ({
+    default: mod.BarChart,
+  }));
+});
 
 type Props = {
   userProfile: IUserProfileData | undefined;
@@ -32,36 +38,44 @@ export function ProfilePriorityDistribution({ userProfile }: Props) {
       {userProfile ? (
         <Card>
           {userProfile.priority_distribution.length > 0 ? (
-            <BarChart
-              className="h-[300px] w-full"
-              margin={{ top: 20, right: 30, bottom: 5, left: 0 }}
-              data={userProfile.priority_distribution.map((priority) => ({
-                key: priority.priority ?? "None",
-                name: capitalizeFirstLetter(priority.priority ?? "None"),
-                count: priority.priority_count,
-              }))}
-              bars={[
-                {
+            <Suspense
+              fallback={
+                <Loader className="h-[300px] w-full">
+                  <Loader.Item width="100%" height="100%" />
+                </Loader>
+              }
+            >
+              <BarChart
+                className="h-[300px] w-full"
+                margin={{ top: 20, right: 30, bottom: 5, left: 0 }}
+                data={userProfile.priority_distribution.map((priority) => ({
+                  key: priority.priority ?? "None",
+                  name: capitalizeFirstLetter(priority.priority ?? "None"),
+                  count: priority.priority_count,
+                }))}
+                bars={[
+                  {
+                    key: "count",
+                    label: "Count",
+                    stackId: "bar-one",
+                    fill: (payload: any) => priorityColors[payload.key as keyof typeof priorityColors], // TODO: fix types
+                    textClassName: "",
+                    showPercentage: false,
+                    showTopBorderRadius: () => true,
+                    showBottomBorderRadius: () => true,
+                  },
+                ]}
+                xAxis={{
+                  key: "name",
+                  label: t("common.priority"),
+                }}
+                yAxis={{
                   key: "count",
-                  label: "Count",
-                  stackId: "bar-one",
-                  fill: (payload: any) => priorityColors[payload.key as keyof typeof priorityColors], // TODO: fix types
-                  textClassName: "",
-                  showPercentage: false,
-                  showTopBorderRadius: () => true,
-                  showBottomBorderRadius: () => true,
-                },
-              ]}
-              xAxis={{
-                key: "name",
-                label: t("common.priority"),
-              }}
-              yAxis={{
-                key: "count",
-                label: "",
-              }}
-              barSize={20}
-            />
+                  label: "",
+                }}
+                barSize={20}
+              />
+            </Suspense>
           ) : (
             <EmptyStateCompact
               assetKey="priority"

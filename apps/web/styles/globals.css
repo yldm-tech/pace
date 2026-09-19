@@ -2,7 +2,6 @@
 @import "@pace/editor/styles";
 @import "@pace/propel/styles/react-day-picker.css";
 @import "./power-k.css";
-@import "./emoji.css";
 @plugin "@tailwindcss/typography";
 
 /* stickies and editor colors
@@ -28,19 +27,6 @@
 /* backdrop filter */
 .backdrop-blur-custom {
   @apply backdrop-filter blur-[9px];
-}
-
-.epr-search-container > input {
-  @apply bg-surface-2! text-primary!;
-  border: none !important;
-}
-
-.epr-search-container > input::placeholder {
-  @apply text-placeholder!;
-}
-
-.epr-search-container > .epr-icn-search {
-  @apply text-placeholder!;
 }
 
 /* Lock icon animations */

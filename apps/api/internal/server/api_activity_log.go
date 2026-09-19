@@ -55,8 +55,8 @@ func apiActivityLog(publisher APILogPublisher, secretKey string) gin.HandlerFunc
 			"method":           c.Request.Method,
 			"query_params":     c.Request.URL.RawQuery,
 			"headers":          renderRequestHeaders(c.Request.Header),
-			"body":             textOrNothing(requestBody),
-			"response_body":    textOrNothing(recorder.body.Bytes()),
+			"body":             loggedBody(requestBody, false),
+			"response_body":    loggedBody(recorder.body.Bytes(), recorder.truncated),
 			"response_code":    recorder.Status(),
 			"ip_address":       clientIP(c.Request),
 			"user_agent":       headerOrNil(c.Request.Header, "User-Agent"),
@@ -66,20 +66,41 @@ func apiActivityLog(publisher APILogPublisher, secretKey string) gin.HandlerFunc
 	}
 }
 
-// responseRecorder keeps a copy of what was written so it can be recorded beside the request.
+// maxLoggedBodyBytes caps what the record keeps of a request or a response. The column is an audit field rather than a replay log, and an answer from the external list endpoints runs to megabytes at the thousand-row ceiling — held a second time in the recorder, copied to a string, and then shipped to the broker as part of the task's json.
+const maxLoggedBodyBytes = 64 * 1024
+
+// truncationMarker closes a body the record had to cut, so a reader can tell a short body from a cut one.
+const truncationMarker = "\n[Truncated]"
+
+// responseRecorder keeps a copy of the first maxLoggedBodyBytes of what was written so it can be recorded beside the request. The response itself is passed through whole.
 type responseRecorder struct {
 	gin.ResponseWriter
-	body bytes.Buffer
+	body      bytes.Buffer
+	truncated bool
 }
 
 func (recorder *responseRecorder) Write(payload []byte) (int, error) {
-	recorder.body.Write(payload)
+	if kept := recorder.room(len(payload)); kept > 0 {
+		recorder.body.Write(payload[:kept])
+	}
 	return recorder.ResponseWriter.Write(payload)
 }
 
 func (recorder *responseRecorder) WriteString(payload string) (int, error) {
-	recorder.body.WriteString(payload)
+	if kept := recorder.room(len(payload)); kept > 0 {
+		recorder.body.WriteString(payload[:kept])
+	}
 	return recorder.ResponseWriter.WriteString(payload)
+}
+
+// room says how much of the next size bytes still fits under the cap, and notes a body that ran past it.
+func (recorder *responseRecorder) room(size int) int {
+	remaining := maxLoggedBodyBytes - recorder.body.Len()
+	if size <= remaining {
+		return size
+	}
+	recorder.truncated = true
+	return remaining
 }
 
 // renderRequestHeaders writes the headers the way a python dict prints, which is the shape the column already holds. The three sensitive ones are replaced rather than dropped, so a reader can see that a key was sent without seeing which.
@@ -110,6 +131,34 @@ func pythonRepr(value string) string {
 	}
 	escaped := strings.NewReplacer(`\`, `\\`, "\n", `\n`, "\r", `\r`, "\t", `\t`, quote, `\`+quote).Replace(value)
 	return quote + escaped + quote
+}
+
+// loggedBody renders a body for the record, cut to maxLoggedBodyBytes and marked when anything was left out. cut says the caller has already dropped what did not fit, which is how the response recorder avoids holding the rest at all.
+func loggedBody(payload []byte, cut bool) any {
+	if len(payload) > maxLoggedBodyBytes {
+		payload, cut = payload[:maxLoggedBodyBytes], true
+	}
+	if !cut {
+		return textOrNothing(payload)
+	}
+	// The cut lands on a byte boundary and a character may straddle it, which would leave the whole thing looking undecodable.
+	rendered := textOrNothing(trimPartialRune(payload))
+	text, ok := rendered.(string)
+	if !ok {
+		return rendered
+	}
+	return text + truncationMarker
+}
+
+// trimPartialRune drops the character the cut ran through, which is at most the three bytes a utf-8 character can be short of.
+func trimPartialRune(payload []byte) []byte {
+	for dropped := 0; dropped < utf8.UTFMax-1 && len(payload) > 0; dropped++ {
+		if last, size := utf8.DecodeLastRune(payload); last != utf8.RuneError || size > 1 {
+			break
+		}
+		payload = payload[:len(payload)-1]
+	}
+	return payload
 }
 
 // binarySignatures are the three Django recognises by their first bytes and declines to decode at all.

@@ -4,11 +4,17 @@
  * See the LICENSE file for details.
  */
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 // pace imports
-import { AreaChart } from "@pace/propel/charts/area-chart";
 import type { TChartData, TModuleCompletionChartDistribution } from "@pace/types";
+import { Loader } from "@pace/ui";
 import { renderFormattedDateWithoutYear } from "@pace/utils";
+
+const AreaChart = lazy(function AreaChart() {
+  return import("@pace/propel/charts/area-chart").then((mod) => ({
+    default: mod.AreaChart,
+  }));
+});
 
 type Props = {
   distribution: TModuleCompletionChartDistribution;
@@ -26,49 +32,57 @@ function ProgressChart({ distribution, totalIssues, className = "", plotTitle = 
 
   return (
     <div className={`flex w-full items-center justify-center ${className}`}>
-      <AreaChart
-        data={chartData}
-        areas={[
-          {
-            key: "current",
-            label: `Current ${plotTitle}`,
-            strokeColor: "#3F76FF",
-            fill: "#3F76FF33",
-            fillOpacity: 1,
-            showDot: true,
-            smoothCurves: true,
-            strokeOpacity: 1,
-            stackId: "bar-one",
-          },
-          {
-            key: "ideal",
-            label: `Ideal ${plotTitle}`,
-            strokeColor: "#A9BBD0",
-            fill: "#A9BBD0",
-            fillOpacity: 0,
-            showDot: true,
-            smoothCurves: true,
-            strokeOpacity: 1,
-            stackId: "bar-two",
-            style: {
-              strokeDasharray: "6, 3",
-              strokeWidth: 1,
+      <Suspense
+        fallback={
+          <Loader className="h-[370px] w-full">
+            <Loader.Item width="100%" height="100%" />
+          </Loader>
+        }
+      >
+        <AreaChart
+          data={chartData}
+          areas={[
+            {
+              key: "current",
+              label: `Current ${plotTitle}`,
+              strokeColor: "#3F76FF",
+              fill: "#3F76FF33",
+              fillOpacity: 1,
+              showDot: true,
+              smoothCurves: true,
+              strokeOpacity: 1,
+              stackId: "bar-one",
             },
-          },
-        ]}
-        xAxis={{ key: "name", label: "Date" }}
-        yAxis={{ key: "current", label: "Completion" }}
-        margin={{ bottom: 30 }}
-        className="h-[370px] w-full"
-        legend={{
-          align: "center",
-          verticalAlign: "bottom",
-          layout: "horizontal",
-          wrapperStyles: {
-            marginTop: 20,
-          },
-        }}
-      />
+            {
+              key: "ideal",
+              label: `Ideal ${plotTitle}`,
+              strokeColor: "#A9BBD0",
+              fill: "#A9BBD0",
+              fillOpacity: 0,
+              showDot: true,
+              smoothCurves: true,
+              strokeOpacity: 1,
+              stackId: "bar-two",
+              style: {
+                strokeDasharray: "6, 3",
+                strokeWidth: 1,
+              },
+            },
+          ]}
+          xAxis={{ key: "name", label: "Date" }}
+          yAxis={{ key: "current", label: "Completion" }}
+          margin={{ bottom: 30 }}
+          className="h-[370px] w-full"
+          legend={{
+            align: "center",
+            verticalAlign: "bottom",
+            layout: "horizontal",
+            wrapperStyles: {
+              marginTop: 20,
+            },
+          }}
+        />
+      </Suspense>
     </div>
   );
 }

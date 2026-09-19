@@ -1,22 +1,25 @@
 {
   "name": "@pace/utils",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "description": "Helper functions shared across multiple apps internally",
   "license": "AGPL-3.0",
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
+    "./html": "./dist/html.js",
     "./markdown": "./dist/markdown.js",
+    "./theme": "./dist/theme/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
     "build": "tsdown",
     "check:format": "oxfmt --check .",
-    "check:lint": "oxlint --max-warnings=38 .",
+    "check:lint": "oxlint --max-warnings=33 .",
     "check:types": "tsc --noEmit",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsdown --watch --no-clean",

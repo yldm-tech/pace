@@ -9,6 +9,8 @@
  * Exports all theme-related utilities for use across Plane apps
  */
 
+// Entry point for `@pace/utils/theme`, kept out of the package barrel so that chroma-js is only downloaded by the screens that recolour the app. The barrel builds to a single bundled module, so a top-level import here would be a top-level import for every consumer of every utility in this package -- `cn` included, which every route uses. See ../markdown.ts for the same reasoning applied to the HTML-to-Markdown pipeline.
+
 // Palette generation
 export {
   calculateDynamicValueStop,

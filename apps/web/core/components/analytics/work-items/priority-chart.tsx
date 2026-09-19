@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import type { ColumnDef, Row, RowData, Table } from "@tanstack/react-table";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
@@ -16,7 +16,6 @@ import type { ChartXAxisDateGrouping } from "@pace/constants";
 import { ANALYTICS_X_AXIS_VALUES, ANALYTICS_Y_AXIS_VALUES, CHART_COLOR_PALETTES, EChartModels } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { BarChart } from "@pace/propel/charts/bar-chart";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { TBarItem, TChart, TChartDatum, ChartXAxisProperty, ChartYAxisMetric } from "@pace/types";
 // pace web components
@@ -47,6 +46,12 @@ interface Props {
   group_by?: ChartXAxisProperty;
   x_axis_date_grouping?: ChartXAxisDateGrouping;
 }
+
+const BarChart = lazy(function BarChart() {
+  return import("@pace/propel/charts/bar-chart").then((mod) => ({
+    default: mod.BarChart,
+  }));
+});
 
 const analyticsService = new AnalyticsService();
 const PriorityChart = observer(function PriorityChart(props: Props) {
@@ -202,25 +207,27 @@ const PriorityChart = observer(function PriorityChart(props: Props) {
         <ChartLoader />
       ) : parsedData?.data && parsedData.data.length > 0 ? (
         <>
-          <BarChart
-            className="h-[370px] w-full"
-            data={parsedData.data}
-            bars={bars}
-            margin={{
-              bottom: 30,
-            }}
-            xAxis={{
-              key: "name",
-              label: xAxisLabel.replace("_", " "),
-              dy: 30,
-            }}
-            yAxis={{
-              key: "count",
-              label: t("common.no_of", { entity: yAxisLabel.replace("_", " ") }),
-              offset: -60,
-              dx: -26,
-            }}
-          />
+          <Suspense fallback={<ChartLoader />}>
+            <BarChart
+              className="h-[370px] w-full"
+              data={parsedData.data}
+              bars={bars}
+              margin={{
+                bottom: 30,
+              }}
+              xAxis={{
+                key: "name",
+                label: xAxisLabel.replace("_", " "),
+                dy: 30,
+              }}
+              yAxis={{
+                key: "count",
+                label: t("common.no_of", { entity: yAxisLabel.replace("_", " ") }),
+                offset: -60,
+                dx: -26,
+              }}
+            />
+          </Suspense>
           <DataTable
             data={parsedData.data}
             columns={[...defaultColumns, ...columns]}

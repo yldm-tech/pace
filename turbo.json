@@ -47,16 +47,16 @@
       "dependsOn": ["check:format", "check:lint", "check:types"]
     },
     "check:format": {
-      "inputs": ["$TURBO_DEFAULT$"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.{webp,png,jpg,jpeg,gif,ico,svg,ttf,otf,woff,woff2,avif}"],
       "outputs": []
     },
     "check:lint": {
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!**/*.{webp,png,jpg,jpeg,gif,ico,svg,ttf,otf,woff,woff2,avif}"],
       "outputs": []
     },
     "check:types": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!**/*.{webp,png,jpg,jpeg,gif,ico,svg,ttf,otf,woff,woff2,avif}"],
       "outputs": []
     },
     "clean": {
@@ -72,11 +72,11 @@
       "dependsOn": ["fix:format", "fix:lint"]
     },
     "fix:format": {
-      "inputs": ["$TURBO_DEFAULT$"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.{webp,png,jpg,jpeg,gif,ico,svg,ttf,otf,woff,woff2,avif}"],
       "outputs": []
     },
     "fix:lint": {
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!**/*.{webp,png,jpg,jpeg,gif,ico,svg,ttf,otf,woff,woff2,avif}"],
       "outputs": []
     },
     "start": {

@@ -45,10 +45,17 @@ type CeleryPublisher struct {
 	goQueue    string
 	goTasks    map[string]struct{}
 	queueMutex sync.RWMutex
+
+	// brokerLock guards the connection every publish shares. It is a channel rather than a mutex so a publish waiting its turn can still give up when its request is cancelled.
+	brokerLock chan struct{}
+	connection *amqp.Connection
+	channel    *amqp.Channel
+	// declared remembers the queues already declared on the connection currently held, since the declare is the one call here that waits for the broker to answer.
+	declared map[string]struct{}
 }
 
 func NewCeleryPublisher(brokerURL string) *CeleryPublisher {
-	return &CeleryPublisher{brokerURL: brokerURL}
+	return &CeleryPublisher{brokerURL: brokerURL, brokerLock: make(chan struct{}, 1)}
 }
 
 // RouteToGoWorker sends the named tasks to queue instead of the Celery default.
@@ -304,26 +311,82 @@ func (publisher *CeleryPublisher) sendAt(ctx context.Context, taskName string, a
 		// The same shape Celery writes: an aware ISO 8601 moment with microseconds.
 		message.Headers["eta"] = time.Now().UTC().Add(delay).Format("2006-01-02T15:04:05.000000-07:00")
 	}
-	connection, err := amqp.Dial(publisher.brokerURL)
-	if err != nil {
-		return fmt.Errorf("connect to Celery broker: %w", err)
+	return publisher.emit(ctx, publisher.queueFor(taskName), message)
+}
+
+// emit writes one message on the connection every publish shares, rather than dialling one of its own. A dial is a TCP connect and an AMQP handshake, and it used to be paid on every publish — including on the read paths that queue a recent-visit, and once per row on the handlers that publish in a loop.
+func (publisher *CeleryPublisher) emit(ctx context.Context, queue string, message amqp.Publishing) error {
+	// A channel carries one stream of frames and cannot be written by two goroutines at once, which is what the lock is for. It is held across the frame write, which is local: PublishWithContext does not wait for the broker to answer.
+	select {
+	case publisher.brokerLock <- struct{}{}:
+	case <-ctx.Done():
+		return ctx.Err()
 	}
-	defer connection.Close()
-	channel, err := connection.Channel()
+	defer func() { <-publisher.brokerLock }()
+
+	channel, dialled, err := publisher.brokerChannel()
 	if err != nil {
-		return fmt.Errorf("open Celery broker channel: %w", err)
+		return err
 	}
-	defer channel.Close()
-	queue := publisher.queueFor(taskName)
+	err = publisher.publishOn(ctx, channel, queue, message)
+	if err == nil || dialled || ctx.Err() != nil {
+		return err
+	}
+	// The connection came from an earlier publish, and amqp091 never reconnects on its own: a broker restart shows up here, as the first failure after it. Dropping it and dialling again is what keeps one blip from failing every publish from then on. A connection this publish dialled itself is not retried, since it has just been proven fresh and a second dial would only double what a broker that is down costs the caller.
+	publisher.closeBroker()
+	channel, _, err = publisher.brokerChannel()
+	if err != nil {
+		return err
+	}
+	return publisher.publishOn(ctx, channel, queue, message)
+}
+
+// publishOn declares the queue the first time it is used on this connection and writes the message. The caller holds brokerLock.
+func (publisher *CeleryPublisher) publishOn(ctx context.Context, channel *amqp.Channel, queue string, message amqp.Publishing) error {
 	// Declaring is idempotent and matches how Celery creates its queues, so the
 	// first publish works even before the Go worker has started.
-	if _, err := channel.QueueDeclare(queue, true, false, false, false, nil); err != nil {
-		return fmt.Errorf("declare Celery queue %s: %w", queue, err)
+	if _, done := publisher.declared[queue]; !done {
+		if _, err := channel.QueueDeclare(queue, true, false, false, false, nil); err != nil {
+			return fmt.Errorf("declare Celery queue %s: %w", queue, err)
+		}
+		publisher.declared[queue] = struct{}{}
 	}
 	if err := channel.PublishWithContext(ctx, "", queue, false, false, message); err != nil {
 		return fmt.Errorf("publish Celery task: %w", err)
 	}
 	return nil
+}
+
+// brokerChannel hands back the shared channel, dialling a connection when there is none or when the one there has been closed since, and says which of the two happened. The caller holds brokerLock.
+func (publisher *CeleryPublisher) brokerChannel() (*amqp.Channel, bool, error) {
+	if publisher.channel != nil && !publisher.channel.IsClosed() && !publisher.connection.IsClosed() {
+		return publisher.channel, false, nil
+	}
+	publisher.closeBroker()
+	// Dial's defaults are kept: a ten second heartbeat, which is what lets a connection nobody has published on notice that the broker went away, and a thirty second handshake deadline.
+	connection, err := amqp.Dial(publisher.brokerURL)
+	if err != nil {
+		return nil, false, fmt.Errorf("connect to Celery broker: %w", err)
+	}
+	channel, err := connection.Channel()
+	if err != nil {
+		_ = connection.Close()
+		return nil, false, fmt.Errorf("open Celery broker channel: %w", err)
+	}
+	// The queues a connection has declared are its own, so the cache starts empty again.
+	publisher.connection, publisher.channel, publisher.declared = connection, channel, map[string]struct{}{}
+	return channel, true, nil
+}
+
+// closeBroker drops the shared connection so the next publish dials a new one. The caller holds brokerLock.
+func (publisher *CeleryPublisher) closeBroker() {
+	if publisher.channel != nil {
+		_ = publisher.channel.Close()
+	}
+	if publisher.connection != nil {
+		_ = publisher.connection.Close()
+	}
+	publisher.connection, publisher.channel, publisher.declared = nil, nil, nil
 }
 
 func celeryMessage(taskName string, arguments []any, keywords map[string]any) (amqp.Publishing, error) {

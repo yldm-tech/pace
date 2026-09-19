@@ -3,6 +3,9 @@
 		max_size {$FILE_SIZE_LIMIT}
 	}
 
+	# The all-in-one image serves the web and admin builds from its own file_server (the handle_path blocks below), not through the per-app Caddy, so without this directive nothing in this deployment is compressed at all. Caddy's default content-type allow list and 512-byte floor keep it off already-compressed assets and tiny bodies.
+	encode zstd gzip
+
     handle /spaces/* {
         reverse_proxy localhost:3002
     }

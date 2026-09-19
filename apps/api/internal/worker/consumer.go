@@ -12,8 +12,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"hash/fnv"
 	"log/slog"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -32,7 +34,7 @@ type Consumer struct {
 	queue     string
 	handlers  map[string]Handler
 	logger    *slog.Logger
-	// prefetch bounds how many unacknowledged messages the broker hands over.
+	// prefetch bounds how many unacknowledged messages the broker hands over, and with it the number of lanes the tasks are run on: a message the broker has not handed over has nothing to run it, so more lanes than this would sit idle.
 	prefetch int
 	// running counts the tasks held until their eta, so a shutdown can wait for them.
 	running sync.WaitGroup
@@ -92,6 +94,9 @@ func (consumer *Consumer) Run(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("consume queue %s: %w", consumer.queue, err)
 	}
+	lanes := consumer.startLanes(ctx)
+	// Closing the lanes before the channel and the connection lets the tasks still running finish and acknowledge.
+	defer lanes.stop()
 	closed := connection.NotifyClose(make(chan *amqp.Error, 1))
 	for {
 		select {
@@ -106,12 +111,29 @@ func (consumer *Consumer) Run(ctx context.Context) error {
 			if !ok {
 				return nil
 			}
-			consumer.handle(ctx, delivery)
+			ready, dispatch := consumer.prepare(delivery)
+			if !dispatch {
+				continue
+			}
+			if !lanes.send(ctx, ready) {
+				return ctx.Err()
+			}
 		}
 	}
 }
 
-func (consumer *Consumer) handle(ctx context.Context, delivery amqp.Delivery) {
+// task is one delivery with its body already read, which happens before it is handed to a lane so the lane can be chosen by what the task works on.
+type task struct {
+	delivery  amqp.Delivery
+	logger    *slog.Logger
+	handler   Handler
+	arguments []any
+	keywords  map[string]any
+	name      string
+}
+
+// prepare reads the delivery and says whether it is for a lane to run. A task that cannot be run at all is rejected here.
+func (consumer *Consumer) prepare(delivery amqp.Delivery) (task, bool) {
 	taskName, _ := delivery.Headers["task"].(string)
 	taskID, _ := delivery.Headers["id"].(string)
 	logger := consumer.logger.With("task", taskName, "task_id", taskID)
@@ -122,14 +144,20 @@ func (consumer *Consumer) handle(ctx context.Context, delivery amqp.Delivery) {
 		// log is the signal that routing needs fixing.
 		logger.Error("unregistered task on the Go queue")
 		_ = delivery.Reject(false)
-		return
+		return task{}, false
 	}
 	arguments, keywords, err := decodeBody(delivery.Body)
 	if err != nil {
 		logger.Error("decode task body", "error", err)
 		_ = delivery.Reject(false)
-		return
+		return task{}, false
 	}
+	return task{delivery: delivery, logger: logger, handler: handler, arguments: arguments, keywords: keywords, name: taskName}, true
+}
+
+func (consumer *Consumer) handle(ctx context.Context, ready task) {
+	delivery, logger, handler := ready.delivery, ready.logger, ready.handler
+	arguments, keywords := ready.arguments, ready.keywords
 	if wait := etaDelay(delivery.Headers["eta"], time.Now()); wait > 0 {
 		// Celery holds an eta task in the worker rather than at the broker, and acknowledges it on receipt — so a restart loses it. This does the same, and waits out of the way of the messages behind it.
 		logger.Info("task held until its eta", "wait", wait)
@@ -158,6 +186,76 @@ func (consumer *Consumer) handle(ctx context.Context, delivery amqp.Delivery) {
 	}
 	logger.Info("task completed", "duration", time.Since(started))
 	_ = delivery.Ack(false)
+}
+
+// lanePool runs the tasks on a fixed set of goroutines instead of one after another on the consuming one. A lane is picked by the thing the task works on, so two tasks touching the same thing land on the same lane and keep the order the broker delivered them in — which matters because several of the handlers read a row and write it back without a lock: the version tasks fold an edit into the version before it, and the activity task appends to a work item's history. Tasks naming different things, and the nightly sweep that names nothing, now run alongside each other rather than behind whatever is at the head of the queue.
+type lanePool struct {
+	lanes    []chan task
+	running  sync.WaitGroup
+	draining atomic.Bool
+}
+
+func (consumer *Consumer) startLanes(ctx context.Context) *lanePool {
+	count := consumer.prefetch
+	if count < 1 {
+		count = 1
+	}
+	pool := &lanePool{lanes: make([]chan task, count)}
+	for index := range pool.lanes {
+		// A lane holds as many tasks as the broker will hand over unacknowledged, so handing one over never blocks the consuming goroutine: an activity task publishes the notification for the same work item, and that notification lands on the lane its activity is still running on.
+		lane := make(chan task, count)
+		pool.lanes[index] = lane
+		pool.running.Add(1)
+		go func() {
+			defer pool.running.Done()
+			for ready := range lane {
+				if pool.draining.Load() {
+					// Run is on its way out, either because the process is stopping or because the connection dropped, so this one is handed back instead of being run against a context that is already cancelled. Requeueing is what the broker does with an unacknowledged message anyway.
+					_ = ready.delivery.Nack(false, true)
+					continue
+				}
+				consumer.handle(ctx, ready)
+			}
+		}()
+	}
+	return pool
+}
+
+// send hands a task to its lane, waiting if that lane is somehow full, which is what keeps two tasks on one thing in the order the broker delivered them.
+func (pool *lanePool) send(ctx context.Context, ready task) bool {
+	lane := pool.lanes[laneFor(ready, len(pool.lanes))]
+	select {
+	case lane <- ready:
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
+// stop waits for the tasks already running, so a shutdown does not cut one off mid-write, and gives back the ones that had not started.
+func (pool *lanePool) stop() {
+	pool.draining.Store(true)
+	for _, lane := range pool.lanes {
+		close(lane)
+	}
+	pool.running.Wait()
+}
+
+// laneKeywords are the keywords that name the thing a task works on, in the order they are looked for. The identifier rather than the task name is what a lane is keyed on, so every kind of work on one work item stays in order, not just repeats of the same task.
+var laneKeywords = []string{"issue_id", "page_id", "model_id", "entity_identifier", "event_id", "webhook_id", "user_id"}
+
+// laneFor picks the lane a task belongs to. A task that names nothing this recognises — a sweep, a backfill batch, an export — is keyed on its own name instead, so two of one kind never overlap even though different kinds do.
+func laneFor(ready task, lanes int) int {
+	key := ready.name
+	for _, name := range laneKeywords {
+		if value, ok := ready.keywords[name].(string); ok && value != "" {
+			key = value
+			break
+		}
+	}
+	digest := fnv.New32a()
+	_, _ = digest.Write([]byte(key))
+	return int(digest.Sum32() % uint32(lanes))
 }
 
 // run is the handler call on its own, for the held tasks that have already been acknowledged.

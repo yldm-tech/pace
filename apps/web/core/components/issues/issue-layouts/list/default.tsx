@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { autoScrollForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-scroll/element";
 import { observer } from "mobx-react";
@@ -107,9 +107,13 @@ export const List = observer(function List(props: IList) {
     );
   }, [containerRef]);
 
-  if (!groups) return null;
+  // ListGroup keeps this in its drop-target effect deps, so it has to stay stable across renders that do not change the column set.
+  const getGroupIndex = useCallback(
+    (groupId: string | undefined) => groups?.findIndex(({ id }) => id === groupId) ?? -1,
+    [groups]
+  );
 
-  const getGroupIndex = (groupId: string | undefined) => groups.findIndex(({ id }) => id === groupId);
+  if (!groups) return null;
 
   const is_list = group_by === null ? true : false;
 

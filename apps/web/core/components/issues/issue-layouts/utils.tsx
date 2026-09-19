@@ -8,6 +8,7 @@
 import type { CSSProperties } from "react";
 import { extractInstruction } from "@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item";
 import { clone, isNil, pull, uniq, concat } from "lodash-es";
+import { computedFn } from "mobx-utils";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import type { FC } from "react";
 import {
@@ -113,6 +114,52 @@ type TGetGroupByColumns = {
   projectId?: string;
 };
 
+// Every column getter below reads observables off the root store and allocates a React element per column, and the grouped layouts call this once per render, so the result is cached per argument tuple with `computedFn`. MobX owns the invalidation, so renaming a state or adding a member still rebuilds the columns, while a render triggered by anything else (an issue moving group, a pagination fetch) now reuses the same array and keeps the `group` prop of every ListGroup/KanbanGroup stable. Callers must treat the returned array as read-only.
+const groupByColumns = computedFn(
+  (
+    groupBy: GroupByColumnTypes | null,
+    includeNone: boolean,
+    isWorkspaceLevel: boolean,
+    isEpic: boolean,
+    projectId: string | undefined
+  ): IGroupByColumn[] | undefined => {
+    // If no groupBy is specified and includeNone is true, return "All Issues" group
+    if (!groupBy && includeNone) {
+      return [
+        {
+          id: "All Issues",
+          name: `All ${isEpic ? "Epics" : "work items"}`,
+          payload: {},
+          icon: undefined,
+        },
+      ];
+    }
+
+    // Return undefined if no valid groupBy
+    if (!groupBy) return undefined;
+
+    // Map of group by options to their corresponding column getter functions
+    const groupByColumnMap: Record<
+      GroupByColumnTypes,
+      ({ isWorkspaceLevel, projectId }: TGetColumns) => IGroupByColumn[] | undefined
+    > = {
+      project: getProjectColumns,
+      cycle: getCycleColumns,
+      module: getModuleColumns,
+      state: getStateColumns,
+      "state_detail.group": getStateGroupColumns,
+      priority: getPriorityColumns,
+      labels: getLabelsColumns,
+      assignees: getAssigneeColumns,
+      created_by: getCreatedByColumns,
+      team_project: getTeamProjectColumns,
+    };
+
+    // Get and return the columns for the specified group by option
+    return groupByColumnMap[groupBy]?.({ isWorkspaceLevel, projectId });
+  }
+);
+
 // NOTE: Type of groupBy is different compared to what's being passed from the components.
 // We are using `as` to typecast it to the expected type.
 // It can break the includeNone logic if not handled properly.
@@ -122,42 +169,8 @@ export const getGroupByColumns = ({
   isWorkspaceLevel,
   isEpic = false,
   projectId,
-}: TGetGroupByColumns): IGroupByColumn[] | undefined => {
-  // If no groupBy is specified and includeNone is true, return "All Issues" group
-  if (!groupBy && includeNone) {
-    return [
-      {
-        id: "All Issues",
-        name: `All ${isEpic ? "Epics" : "work items"}`,
-        payload: {},
-        icon: undefined,
-      },
-    ];
-  }
-
-  // Return undefined if no valid groupBy
-  if (!groupBy) return undefined;
-
-  // Map of group by options to their corresponding column getter functions
-  const groupByColumnMap: Record<
-    GroupByColumnTypes,
-    ({ isWorkspaceLevel, projectId }: TGetColumns) => IGroupByColumn[] | undefined
-  > = {
-    project: getProjectColumns,
-    cycle: getCycleColumns,
-    module: getModuleColumns,
-    state: getStateColumns,
-    "state_detail.group": getStateGroupColumns,
-    priority: getPriorityColumns,
-    labels: getLabelsColumns,
-    assignees: getAssigneeColumns,
-    created_by: getCreatedByColumns,
-    team_project: getTeamProjectColumns,
-  };
-
-  // Get and return the columns for the specified group by option
-  return groupByColumnMap[groupBy]?.({ isWorkspaceLevel, projectId });
-};
+}: TGetGroupByColumns): IGroupByColumn[] | undefined =>
+  groupByColumns(groupBy, includeNone, isWorkspaceLevel, isEpic, projectId);
 
 const getProjectColumns = (): IGroupByColumn[] | undefined => {
   const { joinedProjectIds: projectIds, projectMap } = store.projectRoot.project;

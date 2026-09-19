@@ -175,7 +175,7 @@ func (handler *Handler) subIssuesByID(ctx context.Context, slug, projectID strin
 
 // subIssueAnnotations is the select list for the endpoint. Every subquery mirrors the SQL Django renders, including the places where it does not filter soft-deleted rows: a model's default manager only filters that model's own queryset, never a join traversed through it, so the project_members and modules joins carry no deleted_at predicate.
 func subIssueAnnotations() string {
-	return `i.*,
+	return issueListColumns + `,
 			(SELECT ci.cycle_id FROM cycle_issues ci WHERE ci.issue_id = i.id AND ci.deleted_at IS NULL LIMIT 1) AS cycle_id,
 			COALESCE((SELECT COUNT(*) FROM issue_links il WHERE il.issue_id = i.id AND il.deleted_at IS NULL), 0) AS link_count,
 			COALESCE((SELECT COUNT(*) FROM file_assets fa WHERE fa.issue_id = i.id AND fa.entity_type = 'ISSUE_ATTACHMENT' AND fa.deleted_at IS NULL), 0) AS attachment_count,

@@ -12,7 +12,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssue } from "@pace/types";
-import { isEmptyHtmlString } from "@pace/utils";
+import { isEmptyHtmlString } from "@pace/utils/html";
 // hooks
 import { useIssueModal } from "@/hooks/context/use-issue-modal";
 import { useWorkspaceDraftIssues } from "@/hooks/store/workspace-draft";

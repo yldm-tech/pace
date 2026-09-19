@@ -82,6 +82,10 @@ export const CalendarWeekDays = observer(function CalendarWeekDays(props: Props)
 
   const sortedWeekDays = getOrderedDays(Object.values(week), (item) => item.date.getDay(), startOfWeek);
 
+  // Formatted once here rather than once per tile — every tile in the grid compares against the same two strings.
+  const todayDateString = new Date().toDateString();
+  const selectedDateString = selectedDate.toDateString();
+
   return (
     <div
       className={cn("grid divide-subtle-1 md:divide-x-[0.5px]", {
@@ -95,7 +99,8 @@ export const CalendarWeekDays = observer(function CalendarWeekDays(props: Props)
 
         return (
           <CalendarDayTile
-            selectedDate={selectedDate}
+            selectedDateString={selectedDateString}
+            todayDateString={todayDateString}
             setSelectedDate={setSelectedDate}
             issuesFilterStore={issuesFilterStore}
             key={renderFormattedPayloadDate(date.date)}

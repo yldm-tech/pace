@@ -1,6 +1,6 @@
 {
   "name": "@pace/propel",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "license": "AGPL-3.0",
   "type": "module",
@@ -53,7 +53,7 @@
   "scripts": {
     "dev": "tsdown --watch --no-clean",
     "build": "tsdown",
-    "check:lint": "oxlint --max-warnings=3605 .",
+    "check:lint": "oxlint --max-warnings=58 .",
     "check:types": "tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",

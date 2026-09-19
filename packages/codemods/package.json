@@ -1,10 +1,10 @@
 {
   "name": "@pace/codemods",
-  "version": "1.4.34",
+  "version": "1.4.35",
   "private": true,
   "scripts": {
     "check:format": "oxfmt --check .",
-    "check:lint": "oxlint --max-warnings=1 .",
+    "check:lint": "oxlint --max-warnings=0 .",
     "check:types": "tsc --noEmit",
     "fix:format": "oxfmt .",
     "fix:lint": "oxlint --fix .",
