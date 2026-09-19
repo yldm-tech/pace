@@ -7,7 +7,7 @@
 import React, { lazy, Suspense } from "react";
 // pace imports
 import type { TChartData, TModuleCompletionChartDistribution } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { renderFormattedDateWithoutYear } from "@pace/utils";
 
 const AreaChart = lazy(function AreaChart() {
@@ -34,9 +34,9 @@ function ProgressChart({ distribution, totalIssues, className = "", plotTitle = 
     <div className={`flex w-full items-center justify-center ${className}`}>
       <Suspense
         fallback={
-          <Loader className="h-[370px] w-full">
-            <Loader.Item width="100%" height="100%" />
-          </Loader>
+          <Skeleton className="h-[370px] w-full">
+            <Skeleton.Item width="100%" height="100%" />
+          </Skeleton>
         }
       >
         <AreaChart

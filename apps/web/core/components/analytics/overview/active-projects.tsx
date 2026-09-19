@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // pace package imports
 import { useTranslation } from "@pace/i18n";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // pace web hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 import { useProject } from "@/hooks/store/use-project";
@@ -40,7 +40,7 @@ const ActiveProjects = observer(function ActiveProjects() {
     >
       <div className="flex h-[350px] flex-col gap-4 overflow-auto">
         {isProjectAnalyticsCountLoading &&
-          Array.from({ length: 5 }).map((_, index) => <Loader.Item key={index} height="40px" width="100%" />)}
+          Array.from({ length: 5 }).map((_, index) => <Skeleton.Item key={index} height="40px" width="100%" />)}
         {!isProjectAnalyticsCountLoading &&
           projectAnalyticsCount?.map((project) => <ActiveProjectItem key={project.id} project={project} />)}
       </div>

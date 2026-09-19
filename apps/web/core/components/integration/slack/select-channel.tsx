@@ -11,7 +11,7 @@ import useSWR, { mutate } from "swr";
 // types
 import type { IWorkspaceIntegration, ISlackIntegration } from "@pace/types";
 // ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // fetch-keys
 import { SLACK_CHANNEL_INFO } from "@pace/constants";
 // hooks
@@ -102,9 +102,9 @@ export const SelectChannel = observer(function SelectChannel({ integration }: Pr
           />
         </button>
       ) : (
-        <Loader>
-          <Loader.Item height="35px" width="150px" />
-        </Loader>
+        <Skeleton>
+          <Skeleton.Item height="35px" width="150px" />
+        </Skeleton>
       )}
     </>
   );

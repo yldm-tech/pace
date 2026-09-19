@@ -10,7 +10,8 @@ import { CloseCircleOutline, TickCircleOutline } from "@makeplane/propel/icons";
 import { API_BASE_URL, EAuthModes } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
-import { Input, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { Input } from "@pace/propel/input";
 // hooks
 import { useTimer } from "@pace/hooks";
 // types

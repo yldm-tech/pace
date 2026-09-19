@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
 import type { IBaseLayoutsListItem, IBaseLayoutsListGroupProps } from "@pace/types";
-import { cn } from "@pace/ui";
+import { cn } from "@pace/utils";
 import { useGroupDropTarget } from "../hooks/use-group-drop-target";
 import { GroupHeader } from "./group-header";
 import { BaseListItem } from "./item";

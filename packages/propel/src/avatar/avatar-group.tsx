@@ -6,12 +6,12 @@
 
 import React from "react";
 // ui
-import { Tooltip } from "@pace/propel/tooltip";
+import { Tooltip } from "../tooltip";
 // helpers
 import { cn } from "../utils";
 // types
-import type { TAvatarSize } from "./helper";
-import { getSizeInfo, isAValidNumber } from "./helper";
+import type { TAvatarSize } from "./avatar";
+import { getSizeInfo, isAValidNumber } from "./avatar";
 
 type Props = {
   /**

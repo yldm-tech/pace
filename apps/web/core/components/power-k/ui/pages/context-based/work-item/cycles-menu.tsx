@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace types
 import type { ICycle, TIssue } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // components
 import { PowerKCyclesMenu } from "@/components/power-k/menus/cycles";
 // hooks

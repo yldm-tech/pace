@@ -16,7 +16,8 @@ import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { ISearchIssueResponse, TProjectIssuesSearchParams } from "@pace/types";
 // ui
 import { Switch } from "@makeplane/propel/components/switch";
-import { Loader, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 // helpers
 // hooks
@@ -235,12 +236,12 @@ export function ExistingIssuesListModal(props: Props) {
           )}
 
           {isSearching || isLoading ? (
-            <Loader className="space-y-3 p-3">
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-              <Loader.Item height="40px" />
-            </Loader>
+            <Skeleton className="space-y-3 p-3">
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+              <Skeleton.Item height="40px" />
+            </Skeleton>
           ) : (
             <>
               {filteredIssues.length === 0 ? (

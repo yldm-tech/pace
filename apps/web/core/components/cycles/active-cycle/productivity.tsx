@@ -11,7 +11,7 @@ import { useTheme } from "next-themes";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import type { ICycle, TCycleEstimateType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // assets
 import darkChartAsset from "@/app/assets/empty-state/active-cycle/chart-dark.webp?url";
 import lightChartAsset from "@/app/assets/empty-state/active-cycle/chart-light.webp?url";
@@ -101,8 +101,8 @@ export const ActiveCycleProductivity = observer(function ActiveCycleProductivity
       </Link>
     </div>
   ) : (
-    <Loader className="flex min-h-[17rem] flex-col gap-5 rounded-lg border border-subtle bg-surface-1">
-      <Loader.Item width="100%" height="100%" />
-    </Loader>
+    <Skeleton className="flex min-h-[17rem] flex-col gap-5 rounded-lg border border-subtle bg-surface-1">
+      <Skeleton.Item width="100%" height="100%" />
+    </Skeleton>
   );
 });

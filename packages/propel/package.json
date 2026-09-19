@@ -1,9 +1,10 @@
 {
   "name": "@pace/propel",
-  "version": "1.4.39",
+  "version": "1.4.40",
   "private": true,
   "license": "AGPL-3.0",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     "./accordion": "./dist/accordion/index.js",
     "./animated-counter": "./dist/animated-counter/index.js",
@@ -36,6 +37,7 @@
     "./popover": "./dist/popover/index.js",
     "./portal": "./dist/portal/index.js",
     "./scrollarea": "./dist/scrollarea/index.js",
+    "./separator": "./dist/separator/index.js",
     "./skeleton": "./dist/skeleton/index.js",
     "./spinners": "./dist/spinners/index.js",
     "./switch": "./dist/switch/index.js",
@@ -63,7 +65,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@base-ui-components/react": "catalog:",
+    "@base-ui/react": "catalog:",
     "@makeplane/propel": "catalog:",
     "@pace/constants": "workspace:*",
     "@pace/hooks": "workspace:*",

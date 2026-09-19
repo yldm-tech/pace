@@ -15,7 +15,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspace } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { orderWorkspacesList, cn } from "@pace/utils";
 // helpers
 import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
@@ -178,10 +178,10 @@ export const WorkspaceMenuRoot = observer(function WorkspaceMenuRoot(props: Work
                       </div>
                     ) : (
                       <div className="w-full">
-                        <Loader className="space-y-2">
-                          <Loader.Item height="30px" />
-                          <Loader.Item height="30px" />
-                        </Loader>
+                        <Skeleton className="space-y-2">
+                          <Skeleton.Item height="30px" />
+                          <Skeleton.Item height="30px" />
+                        </Skeleton>
                       </div>
                     )}
                   </div>

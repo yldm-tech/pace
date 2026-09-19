@@ -21,7 +21,7 @@ import type {
 } from "@pace/types";
 import { EIssuesStoreType, EIssueLayoutTypes } from "@pace/types";
 // ui
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { renderFormattedPayloadDate, cn } from "@pace/utils";
 // constants
 import { MONTHS_LIST } from "@pace/constants";

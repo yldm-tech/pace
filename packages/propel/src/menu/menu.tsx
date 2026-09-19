@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Menu as BaseMenu } from "@base-ui-components/react/menu";
+import { Menu as BaseMenu } from "@base-ui/react/menu";
 import { ChevronDownOutline, ChevronRightOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
 import { cn } from "../utils/classname";
 import type { TMenuProps, TSubMenuProps, TMenuItemProps } from "./types";
@@ -128,10 +128,12 @@ function Menu(props: TMenuProps) {
   };
 
   return (
-    <BaseMenu.Root openOnHover={openOnHover} onOpenChange={handleOpenChange}>
+    // Base UI 1.x owns `openOnHover` on the trigger, not the root, so that one root can serve several detached triggers.
+    <BaseMenu.Root onOpenChange={handleOpenChange}>
       {customButton ? (
         <BaseMenu.Trigger
           type="button"
+          openOnHover={openOnHover}
           onClick={handleMenuButtonClick}
           className={cn(customButtonClassName, "outline-none")}
           tabIndex={customButtonTabIndex}
@@ -145,6 +147,7 @@ function Menu(props: TMenuProps) {
           {ellipsis || verticalEllipsis ? (
             <BaseMenu.Trigger
               type="button"
+              openOnHover={openOnHover}
               onClick={handleMenuButtonClick}
               disabled={disabled}
               className={`relative grid place-items-center rounded-sm p-1 text-secondary outline-none hover:text-primary ${
@@ -158,6 +161,7 @@ function Menu(props: TMenuProps) {
           ) : (
             <BaseMenu.Trigger
               type="button"
+              openOnHover={openOnHover}
               className={`flex items-center justify-between gap-1 rounded-md px-2.5 py-1 text-11 whitespace-nowrap duration-300 outline-none ${
                 isOpen ? "bg-surface-2 text-primary" : "text-secondary"
               } ${noBorder ? "" : "shadow-sm border border-strong focus:outline-none"} ${

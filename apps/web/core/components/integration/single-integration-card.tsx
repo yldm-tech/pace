@@ -15,7 +15,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IAppIntegration, IWorkspaceIntegration } from "@pace/types";
 // ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // assets
 import GithubLogo from "@/app/assets/services/github.png?url";
 import SlackLogo from "@/app/assets/services/slack.png?url";
@@ -177,9 +177,9 @@ export const SingleIntegrationCard = observer(function SingleIntegrationCard({ i
           </Tooltip>
         )
       ) : (
-        <Loader>
-          <Loader.Item height="32px" width="64px" />
-        </Loader>
+        <Skeleton>
+          <Skeleton.Item height="32px" width="64px" />
+        </Skeleton>
       )}
     </div>
   );

@@ -15,7 +15,8 @@ import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { PasswordStrengthIndicator, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { PasswordStrengthIndicator } from "@pace/ui";
 import { getPasswordStrength } from "@pace/utils";
 // components
 import { ForgotPasswordPopover } from "@/components/account/auth-forms/forgot-password-popover";

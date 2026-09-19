@@ -7,7 +7,7 @@
 import * as React from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pace/propel/table";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 interface TableSkeletonProps {
   columns: ColumnDef<any>[];
@@ -31,7 +31,7 @@ export function TableLoader({ columns, rows }: TableSkeletonProps) {
           <TableRow key={rowIndex}>
             {columns.map((_, colIndex) => (
               <TableCell key={colIndex}>
-                <Loader.Item height="20px" width="100%" />
+                <Skeleton.Item height="20px" width="100%" />
               </TableCell>
             ))}
           </TableRow>

@@ -13,9 +13,9 @@ import { LogOutOutline } from "@makeplane/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // pace imports
 import { API_BASE_URL } from "@pace/constants";
+import { Avatar } from "@pace/propel/avatar";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
-import { Avatar } from "@pace/ui";
 import { getFileURL } from "@pace/utils";
 // helpers
 import { queryParamGenerator } from "@/helpers/query-param-generator";

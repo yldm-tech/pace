@@ -17,7 +17,8 @@ import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IUser, TUserProfile, TOnboardingSteps } from "@pace/types";
 // ui
-import { PasswordStrengthIndicator, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { PasswordStrengthIndicator } from "@pace/ui";
 // components
 import { cn, getFileURL, getPasswordStrength, validatePersonName } from "@pace/utils";
 import { UserImageUploadModal } from "@/components/core/modals/user-image-upload-modal";

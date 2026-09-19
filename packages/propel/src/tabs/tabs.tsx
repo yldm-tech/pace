@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Tabs as TabsPrimitive } from "@base-ui-components/react/tabs";
+import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../utils/classname";
 
 type TabsVariant = "contained";
@@ -93,7 +93,7 @@ const TabsTrigger = React.forwardRef(function TabsTrigger(
       data-slot="tabs-trigger"
       className={cn(
         "flex w-full min-w-fit cursor-pointer items-center justify-center rounded-md border border-transparent p-1 font-medium text-primary transition-all duration-200 ease-in-out outline-none focus:outline-none",
-        "data-[selected]:shadow-sm data-[selected]:raised-200 data-[selected]:border data-[selected]:border-subtle-1 data-[selected]:bg-layer-2 data-[selected]:text-primary",
+        "data-[active]:shadow-sm data-[active]:raised-200 data-[active]:border data-[active]:border-subtle-1 data-[active]:bg-layer-2 data-[active]:text-primary",
         "text-placeholder hover:bg-layer-transparent-hover hover:text-tertiary",
         "disabled:cursor-not-allowed disabled:text-placeholder",
         {

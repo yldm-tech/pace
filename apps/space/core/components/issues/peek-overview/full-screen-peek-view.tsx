@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // types
 import type { IIssue } from "@/types/issue";
 // local imports
@@ -44,14 +44,14 @@ export const FullScreenPeekView = observer(function FullScreenPeekView(props: Pr
             </div>
           </div>
         ) : (
-          <Loader className="px-6">
-            <Loader.Item height="30px" />
+          <Skeleton className="px-6">
+            <Skeleton.Item height="30px" />
             <div className="mt-3 space-y-2">
-              <Loader.Item height="20px" width="70%" />
-              <Loader.Item height="20px" width="60%" />
-              <Loader.Item height="20px" width="60%" />
+              <Skeleton.Item height="20px" width="70%" />
+              <Skeleton.Item height="20px" width="60%" />
+              <Skeleton.Item height="20px" width="60%" />
             </div>
-          </Loader>
+          </Skeleton>
         )}
       </div>
       <div className="col-span-3 h-full w-full overflow-y-auto">
@@ -60,12 +60,12 @@ export const FullScreenPeekView = observer(function FullScreenPeekView(props: Pr
           {issueDetails ? (
             <PeekOverviewIssueProperties issueDetails={issueDetails} />
           ) : (
-            <Loader className="mt-11 space-y-4">
-              <Loader.Item height="30px" />
-              <Loader.Item height="30px" />
-              <Loader.Item height="30px" />
-              <Loader.Item height="30px" />
-            </Loader>
+            <Skeleton className="mt-11 space-y-4">
+              <Skeleton.Item height="30px" />
+              <Skeleton.Item height="30px" />
+              <Skeleton.Item height="30px" />
+              <Skeleton.Item height="30px" />
+            </Skeleton>
           )}
         </div>
       </div>

@@ -8,8 +8,8 @@
 import { STATE_GROUPS } from "@pace/constants";
 // types
 import { useTranslation } from "@pace/i18n";
+import { Card, ECardDirection, ECardSpacing } from "@pace/propel/card";
 import type { IUserStateDistribution } from "@pace/types";
-import { Card, ECardDirection, ECardSpacing } from "@pace/ui";
 // constants
 
 type Props = {

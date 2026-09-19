@@ -17,7 +17,8 @@ import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IUser, IWorkspace, TOnboardingSteps } from "@pace/types";
 // ui
-import { CustomSelect, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { CustomSelect } from "@pace/ui";
 import { validateWorkspaceName, validateSlug } from "@pace/utils";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

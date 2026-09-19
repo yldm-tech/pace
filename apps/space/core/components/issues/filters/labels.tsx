@@ -6,7 +6,7 @@
 
 import React, { useState } from "react";
 // pace imports
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // types
 import type { IIssueLabel } from "@/types/issue";
 // local imports
@@ -76,11 +76,11 @@ export function FilterLabels(props: Props) {
               <p className="text-11 text-placeholder italic">No matches found</p>
             )
           ) : (
-            <Loader className="space-y-2">
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-            </Loader>
+            <Skeleton className="space-y-2">
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+            </Skeleton>
           )}
         </div>
       )}

@@ -13,7 +13,7 @@ import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeErrorObject } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { cn, isEstimatePointValuesRepeated } from "@pace/utils";
 import { EstimateInputRoot } from "@/components/estimates/inputs/root";
 // helpers

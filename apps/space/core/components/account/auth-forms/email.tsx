@@ -13,7 +13,8 @@ import { CloseCircleOutline, WarningCircleOutline } from "@makeplane/propel/icon
 import { Button } from "@pace/propel/button";
 import type { IEmailCheckData } from "@pace/types";
 // ui
-import { Input, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { Input } from "@pace/propel/input";
 // helpers
 import { checkEmailValidity, cn } from "@pace/utils";
 

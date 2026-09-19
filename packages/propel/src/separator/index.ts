@@ -4,5 +4,4 @@
  * See the LICENSE file for details.
  */
 
-export * from "./avatar-group";
-export * from "./avatar";
+export * from "./separator";

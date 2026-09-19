@@ -4,15 +4,15 @@
  * See the LICENSE file for details.
  */
 
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export function EstimateLoaderScreen() {
   return (
-    <Loader className="mt-5 space-y-5">
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-    </Loader>
+    <Skeleton className="mt-5 space-y-5">
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+    </Skeleton>
   );
 }

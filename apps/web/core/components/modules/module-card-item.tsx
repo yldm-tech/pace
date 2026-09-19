@@ -15,10 +15,11 @@ import { InfoOutline, UserAltOutline, WorkItemsOutline } from "@makeplane/propel
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";
 import { LinearProgress } from "@makeplane/propel/components/linear-progress";
+import { Card } from "@pace/propel/card";
 import { TOAST_TYPE, setPromiseToast, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IModule } from "@pace/types";
-import { Card, FavoriteStar } from "@pace/ui";
+import { FavoriteStar } from "@pace/ui";
 import { getDate, renderFormattedPayloadDate, generateQueryParams } from "@pace/utils";
 // components
 import { DateRangeDropdown } from "@/components/dropdowns/date-range";

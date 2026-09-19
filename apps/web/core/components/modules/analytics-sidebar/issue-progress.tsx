@@ -13,7 +13,8 @@ import { EEstimateSystem } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import type { TModulePlotType } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
-import { CustomSelect, Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { CustomSelect } from "@pace/ui";
 // components
 // constants
 // helpers

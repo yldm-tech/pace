@@ -5,7 +5,8 @@
  */
 
 import React from "react";
-import { Avatar as AvatarPrimitive } from "@base-ui-components/react/avatar";
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
+import { Tooltip } from "../tooltip";
 import { cn } from "../utils/classname";
 
 export type TAvatarSize = "sm" | "md" | "base" | "lg" | number;
@@ -15,7 +16,7 @@ type Props = {
   fallbackBackgroundColor?: string; //The background color if the avatar image fails to load
   fallbackText?: string;
   fallbackTextColor?: string; //The text color if the avatar image fails to load
-  showTooltip?: boolean;
+  showTooltip?: boolean; //Whether the name is surfaced as a hover tooltip. @default true
   size?: TAvatarSize; //The size of the avatars
   shape?: "circle" | "square";
   src?: string; //The source of the avatar image
@@ -91,6 +92,7 @@ export function Avatar(props: Props) {
     fallbackBackgroundColor,
     fallbackText,
     fallbackTextColor,
+    showTooltip = true,
     size = "md",
     shape = "circle",
     src,
@@ -102,32 +104,41 @@ export function Avatar(props: Props) {
 
   const fallbackLetter = name?.[0]?.toUpperCase() ?? fallbackText ?? "?";
   return (
-    <div
-      className={cn("grid place-items-center overflow-hidden", getBorderRadius(shape), {
-        [sizeInfo.avatarSize]: !isAValidNumber(size),
-      })}
-      style={
-        isAValidNumber(size)
-          ? {
-              height: `${size}px`,
-              width: `${size}px`,
-            }
-          : {}
-      }
-      tabIndex={-1}
-    >
-      <AvatarPrimitive.Root className={cn("h-full w-full", getBorderRadius(shape), className)}>
-        <AvatarPrimitive.Image src={src} width="48" height="48" />
-        <AvatarPrimitive.Fallback
-          className={cn(sizeInfo.fontSize, "grid h-full w-full place-items-center", getBorderRadius(shape), className)}
-          style={{
-            backgroundColor: fallbackBackgroundColor ?? "var(--background-color-accent-primary)",
-            color: fallbackTextColor ?? "var(--text-color-on-color)",
-          }}
-        >
-          {fallbackLetter}
-        </AvatarPrimitive.Fallback>
-      </AvatarPrimitive.Root>
-    </div>
+    // The tooltip is how an avatar says whose it is: the label is the only text the component renders beyond a single initial. `disabled` rather than a conditional wrapper keeps the DOM identical either way, so turning the tooltip off cannot reflow a row of avatars.
+    <Tooltip tooltipContent={fallbackText ?? name ?? "?"} disabled={!showTooltip}>
+      <div
+        className={cn("grid place-items-center overflow-hidden", getBorderRadius(shape), {
+          [sizeInfo.avatarSize]: !isAValidNumber(size),
+        })}
+        style={
+          isAValidNumber(size)
+            ? {
+                height: `${size}px`,
+                width: `${size}px`,
+              }
+            : {}
+        }
+        tabIndex={-1}
+      >
+        <AvatarPrimitive.Root className={cn("h-full w-full", getBorderRadius(shape), className)}>
+          {/* `alt` carries the name for anyone not hovering: the tooltip is pointer-only, and an avatar image with no alt text reads as its URL. */}
+          <AvatarPrimitive.Image src={src} alt={name} width="48" height="48" />
+          <AvatarPrimitive.Fallback
+            className={cn(
+              sizeInfo.fontSize,
+              "grid h-full w-full place-items-center",
+              getBorderRadius(shape),
+              className
+            )}
+            style={{
+              backgroundColor: fallbackBackgroundColor ?? "var(--background-color-accent-primary)",
+              color: fallbackTextColor ?? "var(--text-color-on-color)",
+            }}
+          >
+            {fallbackLetter}
+          </AvatarPrimitive.Fallback>
+        </AvatarPrimitive.Root>
+      </div>
+    </Tooltip>
   );
 }

@@ -7,9 +7,10 @@
 import { lazy, Suspense } from "react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
+import { Card } from "@pace/propel/card";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
 import type { IUserProfileData } from "@pace/types";
-import { Loader, Card } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { capitalizeFirstLetter } from "@pace/utils";
 
 const BarChart = lazy(function BarChart() {
@@ -40,9 +41,9 @@ export function ProfilePriorityDistribution({ userProfile }: Props) {
           {userProfile.priority_distribution.length > 0 ? (
             <Suspense
               fallback={
-                <Loader className="h-[300px] w-full">
-                  <Loader.Item width="100%" height="100%" />
-                </Loader>
+                <Skeleton className="h-[300px] w-full">
+                  <Skeleton.Item width="100%" height="100%" />
+                </Skeleton>
               }
             >
               <BarChart
@@ -86,13 +87,13 @@ export function ProfilePriorityDistribution({ userProfile }: Props) {
         </Card>
       ) : (
         <div className="grid place-items-center p-7">
-          <Loader className="flex items-end gap-12">
-            <Loader.Item width="30px" height="200px" />
-            <Loader.Item width="30px" height="150px" />
-            <Loader.Item width="30px" height="250px" />
-            <Loader.Item width="30px" height="150px" />
-            <Loader.Item width="30px" height="100px" />
-          </Loader>
+          <Skeleton className="flex items-end gap-12">
+            <Skeleton.Item width="30px" height="200px" />
+            <Skeleton.Item width="30px" height="150px" />
+            <Skeleton.Item width="30px" height="250px" />
+            <Skeleton.Item width="30px" height="150px" />
+            <Skeleton.Item width="30px" height="100px" />
+          </Skeleton>
         </div>
       )}
     </div>

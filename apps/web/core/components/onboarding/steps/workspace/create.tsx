@@ -14,7 +14,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IUser, IWorkspace } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { cn, validateWorkspaceName, validateSlug } from "@pace/utils";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";

@@ -20,7 +20,7 @@ import type { TWorkItemFilterCondition } from "@pace/shared-state";
 import type { ICycle } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
 // ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { cn, renderFormattedDate, renderFormattedDateWithoutYear, getFileURL } from "@pace/utils";
 // assets
 import darkAssigneeAsset from "@/app/assets/empty-state/active-cycle/assignee-dark.webp?url";
@@ -97,11 +97,11 @@ export const ActiveCycleStats = observer(function ActiveCycleStats(props: Active
   useIntersectionObserver(issuesContainerRef, issuesLoaderElement, loadMoreIssues, `0% 0% 100% 0%`);
 
   const loaders = (
-    <Loader className="space-y-3">
-      <Loader.Item height="30px" />
-      <Loader.Item height="30px" />
-      <Loader.Item height="30px" />
-    </Loader>
+    <Skeleton className="space-y-3">
+      <Skeleton.Item height="30px" />
+      <Skeleton.Item height="30px" />
+      <Skeleton.Item height="30px" />
+    </Skeleton>
   );
 
   return cycleId ? (
@@ -370,8 +370,8 @@ export const ActiveCycleStats = observer(function ActiveCycleStats(props: Active
       </Tab.Group>
     </div>
   ) : (
-    <Loader className="col-span-1 flex min-h-[17rem] flex-col gap-4 overflow-hidden bg-surface-1 lg:col-span-2 xl:col-span-1">
-      <Loader.Item width="100%" height="17rem" />
-    </Loader>
+    <Skeleton className="col-span-1 flex min-h-[17rem] flex-col gap-4 overflow-hidden bg-surface-1 lg:col-span-2 xl:col-span-1">
+      <Skeleton.Item width="100%" height="17rem" />
+    </Skeleton>
   );
 });

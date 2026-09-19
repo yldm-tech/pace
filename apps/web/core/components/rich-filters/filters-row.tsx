@@ -12,7 +12,9 @@ import { Transition } from "@headlessui/react";
 import { Button } from "@pace/propel/button";
 import type { IFilterInstance } from "@pace/shared-state";
 import type { TExternalFilter, TFilterProperty } from "@pace/types";
-import { cn, EHeaderVariant, Header, Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { EHeaderVariant, Header } from "@pace/ui";
+import { cn } from "@pace/utils";
 // local imports
 import type { TAddFilterButtonProps } from "./add-filters/button";
 import { AddFilterButton } from "./add-filters/button";
@@ -128,9 +130,9 @@ export const FiltersRow = observer(function FiltersRow<K extends TFilterProperty
   if (!filter.configManager.areConfigsReady && !hasAnyConditions) {
     return (
       <RowTransition show={filter.isVisible}>
-        <Loader>
-          <Loader.Item height="44px" width="100%" className={cn({ "rounded-none": variant === "header" })} />
-        </Loader>
+        <Skeleton>
+          <Skeleton.Item height="44px" width="100%" className={cn({ "rounded-none": variant === "header" })} />
+        </Skeleton>
       </RowTransition>
     );
   }

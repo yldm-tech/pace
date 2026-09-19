@@ -8,9 +8,10 @@ import { lazy, Suspense } from "react";
 // pace imports
 import { STATE_GROUPS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
+import { Card } from "@pace/propel/card";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
+import { Skeleton } from "@pace/propel/skeleton";
 import type { IUserProfileData, IUserStateDistribution } from "@pace/types";
-import { Loader, Card } from "@pace/ui";
 import { capitalizeFirstLetter } from "@pace/utils";
 
 const PieChart = lazy(function PieChart() {
@@ -36,9 +37,9 @@ export function ProfileStateDistribution({ stateDistribution, userProfile }: Pro
           <div className="grid h-[300px] w-full grid-cols-1 gap-x-6 md:grid-cols-2">
             <Suspense
               fallback={
-                <Loader className="size-full">
-                  <Loader.Item width="100%" height="100%" />
-                </Loader>
+                <Skeleton className="size-full">
+                  <Skeleton.Item width="100%" height="100%" />
+                </Skeleton>
               }
             >
               <PieChart

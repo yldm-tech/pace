@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace types
 import type { IWorkspace } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // components
 import { PowerKWorkspacesMenu } from "@/components/power-k/menus/workspaces";
 // hooks
