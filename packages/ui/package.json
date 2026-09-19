@@ -1,6 +1,6 @@
 {
   "name": "@pace/ui",
-  "version": "1.4.43",
+  "version": "1.4.44",
   "private": true,
   "description": "UI components shared across multiple apps internally",
   "license": "AGPL-3.0",
