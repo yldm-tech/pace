@@ -15,7 +15,7 @@ import {
   ProjectsOutline,
   ViewsOutline,
   YourWorkOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 export const getSidebarNavigationItemIcon = (key: string, className: string = "") => {

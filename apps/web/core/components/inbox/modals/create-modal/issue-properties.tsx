@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { ETabIndices } from "@pace/constants";
-import { ParentOutline } from "@makeplane/propel/icons";
+import { ParentOutline } from "@pace/propel/icons";
 import type { ISearchIssueResponse, TIssue } from "@pace/types";
 import { CustomMenu } from "@pace/ui";
 import { renderFormattedPayloadDate, getDate, getTabIndex } from "@pace/utils";

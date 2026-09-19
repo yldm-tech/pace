@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
 // pace imports
-import { DeleteOutline, EditOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, EditOutline } from "@pace/propel/icons";
 import { CustomMenu } from "@pace/ui";
 import { truncateText } from "@pace/utils";
 // hooks

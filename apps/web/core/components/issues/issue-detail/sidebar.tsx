@@ -20,7 +20,7 @@ import {
   StartDateOutline,
   StateOutline,
   UserOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";
 // components
 import { DateDropdown } from "@/components/dropdowns/date";

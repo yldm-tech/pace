@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { BoardOutline, CalendarOutline, ChevronDownOutline, ListOutline } from "@makeplane/propel/icons";
+import { BoardOutline, CalendarOutline, ChevronDownOutline, ListOutline } from "@pace/propel/icons";
 import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, EIssueLayoutTypes } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";
 import { CustomMenu } from "@pace/ui";

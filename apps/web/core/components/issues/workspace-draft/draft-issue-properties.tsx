@@ -8,7 +8,7 @@ import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // icons
-import { DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
+import { DueDateOutline, StartDateOutline } from "@pace/propel/icons";
 // types
 import type { TIssuePriorities, TWorkspaceDraftIssue } from "@pace/types";
 import { getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";

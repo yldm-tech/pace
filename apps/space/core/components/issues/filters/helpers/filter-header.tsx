@@ -6,7 +6,7 @@
 
 import React from "react";
 // icons
-import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronUpOutline } from "@pace/propel/icons";
 
 interface IFilterHeader {
   title: string;

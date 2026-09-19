@@ -12,7 +12,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { useOutsideClickDetector } from "@pace/hooks";
 // helpers
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 import { useSticky } from "@/hooks/use-stickies";
 import { IconButton } from "@pace/propel/icon-button";

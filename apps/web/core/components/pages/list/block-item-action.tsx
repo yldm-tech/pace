@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { GlobeOutline, InfoOutline, LockOutline, MinusOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, InfoOutline, LockOutline, MinusOutline } from "@pace/propel/icons";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

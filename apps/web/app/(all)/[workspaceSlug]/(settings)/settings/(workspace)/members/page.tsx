@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspaceBulkInviteFormData } from "@pace/types";
 import { cn } from "@pace/utils";

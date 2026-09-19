@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { useParams } from "@/app/hooks/navigation";
 import { StarOff } from "lucide-react";
-import { LinkOutline, StarOutline } from "@makeplane/propel/icons";
+import { LinkOutline, StarOutline } from "@pace/propel/icons";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

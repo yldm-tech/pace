@@ -7,14 +7,7 @@
 import { observer } from "mobx-react";
 import { useSearchParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
-import {
-  BoxesOutline,
-  CloseOutline,
-  ShareAltOutline,
-  StarOutline,
-  TickOutline,
-  UserOutline,
-} from "@makeplane/propel/icons";
+import { BoxesOutline, CloseOutline, ShareAltOutline, StarOutline, TickOutline, UserOutline } from "@pace/propel/icons";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { EmptySpace, EmptySpaceItem } from "@/components/ui/empty-space";

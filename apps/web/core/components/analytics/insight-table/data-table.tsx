@@ -24,7 +24,7 @@ import {
 
 import { useTranslation } from "@pace/i18n";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 // pace package imports
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pace/propel/table";
 import { cn } from "@pace/utils";

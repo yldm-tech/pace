@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // pace ui
 import { Avatar } from "@makeplane/propel/components/avatar";
 // helpers

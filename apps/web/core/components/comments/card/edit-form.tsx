@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
 import { useForm } from "react-hook-form";
 import type { EditorRefApi } from "@pace/editor";
-import { CloseOutline, TickOutline } from "@makeplane/propel/icons";
+import { CloseOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import type { TCommentsOperations, TIssueComment } from "@pace/types";
 import { cn } from "@pace/utils";

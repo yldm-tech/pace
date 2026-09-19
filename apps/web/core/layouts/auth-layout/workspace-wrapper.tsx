@@ -10,7 +10,7 @@ import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // ui
-import { LogOutOutline } from "@makeplane/propel/icons";
+import { LogOutOutline } from "@pace/propel/icons";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { Button, getButtonStyling } from "@pace/propel/button";
 import { PaceLogo } from "@pace/propel/icons";

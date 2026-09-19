@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { useOutsideClickDetector } from "@pace/hooks";
 // i18n
 import { useTranslation } from "@pace/i18n";
-import { LabelsOutline } from "@makeplane/propel/icons";
+import { LabelsOutline } from "@pace/propel/icons";
 // types
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IIssueLabel } from "@pace/types";

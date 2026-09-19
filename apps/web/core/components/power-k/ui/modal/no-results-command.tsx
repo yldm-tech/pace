@@ -6,7 +6,7 @@
 
 import { Command } from "cmdk";
 import { useTranslation } from "@pace/i18n";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 // components
 import type { TPowerKContext } from "@/components/power-k/core/types";
 import { PowerKModalCommandItem } from "@/components/power-k/ui/modal/command-item";

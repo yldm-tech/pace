@@ -6,7 +6,7 @@
 
 import type { LucideIcon } from "lucide-react";
 import { VIEW_ACCESS_SPECIFIERS as VIEW_ACCESS_SPECIFIERS_CONSTANTS } from "@pace/constants";
-import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, LockOutline } from "@pace/propel/icons";
 
 import type { ISvgIcons } from "@pace/propel/icons";
 import { EViewAccess } from "@pace/types";

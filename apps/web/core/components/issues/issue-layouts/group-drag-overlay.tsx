@@ -5,7 +5,7 @@
  */
 
 import { useRef } from "react";
-import { WarningCircleOutline } from "@makeplane/propel/icons";
+import { WarningCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { ISSUE_ORDER_BY_OPTIONS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

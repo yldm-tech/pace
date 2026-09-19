@@ -10,7 +10,7 @@ import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { ETabIndices, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { ParentOutline } from "@makeplane/propel/icons";
+import { ParentOutline } from "@pace/propel/icons";
 // types
 import type { ISearchIssueResponse, TIssue } from "@pace/types";
 // ui

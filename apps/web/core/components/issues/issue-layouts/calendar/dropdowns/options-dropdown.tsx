@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { usePopper } from "react-popper";
-import { ChevronUpOutline, MoreVerticalOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronUpOutline, MoreVerticalOutline, TickOutline } from "@pace/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // hooks
 // ui

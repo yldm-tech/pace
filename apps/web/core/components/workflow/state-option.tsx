@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Combobox } from "@headlessui/react";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 export type TStateOptionProps = {

@@ -17,7 +17,7 @@ import {
   StartDateOutline,
   UserAltOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 import { MODULE_STATUS, EUserPermissions, EUserPermissionsLevel, EEstimateSystem } from "@pace/constants";
 // pace types

@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
-import { WarningTriangleOutline } from "@makeplane/propel/icons";
+import { WarningTriangleOutline } from "@pace/propel/icons";
 // types
 import { Button } from "@pace/propel/button";
 import type { IUserLite } from "@pace/types";

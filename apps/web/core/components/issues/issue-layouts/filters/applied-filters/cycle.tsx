@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { CycleGroupIcon } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TCycleGroups } from "@pace/types";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";

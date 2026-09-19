@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // constants
 import { NETWORK_CHOICES } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 
 type Props = {
   handleRemove: (val: string) => void;

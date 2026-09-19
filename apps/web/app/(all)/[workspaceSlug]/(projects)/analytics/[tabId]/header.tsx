@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { useTranslation } from "@pace/i18n";
-import { AnalyticsOutline } from "@makeplane/propel/icons";
+import { AnalyticsOutline } from "@pace/propel/icons";
 // pace imports
 import { Breadcrumbs, Header } from "@pace/ui";
 // components

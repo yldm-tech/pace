@@ -8,7 +8,7 @@ import type { FormEvent } from "react";
 import { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
-import { CloseCircleOutline, WarningCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline, WarningCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

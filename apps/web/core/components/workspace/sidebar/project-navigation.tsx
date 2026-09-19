@@ -18,7 +18,7 @@ import {
   PagesOutline,
   ViewsOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import type { EUserProjectRoles } from "@pace/types";
 // pace ui
 // components

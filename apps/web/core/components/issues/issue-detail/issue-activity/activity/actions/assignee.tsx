@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // icons
-import { MembersOutline } from "@makeplane/propel/icons";
+import { MembersOutline } from "@pace/propel/icons";
 // hooks;
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components

@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { CloseCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline } from "@pace/propel/icons";
 // pace constants
 import { FREE_PLAN_UPGRADE_FEATURES } from "@pace/constants";
 // helpers

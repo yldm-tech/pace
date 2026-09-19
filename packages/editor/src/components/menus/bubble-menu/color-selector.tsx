@@ -6,7 +6,7 @@
 
 import type { Editor } from "@tiptap/react";
 import { Ban } from "lucide-react";
-import { TextOutline } from "@makeplane/propel/icons";
+import { TextOutline } from "@pace/propel/icons";
 import { useMemo } from "react";
 // pace utils
 import { cn } from "@pace/utils";

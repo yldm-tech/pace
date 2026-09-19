@@ -6,7 +6,7 @@
 
 import { Component, Fragment } from "react";
 import type { ErrorInfo, ReactNode } from "react";
-import { WarningTriangleOutline } from "@makeplane/propel/icons";
+import { WarningTriangleOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 

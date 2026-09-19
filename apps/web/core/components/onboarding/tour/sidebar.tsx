@@ -5,7 +5,7 @@
  */
 
 // pace imports
-import { CyclesOutline, ModuleOutline, PagesOutline, ViewsOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { CyclesOutline, ModuleOutline, PagesOutline, ViewsOutline, WorkItemsOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 // types
 import type { TTourSteps } from "./root";

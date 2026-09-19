@@ -11,7 +11,7 @@ import {
   DocumentationOutline,
   ModuleOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 // components

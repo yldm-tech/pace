@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import useSWR from "swr";
 import { useTranslation } from "@pace/i18n";
 // pace types
-import { PagesOutline, ProjectsOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { PagesOutline, ProjectsOutline, WorkItemsOutline } from "@pace/propel/icons";
 import type { TActivityEntityData, THomeWidgetProps, TRecentActivityFilterKeys } from "@pace/types";
 // pace ui
 // components

@@ -19,7 +19,7 @@ import {
   NewTabOutline,
   RestoreOutline,
   UnlockedOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // constants
 import { EPageAccess } from "@pace/constants";
 // pace editor

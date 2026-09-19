@@ -9,7 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 // pace imports
 import { USE_CASES } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TUserProfile } from "@pace/types";
 import { EOnboardingSteps } from "@pace/types";

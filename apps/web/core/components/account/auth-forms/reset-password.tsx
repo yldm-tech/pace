@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useSearchParams } from "@/app/hooks/navigation";
 // icons
-import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
+import { HideOutline, ShowOutline } from "@pace/propel/icons";
 // ui
 import { Banner } from "@makeplane/propel/components/banner";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

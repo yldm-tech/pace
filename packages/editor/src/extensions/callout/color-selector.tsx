@@ -5,7 +5,7 @@
  */
 
 import { Ban } from "lucide-react";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 // pace utils
 import { cn } from "@pace/utils";
 // constants

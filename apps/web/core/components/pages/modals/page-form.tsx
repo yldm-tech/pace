@@ -14,7 +14,7 @@ import { ETabIndices, EPageAccess } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
-import { GlobeOutline, LockOutline, PagesOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, LockOutline, PagesOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 import type { TPage } from "@pace/types";
 

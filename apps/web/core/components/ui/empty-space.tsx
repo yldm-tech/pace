@@ -7,7 +7,7 @@
 // next
 import React from "react";
 import Link from "@/app/hooks/link";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 
 type EmptySpaceProps = {
   title: string;

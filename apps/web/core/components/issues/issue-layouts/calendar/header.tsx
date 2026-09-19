@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // components
 import type { TSupportedFilterTypeForUpdate } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { ChevronLeftOutline, ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronLeftOutline, ChevronRightOutline } from "@pace/propel/icons";
 import type { TSupportedFilterForUpdate } from "@pace/types";
 import { Row } from "@pace/ui";
 // icons

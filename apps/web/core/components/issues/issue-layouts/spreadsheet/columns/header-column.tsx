@@ -12,7 +12,7 @@ import {
   SortAscendingOutline,
   SortDescendingOutline,
   TickOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // constants
 import { SPREADSHEET_PROPERTY_DETAILS } from "@pace/constants";
 // i18n

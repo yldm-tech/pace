@@ -10,7 +10,7 @@ import React, { createContext, useCallback, useContext, useRef, useState } from 
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { useOutsideClickDetector } from "@pace/hooks";
-import { ChevronDownOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, TickOutline } from "@pace/propel/icons";
 // pace helpers
 // hooks
 import { useDropdownKeyDown } from "../hooks/use-dropdown-key-down";

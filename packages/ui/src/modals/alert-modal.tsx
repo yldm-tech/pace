@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { InfoOutline, WarningTriangleOutline } from "@makeplane/propel/icons";
+import { InfoOutline, WarningTriangleOutline } from "@pace/propel/icons";
 import React from "react";
 // components
 import type { TButtonVariant } from "@pace/propel/button";

@@ -5,7 +5,7 @@
  */
 
 import type { ReactNode } from "react";
-import { HierarchyOutline } from "@makeplane/propel/icons";
+import { HierarchyOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { renderFormattedTime, renderFormattedDate, calculateTimeAgo } from "@pace/utils";

@@ -9,7 +9,7 @@ import { useRouter } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // ui
 import { Banner } from "@makeplane/propel/components/banner";
-import { ArchiveOutline } from "@makeplane/propel/icons";
+import { ArchiveOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { Skeleton } from "@pace/propel/skeleton";

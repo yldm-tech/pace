@@ -28,7 +28,7 @@ import {
   TableOutline,
   TextOutline,
   UnderlineOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import type { ComponentType, SVGProps } from "react";
 // constants
 import { CORE_EXTENSIONS } from "@/constants/extension";

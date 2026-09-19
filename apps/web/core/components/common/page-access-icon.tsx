@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ArchiveOutline, GlobeOutline, LockOutline } from "@makeplane/propel/icons";
+import { ArchiveOutline, GlobeOutline, LockOutline } from "@pace/propel/icons";
 import { EPageAccess } from "@pace/constants";
 import type { TPage } from "@pace/types";
 

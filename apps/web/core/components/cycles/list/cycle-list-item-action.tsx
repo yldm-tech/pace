@@ -16,7 +16,7 @@ import {
   ShowOutline,
   TransferWorkItemOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel, IS_FAVORITE_MENU_OPEN } from "@pace/constants";
 import { useLocalStorage } from "@pace/hooks";

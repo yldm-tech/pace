@@ -8,7 +8,7 @@ import React, { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import type { FileRejection } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // pace imports
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssueServiceType } from "@pace/types";

@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { DueDateOutline } from "@makeplane/propel/icons";
+import { DueDateOutline } from "@pace/propel/icons";
 // types
 import type { TIssue } from "@pace/types";
 import { cn, getDate, renderFormattedPayloadDate, shouldHighlightIssueDueDate } from "@pace/utils";

@@ -26,7 +26,7 @@ import {
   ModuleOutline,
   RelatesToOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { BlockedIcon, BlockerIcon } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IIssueActivity } from "@pace/types";

@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { FilterOutline } from "@makeplane/propel/icons";
+import { FilterOutline } from "@pace/propel/icons";
 // pace imports
 import type { TButtonSize, TButtonVariant } from "@pace/propel/button";
 import { getButtonStyling } from "@pace/propel/button";

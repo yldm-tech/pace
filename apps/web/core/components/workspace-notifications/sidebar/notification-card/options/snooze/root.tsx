@@ -7,7 +7,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment } from "react";
 import { observer } from "mobx-react";
-import { ClockOutline } from "@makeplane/propel/icons";
+import { ClockOutline } from "@pace/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // pace imports
 import { NOTIFICATION_SNOOZE_OPTIONS } from "@pace/constants";

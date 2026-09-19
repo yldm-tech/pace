@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { isNil } from "lodash-es";
 import { observer } from "mobx-react";
-import { SubscribeOutline, UnsubscribeOutline } from "@makeplane/propel/icons";
+import { SubscribeOutline, UnsubscribeOutline } from "@pace/propel/icons";
 // pace-i18n
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

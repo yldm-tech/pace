@@ -11,7 +11,7 @@ import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { ModuleOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { ModuleOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import type { IModule } from "@pace/types";
 import { cn, sortBySelectedFirst } from "@pace/utils";
 // hooks

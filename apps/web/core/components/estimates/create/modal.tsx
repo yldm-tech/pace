@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { EEstimateSystem, ESTIMATE_SYSTEMS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { ChevronLeftOutline } from "@makeplane/propel/icons";
+import { ChevronLeftOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IEstimateFormData, TEstimateSystemKeys, TEstimatePointsObject, TEstimateTypeError } from "@pace/types";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";

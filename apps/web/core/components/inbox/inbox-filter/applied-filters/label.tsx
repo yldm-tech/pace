@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // hooks
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { useLabel } from "@/hooks/store/use-label";
 import { useProjectInbox } from "@/hooks/store/use-project-inbox";
 

@@ -9,7 +9,7 @@ import { useParams } from "@/app/hooks/navigation";
 
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // hooks
 import { useSticky } from "@/hooks/use-stickies";
 // local imports

@@ -7,7 +7,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 // icons
-import { CloseOutline, FilterOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, FilterOutline, SearchOutline } from "@pace/propel/icons";
 import { useOutsideClickDetector } from "@pace/hooks";
 // pace helpers
 // helpers

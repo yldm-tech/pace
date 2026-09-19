@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 // hooks
 import { useLabel } from "@/hooks/store/use-label";
 import { useMember } from "@/hooks/store/use-member";

@@ -7,7 +7,7 @@
 import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 // pace imports
-import { ProjectsOutline } from "@makeplane/propel/icons";
+import { ProjectsOutline } from "@pace/propel/icons";
 import type { ICustomSearchSelectOption } from "@pace/types";
 import { CustomSearchSelect } from "@pace/ui";
 // hooks

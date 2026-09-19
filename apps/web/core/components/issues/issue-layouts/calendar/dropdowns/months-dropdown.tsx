@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { usePopper } from "react-popper";
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronLeftOutline, ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronLeftOutline, ChevronRightOutline } from "@pace/propel/icons";
 //hooks
 // icons
 // constants

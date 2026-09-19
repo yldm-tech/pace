@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from "react";
-import { DeleteOutline, PaletteOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, PaletteOutline } from "@pace/propel/icons";
 // editor
 import type { EditorRefApi } from "@pace/editor";
 // ui

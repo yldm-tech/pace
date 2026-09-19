@@ -14,7 +14,7 @@ import { Combobox } from "@headlessui/react";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { useTranslation } from "@pace/i18n";
-import { DeactivatedUserOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { DeactivatedUserOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { EPillSize, EPillVariant, Pill } from "@pace/propel/pill";
 import type { IUserLite } from "@pace/types";
 import { cn, getFileURL, sortByCurrentUserThenSelected } from "@pace/utils";

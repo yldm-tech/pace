@@ -11,7 +11,7 @@ import { draggable, dropTargetForElements } from "@atlaskit/pragmatic-drag-and-d
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // pace helpers
-import { MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { MoreHorizontalOutline } from "@pace/propel/icons";
 import { useOutsideClickDetector } from "@pace/hooks";
 // types
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

@@ -13,7 +13,7 @@ import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { ORGANIZATION_SIZE, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { EditOutline } from "@makeplane/propel/icons";
+import { EditOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IWorkspace } from "@pace/types";
 import { CustomSelect } from "@pace/ui";

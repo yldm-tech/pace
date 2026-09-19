@@ -12,7 +12,7 @@ import { EIssueFilterType, ISSUE_LAYOUTS, ISSUE_DISPLAY_FILTERS_BY_PAGE } from "
 // pace i18n
 import { useTranslation } from "@pace/i18n";
 // icons
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 // types
 import type {
   IIssueDisplayFilterOptions,

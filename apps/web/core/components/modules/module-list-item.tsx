@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { usePathname, useSearchParams } from "@/app/hooks/navigation";
 // icons
-import { InfoOutline, TickOutline } from "@makeplane/propel/icons";
+import { InfoOutline, TickOutline } from "@pace/propel/icons";
 // ui
 import { CircularProgress } from "@makeplane/propel/components/circular-progress";
 // components

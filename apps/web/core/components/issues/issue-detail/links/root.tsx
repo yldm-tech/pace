@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // pace imports
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssueLink } from "@pace/types";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ChatOutline, DocumentationOutline, Github, RocketOutline } from "@makeplane/propel/icons";
+import { ChatOutline, DocumentationOutline, Github, RocketOutline } from "@pace/propel/icons";
 // pace imports
 import { DOCS_URL, FORUM_URL } from "@pace/constants";
 // components

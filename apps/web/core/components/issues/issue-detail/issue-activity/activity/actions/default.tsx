@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace imports
-import { WorkItemsOutline } from "@makeplane/propel/icons";
+import { WorkItemsOutline } from "@pace/propel/icons";
 import { EInboxIssueSource } from "@pace/types";
 // hooks
 import { capitalizeFirstLetter } from "@pace/utils";

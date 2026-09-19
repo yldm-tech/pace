@@ -5,7 +5,7 @@
  */
 
 // pace imports
-import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronUpOutline } from "@pace/propel/icons";
 
 type Props = {
   title: string;

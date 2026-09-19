@@ -14,7 +14,7 @@ import type { EditorRefApi } from "@pace/editor";
 import { useTranslation } from "@pace/i18n";
 // ui
 import { Button } from "@pace/propel/button";
-import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, LockOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // constants

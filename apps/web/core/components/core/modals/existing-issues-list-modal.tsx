@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState, useRef } from "react";
-import { CloseOutline, RocketOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, RocketOutline, SearchOutline } from "@pace/propel/icons";
 import { Combobox } from "@headlessui/react";
 // i18n
 import { useTranslation } from "@pace/i18n";

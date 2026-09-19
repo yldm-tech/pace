@@ -7,7 +7,7 @@
 import React, { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { ChatOutline, CloseOutline, MoreVerticalOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChatOutline, CloseOutline, MoreVerticalOutline, TickOutline } from "@pace/propel/icons";
 import { Menu, Transition } from "@headlessui/react";
 // pace imports
 import type { EditorRefApi } from "@pace/editor";

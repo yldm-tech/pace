@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { LeftSidePaneOutline } from "@makeplane/propel/icons";
+import { LeftSidePaneOutline } from "@pace/propel/icons";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
 import { IconButton } from "@pace/propel/icon-button";

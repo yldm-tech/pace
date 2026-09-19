@@ -14,7 +14,7 @@ import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { ISearchIssueResponse, IUser } from "@pace/types";
 import { EIssuesStoreType } from "@pace/types";

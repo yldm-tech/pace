@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { MailOutline, PlusCircleOutline } from "@makeplane/propel/icons";
+import { MailOutline, PlusCircleOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";

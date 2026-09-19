@@ -9,7 +9,7 @@ import React, { useEffect, useState, useRef, Fragment } from "react";
 import type { Placement } from "@popperjs/core";
 import { Controller, useForm } from "react-hook-form"; // services
 import { usePopper } from "react-popper";
-import { WarningCircleOutline } from "@makeplane/propel/icons";
+import { WarningCircleOutline } from "@pace/propel/icons";
 import { Popover, Transition } from "@headlessui/react";
 // pace imports
 import { Input, InputGroup } from "@makeplane/propel/components/input";

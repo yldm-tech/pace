@@ -6,7 +6,7 @@
 
 import React, { useState, useRef, useContext } from "react";
 import { usePopper } from "react-popper";
-import { ChevronRightOutline } from "@makeplane/propel/icons";
+import { ChevronRightOutline } from "@pace/propel/icons";
 // helpers
 import { cn } from "../../utils";
 // types

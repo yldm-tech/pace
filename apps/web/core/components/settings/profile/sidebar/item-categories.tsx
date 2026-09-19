@@ -6,7 +6,7 @@
 
 import type React from "react";
 import type { LucideIcon } from "lucide-react";
-import { KeyOutline, LockOutline, SettingsOutline, SubscribeOutline, UserOutline } from "@makeplane/propel/icons";
+import { KeyOutline, LockOutline, SettingsOutline, SubscribeOutline, UserOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // pace imports

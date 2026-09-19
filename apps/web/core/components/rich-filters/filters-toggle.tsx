@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace imports
 import { IconButton } from "@pace/propel/icon-button";
-import { FilterOutline, SelectedFilterOutline } from "@makeplane/propel/icons";
+import { FilterOutline, SelectedFilterOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 import type { IFilterInstance } from "@pace/shared-state";
 import type { TExternalFilter, TFilterProperty } from "@pace/types";

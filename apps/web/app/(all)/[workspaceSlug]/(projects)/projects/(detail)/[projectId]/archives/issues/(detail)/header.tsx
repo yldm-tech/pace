@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
 // ui
-import { ArchiveOutline, WorkItemsOutline } from "@makeplane/propel/icons";
+import { ArchiveOutline, WorkItemsOutline } from "@pace/propel/icons";
 import { Breadcrumbs, Header } from "@pace/ui";
 // components
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ProjectsOutline } from "@makeplane/propel/icons";
+import { ProjectsOutline } from "@pace/propel/icons";
 // pace imports
 import type { ICustomSearchSelectOption } from "@pace/types";
 import { BreadcrumbNavigationSearchDropdown, Breadcrumbs } from "@pace/ui";

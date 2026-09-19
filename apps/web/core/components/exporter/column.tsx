@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { DownloadOutline } from "@makeplane/propel/icons";
+import { DownloadOutline } from "@pace/propel/icons";
 import type { IExportData } from "@pace/types";
 import { getDate, getFileURL, renderFormattedDate } from "@pace/utils";
 

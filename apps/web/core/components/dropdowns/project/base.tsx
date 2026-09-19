@@ -12,7 +12,7 @@ import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ChevronDownOutline, ProjectsOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ProjectsOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { ComboDropDown } from "@pace/ui";
 import { cn, sortBySelectedFirst } from "@pace/utils";
 // components

@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { ISSUE_LAYOUT_MAP } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 import { EIssueLayoutTypes } from "@pace/types";
 import { getButtonStyling } from "@pace/propel/button";
 import { Dropdown } from "@pace/ui";

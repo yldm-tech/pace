@@ -6,7 +6,7 @@
 
 import React, { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { AddFilterOutline } from "@makeplane/propel/icons";
+import { AddFilterOutline } from "@pace/propel/icons";
 import { Transition } from "@headlessui/react";
 // pace imports
 import { Button } from "@pace/propel/button";

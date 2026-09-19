@@ -9,7 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 // pace imports
 import { allTimeIn30MinutesInterval12HoursFormat } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { CustomSelect, EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // components
 import { getDate, cn } from "@pace/utils";

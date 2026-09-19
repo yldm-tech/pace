@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ArrowCollapseOutline, FullScreenOutline } from "@makeplane/propel/icons";
+import { ArrowCollapseOutline, FullScreenOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace
 import type { TGanttViews } from "@pace/types";

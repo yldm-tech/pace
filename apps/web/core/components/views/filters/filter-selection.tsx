@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 import type { TViewFilterProps, TViewFilters } from "@pace/types";
 import { EViewAccess } from "@pace/types";
 // components

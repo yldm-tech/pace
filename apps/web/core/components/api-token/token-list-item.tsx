@@ -5,7 +5,7 @@
  */
 
 import { useState } from "react";
-import { CloseCircleOutline } from "@makeplane/propel/icons";
+import { CloseCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IApiToken } from "@pace/types";

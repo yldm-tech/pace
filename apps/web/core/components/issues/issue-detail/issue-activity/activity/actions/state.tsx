@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // hooks
-import { StateOutline } from "@makeplane/propel/icons";
+import { StateOutline } from "@pace/propel/icons";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 // components
 import { IssueActivityBlockComponent, IssueLink } from "./";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
+import { SortDescendingOutline, TickOutline } from "@pace/propel/icons";
 // pace imports
 import { PROJECT_ORDER_BY_OPTIONS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

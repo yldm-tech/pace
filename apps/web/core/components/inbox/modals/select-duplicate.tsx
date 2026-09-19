@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { ISearchIssueResponse } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";

@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { observer } from "mobx-react";
-import { LockedOutline, UnlockedOutline } from "@makeplane/propel/icons";
+import { LockedOutline, UnlockedOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 // hooks

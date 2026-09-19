@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 
 import useSWR, { mutate } from "swr";
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 // pace imports
 import { ROLE } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

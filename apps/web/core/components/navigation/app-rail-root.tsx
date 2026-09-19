@@ -8,7 +8,7 @@
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { usePathname } from "@/app/hooks/navigation";
-import { SettingsOutline, TickOutline } from "@makeplane/propel/icons";
+import { SettingsOutline, TickOutline } from "@pace/propel/icons";
 import { ContextMenu } from "@pace/propel/context-menu";
 import { cn } from "@pace/utils";
 // components

@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { ClockOutline } from "@makeplane/propel/icons";
+import { ClockOutline } from "@pace/propel/icons";
 // pace imports
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { Row } from "@pace/ui";

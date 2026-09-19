@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { BoardOutline, ListOutline, TimelineOutline } from "@makeplane/propel/icons";
+import { BoardOutline, ListOutline, TimelineOutline } from "@pace/propel/icons";
 import type { IBaseLayoutConfig } from "@pace/types";
 
 export const BASE_LAYOUTS: IBaseLayoutConfig[] = [

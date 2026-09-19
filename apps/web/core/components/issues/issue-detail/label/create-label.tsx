@@ -8,7 +8,7 @@ import { useState, Fragment, useEffect } from "react";
 import { TwitterPicker } from "react-color";
 import { Controller, useForm } from "react-hook-form";
 import { usePopper } from "react-popper";
-import { AddOutline, CloseOutline, LoadingOutline } from "@makeplane/propel/icons";
+import { AddOutline, CloseOutline, LoadingOutline } from "@pace/propel/icons";
 import { Popover } from "@headlessui/react";
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

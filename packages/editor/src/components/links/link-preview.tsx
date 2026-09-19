@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { CopyOutline, EditOutline, GlobeOutline, UnlinkOutline } from "@makeplane/propel/icons";
+import { CopyOutline, EditOutline, GlobeOutline, UnlinkOutline } from "@pace/propel/icons";
 // components
 import type { LinkViewProps, LinkViews } from "@/components/links";
 

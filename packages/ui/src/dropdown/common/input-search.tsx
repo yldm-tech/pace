@@ -6,7 +6,7 @@
 
 import { Combobox } from "@headlessui/react";
 import React, { useEffect, useRef } from "react";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 // helpers
 import { cn } from "../../utils";
 

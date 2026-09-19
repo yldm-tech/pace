@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { MoreHorizontalOutline, StarFilled } from "@makeplane/propel/icons";
+import { MoreHorizontalOutline, StarFilled } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import type { IFavorite } from "@pace/types";

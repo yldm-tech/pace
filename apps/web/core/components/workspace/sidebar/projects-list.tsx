@@ -10,7 +10,7 @@ import { autoScrollForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-sc
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import { usePathname } from "@/app/hooks/navigation";
-import { AddOutline, ChevronRightOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { AddOutline, ChevronRightOutline, MoreHorizontalOutline } from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";

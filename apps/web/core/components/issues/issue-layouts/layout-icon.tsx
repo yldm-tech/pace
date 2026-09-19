@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { BoardOutline, CalendarOutline, ListOutline, TableOutline, TimelineOutline } from "@makeplane/propel/icons";
+import { BoardOutline, CalendarOutline, ListOutline, TableOutline, TimelineOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 import { EIssueLayoutTypes } from "@pace/types";
 

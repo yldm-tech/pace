@@ -14,7 +14,7 @@ import {
   LinkOutline,
   NewTabOutline,
   RestoreOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

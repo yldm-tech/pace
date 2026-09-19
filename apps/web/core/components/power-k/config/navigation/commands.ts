@@ -18,7 +18,7 @@ import {
   ProjectsOutline,
   SettingsOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { EUserPermissionsLevel } from "@pace/constants";
 import type { ICycle, IModule, IPartialProject, IProjectView, IWorkspace } from "@pace/types";

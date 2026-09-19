@@ -11,7 +11,7 @@ import {
   LinkOutline,
   NewTabOutline,
   RestoreOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 import type { TContextMenuItem } from "@pace/ui";
 

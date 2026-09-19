@@ -6,7 +6,7 @@
 
 import { useParams } from "@/app/hooks/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { WarningTriangleOutline } from "@makeplane/propel/icons";
+import { WarningTriangleOutline } from "@pace/propel/icons";
 // Plane imports
 import { Field } from "@makeplane/propel/components/field";
 import { Input, InputGroup } from "@makeplane/propel/components/input";

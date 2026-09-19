@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 type TInvitationModalActionsProps = {

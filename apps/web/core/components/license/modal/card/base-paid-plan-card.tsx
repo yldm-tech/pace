@@ -6,7 +6,7 @@
 
 import { useState, Fragment } from "react";
 import { observer } from "mobx-react";
-import { TickCircleOutline } from "@makeplane/propel/icons";
+import { TickCircleOutline } from "@pace/propel/icons";
 import { Tab } from "@headlessui/react";
 // pace imports
 // helpers

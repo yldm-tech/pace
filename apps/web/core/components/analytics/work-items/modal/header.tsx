@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // pace package imports
-import { ArrowCollapseOutline, CloseOutline, FullScreenOutline } from "@makeplane/propel/icons";
+import { ArrowCollapseOutline, CloseOutline, FullScreenOutline } from "@pace/propel/icons";
 import type { ICycle, IModule } from "@pace/types";
 // icons
 

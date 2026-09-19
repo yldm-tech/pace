@@ -34,7 +34,7 @@ import {
   TimeTrackingOutline,
   ToDoOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // components
 
 import { store } from "@/lib/store-context";

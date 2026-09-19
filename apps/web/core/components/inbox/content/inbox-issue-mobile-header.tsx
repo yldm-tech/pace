@@ -18,7 +18,7 @@ import {
   MoreHorizontalOutline,
   NewTabOutline,
   TickCircleFilled,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { IconButton, getIconButtonStyling } from "@pace/propel/icon-button";
 import type { TNameDescriptionLoader } from "@pace/types";
 

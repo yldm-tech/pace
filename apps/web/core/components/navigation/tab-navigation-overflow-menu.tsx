@@ -6,7 +6,7 @@
 
 import React from "react";
 import { Link } from "react-router";
-import { DefaultTabOutline, MoreHorizontalOutline, PinOutline } from "@makeplane/propel/icons";
+import { DefaultTabOutline, MoreHorizontalOutline, PinOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Menu } from "@pace/propel/menu";

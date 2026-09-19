@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { LeftSidePaneOutline, LinkOutline, SearchOutline } from "@makeplane/propel/icons";
+import { LeftSidePaneOutline, LinkOutline, SearchOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace imports
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";

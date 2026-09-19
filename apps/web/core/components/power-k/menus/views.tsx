@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { WorkItemsOutline } from "@makeplane/propel/icons";
+import { WorkItemsOutline } from "@pace/propel/icons";
 // pace imports
 import type { IProjectView } from "@pace/types";
 // local imports

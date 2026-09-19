@@ -13,7 +13,7 @@ import { Avatar } from "@makeplane/propel/components/avatar";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { EditorRefApi } from "@pace/editor";
 import { useHashScroll } from "@pace/hooks";
-import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, LockOutline } from "@pace/propel/icons";
 import { EIssueCommentAccessSpecifier } from "@pace/types";
 import type { TCommentsOperations, TIssueComment } from "@pace/types";
 import { calculateTimeAgo, cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@pace/utils";

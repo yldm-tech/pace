@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { estimateCount } from "@pace/constants";
 import { Button } from "@pace/propel/button";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import type { TEstimatePointsObject, TEstimateSystemKeys, TEstimateTypeError } from "@pace/types";
 import { Sortable } from "@pace/ui";
 // local imports

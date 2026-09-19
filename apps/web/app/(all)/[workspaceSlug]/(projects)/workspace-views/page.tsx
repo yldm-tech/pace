@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { DEFAULT_GLOBAL_VIEWS_LIST } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { SearchOutline } from "@makeplane/propel/icons";
+import { SearchOutline } from "@pace/propel/icons";
 
 // components
 import { PageHead } from "@/components/core/page-title";

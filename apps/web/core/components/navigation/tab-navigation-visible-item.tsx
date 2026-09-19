@@ -5,7 +5,7 @@
  */
 
 import { Link } from "react-router";
-import { DefaultTabOutline, UnpinOutline } from "@makeplane/propel/icons";
+import { DefaultTabOutline, UnpinOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { ContextMenu } from "@pace/propel/context-menu";

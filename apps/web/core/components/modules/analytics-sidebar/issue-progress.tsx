@@ -7,7 +7,7 @@
 import { Fragment, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { useSearchParams } from "@/app/hooks/navigation";
-import { ChevronDownOutline, ChevronUpOutline, WarningCircleOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronUpOutline, WarningCircleOutline } from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 import { EEstimateSystem } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

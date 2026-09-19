@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { WarningTriangleOutline } from "@makeplane/propel/icons";
+import { WarningTriangleOutline } from "@pace/propel/icons";
 // ui
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";

@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
-import { ClipboardOutline, ExportOutline, HistoryOutline } from "@makeplane/propel/icons";
+import { ClipboardOutline, ExportOutline, HistoryOutline } from "@pace/propel/icons";
 // pace imports
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Switch } from "@makeplane/propel/components/switch";

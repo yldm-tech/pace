@@ -6,7 +6,7 @@
 
 import type { Editor } from "@tiptap/react";
 
-import { ChevronDownOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, TickOutline } from "@pace/propel/icons";
 // pace utils
 import { cn } from "@pace/utils";
 // components

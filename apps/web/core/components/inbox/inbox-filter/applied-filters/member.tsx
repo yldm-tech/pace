@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 
 // pace types
 import { Avatar } from "@makeplane/propel/components/avatar";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import type { TInboxIssueFilterMemberKeys } from "@pace/types";
 // helpers
 import { getFileURL } from "@pace/utils";

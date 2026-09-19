@@ -7,7 +7,7 @@
 import type { TPartialProject } from "@pace/types";
 // pace propel imports
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ChevronDownOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 
 type TProjectHeaderButtonProps = {

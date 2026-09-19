@@ -9,7 +9,7 @@ import type { ColumnDef, Row, RowData } from "@tanstack/react-table";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 import useSWR from "swr";
-import { ProjectsOutline, UserOutline } from "@makeplane/propel/icons";
+import { ProjectsOutline, UserOutline } from "@pace/propel/icons";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import { useTranslation } from "@pace/i18n";
 import { Logo } from "@pace/propel/emoji-icon-picker";

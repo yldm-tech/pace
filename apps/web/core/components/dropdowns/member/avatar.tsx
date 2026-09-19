@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import type { ComponentType, SVGProps } from "react";
 import { Avatar } from "@makeplane/propel/components/avatar";
 import type { AvatarGroupSize } from "@makeplane/propel/components/avatar-group";
-import { MembersOutline } from "@makeplane/propel/icons";
+import { MembersOutline } from "@pace/propel/icons";
 import { cn, getFileURL } from "@pace/utils";
 // pace utils
 // helpers

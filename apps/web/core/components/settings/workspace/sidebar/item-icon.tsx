@@ -5,13 +5,7 @@
  */
 
 import type { LucideIcon } from "lucide-react";
-import {
-  BillingsOutline,
-  BuildingOutline,
-  ExportOutline,
-  MembersOutline,
-  WebhooksOutline,
-} from "@makeplane/propel/icons";
+import { BillingsOutline, BuildingOutline, ExportOutline, MembersOutline, WebhooksOutline } from "@pace/propel/icons";
 // pace imports
 import type { ISvgIcons } from "@pace/propel/icons";
 import type { TWorkspaceSettingsTabs } from "@pace/types";

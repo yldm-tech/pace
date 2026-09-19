@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { MoreHorizontalOutline } from "@pace/propel/icons";
 // ui
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

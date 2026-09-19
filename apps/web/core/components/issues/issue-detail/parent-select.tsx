@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 
 import { useTranslation } from "@pace/i18n";
-import { CloseOutline, EditOutline } from "@makeplane/propel/icons";
+import { CloseOutline, EditOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { cn } from "@pace/utils";

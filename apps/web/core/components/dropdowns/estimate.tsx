@@ -12,7 +12,7 @@ import { usePopper } from "react-popper";
 import { Combobox } from "@headlessui/react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { ChevronDownOutline, EstimateOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, EstimateOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import { EEstimateSystem } from "@pace/types";
 import { ComboDropDown } from "@pace/ui";
 import { convertMinutesToHoursMinutesString, cn } from "@pace/utils";

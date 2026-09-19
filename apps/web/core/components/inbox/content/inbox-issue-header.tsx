@@ -19,7 +19,7 @@ import {
   MoreHorizontalOutline,
   NewTabOutline,
   TickCircleFilled,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

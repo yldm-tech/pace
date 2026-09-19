@@ -11,7 +11,7 @@ import {
   ModuleOutline,
   ProjectsOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import type {
   IWorkspaceDefaultSearchResult,

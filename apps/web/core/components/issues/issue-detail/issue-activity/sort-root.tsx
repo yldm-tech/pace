@@ -5,7 +5,7 @@
  */
 
 import { memo } from "react";
-import { SortAscendingOutline, SortDescendingOutline } from "@makeplane/propel/icons";
+import { SortAscendingOutline, SortDescendingOutline } from "@pace/propel/icons";
 // pace package imports
 import { E_SORT_ORDER } from "@pace/constants";
 import { IconButton } from "@pace/propel/icon-button";

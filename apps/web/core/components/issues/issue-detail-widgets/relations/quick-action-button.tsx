@@ -8,7 +8,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 import { useTranslation } from "@pace/i18n";
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 // pace imports
 import type { TIssueServiceType } from "@pace/types";
 import { CustomMenu } from "@pace/ui";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { DeleteOutline, EditOutline, NewTabOutline } from "@makeplane/propel/icons";
+import { DeleteOutline, EditOutline, NewTabOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { getIconForLink, copyTextToClipboard, calculateTimeAgo } from "@pace/utils";

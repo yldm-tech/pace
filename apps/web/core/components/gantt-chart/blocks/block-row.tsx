@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { ArrowNarrowRightOutline } from "@makeplane/propel/icons";
+import { ArrowNarrowRightOutline } from "@pace/propel/icons";
 // helpers
 import type { IBlockUpdateData, IGanttBlock } from "@pace/types";
 import { cn } from "@pace/utils";

@@ -9,7 +9,7 @@ import { useRef } from "react";
 import { observer } from "mobx-react";
 import { usePathname, useSearchParams } from "@/app/hooks/navigation";
 import { CircularProgress } from "@makeplane/propel/components/circular-progress";
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 // pace imports
 import type { TCycleGroups } from "@pace/types";
 // components

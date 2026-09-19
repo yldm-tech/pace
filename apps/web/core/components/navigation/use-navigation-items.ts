@@ -14,7 +14,7 @@ import {
   PagesOutline,
   ViewsOutline,
   WorkItemsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import type { EUserProjectRoles, IPartialProject } from "@pace/types";
 import type { TNavigationItem } from "@/components/navigation/tab-navigation-root";
 

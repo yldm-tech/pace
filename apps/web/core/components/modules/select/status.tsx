@@ -12,7 +12,7 @@ import { Controller } from "react-hook-form";
 import { MODULE_STATUS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { ModuleStatusIcon } from "@pace/propel/icons";
-import { StateOutline } from "@makeplane/propel/icons";
+import { StateOutline } from "@pace/propel/icons";
 import type { IModule } from "@pace/types";
 // ui
 import { CustomSelect } from "@pace/ui";

@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 
 import { useTranslation } from "@pace/i18n";
 // pace imports
-import { LinkOutline, NewTabOutline } from "@makeplane/propel/icons";
+import { LinkOutline, NewTabOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 // ui
 import type { TStaticViewTypes } from "@pace/types";

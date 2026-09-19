@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
-import { CalendarOutline } from "@makeplane/propel/icons";
+import { CalendarOutline } from "@pace/propel/icons";
 import { cn, renderFormattedDate, getDate } from "@pace/utils";
 
 export type TReadonlyDateProps = {

@@ -7,7 +7,7 @@
 import { useRef } from "react";
 import { observer } from "mobx-react";
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { PagesOutline } from "@makeplane/propel/icons";
+import { PagesOutline } from "@pace/propel/icons";
 // pace imports
 import { getPageName } from "@pace/utils";
 // components

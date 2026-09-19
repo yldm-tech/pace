@@ -5,7 +5,7 @@
  */
 
 // pace imports
-import { ChevronDownOutline, CloseOutline, ModuleOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, CloseOutline, ModuleOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { cn } from "@pace/utils";
 // hooks

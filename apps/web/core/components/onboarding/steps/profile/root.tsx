@@ -7,7 +7,7 @@
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { Controller, useForm } from "react-hook-form";
-import { ImageOutline } from "@makeplane/propel/icons";
+import { ImageOutline } from "@pace/propel/icons";
 // pace imports
 import { E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@pace/propel/button";

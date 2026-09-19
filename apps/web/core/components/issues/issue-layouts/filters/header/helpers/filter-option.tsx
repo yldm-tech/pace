@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { TickOutline } from "@makeplane/propel/icons";
+import { TickOutline } from "@pace/propel/icons";
 
 type Props = {
   icon?: React.ReactNode;

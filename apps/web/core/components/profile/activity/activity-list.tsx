@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
-import { ChatOutline, HistoryOutline } from "@makeplane/propel/icons";
+import { ChatOutline, HistoryOutline } from "@pace/propel/icons";
 // pace imports
 import type { IUserActivityResponse } from "@pace/types";
 import { calculateTimeAgo, getFileURL } from "@pace/utils";

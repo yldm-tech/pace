@@ -7,7 +7,7 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutline, InfoOutline, TickOutline } from "@makeplane/propel/icons";
+import { CloseOutline, InfoOutline, TickOutline } from "@pace/propel/icons";
 import { EEstimateSystem, MAX_ESTIMATE_POINT_INPUT_LENGTH } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

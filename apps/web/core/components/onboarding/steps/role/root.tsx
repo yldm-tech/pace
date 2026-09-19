@@ -14,7 +14,7 @@ import {
   RocketOutline,
   TickOutline,
   ViewsOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 // pace imports
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";

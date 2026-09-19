@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { FullScreenOutline } from "@makeplane/propel/icons";
+import { FullScreenOutline } from "@pace/propel/icons";
 import { useEffect, useState } from "react";
 // pace imports
 import { Tooltip } from "@pace/propel/tooltip";

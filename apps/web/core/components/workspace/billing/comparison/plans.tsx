@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ChatOutline, MailOutline } from "@makeplane/propel/icons";
+import { ChatOutline, MailOutline } from "@pace/propel/icons";
 import { TALK_TO_SALES_URL } from "@pace/constants";
 import { EProductSubscriptionEnum } from "@pace/types";
 // pace imports

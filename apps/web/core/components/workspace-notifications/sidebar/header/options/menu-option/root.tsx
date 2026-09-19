@@ -6,13 +6,7 @@
 
 import type { ReactNode } from "react";
 import { observer } from "mobx-react";
-import {
-  ArchiveOutline,
-  ClockOutline,
-  MoreVerticalOutline,
-  TickCircleOutline,
-  TickOutline,
-} from "@makeplane/propel/icons";
+import { ArchiveOutline, ClockOutline, MoreVerticalOutline, TickCircleOutline, TickOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace imports
 import type { TNotificationFilter } from "@pace/types";

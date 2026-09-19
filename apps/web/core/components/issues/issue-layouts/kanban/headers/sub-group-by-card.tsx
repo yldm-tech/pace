@@ -7,7 +7,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { Circle } from "lucide-react";
-import { ChevronDownOutline, ChevronUpOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronUpOutline } from "@pace/propel/icons";
 // Plane
 import type { TIssueGroupByOptions, TIssueKanbanFilters } from "@pace/types";
 

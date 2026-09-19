@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { InfoOutline } from "@makeplane/propel/icons";
+import { InfoOutline } from "@pace/propel/icons";
 // pace imports
 import { EEstimateSystem, ESTIMATE_SYSTEMS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";

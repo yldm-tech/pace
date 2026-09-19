@@ -13,7 +13,7 @@ import {
   SearchOutline,
   TransferWorkItemOutline,
   WarningCircleOutline,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EIssuesStoreType } from "@pace/types";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";

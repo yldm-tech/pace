@@ -7,7 +7,7 @@
 import { useMemo } from "react";
 import { isEmpty } from "lodash-es";
 import { observer } from "mobx-react";
-import { PreferencesOutline } from "@makeplane/propel/icons";
+import { PreferencesOutline } from "@pace/propel/icons";
 // pace imports
 import type { IIssueDisplayFilterOptions, ILayoutDisplayFiltersOptions, IIssueDisplayProperties } from "@pace/types";
 import { cn } from "@pace/utils";

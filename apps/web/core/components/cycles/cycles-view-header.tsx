@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutline, FilterOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, FilterOutline, SearchOutline } from "@pace/propel/icons";
 // pace imports
 import { useOutsideClickDetector } from "@pace/hooks";
 import { IconButton } from "@pace/propel/icon-button";

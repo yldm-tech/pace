@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { EIssueFilterType, ISSUE_DISPLAY_FILTERS_BY_PAGE, DEFAULT_GLOBAL_VIEWS_LIST } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
-import { ViewsOutline } from "@makeplane/propel/icons";
+import { ViewsOutline } from "@pace/propel/icons";
 import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, ICustomSearchSelectOption } from "@pace/types";
 import { EIssuesStoreType, EIssueLayoutTypes } from "@pace/types";
 import { Breadcrumbs, Header, BreadcrumbNavigationSearchDropdown } from "@pace/ui";

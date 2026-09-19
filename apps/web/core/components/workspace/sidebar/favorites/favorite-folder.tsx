@@ -25,7 +25,7 @@ import {
   DragDropOutline,
   MoreHorizontalOutline,
   StarFilled,
-} from "@makeplane/propel/icons";
+} from "@pace/propel/icons";
 import { Disclosure, Transition } from "@headlessui/react";
 // pace imports
 import { useOutsideClickDetector } from "@pace/hooks";

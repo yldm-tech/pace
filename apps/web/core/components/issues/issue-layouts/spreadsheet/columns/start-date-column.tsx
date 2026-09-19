@@ -6,7 +6,7 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { StartDateOutline } from "@makeplane/propel/icons";
+import { StartDateOutline } from "@pace/propel/icons";
 // types
 import type { TIssue } from "@pace/types";
 // components

@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 
 import { useTranslation } from "@pace/i18n";
 // pace imports
-import { AddOutline } from "@makeplane/propel/icons";
+import { AddOutline } from "@pace/propel/icons";
 import { setPromiseToast } from "@pace/propel/toast";
 import type { ISearchIssueResponse, TIssue } from "@pace/types";
 import { EIssueLayoutTypes } from "@pace/types";

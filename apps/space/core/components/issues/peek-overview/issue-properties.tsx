@@ -9,7 +9,7 @@ import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { StateGroupIcon, PriorityIcon } from "@pace/propel/icons";
-import { DueDateOutline, LinkOutline, PriorityOutline, StateOutline } from "@makeplane/propel/icons";
+import { DueDateOutline, LinkOutline, PriorityOutline, StateOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import {
   addSpaceIfCamelCase,

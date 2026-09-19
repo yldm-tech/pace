@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import { AiStar1Outline } from "@makeplane/propel/icons";
+import { AiStar1Outline } from "@pace/propel/icons";
 // pace imports
 import { ETabIndices } from "@pace/constants";
 import type { EditorRefApi } from "@pace/editor";

@@ -10,7 +10,7 @@ import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import { ROLE, EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
-import { ChevronDownOutline, DeleteOutline, LinkOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, DeleteOutline, LinkOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TContextMenuItem } from "@pace/ui";
 import { CustomSelect, CustomMenu } from "@pace/ui";

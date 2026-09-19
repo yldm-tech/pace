@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 // pace imports
 import { PaceLockup } from "@pace/propel/icons";
-import { ChevronLeftOutline } from "@makeplane/propel/icons";
+import { ChevronLeftOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TOnboardingStep } from "@pace/types";
 import { EOnboardingSteps } from "@pace/types";

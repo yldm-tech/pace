@@ -8,7 +8,7 @@ import { Fragment, useState, useEffect } from "react";
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 // icons
-import { ChevronDownOutline, LogOutOutline, MailOutline, PlusCircleOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, LogOutOutline, MailOutline, PlusCircleOutline } from "@pace/propel/icons";
 // ui
 import { Menu, Transition } from "@headlessui/react";
 // pace imports

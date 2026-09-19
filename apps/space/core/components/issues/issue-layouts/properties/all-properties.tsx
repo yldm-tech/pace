@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { AttachOutline, LinkOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { AttachOutline, LinkOutline, ViewsOutline } from "@pace/propel/icons";
 // pace imports
 import { Tooltip } from "@pace/propel/tooltip";
 import type { IIssueDisplayProperties } from "@pace/types";

@@ -10,7 +10,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ETabIndices } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { EmojiPicker, EmojiIconPickerTypes, Logo } from "@pace/propel/emoji-icon-picker";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // pace types
 import type { IProject } from "@pace/types";
 // pace ui

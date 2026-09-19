@@ -7,7 +7,7 @@
 import { useCallback } from "react";
 import { useTheme } from "next-themes";
 import { Languages } from "lucide-react";
-import { CalendarOutline, GlobeOutline, PaletteOutline } from "@makeplane/propel/icons";
+import { CalendarOutline, GlobeOutline, PaletteOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { setToast, TOAST_TYPE } from "@pace/propel/toast";

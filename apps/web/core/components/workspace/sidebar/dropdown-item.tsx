@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
 import { useParams } from "@/app/hooks/navigation";
-import { SettingsOutline, TickOutline, UserPlusOutline } from "@makeplane/propel/icons";
+import { SettingsOutline, TickOutline, UserPlusOutline } from "@pace/propel/icons";
 import { Menu } from "@headlessui/react";
 // pace imports
 import { EUserPermissions } from "@pace/constants";

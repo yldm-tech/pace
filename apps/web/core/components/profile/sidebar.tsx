@@ -13,7 +13,7 @@ import { useOutsideClickDetector } from "@pace/hooks";
 import { useTranslation } from "@pace/i18n";
 import { Logo } from "@pace/propel/emoji-icon-picker";
 import { IconButton } from "@pace/propel/icon-button";
-import { ChevronDownOutline, EditOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, EditOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IUserProfileProjectSegregation } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";

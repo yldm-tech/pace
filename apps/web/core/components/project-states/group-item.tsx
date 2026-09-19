@@ -11,7 +11,7 @@ import { observer } from "mobx-react";
 import { EIconSize } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { StateGroupIcon } from "@pace/propel/icons";
-import { AddOutline, ChevronDownOutline } from "@makeplane/propel/icons";
+import { AddOutline, ChevronDownOutline } from "@pace/propel/icons";
 import type { IState, TStateGroups, TStateOperationsCallbacks } from "@pace/types";
 import { cn } from "@pace/utils";
 // components

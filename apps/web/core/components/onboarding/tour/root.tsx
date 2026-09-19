@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { Button } from "@pace/propel/button";
 import { PaceLockup } from "@pace/propel/icons";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 // assets
 import CyclesTour from "@/app/assets/onboarding/cycles.webp?url";
 import IssuesTour from "@/app/assets/onboarding/issues.webp?url";

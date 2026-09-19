@@ -6,7 +6,7 @@
 
 // pace package imports
 import { Logo } from "@pace/propel/emoji-icon-picker";
-import { ProjectsOutline } from "@makeplane/propel/icons";
+import { ProjectsOutline } from "@pace/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { cn } from "@pace/utils";
 // pace web hooks

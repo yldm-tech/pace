@@ -5,7 +5,7 @@
  */
 
 import type { TIssueLayout } from "@pace/constants";
-import { BoardOutline, ListOutline } from "@makeplane/propel/icons";
+import { BoardOutline, ListOutline } from "@pace/propel/icons";
 import type { ISvgIcons } from "@pace/propel/icons";
 
 export function IssueLayoutIcon({

@@ -6,7 +6,7 @@
 
 import type { TNetworkChoiceIconKey } from "@pace/constants";
 // pace imports
-import { GlobeOutline, LockOutline } from "@makeplane/propel/icons";
+import { GlobeOutline, LockOutline } from "@pace/propel/icons";
 import { cn } from "@pace/utils";
 
 type Props = {

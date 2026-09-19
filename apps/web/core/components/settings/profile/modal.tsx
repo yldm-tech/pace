@@ -5,7 +5,7 @@
  */
 
 import { useCallback } from "react";
-import { CloseOutline } from "@makeplane/propel/icons";
+import { CloseOutline } from "@pace/propel/icons";
 import { observer } from "mobx-react";
 // pace imports
 import { IconButton } from "@pace/propel/icon-button";

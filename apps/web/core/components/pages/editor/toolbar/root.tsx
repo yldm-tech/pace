@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { RightSidePaneOutline } from "@makeplane/propel/icons";
+import { RightSidePaneOutline } from "@pace/propel/icons";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useTranslation } from "@pace/i18n";
 // ui
 import { Button } from "@pace/propel/button";
-import { DeleteOutline } from "@makeplane/propel/icons";
+import { DeleteOutline } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 // hooks

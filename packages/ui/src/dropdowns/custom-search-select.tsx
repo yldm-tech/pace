@@ -5,7 +5,7 @@
  */
 
 import { Combobox } from "@headlessui/react";
-import { ChevronDownOutline, InfoOutline, SearchOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, InfoOutline, SearchOutline, TickOutline } from "@pace/propel/icons";
 import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { AddOutline, CloseOutline, DownloadOutline, MinusOutline, NewTabOutline } from "@makeplane/propel/icons";
+import { AddOutline, CloseOutline, DownloadOutline, MinusOutline, NewTabOutline } from "@pace/propel/icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 // pace imports

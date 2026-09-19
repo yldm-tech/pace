@@ -8,7 +8,7 @@ import React, { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { CalendarOutline, CloseOutline } from "@makeplane/propel/icons";
+import { CalendarOutline, CloseOutline } from "@pace/propel/icons";
 import { Combobox } from "@headlessui/react";
 // ui
 import type { Matcher } from "@pace/propel/calendar";

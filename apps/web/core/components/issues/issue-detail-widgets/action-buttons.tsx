@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { AttachOutline, LinkOutline, RelationsOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { AttachOutline, LinkOutline, RelationsOutline, ViewsOutline } from "@pace/propel/icons";
 import { useTranslation } from "@pace/i18n";
 // pace imports
 import type { TIssueServiceType, TWorkItemWidgets } from "@pace/types";

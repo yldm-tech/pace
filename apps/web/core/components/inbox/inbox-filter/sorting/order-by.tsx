@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { ChevronDownOutline, SortAscendingOutline, SortDescendingOutline, TickOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, SortAscendingOutline, SortDescendingOutline, TickOutline } from "@pace/propel/icons";
 import { INBOX_ISSUE_ORDER_BY_OPTIONS, INBOX_ISSUE_SORT_BY_OPTIONS } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { getButtonStyling } from "@pace/propel/button";

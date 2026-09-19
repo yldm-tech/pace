@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
 import Link from "@/app/hooks/link";
-import { CloseOutline, WarningCircleOutline } from "@makeplane/propel/icons";
+import { CloseOutline, WarningCircleOutline } from "@pace/propel/icons";
 // ui
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import {

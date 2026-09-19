@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
+import { CloseOutline, SearchOutline } from "@pace/propel/icons";
 // pace imports
 import type { TCycleFilters, TCycleGroups } from "@pace/types";
 // hooks

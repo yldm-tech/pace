@@ -10,7 +10,7 @@ import { xor } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
 // icons
-import { AttachOutline, DueDateOutline, LinkOutline, StartDateOutline, ViewsOutline } from "@makeplane/propel/icons";
+import { AttachOutline, DueDateOutline, LinkOutline, StartDateOutline, ViewsOutline } from "@pace/propel/icons";
 // i18n
 import { useTranslation } from "@pace/i18n";
 import { Tooltip } from "@makeplane/propel/components/tooltip";

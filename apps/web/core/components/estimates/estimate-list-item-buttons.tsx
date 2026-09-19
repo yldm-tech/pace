@@ -5,7 +5,7 @@
  */
 
 import { observer } from "mobx-react";
-import { DeleteOutline } from "@makeplane/propel/icons";
+import { DeleteOutline } from "@pace/propel/icons";
 
 type TEstimateListItem = {
   estimateId: string;

@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { ImageOutline, RefreshOutline } from "@makeplane/propel/icons";
+import { ImageOutline, RefreshOutline } from "@pace/propel/icons";
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 // pace imports

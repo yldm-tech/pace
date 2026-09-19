@@ -7,7 +7,7 @@
 import { useState, useRef, forwardRef } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "@/app/hooks/navigation";
-import { MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { MoreHorizontalOutline } from "@pace/propel/icons";
 // pace imports
 import { useOutsideClickDetector } from "@pace/hooks";
 import { Popover } from "@pace/propel/popover";

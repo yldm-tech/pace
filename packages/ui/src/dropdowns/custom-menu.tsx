@@ -5,7 +5,7 @@
  */
 
 import { Menu } from "@headlessui/react";
-import { ChevronDownOutline, ChevronRightOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, ChevronRightOutline, MoreHorizontalOutline } from "@pace/propel/icons";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { usePopper } from "react-popper";

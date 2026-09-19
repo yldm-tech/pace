@@ -5,7 +5,7 @@
  */
 
 import type { Editor } from "@tiptap/core";
-import { AlignCenterOutline, AlignLeftOutline, AlignRightOutline } from "@makeplane/propel/icons";
+import { AlignCenterOutline, AlignLeftOutline, AlignRightOutline } from "@pace/propel/icons";
 import type { ComponentType, SVGProps } from "react";
 // local imports
 import { ECustomImageAttributeNames, ECustomImageStatus } from "./types";
