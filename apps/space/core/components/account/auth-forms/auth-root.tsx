@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useSearchParams } from "@/app/hooks/navigation";
 // pace imports
+import { EAuthModes, EAuthSteps } from "@pace/constants";
 import { SitesAuthService } from "@pace/services";
 import type { IEmailCheckData } from "@pace/types";
 import { OAuthOptions } from "@pace/ui";
@@ -17,8 +18,6 @@ import { EErrorAlertType, authErrorHandler, EAuthenticationErrorCodes } from "@/
 // hooks
 import { useOAuthConfig } from "@/hooks/oauth";
 import { useInstance } from "@/hooks/store/use-instance";
-// types
-import { EAuthModes, EAuthSteps } from "@/types/auth";
 // local imports
 import { TermsAndConditions } from "../terms-and-conditions";
 import { AuthBanner } from "./auth-banner";

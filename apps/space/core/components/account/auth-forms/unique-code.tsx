@@ -7,14 +7,13 @@
 import React, { useEffect, useState } from "react";
 import { CloseCircleOutline, TickCircleOutline } from "@makeplane/propel/icons";
 // pace imports
-import { API_BASE_URL } from "@pace/constants";
+import { API_BASE_URL, EAuthModes } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
 import { Input, Spinner } from "@pace/ui";
 // hooks
 import { useTimer } from "@pace/hooks";
 // types
-import { EAuthModes } from "@/types/auth";
 
 // services
 const authService = new AuthService();

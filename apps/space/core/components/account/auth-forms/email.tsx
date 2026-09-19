@@ -15,8 +15,7 @@ import type { IEmailCheckData } from "@pace/types";
 // ui
 import { Input, Spinner } from "@pace/ui";
 // helpers
-import { cn } from "@pace/utils";
-import { checkEmailValidity } from "@/helpers/string.helper";
+import { checkEmailValidity, cn } from "@pace/utils";
 
 type TAuthEmailForm = {
   defaultEmail: string;

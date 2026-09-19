@@ -17,7 +17,7 @@ import { Listbox, Transition } from "@headlessui/react";
 // ui
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 // helpers
-import { copyTextToClipboard } from "@/helpers/string.helper";
+import { copyTextToClipboard } from "@pace/utils";
 // hooks
 import { useIssueDetails } from "@/hooks/store/use-issue-details";
 import useClipboardWritePermission from "@/hooks/use-clipboard-write-permission";
