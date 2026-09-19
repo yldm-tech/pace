@@ -11,6 +11,7 @@ import { UsageOutline } from "@makeplane/propel/icons";
 import { Button } from "@makeplane/propel/components/button";
 import { Input } from "@makeplane/propel/components/input";
 import { Switch } from "@makeplane/propel/components/switch";
+import { DOCS_URL, externalLink } from "@pace/constants";
 import type { IInstance, IInstanceAdmin } from "@pace/types";
 // components
 import { ControllerInput } from "@/components/common/controller-input";
@@ -18,6 +19,8 @@ import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useTranslation } from "@pace/i18n";
 import { useInstance } from "@/hooks/store";
+
+const telemetryPolicyLink = externalLink(DOCS_URL, "/self-hosting/telemetry");
 
 export interface IGeneralConfigurationForm {
   instance: IInstance;
@@ -113,16 +116,23 @@ export const GeneralConfigurationForm = observer(function GeneralConfigurationFo
                 {t("admin.general.telemetry.description")}
               </div>
               <div className="text-11 leading-5 font-regular text-tertiary">
-                No PII is collected.This anonymized data is used to understand how you use Plane and build new features
-                in line with{" "}
-                <a
-                  href="https://pace.yldm.ai/docs/self-hosting/telemetry"
-                  target="_blank"
-                  className="text-accent-primary hover:underline"
-                  rel="noreferrer"
-                >
-                  our Telemetry Policy.
-                </a>
+                {/* The sentence carries the actual disclosure -- no PII, anonymous, used for feature work -- so it stays either way. What goes with the link is the clause that cites the policy document: naming a Telemetry Policy the reader cannot open claims a document this installation may not publish. Upstream this page linked developers.plane.so, and the docs site is the closest equivalent a fork configures. */}
+                {telemetryPolicyLink ? (
+                  <>
+                    No PII is collected. This anonymized data is used to understand how you use Plane and build new
+                    features in line with{" "}
+                    <a
+                      href={telemetryPolicyLink}
+                      target="_blank"
+                      className="text-accent-primary hover:underline"
+                      rel="noreferrer"
+                    >
+                      our Telemetry Policy.
+                    </a>
+                  </>
+                ) : (
+                  "No PII is collected. This anonymized data is used to understand how you use Plane and build new features."
+                )}
               </div>
             </div>
           </div>

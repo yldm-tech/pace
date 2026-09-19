@@ -5,6 +5,7 @@
  */
 
 import { ChatOutline, MailOutline } from "@makeplane/propel/icons";
+import { TALK_TO_SALES_URL } from "@pace/constants";
 import { EProductSubscriptionEnum } from "@pace/types";
 // pace imports
 import { cn } from "@pace/utils";
@@ -1234,16 +1235,16 @@ export const PLANS_COMPARISON_LIST: TPlansComparisonDetails[] = [
       {
         title: "SLA",
         description: (
+          // The claim that tiers can be requested holds whether or not there is a sales page to request them on, so the phrase stays as plain text when this installation has configured no such page and only the link goes.
           <>
             Get business-friendly SLAs with higher plans. SLAs are by priority of work item and tiers{" "}
-            <a
-              href="https://pace.yldm.ai/talk-to-sales"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              can be requested
-            </a>
+            {TALK_TO_SALES_URL ? (
+              <a href={TALK_TO_SALES_URL} target="_blank" rel="noopener noreferrer" className="underline">
+                can be requested
+              </a>
+            ) : (
+              "can be requested"
+            )}
             .
           </>
         ),

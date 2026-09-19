@@ -19,7 +19,7 @@ import {
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { EmptySpace, EmptySpaceItem } from "@/components/ui/empty-space";
 // constants
-import { WORKSPACE_INVITATION } from "@pace/constants";
+import { FORUM_URL, WORKSPACE_INVITATION } from "@pace/constants";
 // helpers
 import { EPageTypes } from "@/helpers/authentication.helper";
 // hooks
@@ -118,11 +118,10 @@ function WorkspaceInvitationPage() {
                 <EmptySpaceItem Icon={BoxesOutline} title="Continue to home" href="/" />
               )}
               <EmptySpaceItem Icon={StarOutline} title="Star us on GitHub" href="https://github.com/makeplane" />
-              <EmptySpaceItem
-                Icon={ShareAltOutline}
-                title="Join our community of active creators"
-                href="https://pace.yldm.ai/forum"
-              />
+              {/* The community entry is the forum, which this fork does not run at a known address. The list keeps its other entries, so dropping this one leaves the page with somewhere to go. */}
+              {FORUM_URL && (
+                <EmptySpaceItem Icon={ShareAltOutline} title="Join our community of active creators" href={FORUM_URL} />
+              )}
             </EmptySpace>
           )
         ) : (

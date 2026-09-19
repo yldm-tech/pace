@@ -9,7 +9,7 @@ import { useSearchParams } from "@/app/hooks/navigation";
 // icons
 import { HideOutline, ShowOutline } from "@makeplane/propel/icons";
 // pace internal packages
-import { API_BASE_URL, E_PASSWORD_STRENGTH } from "@pace/constants";
+import { API_BASE_URL, DOCS_URL, E_PASSWORD_STRENGTH, externalLink } from "@pace/constants";
 import { Button } from "@makeplane/propel/components/button";
 import { Checkbox } from "@makeplane/propel/components/checkbox";
 import { Input, InputGroup } from "@makeplane/propel/components/input";
@@ -24,6 +24,8 @@ import { useTranslation } from "@pace/i18n";
 
 // service initialization
 const authService = new AuthService();
+
+const telemetryPolicyLink = externalLink(DOCS_URL, "/self-hosting/telemetry");
 
 // error codes
 enum EErrorCodes {
@@ -354,15 +356,21 @@ export function InstanceSetupForm() {
                 />
               </div>
               <label className="cursor-pointer text-13 font-medium text-tertiary" htmlFor="is_telemetry_enabled">
-                {t("admin.setup.telemetry")}{" "}
-                <a
-                  href="https://pace.yldm.ai/docs/self-hosting/telemetry"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:text-blue-600 flex-shrink-0 text-13 font-medium"
-                >
-                  {t("admin.common.see_more")}
-                </a>
+                {t("admin.setup.telemetry")}
+                {/* The label itself says what the checkbox does -- it collects usage events anonymously -- so it needs no rewording when the "See More" link goes. Only the pointer at the telemetry documentation depends on this installation having a docs site. */}
+                {telemetryPolicyLink && (
+                  <>
+                    {" "}
+                    <a
+                      href={telemetryPolicyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-600 flex-shrink-0 text-13 font-medium"
+                    >
+                      {t("admin.common.see_more")}
+                    </a>
+                  </>
+                )}
               </label>
             </div>
 

@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { CHANGELOG_URL } from "@pace/constants";
 import { EmptyStateDetailed } from "@pace/propel/empty-state";
 
 type TProductUpdatesFallbackProps = {
@@ -14,10 +15,10 @@ type TProductUpdatesFallbackProps = {
 export function ProductUpdatesFallback(props: TProductUpdatesFallbackProps) {
   const { description, variant } = props;
   // derived values
-  const changelogUrl =
-    variant === "cloud"
-      ? "https://pace.yldm.ai/changelog?category=cloud"
-      : "https://pace.yldm.ai/changelog?category=self-hosted";
+  // The empty state stays either way, since it is what this modal shows when the updates feed could not be read. Only the button goes when there is no changelog to send anybody to: this screen is already an apology, and a second dead end on top of it is worse than none.
+  const changelogUrl = CHANGELOG_URL
+    ? `${CHANGELOG_URL}?category=${variant === "cloud" ? "cloud" : "self-hosted"}`
+    : "";
 
   return (
     <div className="py-8">
@@ -25,13 +26,17 @@ export function ProductUpdatesFallback(props: TProductUpdatesFallbackProps) {
         assetKey="changelog"
         description={description}
         align="center"
-        actions={[
-          {
-            label: "Go to changelog",
-            variant: "primary",
-            onClick: () => window.open(changelogUrl, "_blank"),
-          },
-        ]}
+        actions={
+          changelogUrl
+            ? [
+                {
+                  label: "Go to changelog",
+                  variant: "primary",
+                  onClick: () => window.open(changelogUrl, "_blank"),
+                },
+              ]
+            : []
+        }
       />
     </div>
   );

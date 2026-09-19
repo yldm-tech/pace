@@ -6,6 +6,7 @@
 
 import { useTheme } from "next-themes";
 // pace imports
+import { STATUS_URL, SUPPORT_EMAIL } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 // assets
 import maintenanceModeDarkModeImage from "@/app/assets/instance/maintenance-mode-dark.svg?url";
@@ -13,18 +14,19 @@ import maintenanceModeLightModeImage from "@/app/assets/instance/maintenance-mod
 // layouts
 import DefaultLayout from "@/layouts/default-layout";
 
+// Both entries are dropped when this installation has not configured them. The previous defaults were upstream's, carried through a domain rename: pace-status.yldm.ai does not resolve at all, and offering a dead status page on the screen a user reaches *because* something broke is worse than offering nothing.
 const linkMap = [
-  {
+  SUPPORT_EMAIL && {
     key: "mail_to",
     label: "Contact Support",
-    value: "mailto:support@yldm.ai",
+    value: `mailto:${SUPPORT_EMAIL}`,
   },
-  {
+  STATUS_URL && {
     key: "status",
     label: "Status Page",
-    value: "https://pace-status.yldm.ai/",
+    value: STATUS_URL,
   },
-];
+].filter(Boolean) as { key: string; label: string; value: string }[];
 
 // Production Error Component
 interface ProdErrorComponentProps {

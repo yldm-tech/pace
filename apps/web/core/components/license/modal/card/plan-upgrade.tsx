@@ -25,7 +25,12 @@ export type PlanUpgradeCardProps = {
   verticalFeatureList?: boolean;
   extraFeatures?: string | React.ReactNode;
   renderTrialButton?: (props: { productId: string | undefined; priceId: string | undefined }) => React.ReactNode;
-  handleCheckout: (params: TCheckoutParams) => void;
+  /**
+   * Omit this to offer the sales contact instead of a checkout button.
+   *
+   * A self-hosted installation has no billing service of its own to check out against -- upstream sent buyers to the vendor's cloud app for that, which this fork has no equivalent of -- so nothing passes it today. It stays a supported prop because wiring up a real checkout is exactly what would make it reachable again.
+   */
+  handleCheckout?: (params: TCheckoutParams) => void;
   isSelfHosted: boolean;
   isTrialAllowed: boolean;
 };
@@ -51,7 +56,7 @@ export const PlanUpgradeCard = observer(function PlanUpgradeCard(props: PlanUpgr
   const yearlyDiscount = calculateYearlyDiscount(monthlyPriceDetails.price, yearlyPriceDetails.price);
   const prices = [monthlyPriceDetails, yearlyPriceDetails];
 
-  if (!product?.is_active) {
+  if (!product?.is_active || !handleCheckout) {
     return (
       <TalkToSalesCard
         planVariant={planVariant}

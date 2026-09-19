@@ -5,6 +5,8 @@
  */
 
 import { ChatOutline, DocumentationOutline, Github, RocketOutline } from "@makeplane/propel/icons";
+// pace imports
+import { DOCS_URL, FORUM_URL } from "@pace/constants";
 // components
 import type { TPowerKCommandConfig } from "@/components/power-k/core/types";
 // hooks
@@ -37,10 +39,10 @@ export const usePowerKHelpCommands = (): TPowerKCommandConfig[] => {
       i18n_title: "power_k.help_actions.open_plane_documentation",
       icon: DocumentationOutline,
       action: () => {
-        window.open("https://pace.yldm.ai/docs/", "_blank", "noopener,noreferrer");
+        window.open(DOCS_URL, "_blank", "noopener,noreferrer");
       },
       isEnabled: () => true,
-      isVisible: () => true,
+      isVisible: () => !!DOCS_URL,
       closeOnSelect: true,
     },
     {
@@ -50,10 +52,10 @@ export const usePowerKHelpCommands = (): TPowerKCommandConfig[] => {
       i18n_title: "power_k.help_actions.join_forum",
       icon: ChatOutline,
       action: () => {
-        window.open("https://pace.yldm.ai/forum", "_blank", "noopener,noreferrer");
+        window.open(FORUM_URL, "_blank", "noopener,noreferrer");
       },
       isEnabled: () => true,
-      isVisible: () => true,
+      isVisible: () => !!FORUM_URL,
       closeOnSelect: true,
     },
     {

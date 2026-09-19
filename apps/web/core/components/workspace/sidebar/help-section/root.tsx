@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { HelpOutline, PagesOutline, UserOutline } from "@makeplane/propel/icons";
+import { DOCS_URL, FORUM_URL, SUPPORT_EMAIL } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 // ui
 import { CustomMenu } from "@pace/ui";
@@ -46,19 +47,24 @@ export const HelpMenuRoot = observer(function HelpMenuRoot() {
         maxHeight="lg"
         closeOnSelect
       >
-        <CustomMenu.MenuItem onClick={() => window.open("https://pace.yldm.ai/docs", "_blank")}>
-          <div className="flex items-center gap-x-2 rounded-sm text-11">
-            <PagesOutline className="h-3.5 w-3.5 text-secondary" height={14} width={14} />
-            <span className="text-11">{t("documentation")}</span>
-          </div>
-        </CustomMenu.MenuItem>
-        <CustomMenu.MenuItem onClick={() => window.open("mailto:support@yldm.ai", "_blank")}>
-          <div className="flex items-center gap-x-2 rounded-sm text-11">
-            <UserOutline className="h-3.5 w-3.5 text-secondary" width={14} height={14} />
-            <span className="text-11">{t("contact_sales")}</span>
-          </div>
-        </CustomMenu.MenuItem>
-        <div className="my-1 border-t border-subtle" />
+        {/* The documentation site, the support address and the forum are all per-installation configuration this fork ships empty, and each entry is dropped when its own is missing: a menu row whose only job is to open a link has nothing to do without one. The divider goes with them, so the menu does not open on a rule with nothing above it. */}
+        {DOCS_URL && (
+          <CustomMenu.MenuItem onClick={() => window.open(DOCS_URL, "_blank")}>
+            <div className="flex items-center gap-x-2 rounded-sm text-11">
+              <PagesOutline className="h-3.5 w-3.5 text-secondary" height={14} width={14} />
+              <span className="text-11">{t("documentation")}</span>
+            </div>
+          </CustomMenu.MenuItem>
+        )}
+        {SUPPORT_EMAIL && (
+          <CustomMenu.MenuItem onClick={() => window.open(`mailto:${SUPPORT_EMAIL}`, "_blank")}>
+            <div className="flex items-center gap-x-2 rounded-sm text-11">
+              <UserOutline className="h-3.5 w-3.5 text-secondary" width={14} height={14} />
+              <span className="text-11">{t("contact_sales")}</span>
+            </div>
+          </CustomMenu.MenuItem>
+        )}
+        {(DOCS_URL || SUPPORT_EMAIL) && <div className="my-1 border-t border-subtle" />}
         <CustomMenu.MenuItem>
           <button
             type="button"
@@ -77,11 +83,13 @@ export const HelpMenuRoot = observer(function HelpMenuRoot() {
             <span className="text-11">{t("whats_new")}</span>
           </button>
         </CustomMenu.MenuItem>
-        <CustomMenu.MenuItem onClick={() => window.open("https://pace.yldm.ai/forum", "_blank", "noopener,noreferrer")}>
-          <div className="flex items-center gap-x-2 rounded-sm text-11">
-            <span className="text-11">Forum</span>
-          </div>
-        </CustomMenu.MenuItem>
+        {FORUM_URL && (
+          <CustomMenu.MenuItem onClick={() => window.open(FORUM_URL, "_blank", "noopener,noreferrer")}>
+            <div className="flex items-center gap-x-2 rounded-sm text-11">
+              <span className="text-11">Forum</span>
+            </div>
+          </CustomMenu.MenuItem>
+        )}
         <div className="mt-1 border-t border-subtle px-1 pt-2 text-11 text-secondary">
           <PlaneVersionNumber />
         </div>
