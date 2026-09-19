@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"github.com/yldm-tech/pace/apps/api/internal/uploads"
@@ -435,18 +436,14 @@ func (handler *Handler) projectAsset(c *gin.Context, user *auth.User, uploadedOn
 	return assets[0], true
 }
 
-// requireProjectMember is the project branch of allow_permission: an active membership of the project named in the url, at any role.
+// requireProjectMember is the project branch of allow_permission: an active membership of the project named in the url, at any role. The project is the :id parameter on these routes rather than the :project the external API uses.
 func (handler *Handler) requireProjectMember(c *gin.Context, user *auth.User) bool {
-	var count int64
-	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
-		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE",
-			c.Param("slug"), c.Param("id"), user.ID).Count(&count).Error
+	_, member, err := access.ProjectRole(c.Request.Context(), handler.db, c.Param("slug"), c.Param("id"), user.ID)
 	if err != nil {
 		handler.internalError(c, err)
 		return false
 	}
-	if count == 0 {
+	if !member {
 		forbidden(c)
 		return false
 	}

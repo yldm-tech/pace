@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -93,7 +94,7 @@ func (handler *Handler) issueActivityRows(ctx context.Context, slug, projectID, 
 	query := handler.db.WithContext(ctx).Table("issue_activities ia").
 		Joins("JOIN workspaces w ON w.id = ia.workspace_id").
 		Joins("JOIN projects p ON p.id = ia.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = ia.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Joins(access.MemberJoin("ia", "project_id"), userID).
 		Where(`ia.issue_id = ? AND ia.deleted_at IS NULL AND w.slug = ? AND p.archived_at IS NULL
 			AND (ia.field IS NULL OR ia.field NOT IN ?)`, issueID, slug, hiddenActivityFields)
 	if since != nil {
@@ -270,7 +271,7 @@ func (handler *Handler) issueActivityComments(ctx context.Context, slug, project
 	query := handler.db.WithContext(ctx).Table("issue_comments ic").
 		Joins("JOIN workspaces w ON w.id = ic.workspace_id").
 		Joins("JOIN projects p ON p.id = ic.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = ic.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Joins(access.MemberJoin("ic", "project_id"), userID).
 		Where("ic.issue_id = ? AND ic.deleted_at IS NULL AND w.slug = ? AND p.archived_at IS NULL", issueID, slug)
 	if since != nil {
 		query = query.Where("ic.created_at > ?", *since)

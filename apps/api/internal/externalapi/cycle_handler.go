@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"gorm.io/gorm"
 )
@@ -98,7 +99,7 @@ func (handler *Handler) archivedCycleList(c *gin.Context, user *auth.User, _ API
 	err := handler.db.WithContext(c.Request.Context()).Table("cycles c").
 		Select(externalCycleAnnotations()).
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
-		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("c", "project_id"), user.ID).
 		Joins("LEFT JOIN cycle_issues ci ON ci.cycle_id = c.id").
 		Joins("LEFT JOIN issues ii ON ii.id = ci.issue_id").
 		Joins("LEFT JOIN estimate_points ep ON ep.id = ii.estimate_point_id").

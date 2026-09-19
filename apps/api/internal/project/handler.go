@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"github.com/yldm-tech/pace/apps/api/internal/projects"
@@ -633,19 +634,10 @@ func (handler *Handler) createDefaultStates(tx *gorm.DB, project Project, actorI
 	return projects.CreateDefaultStates(tx, project.ID, project.WorkspaceID, actorID, now, newUUID)
 }
 
+// workspaceRole is the role lookup for the callers that treat "not a member" and "no matching role" alike: a miss is role 0, which is not one of the three roles, so every allowlist refuses it. The callers that have to tell a missing membership from a role they do not want read workspaceMemberRole, which is the one query behind both.
 func (handler *Handler) workspaceRole(ctx context.Context, slug, userID string) (int, error) {
-	var role *int
-	err := handler.db.WithContext(ctx).Table("workspace_members wm").
-		Joins("JOIN workspaces w ON w.id = wm.workspace_id").
-		Where("w.slug = ? AND wm.member_id = ? AND wm.is_active = TRUE AND wm.deleted_at IS NULL", slug, userID).
-		Select("wm.role").Limit(1).Scan(&role).Error
-	if err != nil {
-		return 0, err
-	}
-	if role == nil {
-		return 0, nil
-	}
-	return *role, nil
+	role, _, err := handler.workspaceMemberRole(ctx, slug, userID)
+	return role, err
 }
 
 func (handler *Handler) requireWorkspaceRole(c *gin.Context, user *auth.User, allowed ...int) bool {
@@ -675,12 +667,8 @@ func (handler *Handler) workspaceOrProjectAdmin(ctx context.Context, slug, proje
 	if workspaceAdmins > 0 {
 		return true, nil
 	}
-	var projectAdmins int64
-	err = handler.db.WithContext(ctx).Table("project_members pm").
-		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.member_id = ? AND pm.project_id = ? AND pm.role = ? AND pm.is_active = TRUE AND pm.deleted_at IS NULL", slug, userID, projectID, roleAdmin).
-		Count(&projectAdmins).Error
-	return projectAdmins > 0, err
+	role, member, err := access.ProjectRole(ctx, handler.db, slug, projectID, userID)
+	return member && role == roleAdmin, err
 }
 
 // projectMemberIDsIncludingBots backs the membership check in retrieve, which

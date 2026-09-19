@@ -38,7 +38,7 @@ func (handler *Handler) registerWorkspaceUserRoutes(router gin.IRouter) {
 // It guards nothing but the session. What stands in for a permission is the pair of lookups it opens with: the caller has to be an active member of the workspace and so does the person being asked about, and either one missing is a 404 rather than a 403.
 func (handler *Handler) workspaceUserProfile(c *gin.Context, user *auth.User) {
 	slug, target := c.Param("slug"), c.Param("user")
-	callerRole, found, err := handler.activeWorkspaceRole(c.Request.Context(), slug, user.ID)
+	callerRole, found, err := handler.workspaceMemberRole(c.Request.Context(), slug, user.ID)
 	if err != nil {
 		handler.internalError(c, err)
 		return
@@ -723,19 +723,6 @@ func (handler *Handler) workspaceProjectMembers(c *gin.Context, user *auth.User)
 		grouped[row.ProjectID] = append(existing, member)
 	}
 	drf.Respond(c, http.StatusOK, grouped)
-}
-
-// activeWorkspaceRole reads the caller's role, and reports whether they are a member at all.
-func (handler *Handler) activeWorkspaceRole(ctx context.Context, slug, userID string) (int, bool, error) {
-	var roles []int
-	err := handler.db.WithContext(ctx).Table("workspace_members wm").
-		Joins("JOIN workspaces w ON w.id = wm.workspace_id").
-		Where("w.slug = ? AND wm.member_id = ? AND wm.is_active = TRUE AND wm.deleted_at IS NULL", slug, userID).
-		Limit(1).Pluck("wm.role", &roles).Error
-	if err != nil || len(roles) == 0 {
-		return 0, false, err
-	}
-	return roles[0], true, nil
 }
 
 // workspaceMemberProfile is the eight fields the profile reports about a person, which stop short of anything an account needs.

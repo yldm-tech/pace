@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 )
@@ -65,7 +66,7 @@ func (handler *Handler) moduleRows(c *gin.Context, userID, moduleID string) ([]m
 		Select(moduleAnnotations(), userID, c.Param("id"), c.Param("slug")).
 		Joins("JOIN workspaces w ON w.id = m.workspace_id").
 		Joins("JOIN projects p ON p.id = m.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = m.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Joins(access.MemberJoin("m", "project_id"), userID).
 		Where("w.slug = ? AND m.project_id = ? AND m.deleted_at IS NULL AND m.archived_at IS NULL",
 			c.Param("slug"), c.Param("id"))
 	if moduleID != "" {

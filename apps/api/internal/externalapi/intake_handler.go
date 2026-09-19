@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"github.com/yldm-tech/pace/apps/api/internal/htmlsanitizer"
@@ -490,17 +491,9 @@ func (handler *Handler) requireProjectLite(c *gin.Context, user *auth.User) bool
 	return true
 }
 
+// projectRole reads the caller's role in the project named in the url, and reports whether they are a member of it at all. It is what ProjectLitePermission asks, and what requireProjectBase asks for a write that is neither a create nor a safe method.
 func (handler *Handler) projectRole(c *gin.Context, user *auth.User) (int, bool, error) {
-	var roles []int
-	err := handler.db.WithContext(c.Request.Context()).Table("project_members pm").
-		Joins("JOIN workspaces w ON w.id = pm.workspace_id").
-		Where("w.slug = ? AND pm.project_id = ? AND pm.member_id = ? AND pm.is_active = TRUE",
-			c.Param("slug"), c.Param("project"), user.ID).
-		Limit(1).Pluck("pm.role", &roles).Error
-	if err != nil || len(roles) == 0 {
-		return 0, false, err
-	}
-	return roles[0], true, nil
+	return access.ProjectRole(c.Request.Context(), handler.db, c.Param("slug"), c.Param("project"), user.ID)
 }
 
 // projectIntakeIfEnabled reports the project's intake and whether the list should read it at all.

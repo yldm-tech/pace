@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -200,7 +201,7 @@ func (handler *Handler) memberIssueScopeAnyProject(c *gin.Context, user *auth.Us
 	return handler.db.WithContext(c.Request.Context()).Table("issues i").
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Joins("JOIN projects p ON p.id = i.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = i.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("i", "project_id"), user.ID).
 		Where("w.slug = ?", slug)
 }
 
@@ -276,7 +277,7 @@ func (handler *Handler) projectScopedTable(c *gin.Context, user *auth.User, tabl
 	database := handler.db.WithContext(c.Request.Context()).Table(table+" t").
 		Joins("JOIN workspaces w ON w.id = t.workspace_id").
 		Joins("JOIN projects p ON p.id = t.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = t.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("t", "project_id"), user.ID).
 		Where("w.slug = ? AND t.deleted_at IS NULL", slug)
 	if projectID != "" {
 		database = database.Where("t.project_id = ?", projectID)
@@ -290,7 +291,7 @@ func (handler *Handler) searchMentionablePages(c *gin.Context, user *auth.User, 
 		Joins("JOIN workspaces w ON w.id = pg.workspace_id").
 		Joins("JOIN project_pages pp ON pp.page_id = pg.id").
 		Joins("JOIN projects p ON p.id = pp.project_id").
-		Joins("JOIN project_members pm ON pm.project_id = pp.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("pp", "project_id"), user.ID).
 		Where("w.slug = ? AND pg.deleted_at IS NULL AND pg.access = ?", slug, pagePublicAccess)
 	if projectID != "" {
 		database = database.Where("pp.project_id = ?", projectID)

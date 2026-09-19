@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -135,7 +136,7 @@ func (handler *Handler) searchWorkspaces(c *gin.Context, user *auth.User, search
 func (handler *Handler) searchProjects(c *gin.Context, user *auth.User, search, slug string) ([]gin.H, error) {
 	query := handler.db.WithContext(c.Request.Context()).Table("projects p").
 		Joins("JOIN workspaces w ON w.id = p.workspace_id").
-		Joins("JOIN project_members pm ON pm.project_id = p.id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("p", "id"), user.ID).
 		Where("w.slug = ? AND p.archived_at IS NULL AND p.deleted_at IS NULL", slug)
 	if search != "" {
 		query = query.Where("p.name ILIKE ? OR p.identifier ILIKE ?", "%"+search+"%", "%"+search+"%")
@@ -190,7 +191,7 @@ func (handler *Handler) memberIssueScope(c *gin.Context, user *auth.User, slug s
 	return handler.db.WithContext(c.Request.Context()).Table("issues i").
 		Joins("JOIN workspaces w ON w.id = i.workspace_id").
 		Joins("JOIN projects p ON p.id = i.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = i.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("i", "project_id"), user.ID).
 		Where("w.slug = ?", slug)
 }
 
@@ -225,7 +226,7 @@ func (handler *Handler) searchNamed(c *gin.Context, user *auth.User, search, slu
 	query := handler.db.WithContext(c.Request.Context()).Table(table+" t").
 		Joins("JOIN workspaces w ON w.id = t.workspace_id").
 		Joins("JOIN projects p ON p.id = t.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = t.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("t", "project_id"), user.ID).
 		Where("w.slug = ? AND t.deleted_at IS NULL", slug)
 	if search != "" {
 		query = query.Where("t.name ILIKE ?", "%"+search+"%")
@@ -261,7 +262,7 @@ func (handler *Handler) searchPages(c *gin.Context, user *auth.User, search, slu
 		Joins("JOIN workspaces w ON w.id = pg.workspace_id").
 		Joins("JOIN project_pages pp ON pp.page_id = pg.id").
 		Joins("JOIN projects p ON p.id = pp.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = pp.project_id AND pm.member_id = ? AND pm.is_active = TRUE", user.ID).
+		Joins(access.MemberJoin("pp", "project_id"), user.ID).
 		Where("w.slug = ? AND pg.deleted_at IS NULL", slug)
 	if search != "" {
 		query = query.Where("pg.name ILIKE ?", "%"+search+"%")

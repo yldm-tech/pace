@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"github.com/yldm-tech/pace/apps/api/internal/access"
 	"github.com/yldm-tech/pace/apps/api/internal/auth"
 	"github.com/yldm-tech/pace/apps/api/internal/drf"
 	"gorm.io/gorm"
@@ -89,7 +90,7 @@ func (handler *Handler) cycleRows(c *gin.Context, slug, projectID, userID string
 		Select(cycleAnnotations(), userID, projectID, slug, now, now, now, now).
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
 		Joins("JOIN projects p ON p.id = c.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Joins(access.MemberJoin("c", "project_id"), userID).
 		Where("w.slug = ? AND c.project_id = ? AND c.deleted_at IS NULL AND c.archived_at IS NULL", slug, projectID)
 	if currentOnly {
 		query = query.Where("c.start_date <= ? AND c.end_date >= ?", now, now)
@@ -116,7 +117,7 @@ func (handler *Handler) cycleRowsByID(c *gin.Context, slug, projectID, userID, c
 		Select(selection, arguments...).
 		Joins("JOIN workspaces w ON w.id = c.workspace_id").
 		Joins("JOIN projects p ON p.id = c.project_id AND p.archived_at IS NULL").
-		Joins("JOIN project_members pm ON pm.project_id = c.project_id AND pm.member_id = ? AND pm.is_active = TRUE", userID).
+		Joins(access.MemberJoin("c", "project_id"), userID).
 		Where("w.slug = ? AND c.project_id = ? AND c.id = ? AND c.deleted_at IS NULL", slug, projectID, cycleID).
 		Group("c.id").Limit(1).Scan(&rows).Error
 	return rows, err
