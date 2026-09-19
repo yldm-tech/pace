@@ -16,7 +16,7 @@ import { EUserProjectRoles } from "@pace/types";
 import darkPagesAsset from "@/assets/empty-state/disabled-feature/pages-dark.webp?url";
 import lightPagesAsset from "@/assets/empty-state/disabled-feature/pages-light.webp?url";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { DetailedEmptyState } from "@/components/empty-state/detailed-empty-state-root";
 import { PagesListRoot } from "@/components/pages/list/root";
 import { PagesListView } from "@/components/pages/pages-list-view";

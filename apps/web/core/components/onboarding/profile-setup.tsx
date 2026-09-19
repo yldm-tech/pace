@@ -21,7 +21,7 @@ import { Spinner } from "@pace/propel/spinners";
 import { PasswordStrengthIndicator } from "@pace/ui";
 // components
 import { cn, getFileURL, getPasswordStrength, validatePersonName } from "@pace/utils";
-import { UserImageUploadModal } from "@/components/core/modals/user-image-upload-modal";
+import { UserImageUploadModal } from "@/components/profile/user-image-upload-modal";
 // hooks
 import { useUser, useUserProfile } from "@/hooks/store/user";
 // services

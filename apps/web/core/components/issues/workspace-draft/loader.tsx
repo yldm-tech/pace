@@ -6,7 +6,7 @@
 
 import { range } from "lodash-es";
 // components
-import { ListLoaderItemRow } from "@/components/ui/loader/layouts/list-layout-loader";
+import { ListLoaderItemRow } from "@/components/skeletons/loader/layouts/list-layout-loader";
 
 type TWorkspaceDraftIssuesLoader = {
   items?: number;

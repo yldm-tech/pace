@@ -13,7 +13,7 @@ import type { IBlockUpdateData } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 // components
 import RenderIfVisible from "@/components/core/render-if-visible-hoc";
-import { GanttLayoutListItemLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
+import { GanttLayoutListItemLoader } from "@/components/skeletons/loader/layouts/gantt-layout-loader";
 //hooks
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useIssuesStore } from "@/hooks/use-issue-layout-store";

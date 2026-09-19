@@ -17,7 +17,7 @@ import { EFileAssetType } from "@pace/types";
 import { cn } from "@pace/utils";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { IssuePeekOverview } from "@/components/issues/peek-overview";
 import type { TPageRootConfig, TPageRootHandlers } from "@/components/pages/editor/page-root";
 import { PageRoot } from "@/components/pages/editor/page-root";

@@ -5,7 +5,7 @@
  */
 
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { WorkspaceDraftIssuesRoot } from "@/components/issues/workspace-draft";
 import type { Route } from "./+types/page";
 

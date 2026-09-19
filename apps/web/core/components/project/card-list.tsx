@@ -12,7 +12,7 @@ import { EmptyStateDetailed } from "@pace/propel/empty-state";
 import { ContentWrapper } from "@pace/ui";
 // components
 import { calculateTotalFilters } from "@pace/utils";
-import { ProjectsLoader } from "@/components/ui/loader/projects-loader";
+import { ProjectsLoader } from "@/components/skeletons/loader/projects-loader";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useProject } from "@/hooks/store/use-project";

@@ -10,7 +10,7 @@ import { useTranslation } from "@pace/i18n";
 // components
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ProjectSettingsFeatureControlItem } from "@/components/settings/project/content/feature-control-item";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 // hooks

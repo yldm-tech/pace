@@ -19,7 +19,7 @@ import { EFileAssetType } from "@pace/types";
 import { Skeleton } from "@pace/propel/skeleton";
 import { getDescriptionPlaceholderI18n, getTabIndex } from "@pace/utils";
 // components
-import { GptAssistantPopover } from "@/components/core/modals/gpt-assistant-popover";
+import { GptAssistantPopover } from "@/components/editor/gpt-assistant-popover";
 import { RichTextEditor } from "@/components/editor/rich-text";
 // helpers
 // hooks

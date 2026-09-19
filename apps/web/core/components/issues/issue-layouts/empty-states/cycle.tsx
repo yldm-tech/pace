@@ -16,7 +16,7 @@ import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { ISearchIssueResponse } from "@pace/types";
 import { EIssuesStoreType, EUserProjectRoles } from "@pace/types";
 // components
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useIssues } from "@/hooks/store/use-issues";

@@ -10,9 +10,9 @@ import useSWR from "swr";
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { useTranslation } from "@pace/i18n";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { SingleIntegrationCard } from "@/components/integration/single-integration-card";
-import { IntegrationsSettingsLoader } from "@/components/ui/loader/settings/integration";
+import { IntegrationsSettingsLoader } from "@/components/skeletons/loader/settings/integration";
 // constants
 import { APP_INTEGRATIONS } from "@pace/constants";
 // hooks

@@ -15,7 +15,7 @@ import type { TIssue, ISearchIssueResponse, TIssueKanbanFilters, TIssueGroupByOp
 // ui
 import { CustomMenu } from "@pace/ui";
 // components
-import { ExistingIssuesListModal } from "@/components/core/modals/existing-issues-list-modal";
+import { ExistingIssuesListModal } from "@/components/issues/existing-issues-list-modal";
 import { CreateUpdateIssueModal } from "@/components/issues/issue-modal/modal";
 // constants
 import { useIssueStoreType } from "@/hooks/use-issue-layout-store";

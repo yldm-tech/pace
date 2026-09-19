@@ -15,7 +15,7 @@ import RenderIfVisible from "@/components/core/render-if-visible-hoc";
 import { BLOCK_HEIGHT } from "@/components/gantt-chart/constants";
 import { GanttDnDHOC } from "@/components/gantt-chart/sidebar/gantt-dnd-hoc";
 import { handleOrderChange } from "@/components/gantt-chart/sidebar/utils";
-import { GanttLayoutListItemLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
+import { GanttLayoutListItemLoader } from "@/components/skeletons/loader/layouts/gantt-layout-loader";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useTimeLineChartStore } from "@/hooks/use-timeline-chart";
 

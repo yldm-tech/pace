@@ -5,8 +5,8 @@
  */
 
 import { Outlet } from "react-router";
-import { AppHeader } from "@/components/core/app-header";
-import { ContentWrapper } from "@/components/core/content-wrapper";
+import { AppHeader } from "@/components/shell/app-header";
+import { ContentWrapper } from "@/components/shell/content-wrapper";
 import { WorkspaceStickyHeader } from "./header";
 
 export default function WorkspaceStickiesLayout() {

@@ -6,7 +6,7 @@
 
 import { observer } from "mobx-react";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ArchivedModuleLayoutRoot, ArchivedModulesHeader } from "@/components/modules";
 // hooks
 import { useProject } from "@/hooks/store/use-project";

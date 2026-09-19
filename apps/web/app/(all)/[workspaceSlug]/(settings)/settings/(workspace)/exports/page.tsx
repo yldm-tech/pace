@@ -10,7 +10,7 @@ import { useTranslation } from "@pace/i18n";
 import { cn } from "@pace/utils";
 // components
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ExportGuide } from "@/components/exporter/guide";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 import { SettingsHeading } from "@/components/settings/heading";

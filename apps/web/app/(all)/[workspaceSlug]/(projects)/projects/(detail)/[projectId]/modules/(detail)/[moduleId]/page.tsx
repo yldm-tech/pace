@@ -12,7 +12,7 @@ import { cn } from "@pace/utils";
 import emptyModule from "@/assets/empty-state/module.svg?url";
 // components
 import { EmptyState } from "@/components/empty-state/empty-state";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { ModuleLayoutRoot } from "@/components/issues/issue-layouts/roots/module-layout-root";
 import { ModuleAnalyticsSidebar } from "@/components/modules";
 // hooks

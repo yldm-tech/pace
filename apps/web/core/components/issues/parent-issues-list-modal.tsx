@@ -19,7 +19,7 @@ import { Skeleton } from "@pace/propel/skeleton";
 import { EModalPosition, EModalWidth, ModalCore } from "@pace/ui";
 import { generateWorkItemLink, getTabIndex } from "@pace/utils";
 // components
-import { IssueSearchModalEmptyState } from "@/components/core/modals/issue-search-modal-empty-state";
+import { IssueSearchModalEmptyState } from "@/components/issues/issue-search-modal-empty-state";
 import { IssueIdentifier } from "@/components/issues/issue-detail/issue-identifier";
 // hooks
 import useDebounce from "@/hooks/use-debounce";

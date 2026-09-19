@@ -14,7 +14,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { Skeleton } from "@pace/propel/skeleton";
 // components
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { IssueDetailRoot } from "@/components/issues/issue-detail";
 // constants
 // hooks

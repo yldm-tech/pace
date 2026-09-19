@@ -13,7 +13,7 @@ import type { IWebhook } from "@pace/types";
 // ui
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 import { DeleteWebhookModal, WebhookDeleteSection, WebhookForm } from "@/components/web-hooks";
 // hooks

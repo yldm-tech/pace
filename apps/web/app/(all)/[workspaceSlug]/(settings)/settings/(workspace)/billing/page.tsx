@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // component
 import { EUserPermissions, EUserPermissionsLevel } from "@pace/constants";
 import { NotAuthorizedView } from "@/components/auth-screens/not-authorized-view";
-import { PageHead } from "@/components/core/page-title";
+import { PageHead } from "@/components/shell/page-title";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";

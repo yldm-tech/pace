@@ -16,9 +16,9 @@ import { ContentWrapper, Row, ERowVariant } from "@pace/ui";
 // components
 import { ListLayout } from "@/components/core/list";
 import { ModuleCardItem, ModuleListItem, ModulePeekOverview, ModulesListGanttChartView } from "@/components/modules";
-import { CycleModuleBoardLayoutLoader } from "@/components/ui/loader/cycle-module-board-loader";
-import { CycleModuleListLayoutLoader } from "@/components/ui/loader/cycle-module-list-loader";
-import { GanttLayoutLoader } from "@/components/ui/loader/layouts/gantt-layout-loader";
+import { CycleModuleBoardLayoutLoader } from "@/components/skeletons/loader/cycle-module-board-loader";
+import { CycleModuleListLayoutLoader } from "@/components/skeletons/loader/cycle-module-list-loader";
+import { GanttLayoutLoader } from "@/components/skeletons/loader/layouts/gantt-layout-loader";
 // hooks
 import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useModule } from "@/hooks/store/use-module";

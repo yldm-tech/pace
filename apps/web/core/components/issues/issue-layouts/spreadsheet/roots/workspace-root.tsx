@@ -12,7 +12,7 @@ import type { IIssueDisplayFilterOptions } from "@pace/types";
 import { EIssuesStoreType, EIssueLayoutTypes } from "@pace/types";
 // components
 import { AllIssueQuickActions } from "@/components/issues/issue-layouts/quick-action-dropdowns";
-import { SpreadsheetLayoutLoader } from "@/components/ui/loader/layouts/spreadsheet-layout-loader";
+import { SpreadsheetLayoutLoader } from "@/components/skeletons/loader/layouts/spreadsheet-layout-loader";
 // hooks
 import { useIssues } from "@/hooks/store/use-issues";
 import { useUserPermissions } from "@/hooks/store/user";

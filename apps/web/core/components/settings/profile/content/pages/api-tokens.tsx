@@ -16,7 +16,7 @@ import { APITokenService } from "@pace/services";
 import { CreateApiTokenModal } from "@/components/api-token/modal/create-token-modal";
 import { ApiTokenListItem } from "@/components/api-token/token-list-item";
 import { ProfileSettingsHeading } from "@/components/settings/profile/heading";
-import { APITokenSettingsLoader } from "@/components/ui/loader/settings/api-token";
+import { APITokenSettingsLoader } from "@/components/skeletons/loader/settings/api-token";
 // constants
 import { API_TOKENS_LIST } from "@pace/constants";
 
