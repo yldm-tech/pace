@@ -206,7 +206,7 @@ export class WorkspaceIssuesFilter extends IssueFilterHelperStore implements IWo
 
       this.rootIssueStore.workspaceIssues.fetchIssuesWithExistingPagination(workspaceSlug, viewId, "mutation");
     } catch (error) {
-      console.log("error while updating rich filters", error);
+      console.error("error while updating rich filters", error);
       throw error;
     }
   };

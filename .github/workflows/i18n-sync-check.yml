@@ -52,3 +52,10 @@ jobs:
 
       - name: Run sync check
         run: pnpm dlx tsx packages/i18n/scripts/sync-check.ts --ci
+
+      # Report only, and deliberately not a gate: it infers whether a key is used from the string literals in apps/ and packages/, which is a heuristic that goes wrong the moment a key is assembled somewhere the template-prefix scan does not model. Gating on it would fail an unrelated PR for a key it never touched. `--summary` keeps it to counts and per-namespace totals; run `pnpm --filter @pace/i18n unused:check` locally for the full key list, and `--max=<n>` if this is ever ratcheted.
+      #
+      # The job's path filters are not widened for this step even though it reads every app: the number only needs to be visible when someone is already working on the catalogue, and triggering this workflow on all of apps/ would run it on nearly every PR to print a figure nothing gates on.
+      - name: Report unused keys
+        continue-on-error: true
+        run: pnpm dlx tsx packages/i18n/scripts/unused-check.ts --summary

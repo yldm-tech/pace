@@ -102,7 +102,7 @@ export const InboxIssueDescription = observer(function InboxIssueDescription(pro
           onAssetUpload?.(asset_id);
           return asset_id;
         } catch (error) {
-          console.log("Error in uploading work item asset:", error);
+          console.error("Error in uploading work item asset:", error);
           throw new Error("Asset upload failed. Please try again later.");
         }
       }}

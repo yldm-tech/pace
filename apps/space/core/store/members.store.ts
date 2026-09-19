@@ -8,7 +8,7 @@ import { set } from "lodash-es";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 // pace imports
 import { SitesMemberService } from "@pace/services";
-import type { TPublicMember } from "@/types/member";
+import type { TPublicMember } from "@pace/types";
 import type { RootStore } from "./root.store";
 
 export interface IIssueMemberStore {

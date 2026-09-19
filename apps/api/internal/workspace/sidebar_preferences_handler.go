@@ -177,7 +177,3 @@ func preferenceFloat(raw json.RawMessage) (float64, error) {
 	}
 	return result, nil
 }
-
-func sidebarPreferenceJSON(preference WorkspaceUserPreference) gin.H {
-	return gin.H{"key": preference.Key, "is_pinned": preference.IsPinned, "sort_order": preference.SortOrder, "updated_at": preference.UpdatedAt}
-}

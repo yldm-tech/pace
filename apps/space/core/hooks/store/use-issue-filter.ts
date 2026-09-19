@@ -12,6 +12,6 @@ import type { IIssueFilterStore } from "@/store/issue-filters.store";
 
 export const useIssueFilter = (): IIssueFilterStore => {
   const context = useContext(StoreContext);
-  if (context === undefined) throw new Error("useUserProfile must be used within StoreProvider");
+  if (context === undefined) throw new Error("useIssueFilter must be used within StoreProvider");
   return context.issueFilter;
 };

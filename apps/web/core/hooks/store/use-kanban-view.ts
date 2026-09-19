@@ -12,6 +12,6 @@ import type { IIssueKanBanViewStore } from "@/store/issue/issue-kanban-view.stor
 
 export const useKanbanView = (): IIssueKanBanViewStore => {
   const context = useContext(StoreContext);
-  if (context === undefined) throw new Error("useLabel must be used within StoreProvider");
+  if (context === undefined) throw new Error("useKanbanView must be used within StoreProvider");
   return context.issue.issueKanBanView;
 };

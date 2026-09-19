@@ -6,9 +6,6 @@
 
 export * from "./app-installation.service";
 export * from "./instance-workspace.service";
-export * from "./invitation.service";
-export * from "./member.service";
 export * from "./notification.service";
-export * from "./view.service";
 export * from "./workspace-draft.service";
 export * from "./workspace.service";

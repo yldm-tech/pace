@@ -12,6 +12,6 @@ import type { IStateStore } from "@/store/state.store";
 
 export const useStates = (): IStateStore => {
   const context = useContext(StoreContext);
-  if (context === undefined) throw new Error("useState must be used within StoreProvider");
+  if (context === undefined) throw new Error("useStates must be used within StoreProvider");
   return context.state;
 };

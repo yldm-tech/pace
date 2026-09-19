@@ -87,7 +87,7 @@ export const UserImageUploadModal = observer(function UserImageUploadModal(props
       }
       await handleRemove();
     } catch (error) {
-      console.log("Error in uploading user asset:", error);
+      console.error("Error in uploading user asset:", error);
     } finally {
       setIsRemoving(false);
     }

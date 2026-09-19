@@ -221,7 +221,7 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
                     onAssetUpload(asset_id);
                     return asset_id;
                   } catch (error) {
-                    console.log("Error in uploading issue asset:", error);
+                    console.error("Error in uploading issue asset:", error);
                     throw new Error("Asset upload failed. Please try again later.");
                   }
                 }}

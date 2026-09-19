@@ -4,7 +4,6 @@
  * See the LICENSE file for details.
  */
 
-export * from "./favorite.service";
 export * from "./sites-member.service";
 export * from "./sticky.service";
 export * from "./user.service";

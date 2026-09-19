@@ -169,7 +169,6 @@ export const SidebarFavoritesMenu = observer(function SidebarFavoritesMenu() {
         onDrop: ({ source }) => {
           setIsDragging(false);
           const sourceId = source?.data?.id as string | undefined;
-          console.log({ sourceId });
           if (!sourceId || !groupedFavorites[sourceId].parent) return;
         },
       })

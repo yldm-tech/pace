@@ -7,7 +7,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 // pace imports
 import { SitesCycleService } from "@pace/services";
-import type { TPublicCycle } from "@/types/cycle";
+import type { TPublicCycle } from "@pace/types";
 // store
 import type { RootStore } from "./root.store";
 

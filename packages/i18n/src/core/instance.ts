@@ -23,6 +23,10 @@ const EAGER_NAMESPACES: readonly TNamespace[] =
 export const i18nInstance: I18nInstance = i18n.createInstance();
 
 // The plugin registration and the `init` below run at import time, which is the whole contract of this module: importing @pace/i18n anywhere is what configures the instance. That is why packages/i18n deliberately has no `sideEffects: false` in its package.json, unlike the pure-data packages around it -- marking it pure would let a bundler drop this module when a consumer only reads a re-exported constant from the barrel, and the failure would be an unconfigured i18next at runtime rather than a build error.
+//
+// `../locales` resolves through a symlink that is committed to git, and the build depends on it. tsdown does not rewrite this template specifier, so the emitted dist/index.js contains it verbatim and the app's bundler resolves it relative to dist/ -- that is packages/i18n/locales, not the src/locales where the JSON actually lives. What bridges the two is `packages/i18n/locales -> src/locales`, a mode 120000 entry in the index since the first commit (`git ls-files -s packages/i18n/locales`). Nothing copies the JSON into dist, and package.json exports no `./locales/*`, so those 600 files enter the bundle graph through a path the manifest does not describe.
+//
+// Consequences worth knowing before touching this line, the tsdown entry layout, or the `../` depth: a clone without symlink support (Windows without `core.symlinks`) and any change that alters how deep dist/index.js sits both break every namespace fetch, and i18next answers an unresolvable lookup with the key itself -- so the symptom is raw `issue.title` strings painted into a UI that never logs an error, the same failure mode ./translate.ts documents at length for its `meta` exports.
 i18nInstance
   .use(ICU)
   .use(initReactI18next)
