@@ -7,6 +7,7 @@
 import { isNil } from "lodash-es";
 // types
 import { EIconSize, ISSUE_PRIORITIES } from "@pace/constants";
+import { Avatar } from "@pace/propel/avatar";
 import { CycleGroupIcon, PriorityIcon, StateGroupIcon } from "@pace/propel/icons";
 import { CyclesOutline, ModuleOutline } from "@makeplane/propel/icons";
 import type {
@@ -17,7 +18,6 @@ import type {
   TGroupedIssues,
 } from "@pace/types";
 // ui
-import { Avatar } from "@pace/ui";
 // components
 // constants
 // stores

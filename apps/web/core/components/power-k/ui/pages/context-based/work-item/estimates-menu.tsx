@@ -11,7 +11,7 @@ import { Triangle } from "lucide-react";
 import { useTranslation } from "@pace/i18n";
 import { EEstimateSystem } from "@pace/types";
 import type { TIssue } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { convertMinutesToHoursMinutesString } from "@pace/utils";
 // hooks
 import { useEstimate, useProjectEstimates } from "@/hooks/store/estimates";

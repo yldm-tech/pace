@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import type { TCycleEstimateType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { getDate } from "@pace/utils";
 // components
 import ProgressChart from "@/components/core/sidebar/progress-chart";
@@ -79,9 +79,9 @@ export const SidebarChart = observer(function SidebarChart(props: ProgressChartP
               />
             </Fragment>
           ) : (
-            <Loader className="mt-4 h-[160px] w-full">
-              <Loader.Item width="100%" height="100%" />
-            </Loader>
+            <Skeleton className="mt-4 h-[160px] w-full">
+              <Skeleton.Item width="100%" height="100%" />
+            </Skeleton>
           )}
         </div>
       </div>

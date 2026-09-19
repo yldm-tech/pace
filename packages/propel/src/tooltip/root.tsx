@@ -31,12 +31,13 @@ export function Tooltip(props: ITooltipProps) {
   const {
     tooltipHeading,
     tooltipContent,
-    position = "top",
+    position,
     children,
     disabled = false,
     className = "",
     openDelay = 200,
-    side = "bottom",
+    // `position` wins when it is given, so it must not be defaulted: with `position = "top"` in this list the branch below always took it and `side`/`align` were declared props that could never reach the positioner. The defaults live here instead, and "top"/"center" is exactly what `convertPlacementToSideAndAlign("top")` returned, so every existing call site that passes neither is placed where it was.
+    side = "top",
     align = "center",
     sideOffset = 10,
     closeDelay,

@@ -17,7 +17,8 @@ import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TIssue, IIssueDisplayProperties, TIssueMap } from "@pace/types";
 import { EIssueServiceType } from "@pace/types";
 // ui
-import { Spinner, ControlLink, Row } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { ControlLink, Row } from "@pace/ui";
 import { cn, generateWorkItemLink } from "@pace/utils";
 // components
 import { MultipleSelectEntityAction } from "@/components/core/multiple-select";

@@ -11,7 +11,9 @@ import { CloseCircleOutline, HideOutline, ShowOutline } from "@makeplane/propel/
 import { API_BASE_URL, EAuthModes, EAuthSteps, E_PASSWORD_STRENGTH } from "@pace/constants";
 import { Button } from "@pace/propel/button";
 import { AuthService } from "@pace/services";
-import { Input, Spinner, PasswordStrengthIndicator } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
+import { Input } from "@pace/propel/input";
+import { PasswordStrengthIndicator } from "@pace/ui";
 import { getPasswordStrength } from "@pace/utils";
 // types
 

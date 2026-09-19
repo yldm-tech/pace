@@ -6,21 +6,21 @@
 
 import { range } from "lodash-es";
 // ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export function RecentActivityWidgetLoader() {
   return (
-    <Loader className="space-y-6 rounded-xl px-2">
+    <Skeleton className="space-y-6 rounded-xl px-2">
       {range(5).map((index) => (
         <div key={index} className="flex items-start gap-3.5">
           <div className="flex-shrink-0">
-            <Loader.Item height="32px" width="32px" />
+            <Skeleton.Item height="32px" width="32px" />
           </div>
           <div className="my-auto w-full flex-shrink-0 space-y-3">
-            <Loader.Item height="15px" width="70%" />
+            <Skeleton.Item height="15px" width="70%" />
           </div>
         </div>
       ))}
-    </Loader>
+    </Skeleton>
   );
 }

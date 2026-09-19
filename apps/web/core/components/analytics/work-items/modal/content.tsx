@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import { Tab } from "@headlessui/react";
 // pace package imports
 import type { ICycle, IModule, IProject } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 // hooks
 import { useAnalytics } from "@/hooks/store/use-analytics";
 // pace web components

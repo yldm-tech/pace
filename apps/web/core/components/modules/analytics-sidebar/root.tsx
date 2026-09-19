@@ -26,7 +26,8 @@ import { ModuleStatusIcon } from "@pace/propel/icons";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { ILinkDetails, IModule, ModuleLink } from "@pace/types";
 // pace ui
-import { Loader, CustomSelect } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { CustomSelect } from "@pace/ui";
 import { TextArea } from "@makeplane/propel/components/text-area";
 // components
 // helpers
@@ -140,17 +141,17 @@ export const ModuleAnalyticsSidebar = observer(function ModuleAnalyticsSidebar(p
 
   if (!moduleDetails)
     return (
-      <Loader>
+      <Skeleton>
         <div className="space-y-2">
-          <Loader.Item height="15px" width="50%" />
-          <Loader.Item height="15px" width="30%" />
+          <Skeleton.Item height="15px" width="50%" />
+          <Skeleton.Item height="15px" width="30%" />
         </div>
         <div className="mt-8 space-y-3">
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
-          <Loader.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
+          <Skeleton.Item height="30px" />
         </div>
-      </Loader>
+      </Skeleton>
     );
 
   const moduleStatus = MODULE_STATUS.find((status) => status.value === moduleDetails.status);

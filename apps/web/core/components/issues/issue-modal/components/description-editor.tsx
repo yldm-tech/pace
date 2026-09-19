@@ -16,7 +16,7 @@ import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { TIssue } from "@pace/types";
 import { EFileAssetType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { getDescriptionPlaceholderI18n, getTabIndex } from "@pace/utils";
 // components
 import { GptAssistantPopover } from "@/components/core/modals/gpt-assistant-popover";
@@ -156,25 +156,25 @@ export const IssueDescriptionEditor = observer(function IssueDescriptionEditor(p
   return (
     <div className="relative rounded-lg border-[0.5px] border-subtle-1 bg-layer-2">
       {descriptionHtmlData === undefined || !projectId ? (
-        <Loader className="max-h-64 min-h-[120px] space-y-2 overflow-hidden rounded-md border border-subtle p-3 py-2 pt-3">
-          <Loader.Item width="100%" height="26px" />
+        <Skeleton className="max-h-64 min-h-[120px] space-y-2 overflow-hidden rounded-md border border-subtle p-3 py-2 pt-3">
+          <Skeleton.Item width="100%" height="26px" />
           <div className="flex items-center gap-2">
-            <Loader.Item width="26px" height="26px" />
-            <Loader.Item width="400px" height="26px" />
+            <Skeleton.Item width="26px" height="26px" />
+            <Skeleton.Item width="400px" height="26px" />
           </div>
           <div className="flex items-center gap-2">
-            <Loader.Item width="26px" height="26px" />
-            <Loader.Item width="400px" height="26px" />
+            <Skeleton.Item width="26px" height="26px" />
+            <Skeleton.Item width="400px" height="26px" />
           </div>
-          <Loader.Item width="80%" height="26px" />
+          <Skeleton.Item width="80%" height="26px" />
           <div className="flex items-center gap-2">
-            <Loader.Item width="50%" height="26px" />
+            <Skeleton.Item width="50%" height="26px" />
           </div>
           <div className="border-0.5 absolute right-3.5 bottom-2 z-10 flex items-center gap-2">
-            <Loader.Item width="100px" height="26px" />
-            <Loader.Item width="50px" height="26px" />
+            <Skeleton.Item width="100px" height="26px" />
+            <Skeleton.Item width="50px" height="26px" />
           </div>
-        </Loader>
+        </Skeleton>
       ) : (
         <>
           <Controller

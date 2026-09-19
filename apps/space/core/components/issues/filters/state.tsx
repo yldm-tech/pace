@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // ui
 import { EIconSize } from "@pace/constants";
 import { StateGroupIcon } from "@pace/propel/icons";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // hooks
 import { useStates } from "@/hooks/store/use-state";
 // local imports
@@ -76,11 +76,11 @@ export const FilterState = observer(function FilterState(props: Props) {
               <p className="text-11 text-placeholder italic">No matches found</p>
             )
           ) : (
-            <Loader className="space-y-2">
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-            </Loader>
+            <Skeleton className="space-y-2">
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+            </Skeleton>
           )}
         </div>
       )}

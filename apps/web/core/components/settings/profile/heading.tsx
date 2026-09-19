@@ -5,7 +5,7 @@
  */
 
 // pace imports
-import { cn } from "@pace/ui";
+import { cn } from "@pace/utils";
 
 type Props = {
   className?: string;

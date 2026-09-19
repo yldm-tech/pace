@@ -9,7 +9,7 @@ import { useParams } from "@/app/hooks/navigation";
 // pace imports
 import type { TDisplayConfig } from "@pace/editor";
 import type { JSONContent, TPageVersion } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { isJSONContentEmpty } from "@pace/utils";
 // components
 import { DocumentEditor } from "@/components/editor/document/editor";
@@ -45,42 +45,42 @@ export const PagesVersionEditor = observer(function PagesVersionEditor(props: TV
   if (!versionDetails)
     return (
       <div className="size-full px-5">
-        <Loader className="relative space-y-4">
-          <Loader.Item width="50%" height="36px" />
+        <Skeleton className="relative space-y-4">
+          <Skeleton.Item width="50%" height="36px" />
           <div className="space-y-2">
             <div className="py-2">
-              <Loader.Item width="100%" height="36px" />
+              <Skeleton.Item width="100%" height="36px" />
             </div>
-            <Loader.Item width="80%" height="22px" />
+            <Skeleton.Item width="80%" height="22px" />
             <div className="relative flex items-center gap-2">
-              <Loader.Item width="30px" height="30px" />
-              <Loader.Item width="30%" height="22px" />
+              <Skeleton.Item width="30px" height="30px" />
+              <Skeleton.Item width="30%" height="22px" />
             </div>
             <div className="py-2">
-              <Loader.Item width="60%" height="36px" />
+              <Skeleton.Item width="60%" height="36px" />
             </div>
-            <Loader.Item width="70%" height="22px" />
-            <Loader.Item width="30%" height="22px" />
+            <Skeleton.Item width="70%" height="22px" />
+            <Skeleton.Item width="30%" height="22px" />
             <div className="relative flex items-center gap-2">
-              <Loader.Item width="30px" height="30px" />
-              <Loader.Item width="30%" height="22px" />
+              <Skeleton.Item width="30px" height="30px" />
+              <Skeleton.Item width="30%" height="22px" />
             </div>
             <div className="py-2">
-              <Loader.Item width="50%" height="30px" />
+              <Skeleton.Item width="50%" height="30px" />
             </div>
-            <Loader.Item width="100%" height="22px" />
+            <Skeleton.Item width="100%" height="22px" />
             <div className="py-2">
-              <Loader.Item width="30%" height="30px" />
+              <Skeleton.Item width="30%" height="30px" />
             </div>
-            <Loader.Item width="30%" height="22px" />
+            <Skeleton.Item width="30%" height="22px" />
             <div className="relative flex items-center gap-2">
               <div className="py-2">
-                <Loader.Item width="30px" height="30px" />
+                <Skeleton.Item width="30px" height="30px" />
               </div>
-              <Loader.Item width="30%" height="22px" />
+              <Skeleton.Item width="30%" height="22px" />
             </div>
           </div>
-        </Loader>
+        </Skeleton>
       </div>
     );
 

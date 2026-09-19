@@ -15,7 +15,7 @@ import { Input, InputGroup } from "@makeplane/propel/components/input";
 import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import type { IEmailCheckData } from "@pace/types";
-import { Spinner } from "@pace/ui";
+import { Spinner } from "@pace/propel/spinners";
 import { checkEmailValidity } from "@pace/utils";
 // helpers
 type TAuthEmailForm = {

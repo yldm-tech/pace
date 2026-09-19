@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { Button } from "@pace/propel/button";
 import type { EProductSubscriptionEnum, IPaymentProduct, TSubscriptionPrice } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // local imports
 import { DiscountInfo } from "./discount-info";
 
@@ -52,9 +52,9 @@ export const PlanCheckoutButton = observer(function PlanCheckoutButton(props: Pr
       <div className="pb-4 text-center">
         <div className="h-9 text-20 font-semibold">
           {isLoading ? (
-            <Loader className="flex flex-col items-center justify-center">
-              <Loader.Item height="36px" width="4rem" />
-            </Loader>
+            <Skeleton className="flex flex-col items-center justify-center">
+              <Skeleton.Item height="36px" width="4rem" />
+            </Skeleton>
           ) : (
             <DiscountInfo
               currency={price.currency}
@@ -68,9 +68,9 @@ export const PlanCheckoutButton = observer(function PlanCheckoutButton(props: Pr
         <div className="text-caption-md-medium text-tertiary">per user per month</div>
       </div>
       {isLoading ? (
-        <Loader className="flex flex-col items-center justify-center">
-          <Loader.Item height="38px" width="14rem" />
-        </Loader>
+        <Skeleton className="flex flex-col items-center justify-center">
+          <Skeleton.Item height="38px" width="14rem" />
+        </Skeleton>
       ) : (
         <div className="flex w-full flex-col items-center justify-center space-y-4">
           <Button

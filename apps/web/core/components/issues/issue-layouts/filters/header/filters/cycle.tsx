@@ -11,7 +11,7 @@ import { useParams } from "@/app/hooks/navigation";
 import { CycleGroupIcon } from "@pace/propel/icons";
 import type { TCycleGroups } from "@pace/types";
 // components
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { FilterHeader, FilterOption } from "@/components/issues/issue-layouts/filters";
 import { useCycle } from "@/hooks/store/use-cycle";
 // ui
@@ -98,11 +98,11 @@ export const FilterCycle = observer(function FilterCycle(props: Props) {
               <p className="text-11 text-placeholder italic">No matches found</p>
             )
           ) : (
-            <Loader className="space-y-2">
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-              <Loader.Item height="20px" />
-            </Loader>
+            <Skeleton className="space-y-2">
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+              <Skeleton.Item height="20px" />
+            </Skeleton>
           )}
         </div>
       )}

@@ -10,8 +10,9 @@ import useSWR from "swr";
 // ui
 import { useTranslation } from "@pace/i18n";
 import { Avatar } from "@pace/propel/avatar";
+import { Card } from "@pace/propel/card";
 import { EmptyStateCompact } from "@pace/propel/empty-state";
-import { Loader, Card } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { calculateTimeAgo, getFileURL } from "@pace/utils";
 // components
 import { ActivityMessage, IssueLink } from "@/components/core/activity";
@@ -46,13 +47,13 @@ export const ProfileActivity = observer(function ProfileActivity() {
       <h3 className="text-16 font-medium">{t("profile.stats.recent_activity.title")}</h3>
       <Card>
         {!userProfileActivity ? (
-          <Loader className="space-y-5">
-            <Loader.Item height="40px" />
-            <Loader.Item height="40px" />
-            <Loader.Item height="40px" />
-            <Loader.Item height="40px" />
-            <Loader.Item height="40px" />
-          </Loader>
+          <Skeleton className="space-y-5">
+            <Skeleton.Item height="40px" />
+            <Skeleton.Item height="40px" />
+            <Skeleton.Item height="40px" />
+            <Skeleton.Item height="40px" />
+            <Skeleton.Item height="40px" />
+          </Skeleton>
         ) : Array.isArray(userProfileActivity.results) && userProfileActivity.results.length > 0 ? (
           <div className="space-y-5">
             {userProfileActivity.results.map((activity) => (

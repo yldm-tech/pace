@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { useTranslation } from "@pace/i18n";
 import { StateGroupIcon } from "@pace/propel/icons";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { cn } from "@pace/utils";
 // hooks
 import { useProjectState } from "@/hooks/store/use-project-state";
@@ -52,10 +52,10 @@ export const ReadonlyState = observer(function ReadonlyState(props: TReadonlySta
 
   if (stateLoader) {
     return (
-      <Loader className={cn("flex items-center gap-1 text-body-xs-regular", className)}>
-        <Loader.Item height="16px" width="16px" className="rounded-full" />
-        <Loader.Item height="16px" width="50px" />
-      </Loader>
+      <Skeleton className={cn("flex items-center gap-1 text-body-xs-regular", className)}>
+        <Skeleton.Item height="16px" width="16px" className="rounded-full" />
+        <Skeleton.Item height="16px" width="50px" />
+      </Skeleton>
     );
   }
 

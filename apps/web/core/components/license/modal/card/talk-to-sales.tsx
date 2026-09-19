@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 // pace imports
 import { getButtonStyling } from "@pace/propel/button";
 import type { EProductSubscriptionEnum, IPaymentProduct, TSubscriptionPrice } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { cn } from "@pace/utils";
 // local imports
 import { BasePaidPlanCard } from "./base-paid-plan-card";
@@ -57,9 +57,9 @@ export const TalkToSalesCard = observer(function TalkToSalesCard(props: TalkToSa
       <div className="pb-4 text-center">
         <div className="flex h-9 items-center justify-center text-20 font-semibold">
           {isLoading ? (
-            <Loader className="flex flex-col items-center justify-center">
-              <Loader.Item height="36px" width="4rem" />
-            </Loader>
+            <Skeleton className="flex flex-col items-center justify-center">
+              <Skeleton.Item height="36px" width="4rem" />
+            </Skeleton>
           ) : (
             <>Quote on request</>
           )}
@@ -67,9 +67,9 @@ export const TalkToSalesCard = observer(function TalkToSalesCard(props: TalkToSa
         <div className="text-caption-md-medium text-tertiary">per user per month</div>
       </div>
       {isLoading ? (
-        <Loader className="flex flex-col items-center justify-center">
-          <Loader.Item height="38px" width="14rem" />
-        </Loader>
+        <Skeleton className="flex flex-col items-center justify-center">
+          <Skeleton.Item height="38px" width="14rem" />
+        </Skeleton>
       ) : (
         <div className="flex w-full flex-col items-center justify-center">
           <a href={href} target="_blank" className={cn(getButtonStyling("primary", "lg"), "w-56")} rel="noreferrer">

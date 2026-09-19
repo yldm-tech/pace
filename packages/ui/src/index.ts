@@ -5,9 +5,7 @@
  */
 
 export * from "./app-progress-bar";
-export * from "./avatar";
 export * from "./breadcrumbs";
-export * from "./card";
 export * from "./collapsible";
 export * from "./content-wrapper";
 export * from "./control-link";
@@ -19,12 +17,10 @@ export * from "./favorite-star";
 export * from "./form-fields";
 export * from "./header";
 export * from "./link";
-export * from "./loader";
 export * from "./modals";
 export * from "./popovers";
 export * from "./row";
 export * from "./sortable";
-export * from "./spinners";
 export * from "./tables";
 export * from "./tag";
 export * from "./utils";

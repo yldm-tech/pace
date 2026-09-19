@@ -15,7 +15,7 @@ import { useTranslation } from "@pace/i18n";
 import { Button } from "@pace/propel/button";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import { EIssueServiceType } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useUserPermissions } from "@/hooks/store/user";
@@ -74,9 +74,9 @@ export const IssueSubscription = observer(function IssueSubscription(props: TIss
 
   if (isNil(isSubscribed))
     return (
-      <Loader>
-        <Loader.Item width="106px" height="28px" />
-      </Loader>
+      <Skeleton>
+        <Skeleton.Item width="106px" height="28px" />
+      </Skeleton>
     );
 
   return (

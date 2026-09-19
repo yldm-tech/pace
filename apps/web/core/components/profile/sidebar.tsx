@@ -16,7 +16,7 @@ import { IconButton } from "@pace/propel/icon-button";
 import { ChevronDownOutline, EditOutline } from "@makeplane/propel/icons";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { IUserProfileProjectSegregation } from "@pace/types";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { cn, renderFormattedDate, getFileURL } from "@pace/utils";
 // components
 import { CoverImage } from "@/components/common/cover-image";
@@ -280,16 +280,16 @@ export const ProfileSidebar = observer(function ProfileSidebar(props: TProfileSi
           </div>
         </>
       ) : (
-        <Loader className="space-y-7 px-5">
-          <Loader.Item height="130px" />
+        <Skeleton className="space-y-7 px-5">
+          <Skeleton.Item height="130px" />
           <div className="space-y-5">
-            <Loader.Item height="20px" />
-            <Loader.Item height="20px" />
-            <Loader.Item height="20px" />
-            <Loader.Item height="20px" />
-            <Loader.Item height="20px" />
+            <Skeleton.Item height="20px" />
+            <Skeleton.Item height="20px" />
+            <Skeleton.Item height="20px" />
+            <Skeleton.Item height="20px" />
+            <Skeleton.Item height="20px" />
           </div>
-        </Loader>
+        </Skeleton>
       )}
     </div>
   );

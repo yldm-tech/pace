@@ -6,7 +6,7 @@
 
 import React from "react";
 // ui
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 import { InboxSidebarLoader } from "./inbox-sidebar-loader";
 
 export function InboxLayoutLoader() {
@@ -16,15 +16,15 @@ export function InboxLayoutLoader() {
         <InboxSidebarLoader />
       </div>
       <div className="w-4/6">
-        <Loader className="flex h-full flex-col gap-5 p-5">
+        <Skeleton className="flex h-full flex-col gap-5 p-5">
           <div className="space-y-2">
-            <Loader.Item height="30px" width="40%" />
-            <Loader.Item height="15px" width="60%" />
-            <Loader.Item height="15px" width="60%" />
-            <Loader.Item height="15px" width="40%" />
+            <Skeleton.Item height="30px" width="40%" />
+            <Skeleton.Item height="15px" width="60%" />
+            <Skeleton.Item height="15px" width="60%" />
+            <Skeleton.Item height="15px" width="40%" />
           </div>
-          <Loader.Item height="150px" />
-        </Loader>
+          <Skeleton.Item height="150px" />
+        </Skeleton>
       </div>
     </div>
   );

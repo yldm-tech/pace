@@ -15,7 +15,7 @@ import { useTranslation } from "@pace/i18n";
 import { TOAST_TYPE, setToast } from "@pace/propel/toast";
 import type { IProject, IUserLite, IWorkspace } from "@pace/types";
 import { Switch } from "@makeplane/propel/components/switch";
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 // constants
 import { PROJECT_DETAILS } from "@pace/constants";
 // hooks
@@ -156,9 +156,9 @@ export const ProjectSettingsMemberDefaults = observer(function ProjectSettingsMe
             )}
           />
         ) : (
-          <Loader className="h-9 w-full">
-            <Loader.Item width="100%" height="100%" />
-          </Loader>
+          <Skeleton className="h-9 w-full">
+            <Skeleton.Item width="100%" height="100%" />
+          </Skeleton>
         )}
       </DefaultSettingItem>
       <DefaultSettingItem title="Default Assignee" description="Select the default assignee for the project.">
@@ -177,9 +177,9 @@ export const ProjectSettingsMemberDefaults = observer(function ProjectSettingsMe
             )}
           />
         ) : (
-          <Loader className="h-9 w-full">
-            <Loader.Item width="100%" height="100%" />
-          </Loader>
+          <Skeleton className="h-9 w-full">
+            <Skeleton.Item width="100%" height="100%" />
+          </Skeleton>
         )}
       </DefaultSettingItem>
       {currentProjectDetails && (

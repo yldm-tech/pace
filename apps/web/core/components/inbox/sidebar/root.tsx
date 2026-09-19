@@ -11,7 +11,8 @@ import { EmptyStateDetailed } from "@pace/propel/empty-state";
 import type { TInboxIssueCurrentTab } from "@pace/types";
 import { EInboxIssueCurrentTab } from "@pace/types";
 // pace imports
-import { Header, Loader, EHeaderVariant } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { Header, EHeaderVariant } from "@pace/ui";
 import { cn } from "@pace/utils";
 // components
 import { InboxSidebarLoader } from "@/components/ui/loader/layouts/project-inbox/inbox-sidebar-loader";
@@ -174,10 +175,10 @@ export const InboxSidebar = observer(function InboxSidebar(props: IInboxSidebarP
             )}
             <div ref={setElementRef}>
               {inboxIssuePaginationInfo?.next_page_results && (
-                <Loader className="mx-auto w-full space-y-4 px-2 py-4">
-                  <Loader.Item height="64px" width="w-100" />
-                  <Loader.Item height="64px" width="w-100" />
-                </Loader>
+                <Skeleton className="mx-auto w-full space-y-4 px-2 py-4">
+                  <Skeleton.Item height="64px" width="w-100" />
+                  <Skeleton.Item height="64px" width="w-100" />
+                </Skeleton>
               )}
             </div>
           </div>

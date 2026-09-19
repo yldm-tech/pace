@@ -4,15 +4,15 @@
  * See the LICENSE file for details.
  */
 
-import { Loader } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
 
 export function ProjectStateLoader() {
   return (
-    <Loader className="space-y-5 md:w-2/3">
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-      <Loader.Item height="40px" />
-    </Loader>
+    <Skeleton className="space-y-5 md:w-2/3">
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+      <Skeleton.Item height="40px" />
+    </Skeleton>
   );
 }

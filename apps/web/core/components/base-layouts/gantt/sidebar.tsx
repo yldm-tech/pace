@@ -8,7 +8,8 @@ import type { RefObject } from "react";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import type { IBaseLayoutsBaseItem, IBlockUpdateData } from "@pace/types";
-import { Loader, Row } from "@pace/ui";
+import { Skeleton } from "@pace/propel/skeleton";
+import { Row } from "@pace/ui";
 import { cn } from "@pace/utils";
 import RenderIfVisible from "@/components/core/render-if-visible-HOC";
 import { BLOCK_HEIGHT } from "@/components/gantt-chart/constants";
@@ -143,12 +144,12 @@ export const BaseGanttSidebar = observer(function BaseGanttSidebar<T extends IBa
           )}
         </>
       ) : (
-        <Loader className="space-y-3 pr-2">
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-          <Loader.Item height="34px" />
-        </Loader>
+        <Skeleton className="space-y-3 pr-2">
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+          <Skeleton.Item height="34px" />
+        </Skeleton>
       )}
     </div>
   );
