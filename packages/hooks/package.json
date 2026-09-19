@@ -1,6 +1,6 @@
 {
   "name": "@pace/hooks",
-  "version": "1.4.35",
+  "version": "1.4.36",
   "private": true,
   "description": "React hooks that are shared across multiple apps internally",
   "license": "AGPL-3.0",

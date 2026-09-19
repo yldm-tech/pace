@@ -14,6 +14,7 @@ import (
 	spaceapi "github.com/yldm-tech/pace/apps/api/internal/space"
 	"github.com/yldm-tech/pace/apps/api/internal/storage"
 	userapi "github.com/yldm-tech/pace/apps/api/internal/user"
+	webhooksapi "github.com/yldm-tech/pace/apps/api/internal/webhooks"
 	workspaceapi "github.com/yldm-tech/pace/apps/api/internal/workspace"
 	"gorm.io/gorm"
 )
@@ -142,16 +143,13 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 		}
 		workspaceHandler.Register(router)
 		projectHandler := projectapi.NewHandler(dependencies.Database, sessions, projectapi.Settings{
-			AppBaseURL:               dependencies.AuthSettings.AppBaseURL,
-			WebURL:                   dependencies.AuthSettings.WebURL,
-			FileSizeLimit:            dependencies.AuthSettings.FileSizeLimit,
-			WebhookAllowedIPs:        dependencies.AuthSettings.WebhookAllowedIPs,
-			WebhookAllowedHosts:      dependencies.AuthSettings.WebhookAllowedHosts,
-			WebhookDisallowedDomains: dependencies.AuthSettings.WebhookDisallowedDomains,
-			SecretKey:                dependencies.AuthSettings.SecretKey,
-			SkipEnvironmentConfig:    dependencies.AuthSkipEnvironmentConfig,
-			Environment:              dependencies.AuthSettings.Environment,
-			LLMBaseURL:               dependencies.LLMBaseURL,
+			AppBaseURL:            dependencies.AuthSettings.AppBaseURL,
+			WebURL:                dependencies.AuthSettings.WebURL,
+			FileSizeLimit:         dependencies.AuthSettings.FileSizeLimit,
+			SecretKey:             dependencies.AuthSettings.SecretKey,
+			SkipEnvironmentConfig: dependencies.AuthSkipEnvironmentConfig,
+			Environment:           dependencies.AuthSettings.Environment,
+			LLMBaseURL:            dependencies.LLMBaseURL,
 		})
 		if err == nil {
 			projectHandler.SetStorage(attachmentStore)
@@ -163,6 +161,13 @@ func NewRouter(dependencies Dependencies) *gin.Engine {
 			projectHandler.SetCache(auth.NewRedisCacheInvalidator(dependencies.AuthRedis))
 		}
 		projectHandler.Register(router)
+		// The webhook routes are session-authenticated like the project ones and read the same auth settings, but they share nothing else with the work-item surface, so they are their own package.
+		webhooksHandler := webhooksapi.NewHandler(dependencies.Database, sessions, webhooksapi.Settings{
+			WebhookAllowedIPs:        dependencies.AuthSettings.WebhookAllowedIPs,
+			WebhookAllowedHosts:      dependencies.AuthSettings.WebhookAllowedHosts,
+			WebhookDisallowedDomains: dependencies.AuthSettings.WebhookDisallowedDomains,
+		})
+		webhooksHandler.Register(router)
 		spaceHandler := spaceapi.NewHandler(dependencies.Database)
 		spaceHandler.SetSessions(sessions)
 		spaceHandler.SetFileSizeLimit(dependencies.AuthSettings.FileSizeLimit)

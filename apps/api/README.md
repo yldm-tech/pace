@@ -767,6 +767,12 @@ The chart endpoints — `analytics/`, `saved-analytic-view/`, `default-analytics
 
 The seven routes under `webhooks/` and `webhook-logs/`. Admin only, at the workspace level.
 
+### They have their own package
+
+They live in `internal/webhooks` rather than in `internal/project`, which is where they were first written. The charter boundary in this repo is by application rather than by url prefix — same session, same error vocabulary, so this is still the session API — but `internal/project` is that API's **work-item** surface, and these routes touch neither a work item nor a project: the `webhooks` and `webhook_logs` models are theirs alone, nothing outside the file referenced anything it declared, and the three allowlists that decide which urls a workspace may be told to call (`WEBHOOK_ALLOWED_IPS`, `WEBHOOK_ALLOWED_HOSTS`, `WEBHOOK_DISALLOWED_DOMAINS`) are read by nothing else in it. The move is a rename plus a package clause; every path, status and body is the one Django answered.
+
+The kit the handlers need — `authenticated`, `requireWorkspaceRole` and its role lookup, `invalidDetail`, `internalError`, `isUniqueViolation`, `newUUID` — is **copied** rather than imported. That is deliberate and it is what every handler package here already does: `authenticated`, `internalError`, `newUUID` and `decodeJSON` each exist five times over across `internal/space`, `internal/workspace`, `internal/externalapi`, `internal/project` and `internal/user`, and the `file_assets` model seven times. Ninety duplicated lines is the price of a package that imports nothing from a 37k-line one, and the copies are kept byte-identical so diffing the two shows nothing.
+
 ### The secret is shown twice and no more often
 
 On creation and on a regenerate. Everywhere else it is dropped, and the **only** thing dropping it is a context flag.
