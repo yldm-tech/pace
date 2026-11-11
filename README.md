@@ -1,5 +1,7 @@
 # Pace
 
+[![X](https://img.shields.io/badge/X-%40suzukaze__haduki-000000?logo=x&logoColor=white)](https://x.com/suzukaze_haduki) [![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/houko)
+
 Pace is an open-source project management platform for tracking work items, running cycles, and managing product roadmaps without the overhead of managing the tool itself.
 
 This repository is the Pace application and its gradual backend migration. The web application remains compatible with the existing product while API modules move from Django to Go (Gin + GORM) against the same PostgreSQL schema.
